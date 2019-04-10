@@ -1,0 +1,1 @@
+Feel free to add notes here related to any discussion topics related to Bytele meetings, whether it be minutes, Discord screenshots, or whiteboard pictures. I'll be adding meeting minutes here hopefully to help look back at previous meetings for help.
