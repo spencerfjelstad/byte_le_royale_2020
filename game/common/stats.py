@@ -6,13 +6,18 @@ class GameStats:
     man_power = 5
 
     # cost in man_power to build a sensor
-    sensor_cost_0 = 20
-    sensor_cost_1 = 50
-    sensor_cost_2 = 100
-    sensor_cost_3 = 500
+    sensor_costs = {
+        0 : 0,
+        1 : 50,
+        2 : 100,
+        3 : 500
+    }
 
     # error range provided by each sensor
-    sensor_range_0 = 30
-    sensor_range_1 = 15
-    sensor_range_2 = 8
-    sensor_range_3 = 2
+
+    sensor_ranges = {
+        0 : 30,
+        1 : 15,
+        2 : 8,
+        3 : 2
+    }
