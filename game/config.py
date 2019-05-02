@@ -1,4 +1,4 @@
-from common.enums import *
+from game.common.enums import *
 
 # Game Generation
 MAX_TURNS = 2000
@@ -12,6 +12,7 @@ INDIVIDUAL_WEIGHTS = {
     DisasterType.ufo : 0.001,
 }
 
-DISASTER_CHANCE_GROWTH_RATE = 0.01
+DISASTER_CHANCE_GROWTH_RATE = 1 / (MAX_TURNS / 4)
 STARTING_FREE_TURNS = 10
+ACTIVATION_DEPRECIATION_RATE = 0.95
 
