@@ -29,7 +29,7 @@ def loop(max_turns):
 
 def boot():
     clients = list()
-    for filename in os.listdir('game/clients'):
+    for filename in os.listdir('./clients'):
         filename = filename.replace('.py', '')
         if filename in ['__init__', '__pycache__']:
             continue
