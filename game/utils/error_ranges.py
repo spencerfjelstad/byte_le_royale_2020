@@ -14,12 +14,20 @@ def provide_sensor_ranges(odds):
 
     adjusted_weights = {}
 
-    for disaster in DisasterType:
+    for disaster in [ DisasterType.fire,
+                      DisasterType.tornado,
+                      DisasterType.hurricane,
+                      DisasterType.earthquake,
+                      DisasterType.monster,
+                      DisasterType.ufo ]:
         sensor_odds = {}
 
         disaster_odds = odds[disaster]
 
-        for sensor_level in [ x.value for x in SensorLevel ]:
+        for sensor_level in [ SensorLevel.level_zero,
+                              SensorLevel.level_one,
+                              SensorLevel.level_two,
+                              SensorLevel.level_three ]:
             sensor_odds[ sensor_level ] = provide_sensor_range( disaster_odds, sensor_level )
 
         adjusted_weights[disaster] = sensor_odds
@@ -35,21 +43,19 @@ def provide_sensor_ranges(odds):
 # adjusted_odds : number : random odds between 0 and 1 near the chance given the sensor
 def provide_sensor_range(chance, sensor_level):
     chance = math.floor(chance*100)
-    if sensor_level not in [ x.value for x in SensorLevel ]:
-        raise Exception("Sensor level out of bounds. Should be 0 <= x <= 3.")
 
     range = math.floor(GameStats.sensor_ranges[sensor_level] / 2)
 
-    # if sensor_level == SensorLevel.level_zero:
-    #     range = GameStats.sensor_range_0
-    # if sensor_level == SensorLevel.level_one:
-    #     range = GameStats.sensor_range_1
-    # if sensor_level == SensorLevel.level_two:
-    #     range = GameStats.sensor_range_2
-    # if sensor_level == SensorLevel.level_three:
-    #     range = GameStats.sensor_range_3
-    # else:
-    #     raise Exception("Sensor level out of bounds. Should be SensorLevel.level_zero <= x <= SensorLevel.level_three.")
+    if sensor_level == SensorLevel.level_zero:
+        range = GameStats.sensor_ranges[0]
+    elif sensor_level == SensorLevel.level_one:
+        range = GameStats.sensor_ranges[1]
+    elif sensor_level == SensorLevel.level_two:
+        range = GameStats.sensor_ranges[2]
+    elif sensor_level == SensorLevel.level_three:
+        range = GameStats.sensor_ranges[3]
+    else:
+        raise Exception("Sensor level out of bounds. Should be SensorLevel.level_zero <= x <= SensorLevel.level_three.")
 
     # Modify chance so it doesn't provide us odds out of bounds
     if chance - range < 0:
