@@ -8,6 +8,8 @@ from game.utils.helpers import *
 
 
 def generate():
+    print('generating map please wait :)')
+    time.sleep(1)
     total = {}
     
     act = 0
@@ -36,12 +38,12 @@ def generate():
                 
                 INDIVIDUAL_WEIGHTS[key] += DISASTER_CHANCE_GROWTH_RATE * random.random() * INDIVIDUAL_WEIGHTS[key]
             
-        os.system('cls')
-        print(f'Turn {x}')
-        print_dict(rates, "Current turn odds")
-        print_dict(INDIVIDUAL_WEIGHTS, "Current weights")
-        print(*activations)
-        print(f'activations: {act}')
+        #os.system('cls')
+        #print(f'Turn {x}')
+        #print_dict(rates, "Current turn odds")
+        #print_dict(INDIVIDUAL_WEIGHTS, "Current weights")
+        #print(*activations)
+        #print(f'activations: {act}')
         
         total[x] = {'data': {'rates': rates, 'disasters': activations}}
         
@@ -57,5 +59,8 @@ def print_dict(dict, name='dict'):
 
 
 def write(dict):
-    with open('game_map.json', 'w+') as out:
+    if not os.path.exists('logs'):
+        os.makedirs('logs')
+    
+    with open('logs/game_map.json', 'w+') as out:
         json.dump(dict, out)
