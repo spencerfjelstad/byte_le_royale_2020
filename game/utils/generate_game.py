@@ -2,6 +2,7 @@ import json
 import random
 import time
 import os
+import copy
 
 from game.config import *
 from game.utils.helpers import *
@@ -45,7 +46,7 @@ def generate():
         #print(*activations)
         #print(f'activations: {act}')
         
-        total[x] = {'data': {'rates': rates, 'disasters': activations}}
+        total[x] = {'rates': copy.deepcopy(rates), 'disasters': activations}
         
     write(total)
 
