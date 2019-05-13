@@ -1,6 +1,7 @@
 
 
 def take_turn():
-    for x in range(100000):
+    for x in range(1000):
         pass
-    return 4
+
+    return 1
