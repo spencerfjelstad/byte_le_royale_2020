@@ -44,8 +44,6 @@ def provide_sensor_ranges(odds):
 def provide_sensor_range(chance, sensor_level):
     chance = math.floor(chance*100)
 
-    range = math.floor(GameStats.sensor_ranges[sensor_level] / 2)
-
     if sensor_level == SensorLevel.level_zero:
         range = GameStats.sensor_ranges[0]
     elif sensor_level == SensorLevel.level_one:
@@ -57,13 +55,17 @@ def provide_sensor_range(chance, sensor_level):
     else:
         raise Exception("Sensor level out of bounds. Should be SensorLevel.level_zero <= x <= SensorLevel.level_three.")
 
-    # Modify chance so it doesn't provide us odds out of bounds
-    if chance - range < 0:
-        chance = range
-    if chance + range > 100:
-        chance = 100 - range
+    range = math.floor(range / 2)
+    min_chance = chance - range
+    max_chance = chance + range
 
-    return random.randrange(chance - range, chance + range + 1) / 100
+    # Modify chance so it doesn't provide us odds out of bounds
+    if min_chance < 0:
+        min_chance = 0
+    if max_chance > 100:
+        max_chance = 100
+
+    return random.randrange(min_chance, max_chance + 1) / 100
 
 # my_example_odds = {
 #     DisasterType.fire: 0.3,
