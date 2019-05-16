@@ -3,6 +3,7 @@ import random
 
 from game.common.stats import GameStats
 from game.common.enums import *
+from game.utils.helpers import *
 
 # provide_sensor_ranges
 # @parameters
@@ -14,20 +15,12 @@ def provide_sensor_ranges(odds):
 
     adjusted_weights = {}
 
-    for disaster in [ DisasterType.fire,
-                      DisasterType.tornado,
-                      DisasterType.hurricane,
-                      DisasterType.earthquake,
-                      DisasterType.monster,
-                      DisasterType.ufo ]:
+    for disaster in enum_iter(DisasterType):
         sensor_odds = {}
 
         disaster_odds = odds[disaster]
 
-        for sensor_level in [ SensorLevel.level_zero,
-                              SensorLevel.level_one,
-                              SensorLevel.level_two,
-                              SensorLevel.level_three ]:
+        for sensor_level in enum_iter(SensorLevel):
             sensor_odds[ sensor_level ] = provide_sensor_range( disaster_odds, sensor_level )
 
         adjusted_weights[disaster] = sensor_odds
@@ -44,14 +37,10 @@ def provide_sensor_ranges(odds):
 def provide_sensor_range(chance, sensor_level):
     chance = math.floor(chance*100)
 
-    if sensor_level == SensorLevel.level_zero:
-        range = GameStats.sensor_ranges[0]
-    elif sensor_level == SensorLevel.level_one:
-        range = GameStats.sensor_ranges[1]
-    elif sensor_level == SensorLevel.level_two:
-        range = GameStats.sensor_ranges[2]
-    elif sensor_level == SensorLevel.level_three:
-        range = GameStats.sensor_ranges[3]
+    for level in enum_iter(SensorLevel):
+        if sensor_level == level:
+            range = GameStats.sensor_ranges[level]
+            break
     else:
         raise Exception("Sensor level out of bounds. Should be SensorLevel.level_zero <= x <= SensorLevel.level_three.")
 
