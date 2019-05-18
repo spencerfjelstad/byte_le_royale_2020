@@ -4,10 +4,9 @@ import importlib
 import json
 import time
 from tqdm import tqdm
-from multiprocessing.dummy import Pool as ThreadPool
 from multiprocessing import Process
 
-from game.common.client import *
+from game.common.player import *
 from game.config import *
 from game.utils.thread import Thread
 
@@ -18,14 +17,15 @@ def main():
 
 def loop():
     clients = boot()
-    if len(clients) <= 0:
-        print("No clients found")
-        exit()
         
     world = load()
     max_turns = len(world)
 
     for turn in tqdm(range(1, max_turns + 1)):
+        if len(clients) <= 0:
+            print("No clients found")
+            exit()
+
         pre_tick()
         tick(world[str(turn)], clients)
         post_tick()
@@ -39,8 +39,10 @@ def boot():
         filename = filename.replace('.py', '')
         if filename in ['__init__', '__pycache__']:
             continue
-        player = Client(
-           importlib.import_module('game.clients.' + filename),
+        im = importlib.import_module(f'game.clients.{filename}')
+        obj = im.Client()
+        player = Player(
+           obj,
            1
         )
         clients.append(player)
@@ -67,9 +69,6 @@ def pre_tick():
 
 # Send client state of the world and a place to put what they want to do
 def tick(world, clients):
-    #pool = ThreadPool(len(clients))
-    #pool.map(lambda x: x.code.take_turn(), clients)
-    #pool.close()
     #print(world['rates'])
     action_receipt = {}
 
@@ -93,22 +92,41 @@ def tick(world, clients):
     #         print(f'{clients[x].id} failed to reply in time')
 
     '''Multi-threading method'''
-    threads = [Thread(func=client.code.take_turn) for client in clients]
+    # Create list of threads that run the client's code
+    threads = list()
+    for client in clients:
+        # This creates a chunk of memory that the client can write to without overwriting other people's actions
+        actions = []
+        action_receipt[client.id] = actions
 
+        # Create the thread, args being the things the client will need
+        thr = Thread(func=client.code.take_turn, args=(actions,))
+        threads.append(thr)
+
+    # Sets the threads to be daemonic
     def dae(d): d.daemon = True
     [dae(thr) for thr in threads]
 
+    # Start all of the threads. This is where the client's code is actually be run.
     [thr.start() for thr in threads]
 
+    # Boot up a timer in the meantime so the main thread can move on if a client is taking too long.
+    # Will move on earlier if all of the threads are finished first.
     _ = 0
     while True in [thr.is_alive() for thr in threads] and _ < MAX_OPERATIONS_PER_TURN:
         _ += 1
 
-    for x in range(len(threads)):
-        thr = threads[x]
+    # Go through all the threads and see which ones are still running.
+    for client, thr in zip(clients, threads):
         if thr.is_alive():
-            print(f'{clients[x].id} failed to reply in time')
+            clients.remove(client)
+            action_receipt.pop(client.id, None)
+            print(f'{client.id} failed to reply in time and has been dropped')
 
+    # Process client actions
+    # for key, item in action_receipt.items():
+    #     for act in item:
+    #         print(key, act)
 
 
 def post_tick():
