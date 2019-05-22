@@ -6,6 +6,13 @@ class ActionType:
     build = 4
 
 
+class DamageScaling:
+    low = 0
+    medium = 1
+    high = 2
+    extreme = 3
+
+
 class DisasterStatus:
     live = 1
     dead = 0

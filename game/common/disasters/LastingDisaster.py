@@ -1,12 +1,15 @@
+from abc import abstractmethod
 from game.common.disasters import Disaster
 from game.utils.oop import *
 
 
 class LastingDisaster(Disaster):
+    @abstractmethod
     @overrides
     def __init__(self):
         super().__init__()
-        self.effort_remaining = 0
+        self.initial_effort = None
+        self.effort_remaining = None
 
     def reduce(self, effort):
         if effort < 0:
