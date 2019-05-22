@@ -6,6 +6,11 @@ class ActionType:
     build = 4
 
 
+class DisasterStatus:
+    live = 1
+    dead = 0
+
+
 class DisasterType:
     fire = 0
     tornado = 1
