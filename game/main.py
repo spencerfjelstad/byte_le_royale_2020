@@ -7,6 +7,7 @@ from tqdm import tqdm
 from multiprocessing import Process
 
 from game.common.player import *
+from game.common.action import *
 from game.config import *
 from game.utils.thread import Thread
 
@@ -96,7 +97,7 @@ def tick(world, clients):
     threads = list()
     for client in clients:
         # This creates a chunk of memory that the client can write to without overwriting other people's actions
-        actions = []
+        actions = Action()
         action_receipt[client.id] = actions
 
         # Create the thread, args being the things the client will need
@@ -124,9 +125,12 @@ def tick(world, clients):
             print(f'{client.id} failed to reply in time and has been dropped')
 
     # Process client actions
-    # for key, item in action_receipt.items():
-    #     for act in item:
-    #         print(key, act)
+    for key, item in action_receipt.items():
+        print(key)
+        res = ''
+        for act in item._allocation_list:
+            res += f'{act} '
+        print(res)
 
 
 def post_tick():

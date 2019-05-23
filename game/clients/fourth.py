@@ -14,7 +14,5 @@ class Client(UserClient):
     def take_turn(self, actions):
         for x in range(self.number):
             pass
-        actions.append(self.number)
-        self.number += 250
-
-        return 1
+        actions.add_effort(self.number, 1)
+        self.number += 25

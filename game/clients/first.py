@@ -12,9 +12,6 @@ class Client(UserClient):
     # This is where your AI will decide what to do
     @overrides(UserClient)
     def take_turn(self, actions):
-        for x in range(self.number):
-            pass
-        actions.append(self.number)
-        self.number += 100
-
-        return 1
+        #while True:
+        #    actions.add_effort("heehee i'm overflowing memory :)", 1)
+        actions.add_effort("heehee i'm not doing anything actually", 1)
