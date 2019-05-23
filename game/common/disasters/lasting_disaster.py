@@ -1,11 +1,10 @@
 from abc import abstractmethod
-from game.common.disasters import Disaster
+from game.common.disasters.disaster import Disaster
 from game.utils.oop import *
 
 
 class LastingDisaster(Disaster):
     @abstractmethod
-    @overrides
     def __init__(self):
         super().__init__()
         self.initial_effort = None
