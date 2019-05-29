@@ -43,6 +43,12 @@ class GameStats:
 
     # units of man_power per 1k population
     man_power = 5
+    #population
+    city_population = 10000
+    #resources
+    resources = 100
+    #gold
+    city_gold = 1000
 
     # cost in man_power to build a sensor
     sensor_costs = {
