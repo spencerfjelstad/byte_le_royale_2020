@@ -15,3 +15,4 @@ class Client(UserClient):
         #while True:
         #    actions.add_effort("heehee i'm overflowing memory :)", 1)
         actions.add_effort("heehee i'm not doing anything actually", 1)
+        actions.add_effort("other action to make it look not funny in the logs", 1093)
