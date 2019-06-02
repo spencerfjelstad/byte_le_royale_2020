@@ -1,26 +1,41 @@
 import unittest
+import io
+import sys
 from game.controllers import *
 
 
 class TestControllerInheritance(unittest.TestCase):
 
     def setUp(self):
-        EconomyController.del_instance()
+        Controller.debug = False
+        EconomyController.debug = False
 
-    def test_abstract_init_fail(self):
-        self.assertRaises(TypeError, lambda: Controller())
+    def tearDown(self):
+        Controller.debug = False
+        EconomyController.debug = False
 
-    def test_get_instance(self):
-        my_econ_controller = EconomyController()
-        my_same_controller = EconomyController.get_instance()
-        self.assertEqual(my_econ_controller, my_same_controller)
+    def test_debug_false(self):
+        capture_output = io.StringIO()
+        saved_stdout = sys.stdout
+        try:
+            sys.stdout = capture_output
+            Controller.log("Hello There!")
+            actual_message = capture_output.getvalue().strip()
+            self.assertEqual(actual_message, "")
+        finally:
+            sys.stdout = saved_stdout
 
-    def test_init(self):
-        EconomyController()
-
-    def test_warning(self):
-        EconomyController()
-        self.assertWarns(UserWarning, lambda: EconomyController())
+    def test_debug_true(self):
+        EconomyController.debug = True
+        capture_output = io.StringIO()
+        saved_stdout = sys.stdout
+        try:
+            sys.stdout = capture_output
+            EconomyController.log("General Kenobi.")
+            actual_message = capture_output.getvalue().strip()
+            self.assertEqual(actual_message, "General Kenobi.")
+        finally:
+            sys.stdout = saved_stdout
 
 
 if __name__ == '__main__':
