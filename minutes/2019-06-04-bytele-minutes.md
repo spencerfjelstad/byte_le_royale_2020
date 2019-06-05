@@ -1,0 +1,1 @@
+#Bytele Notes### 2019-06-04## What we went over### Previous Work- Spencer	- Added other disaster classes- Wyly	- Created controller class- Riley	- Added method that writes state of game and logs it### Project Discussion- GitHub discussion- Lesson on merging- Branch Review
