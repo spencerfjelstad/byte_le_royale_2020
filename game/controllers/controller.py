@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-import sys
 
 
 class Controller(ABC):
@@ -9,8 +8,3 @@ class Controller(ABC):
     def log(cls, message):
         if cls.debug is True:
             print(message)
-            sys.stdout.flush()
-
-    @classmethod
-    def set_log_state(cls, log_state):
-        cls.debug = log_state
