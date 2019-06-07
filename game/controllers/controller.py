@@ -12,5 +12,5 @@ class Controller(ABC):
             sys.stdout.flush()
 
     @classmethod
-    def set_log_status(cls, log_status):
-        cls.debug = log_status
+    def set_log_state(cls, log_state):
+        cls.debug = log_state

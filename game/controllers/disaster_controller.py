@@ -9,10 +9,10 @@ class DisasterController(Controller):
 
         if not isinstance(disaster, Disaster):
             cls.log("given disaster is not a Disaster object.")
+            return
         if not isinstance(disaster, LastingDisaster):
             cls.log("Given disaster is not a LastingDisaster object.")
             return
-
         if effort < 0:
             cls.log("Given effort is not positive.")
             return
