@@ -9,7 +9,6 @@ from multiprocessing import Process
 from game.common.player import *
 from game.common.action import *
 from game.config import *
-from game.controllers import *
 from game.utils.thread import Thread
 
 
@@ -22,9 +21,6 @@ def loop():
         
     world = load()
     max_turns = len(world)
-
-    DisasterController.set_log_state(False)
-    EconomyController.set_log_state(False)
 
     for turn in tqdm(range(1, max_turns + 1)):
         if len(clients) <= 0:
