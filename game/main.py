@@ -11,6 +11,7 @@ from game.common.action import *
 from game.config import *
 from game.utils.thread import Thread
 
+action_receipt = dict()
 
 def main():
     loop()
@@ -19,22 +20,25 @@ def main():
 def loop():
     clients = boot()
         
-    world = load()
-    max_turns = len(world)
+    odds = load()
+    max_turns = len(odds)
 
     for turn in tqdm(range(1, max_turns + 1)):
         if len(clients) <= 0:
             print("No clients found")
             exit()
 
+        current_odds = odds[str(turn)]
+
         pre_tick()
-        tick(world[str(turn)], clients)
-        post_tick()
+        tick(turn, current_odds, clients)
+        post_tick(turn, current_odds, clients)
 
     print("Game reached max turns and is closing.")
 
 
 def boot():
+    # Load clients in
     clients = list()
     for filename in os.listdir('game/clients/'):
         filename = filename.replace('.py', '')
@@ -57,6 +61,9 @@ def load():
         
     if not os.path.exists('logs/game_map.json'):
         raise FileNotFoundError('Game map not found. This is likely because it has not been generated.')
+
+    # Delete previous lots
+    [os.remove(f'logs/{path}') for path in os.listdir('logs/') if 'turn' in path]
         
     world = None
     with open('logs/game_map.json') as json_file:
@@ -69,9 +76,9 @@ def pre_tick():
 
 
 # Send client state of the world and a place to put what they want to do
-def tick(world, clients):
-    #print(world['rates'])
-    action_receipt = {}
+def tick(turn, odds, clients):
+    global action_receipt
+    action_receipt = dict()
 
     '''Multi-processing method'''
     # processes = [Process(target=client.code.take_turn) for client in clients]
@@ -126,15 +133,19 @@ def tick(world, clients):
 
     # Process client actions
     for key, item in action_receipt.items():
-        print(key)
-        res = ''
-        for act in item._allocation_list:
-            res += f'{act} '
-        print(res)
+        pass
 
 
-def post_tick():
-    pass
+def post_tick(turn, odds, clients):
+
+    # Write turn results to log file
+    turn_dict = dict()
+    turn_dict['rates'] = odds['rates']
+    turn_dict['actions'] = action_receipt[clients[0].id].to_json()
+    # turn_dict['city'] = city
+    turn_dict['disasters'] = odds['disasters']
+    with open(f"logs/turn_{turn}.json", 'w+') as f:
+        json.dump(turn_dict, f)
 
 
 if __name__ == '__main__':

@@ -16,3 +16,9 @@ class Action:
     def set_decree(self, dec):
         # TODO enforce input to match a standard
         self._decree = dec
+
+    def to_json(self):
+        res = dict()
+        res['effort'] = list(self._allocation_list)
+        res['decree'] = self._decree
+        return res
