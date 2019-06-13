@@ -9,6 +9,7 @@ from multiprocessing import Process
 from game.common.player import *
 from game.common.action import *
 from game.config import *
+from game.controllers import *
 from game.utils.thread import Thread
 
 action_receipt = dict()
@@ -22,6 +23,10 @@ def loop():
         
     odds = load()
     max_turns = len(odds)
+
+    # create controllers
+    disaster_controller = DisasterController()
+    economy_controller = EconomyController()
 
     for turn in tqdm(range(1, max_turns + 1)):
         if len(clients) <= 0:
