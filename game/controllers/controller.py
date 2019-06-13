@@ -2,9 +2,11 @@ from abc import ABC, abstractmethod
 
 
 class Controller(ABC):
-    debug = False
 
-    @classmethod
-    def log(cls, message):
-        if cls.debug is True:
+    @abstractmethod
+    def __init__(self):
+        self.debug = False
+
+    def log(self, message):
+        if self.debug is True:
             print(message)

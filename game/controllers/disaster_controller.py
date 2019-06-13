@@ -1,7 +1,7 @@
 from game.controllers import Controller
 
 
-class EconomyController(Controller):
+class DisasterController(Controller):
 
     def __init__(self):
         super().__init__()
