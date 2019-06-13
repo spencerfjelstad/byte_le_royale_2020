@@ -8,18 +8,23 @@ from multiprocessing import Process
 
 from game.common.player import *
 from game.common.action import *
+from game.common.disasters import *
 from game.config import *
 from game.controllers import *
 from game.utils.thread import Thread
 
 action_receipt = dict()
+current_disasters = list()
+clients = list()
+
 
 def main():
     loop()
 
 
 def loop():
-    clients = boot()
+    global clients
+    boot()
         
     odds = load()
     max_turns = len(odds)
@@ -35,16 +40,16 @@ def loop():
 
         current_odds = odds[str(turn)]
 
-        pre_tick()
-        tick(turn, current_odds, clients)
-        post_tick(turn, current_odds, clients)
+        pre_tick(turn, current_odds)
+        tick(turn, current_odds)
+        post_tick(turn, current_odds)
 
     print("Game reached max turns and is closing.")
 
 
 def boot():
     # Load clients in
-    clients = list()
+    global clients
     for filename in os.listdir('game/clients/'):
         filename = filename.replace('.py', '')
         if filename in ['__init__', '__pycache__']:
@@ -56,18 +61,16 @@ def boot():
            1
         )
         clients.append(player)
-
-    return clients
     
 
 def load():
     if not os.path.exists('logs/'):
-        raise FileNotFoundError('Log directory not found')
+        raise FileNotFoundError('Log directory not found.')
         
     if not os.path.exists('logs/game_map.json'):
         raise FileNotFoundError('Game map not found. This is likely because it has not been generated.')
 
-    # Delete previous lots
+    # Delete previous logs
     [os.remove(f'logs/{path}') for path in os.listdir('logs/') if 'turn' in path]
         
     world = None
@@ -76,13 +79,38 @@ def load():
     return world 
 
 
-def pre_tick():
+def pre_tick(turn, odds):
+    # Turn disaster notification into a real disaster
+    global current_disasters
+    for disaster in odds['disasters']:
+        dis = None
+        if disaster is DisasterType.earthquake:
+            dis = Earthquake()
+        elif disaster is DisasterType.fire:
+            dis = Fire()
+        elif disaster is DisasterType.hurricane:
+            dis = Hurricane()
+        elif disaster is DisasterType.monster:
+            dis = Monster()
+        elif disaster is DisasterType.tornado:
+            dis = Tornado()
+        elif disaster is DisasterType.ufo:
+            dis = Ufo()
+
+        if dis is None:
+            raise TypeError('Attempt to create disaster failed because given type does not exist.')
+
+        current_disasters.append(dis)
     pass
+
+    # Modify odds rates here
 
 
 # Send client state of the world and a place to put what they want to do
-def tick(turn, odds, clients):
+def tick(turn, odds):
     global action_receipt
+    global clients
+    global current_disasters
     action_receipt = dict()
 
     '''Multi-processing method'''
@@ -141,14 +169,16 @@ def tick(turn, odds, clients):
         pass
 
 
-def post_tick(turn, odds, clients):
+def post_tick(turn, odds):
+    global clients
+    global current_disasters
 
     # Write turn results to log file
     turn_dict = dict()
     turn_dict['rates'] = odds['rates']
     turn_dict['actions'] = action_receipt[clients[0].id].to_json()
     # turn_dict['city'] = city
-    turn_dict['disasters'] = odds['disasters']
+    turn_dict['disasters'] = [dis.to_json() for dis in current_disasters]
     with open(f"logs/turn_{turn}.json", 'w+') as f:
         json.dump(turn_dict, f)
 

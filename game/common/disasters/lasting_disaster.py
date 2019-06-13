@@ -22,7 +22,7 @@ class LastingDisaster(Disaster):
             self.destroy()
 
     def to_json(self):
-        data = Disaster.to_json()
+        data = Disaster.to_json(self)
 
         data["initial_effort"] = self.initial_effort
         data["effort_remaining"] = self.effort_remaining
@@ -30,7 +30,7 @@ class LastingDisaster(Disaster):
         return data
 
     def from_json(self, data):
-        Disaster.from_json(data)
+        Disaster.from_json(self, data)
 
-        self.initial_effort = data["inital_effort"]
+        self.initial_effort = data["initial_effort"]
         self.effort_remaining = data["effort_remaining"]
