@@ -21,10 +21,10 @@ class TestDisasterObjects(unittest.TestCase):
     
     #  Tornado Object Testing
 
-    #def test_init_tornado(self):
-    #    my_tornado = Tornado()
-    #    self.assertIsInstance(my_tornado, Tornado)
-    #    self.assertIsInstance(my_tornado, Disaster)
+    def test_init_tornado(self):
+        my_tornado = Tornado()
+        self.assertIsInstance(my_tornado, Tornado)
+        self.assertIsInstance(my_tornado, Disaster)
 
 
 if __name__ == '__main__':
