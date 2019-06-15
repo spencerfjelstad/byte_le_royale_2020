@@ -10,10 +10,9 @@ class ObjectType:
     none = 0
     action = 1
     disaster = 2
-    lasting_disaster = 3
-    sensor = 4
-    city = 5
-    player = 6
+    sensor = 3
+    city = 4
+    player = 5
 
 
 class DamageScaling:

@@ -3,7 +3,9 @@ import os
 import sys
 
 from game.common.enums import *
-from game.common import *
+from game.common.player import Player
+from game.common.disasters import *
+from game.common.action import Action
 
 
 class GameLogParser:
@@ -29,6 +31,47 @@ class GameLogParser:
     def get_turn(self):
         if len(self.turns) > 0:
             self.tick += 1
-            return self.turns.pop(0)
+            info = self.turns.pop(0)
+            info['players'] = self.deserialize(info['players'])
+            info['actions'] = self.deserialize(info['actions'])
+            info['disasters'] = self.deserialize(info['disasters'])
+            return info
         else:
             return None
+
+    # Deserialize lists of things given to it
+    def deserialize(self, data):
+        objs = []
+
+        for serialized_obj in data:
+            obj_type = serialized_obj['object_type']
+
+            if obj_type == ObjectType.player:
+                obj = Player()
+                obj.from_json(serialized_obj)
+                objs.append(obj)
+            elif obj_type == ObjectType.disaster:
+                dis_type = serialized_obj['type']
+                obj = None
+                if dis_type == DisasterType.earthquake:
+                    obj = Earthquake()
+                elif dis_type == DisasterType.fire:
+                    obj = Fire()
+                elif dis_type == DisasterType.hurricane:
+                    obj = Hurricane()
+                elif dis_type == DisasterType.monster:
+                    obj = Monster()
+                elif dis_type == DisasterType.tornado:
+                    obj = Tornado()
+                elif dis_type == DisasterType.ufo:
+                    obj = Ufo()
+                obj.from_json(serialized_obj)
+                objs.append(obj)
+            elif obj_type == ObjectType.action:
+                obj = Action()
+                obj.from_json(serialized_obj)
+                objs.append(obj)
+            else:
+                print(obj_type)
+
+        return objs

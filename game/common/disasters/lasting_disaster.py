@@ -10,7 +10,6 @@ class LastingDisaster(Disaster):
         super().__init__()
         self.initial_effort = None
         self.effort_remaining = None
-        self.object_type = ObjectType.lasting_disaster
 
     def reduce(self, effort):
         if effort < 0:

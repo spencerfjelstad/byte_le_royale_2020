@@ -76,7 +76,7 @@ def draw_screen():
     global_surf.fill(pygame.Color(0, 0, 0))
 
     # This is all trash for testing
-    font = pygame.font.SysFont(pygame.font.get_default_font(), 24, True)
+    font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
 
     turn_info = log_parser.get_turn()
     if turn_info is None:
