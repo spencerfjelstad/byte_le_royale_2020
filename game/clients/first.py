@@ -9,10 +9,16 @@ class Client(UserClient):
         super().__init__()
         self.number = 100
 
+    def team_name(self):
+        return "crungy bungus"
+
     # This is where your AI will decide what to do
     @overrides(UserClient)
-    def take_turn(self, actions):
+    def take_turn(self, actions, disasters):
         #while True:
         #    actions.add_effort("heehee i'm overflowing memory :)", 1)
         actions.add_effort("heehee i'm not doing anything actually", 1)
         actions.add_effort("other action to make it look not funny in the logs", 1093)
+
+    def set_decree(self, my_decree):
+        return "let them eat cake"

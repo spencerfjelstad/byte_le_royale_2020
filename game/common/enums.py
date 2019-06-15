@@ -13,6 +13,7 @@ class ObjectType:
     lasting_disaster = 3
     sensor = 4
     city = 5
+    player = 6
 
 
 class DamageScaling:

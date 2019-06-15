@@ -1,4 +1,5 @@
 from game.common.enums import *
+import platform
 
 # Game Generation
 MAX_TURNS = 2000
@@ -17,5 +18,17 @@ STARTING_FREE_TURNS = 10
 ACTIVATION_DEPRECIATION_RATE = 0.95
 
 # Runtime settings / Restrictions
-MAX_OPERATIONS_PER_TURN = 5000
+MAX_OPERATIONS_PER_TURN = 25000
 MAX_ALLOCATIONS_ALLOWED_PER_TURN = 30
+
+# Visualizer business
+DISPLAY_SIZE = (1280, 720)
+GAMMA = 0
+if platform.system() == 'Linux':
+    VIS_INTERMEDIATE_FRAMES = 10
+    FPS = 60
+    LOW_FPS = 30
+else:
+    VIS_INTERMEDIATE_FRAMES = 4
+    FPS = 120
+    LOW_FPS = 60

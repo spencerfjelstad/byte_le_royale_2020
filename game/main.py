@@ -141,7 +141,7 @@ def tick(turn, odds):
         action_receipt[client.id] = actions
 
         # Create the thread, args being the things the client will need
-        thr = Thread(func=client.code.take_turn, args=(actions,))
+        thr = Thread(func=client.code.take_turn, args=(actions, current_disasters, ))
         threads.append(thr)
 
     # Sets the threads to be daemonic
@@ -176,7 +176,13 @@ def post_tick(turn, odds):
     # Write turn results to log file
     turn_dict = dict()
     turn_dict['rates'] = odds['rates']
-    turn_dict['actions'] = action_receipt[clients[0].id].to_json()
+    turn_dict['players'] = list()
+    for client in clients:
+        turn_dict['players'].append(client.to_json())
+    turn_dict['actions'] = list()
+    for x in range(len(clients)):
+        client = clients[x]
+        turn_dict['actions'].append({client.id: action_receipt[client.id].to_json()})
     # turn_dict['city'] = city
     turn_dict['disasters'] = [dis.to_json() for dis in current_disasters]
     with open(f"logs/turn_{turn}.json", 'w+') as f:
