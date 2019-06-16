@@ -6,6 +6,15 @@ class ActionType:
     build = 4
 
 
+class ObjectType:
+    none = 0
+    action = 1
+    disaster = 2
+    sensor = 3
+    city = 4
+    player = 5
+
+
 class DamageScaling:
     low = 0
     medium = 1
