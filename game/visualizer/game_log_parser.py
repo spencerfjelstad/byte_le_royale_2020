@@ -15,26 +15,30 @@ class GameLogParser:
 
         self.log_dir = log_dir
 
-        self.tick = 0
         self.turns = []
 
         self.load_turns()
 
     # Load all turns into memory
     def load_turns(self):
-        for file in os.listdir(self.log_dir):
-            if 'turn' in file:
-                with open(self.log_dir + file) as f:
-                    self.turns.append(json.load(f))
+        files = os.listdir(self.log_dir)
+
+        for file in files:
+            if 'turn' not in file:
+                continue
+            with open(self.log_dir + file) as f:
+                self.turns.append(json.load(f))
 
     # Interface for retrieving game logs
-    def get_turn(self):
-        if len(self.turns) > 0:
-            self.tick += 1
-            info = self.turns.pop(0)
-            info['players'] = self.deserialize(info['players'])
-            info['actions'] = self.deserialize(info['actions'])
-            info['disasters'] = self.deserialize(info['disasters'])
+    def get_turn(self, turn):
+        if len(self.turns) >= turn:
+            info = self.turns[turn-1]
+            if 'players' not in info:
+                info['players'] = self.deserialize(info['players'])
+            if 'actions' not in info:
+                info['actions'] = self.deserialize(info['actions'])
+            if 'disasters' not in info:
+                info['disasters'] = self.deserialize(info['disasters'])
             return info
         else:
             return None

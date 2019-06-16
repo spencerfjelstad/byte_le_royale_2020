@@ -14,12 +14,12 @@ pause = False
 log_parser = None
 global_surf = None
 fpsClock = None
+turn = 0
 
 debug = False
 
 _VIS_INTERMEDIATE_FRAMES = VIS_INTERMEDIATE_FRAMES
 _FPS = FPS
-
 
 def log(msg):
     if debug:
@@ -30,6 +30,7 @@ def start(gamma, fullscreen=False):
     global pause
     global fpsClock
     global log_parser
+    global turn
 
     log_parser = GameLogParser("logs/")
 
@@ -48,42 +49,41 @@ def start(gamma, fullscreen=False):
     pygame.display.set_gamma(gamma)
 
     # prep for game loop
-    first_loop = True
     turn_wait_counter = 1
 
     # the big boy
     while True:
 
         if not pause:
+            turn += 1
+            show()
 
-            if first_loop:
-                first_loop = False
+        handle_events()
 
-            draw_screen()
-
-            handle_events()
-
-            pygame.display.update()
-            fpsClock.tick(_FPS)
-        else:
-            handle_events()
+def show():
+    global turn
+    draw_screen(turn)
+    pygame.display.update()
+    fpsClock.tick(_FPS)
 
 
-def draw_screen():
+def draw_screen(current_turn):
     global global_surf
     global log_parser
+    global turn
+
     # clear screen
     global_surf.fill(pygame.Color(0, 0, 0))
 
     # This is all trash for testing
     font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
 
-    turn_info = log_parser.get_turn()
+    turn_info = log_parser.get_turn(current_turn)
     if turn_info is None:
         pygame.quit()
         sys.exit(0)
-    turn = font.render(f'Turn {log_parser.tick}', True, (150, 140, 130))
-    global_surf.blit(turn, (30, 500))
+    display_turn = font.render(f'Turn {turn}', True, (150, 140, 130))
+    global_surf.blit(display_turn, (30, 500))
     n = 0
     for key, item in turn_info['rates'].items():
         n += 1
@@ -101,6 +101,8 @@ def handle_events():
 
         # Keyboard events
         elif event.type == KEYUP:
+            global turn
+
             # Pause toggle
             if event.key == K_p:
                 global pause
@@ -114,3 +116,28 @@ def handle_events():
             if event.key == K_ESCAPE:
                 pygame.quit()
                 sys.exit()
+
+            # Back up a turn
+            if event.key == K_LEFT:
+                turn -= 1
+                show()
+
+            # Forward a turn
+            if event.key == K_RIGHT:
+                turn += 1
+                show()
+
+            # start
+            if event.key == K_DOWN:
+                turn = 1
+                show()
+
+            # end
+            if event.key == K_UP:
+                turn = MAX_TURNS
+                show()
+
+            # yeet
+            if event.key == K_y:
+                turn = random.randint(1, MAX_TURNS)
+                show()
