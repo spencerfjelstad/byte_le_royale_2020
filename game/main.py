@@ -185,7 +185,7 @@ def post_tick(turn, odds):
         turn_dict['actions'].append(action_receipt[client.id].to_json())
     # turn_dict['city'] = city
     turn_dict['disasters'] = [dis.to_json() for dis in current_disasters]
-    with open(f"logs/turn_{turn}.json", 'w+') as f:
+    with open(f"logs/turn_{turn:04d}.json", 'w+') as f:
         json.dump(turn_dict, f)
 
 
