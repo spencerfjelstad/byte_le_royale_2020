@@ -24,6 +24,7 @@ class GameLogParser:
         files = os.listdir(self.log_dir)
 
         for file in files:
+            # skip "other" log files
             if 'turn' not in file:
                 continue
             with open(self.log_dir + file) as f:
@@ -31,8 +32,10 @@ class GameLogParser:
 
     # Interface for retrieving game logs
     def get_turn(self, turn):
-        if len(self.turns) >= turn:
+        if 1 <= turn <= len(self.turns):
             info = self.turns[turn-1]
+
+            # if statements provide for reviewing logs that have already been deserialized
             if 'players' not in info:
                 info['players'] = self.deserialize(info['players'])
             if 'actions' not in info:

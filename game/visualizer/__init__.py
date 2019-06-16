@@ -14,7 +14,7 @@ pause = False
 log_parser = None
 global_surf = None
 fpsClock = None
-turn = 0
+turn = 0 # current turn of the visualizer
 
 debug = False
 
@@ -54,12 +54,14 @@ def start(gamma, fullscreen=False):
     # the big boy
     while True:
 
+        handle_events()
+
         if not pause:
+            # increment forward and display page
             turn += 1
             show()
 
-        handle_events()
-
+# Update the visualizer to display the current turn data
 def show():
     global turn
     draw_screen(turn)
@@ -82,8 +84,8 @@ def draw_screen(current_turn):
     if turn_info is None:
         pygame.quit()
         sys.exit(0)
-    display_turn = font.render(f'Turn {turn}', True, (150, 140, 130))
-    global_surf.blit(display_turn, (30, 500))
+    turn_indicator = font.render(f'Turn {turn}', True, (150, 140, 130))
+    global_surf.blit(turn_indicator, (30, 500))
     n = 0
     for key, item in turn_info['rates'].items():
         n += 1
