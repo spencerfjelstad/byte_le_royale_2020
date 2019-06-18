@@ -45,6 +45,8 @@ class GameStats:
     man_power = 5
     #population
     city_population = 10000
+    #health
+    city_health = 10000
     #resources
     resources = 100
     #gold
