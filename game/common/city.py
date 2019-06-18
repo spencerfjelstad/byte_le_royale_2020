@@ -7,6 +7,7 @@ class City:
         self.health = GameStats.city_health
         self.population = GameStats.city_population
         self.gold = GameStats.city_gold
+        self.resources = GameStats.resources
         self.location = CityLocation.default
         self.sensors = {
             SensorType.fire_alarm : SensorLevel.level_zero,
@@ -16,3 +17,5 @@ class City:
             SensorType.scp_foundation : SensorLevel.level_zero,
             SensorType.satellite_dish : SensorLevel.level_zero
         }
+    
+
