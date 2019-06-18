@@ -6,13 +6,8 @@ class ActionType:
     build = 4
 
 
-class ObjectType:
-    none = 0
-    action = 1
-    disaster = 2
-    sensor = 3
-    city = 4
-    player = 5
+class CityLocation:
+    default = 0
 
 
 class DamageScaling:
@@ -34,6 +29,15 @@ class DisasterType:
     earthquake = 3
     monster = 4
     ufo = 5
+
+
+class ObjectType:
+    none = 0
+    action = 1
+    disaster = 2
+    sensor = 3
+    city = 4
+    player = 5
 
 
 class PreemptiveType:
@@ -63,5 +67,5 @@ class SensorType:
     rock_on_a_rope = 1
     coast_guard = 2
     seismograph = 3
-    ## TODO: come up with a sensor that detects monsters
+    scp_foundation = 4  # placeholder?
     satellite_dish = 5
