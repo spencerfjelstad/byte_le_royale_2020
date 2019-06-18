@@ -2,6 +2,7 @@ from game.common.enums import *
 import platform
 
 # Game Generation
+# WARNING: Game will not function properly if MAX_TURNS is set beyond 9999.
 MAX_TURNS = 2000
 
 INDIVIDUAL_WEIGHTS = {
