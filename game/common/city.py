@@ -18,4 +18,25 @@ class City:
             SensorType.satellite_dish : SensorLevel.level_zero
         }
     
+    def to_json(self):
+        data = dict()
+
+        data['city_name'] = self.city_name
+        data['health'] = self.health
+        data['population'] = self.population
+        data['gold'] = self.gold
+        data['resources'] = self.resources
+        data['location'] = self.location
+        data['sensors'] = self.sensors
+
+        return data
+    
+    def from_json(self, data):
+        self.city_name = data['city_name']
+        self.health = data['health']
+        self.population = data['population']
+        self.gold = data['gold']
+        self.resources = data['resources']
+        self.location = data['location']
+        self.sensors = data['sensors']
 
