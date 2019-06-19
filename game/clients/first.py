@@ -14,7 +14,7 @@ class Client(UserClient):
 
     # This is where your AI will decide what to do
     @overrides(UserClient)
-    def take_turn(self, actions, disasters):
+    def take_turn(self, actions, city, disasters):
         #while True:
         #    actions.add_effort("heehee i'm overflowing memory :)", 1)
         actions.add_effort("heehee i'm not doing anything actually", 1)
