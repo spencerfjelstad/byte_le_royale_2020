@@ -15,7 +15,7 @@ from game.controllers import *
 from game.utils.thread import Thread
 
 clients = list()
-
+controllers = dict()
 
 def main():
     loop()
@@ -28,10 +28,6 @@ def loop():
     odds = load()
     max_turns = len(odds)
 
-    # create controllers
-    disaster_controller = DisasterController()
-    economy_controller = EconomyController()
-
     for turn in tqdm(range(1, max_turns + 1)):
         if len(clients) <= 0:
             print("No clients found")
@@ -39,10 +35,13 @@ def loop():
 
         current_odds = odds[str(turn)]
 
+        current_odds['rates'] = {int(key): val for key, val in current_odds['rates'].items()}
+
         pre_tick(turn, current_odds)
         tick(turn, current_odds)
         post_tick(turn, current_odds)
 
+    print(controllers["sensor"].turn_ranges)
     print("Game reached max turns and is closing.")
 
 
@@ -56,8 +55,7 @@ def boot():
         im = importlib.import_module(f'game.clients.{filename}')
         obj = im.Client()
         player = Player(
-           obj,
-           1
+           code=obj
         )
         clients.append(player)
 
@@ -65,7 +63,12 @@ def boot():
     for client in clients:
         client.city = City()
         client.team_name = client.code.team_name()
-    
+
+    # create controllers
+    controllers["disaster"] = DisasterController()
+    controllers["economy"] = EconomyController()
+    controllers["sensor"] = SensorController()
+
 
 def load():
     if not os.path.exists('logs/'):
@@ -109,6 +112,16 @@ def pre_tick(turn, odds):
 
     # Modify odds rates here
 
+    # Calculate error ranges
+    controllers['sensor'].calculate_turn_ranges(turn, odds['rates'])
+    sensor_estimates = controllers["sensor"].turn_ranges[turn]
+
+    # give clients their corresponding sensor odds
+    for client in clients:
+        sensor_results = dict()
+        for sensor, level in client.city.sensors.items():
+            sensor_results[sensor] = sensor_estimates[sensor][level]
+        client.city.sensor_results = sensor_results
 
 # Send client state of the world and a place to put what they want to do
 def tick(turn, odds):

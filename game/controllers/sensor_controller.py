@@ -11,9 +11,16 @@ class SensorController(Controller):
 
     def __init__(self):
         super().__init__()
+        self.turn_ranges = dict()
 
     def handle_actions(self, world):
         pass
+
+    def calculate_turn_ranges(self, turn, odds):
+        if turn in self.turn_ranges:
+            raise ValueError("This turn has already been calculated.")
+
+        self.turn_ranges[turn] = SensorController._provide_sensor_ranges(odds)
 
     # provide_sensor_ranges
     # @parameters
@@ -22,7 +29,7 @@ class SensorController(Controller):
     # @returns
     # adjusted_weights : dict : a dictionary of dictionaries that provides the detected error by each sensor
     @staticmethod
-    def provide_sensor_ranges(odds):
+    def _provide_sensor_ranges(odds):
 
         adjusted_weights = {}
 
@@ -32,7 +39,7 @@ class SensorController(Controller):
             disaster_odds = odds[disaster]
 
             for sensor_level in enum_iter(SensorLevel):
-                sensor_odds[sensor_level] = SensorController.provide_sensor_range(disaster_odds, sensor_level)
+                sensor_odds[sensor_level] = SensorController._provide_sensor_range(disaster_odds, sensor_level)
 
             adjusted_weights[disaster] = sensor_odds
 
@@ -46,7 +53,7 @@ class SensorController(Controller):
     # @returns
     # adjusted_odds : number : random odds between 0 and 1 near the chance given the sensor
     @staticmethod
-    def provide_sensor_range(chance, sensor_level):
+    def _provide_sensor_range(chance, sensor_level):
         chance = math.floor(chance * 100)
 
         for level in enum_iter(SensorLevel):
