@@ -41,7 +41,6 @@ def loop():
         tick(turn, current_odds)
         post_tick(turn, current_odds)
 
-    print(controllers["sensor"].turn_ranges)
     print("Game reached max turns and is closing.")
 
 
