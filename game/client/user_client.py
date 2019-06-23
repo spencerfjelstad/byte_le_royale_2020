@@ -13,7 +13,7 @@ class UserClient(ABC):
         raise NotImplementedError("TODO: implement this function in UserClient")
 
     @abstractmethod
-    def take_turn(self, actions, disasters):
+    def take_turn(self, actions, city, disasters):
         raise NotImplementedError("Implement this in subclass")
 
     # TODO: Discuss full list of actions
