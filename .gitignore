@@ -1,5 +1,6 @@
 *.idea
 *.json
+*.pyz
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
