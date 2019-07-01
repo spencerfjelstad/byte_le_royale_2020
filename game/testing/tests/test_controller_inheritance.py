@@ -9,6 +9,7 @@ class TestControllerInheritance(unittest.TestCase):
     def setUp(self):
         self.test_disaster_controller = DisasterController()
         self.test_economy_controller = EconomyController()
+        self.test_sensor_controller = SensorController()
 
     def test_debug_false(self):
         self.test_disaster_controller.debug = False
