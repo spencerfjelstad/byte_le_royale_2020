@@ -17,7 +17,7 @@ class City:
             SensorType.scp_foundation : SensorLevel.level_zero,
             SensorType.satellite_dish : SensorLevel.level_zero
         }
-        self.sensor_results = dict()
+        self.sensor_results = dict() # TODO: move this into sensor object plz && thx
     
     def to_json(self):
         data = dict()
