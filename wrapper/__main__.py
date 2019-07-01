@@ -35,7 +35,7 @@ if __name__ == '__main__':
                 print('Gamma input not found, using default value')
                 
             print(gamma)
-        start(gamma, True)
+        start(gamma, full)
         
     # Help
     elif '-help' in sys.argv:
