@@ -7,7 +7,8 @@ class Sensor:
         self.object_type = ObjectType.sensor
         self.sensor_level = SensorLevel.level_one
 
-    def effort_progress(self, effort):
+    #Keeps track of the current progress of the amount of effort needed to completely build the sensor
+    def effort_progress(self, effort, sensor_type):
         pass
 
     def to_json(self):
