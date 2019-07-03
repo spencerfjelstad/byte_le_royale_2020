@@ -52,6 +52,14 @@ class GameStats:
     #gold
     city_gold = 1000
 
+    #cost in gold to build a sensor
+    sensor_costs = {
+        SensorLevel.level_zero: 100,
+        SensorLevel.level_one: 250,
+        SensorLevel.level_two: 750,
+        SensorLevel.level_three: 1250
+    }
+
     # cost in man_power to build a sensor
     sensor_effort = {
         SensorLevel.level_zero: 0,
@@ -60,13 +68,7 @@ class GameStats:
         SensorLevel.level_three: 500
     }
 
-    #cost in gold to build a sensor
-    sensor_costs = {
-        SensorLevel.level_zero: 100,
-        SensorLevel.level_one: 250,
-        SensorLevel.level_two: 750,
-        SensorLevel.level_three: 1250
-    }
+
 
     # error range provided by each sensor
     sensor_ranges = {
