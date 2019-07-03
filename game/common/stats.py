@@ -54,10 +54,10 @@ class GameStats:
 
     #cost in gold to build a sensor
     sensor_costs = {
-        SensorLevel.level_zero: 100,
-        SensorLevel.level_one: 250,
-        SensorLevel.level_two: 750,
-        SensorLevel.level_three: 1250
+        SensorLevel.level_zero: 0,
+        SensorLevel.level_one: 100,
+        SensorLevel.level_two: 500,
+        SensorLevel.level_three: 1000
     }
 
     # cost in man_power to build a sensor
