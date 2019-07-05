@@ -100,7 +100,7 @@ def generate():
                 # Find next occurrence of the disaster
                 next_occurrence_index = skeleton_list[key:].index([disaster_type]) + key + 1
                 distance_away = next_occurrence_index - key
-                rate = 0.15 / distance_away
+                rate = (2 * APPROXIMATE_DISASTER_COUNT / MAX_TURNS) / distance_away
                 # add previous rate
                 if key > 1:
                     rate += disaster_rates[key - 1]['rates'][disaster_type]
