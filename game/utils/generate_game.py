@@ -1,10 +1,8 @@
 import json
-import random
 import time
 import os
 import copy
 from numpy import random as nprandom
-from tqdm import tqdm
 
 from game.config import *
 from game.utils.helpers import *
@@ -12,18 +10,18 @@ from game.utils.helpers import *
 
 def generate():
     print('generating map please wait :)')
-    '''time.sleep(1)
+    time.sleep(1)
+
+    '''# Implementation: generate rates, generate disaster based on those odds
     total = {}
-    
     act = 0
-    
     rates = {
-        DisasterType.fire : 0.0,
-        DisasterType.tornado : 0.0,
-        DisasterType.hurricane : 0.0,
-        DisasterType.earthquake : 0.0,
-        DisasterType.monster : 0.0,
-        DisasterType.ufo : 0.0,
+        DisasterType.fire: 0.0,
+        DisasterType.tornado: 0.0,
+        DisasterType.hurricane: 0.0,
+        DisasterType.earthquake: 0.0,
+        DisasterType.monster: 0.0,
+        DisasterType.ufo: 0.0,
     }
     
     for x in range(1, MAX_TURNS + 1):
@@ -40,13 +38,6 @@ def generate():
                     act += 1
                 
                 INDIVIDUAL_WEIGHTS[key] += DISASTER_CHANCE_GROWTH_RATE * random.random() * INDIVIDUAL_WEIGHTS[key]
-            
-        #os.system('cls')
-        #print(f'Turn {x}')
-        #print_dict(rates, "Current turn odds")
-        #print_dict(INDIVIDUAL_WEIGHTS, "Current weights")
-        #print(*activations)
-        #print(f'activations: {act}')
         
         total[x] = {'rates': copy.deepcopy(rates), 'disasters': activations}
         
@@ -76,6 +67,7 @@ def generate():
                                      DISASTER_WEIGHTS)
     disaster_order = [int(x) for x in disaster_order]
 
+    # Insert disasters into the disaster slots
     for x, element in enumerate(skeleton_list):
         skeleton_list[x] = []
         if element == 1:
