@@ -9,14 +9,13 @@ from multiprocessing import Process
 from game.common.player import *
 from game.common.action import *
 from game.common.disasters import *
+from game.common.city import *
 from game.config import *
 from game.controllers import *
 from game.utils.thread import Thread
 
-action_receipt = dict()
-current_disasters = list()
 clients = list()
-
+controllers = dict()
 
 def main():
     loop()
@@ -29,16 +28,14 @@ def loop():
     odds = load()
     max_turns = len(odds)
 
-    # create controllers
-    disaster_controller = DisasterController()
-    economy_controller = EconomyController()
-
     for turn in tqdm(range(1, max_turns + 1)):
         if len(clients) <= 0:
             print("No clients found")
             exit()
 
         current_odds = odds[str(turn)]
+
+        current_odds['rates'] = {int(key): val for key, val in current_odds['rates'].items()}
 
         pre_tick(turn, current_odds)
         tick(turn, current_odds)
@@ -57,11 +54,20 @@ def boot():
         im = importlib.import_module(f'game.clients.{filename}')
         obj = im.Client()
         player = Player(
-           obj,
-           1
+           code=obj
         )
         clients.append(player)
-    
+
+    # Set up player objects
+    for client in clients:
+        client.city = City()
+        client.team_name = client.code.team_name()
+
+    # create controllers
+    controllers["disaster"] = DisasterController()
+    controllers["economy"] = EconomyController()
+    controllers["sensor"] = SensorController()
+
 
 def load():
     if not os.path.exists('logs/'):
@@ -81,7 +87,6 @@ def load():
 
 def pre_tick(turn, odds):
     # Turn disaster notification into a real disaster
-    global current_disasters
     for disaster in odds['disasters']:
         dis = None
         if disaster is DisasterType.earthquake:
@@ -100,17 +105,26 @@ def pre_tick(turn, odds):
         if dis is None:
             raise TypeError('Attempt to create disaster failed because given type does not exist.')
 
-        current_disasters.append(dis)
+        for client in clients:
+            client.disasters.append(dis)
     pass
 
     # Modify odds rates here
 
+    # Calculate error ranges
+    controllers['sensor'].calculate_turn_ranges(turn, odds['rates'])
+    sensor_estimates = controllers["sensor"].turn_ranges[turn]
+
+    # give clients their corresponding sensor odds
+    for client in clients:
+        sensor_results = dict()
+        for sensor, level in client.city.sensors.items():
+            sensor_results[sensor] = sensor_estimates[sensor][level]
+        client.city.sensor_results = sensor_results
 
 # Send client state of the world and a place to put what they want to do
 def tick(turn, odds):
-    global action_receipt
     global clients
-    global current_disasters
     action_receipt = dict()
 
     '''Multi-processing method'''
@@ -138,10 +152,11 @@ def tick(turn, odds):
     for client in clients:
         # This creates a chunk of memory that the client can write to without overwriting other people's actions
         actions = Action()
+        client.action = actions
         action_receipt[client.id] = actions
 
         # Create the thread, args being the things the client will need
-        thr = Thread(func=client.code.take_turn, args=(actions, current_disasters, ))
+        thr = Thread(func=client.code.take_turn, args=(actions, client.city, client.disasters, ))
         threads.append(thr)
 
     # Sets the threads to be daemonic
@@ -171,7 +186,6 @@ def tick(turn, odds):
 
 def post_tick(turn, odds):
     global clients
-    global current_disasters
 
     # Write turn results to log file
     turn_dict = dict()
@@ -179,12 +193,6 @@ def post_tick(turn, odds):
     turn_dict['players'] = list()
     for client in clients:
         turn_dict['players'].append(client.to_json())
-    turn_dict['actions'] = list()
-    for x in range(len(clients)):
-        client = clients[x]
-        turn_dict['actions'].append(action_receipt[client.id].to_json())
-    # turn_dict['city'] = city
-    turn_dict['disasters'] = [dis.to_json() for dis in current_disasters]
     with open(f"logs/turn_{turn:04d}.json", 'w+') as f:
         json.dump(turn_dict, f)
 
