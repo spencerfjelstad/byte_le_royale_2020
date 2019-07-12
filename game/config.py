@@ -4,14 +4,26 @@ import platform
 # Game Generation
 # WARNING: Game will not function properly if MAX_TURNS is set beyond 9999.
 MAX_TURNS = 2000
+APPROXIMATE_DISASTER_COUNT = 150
+DISASTER_BIAS = 0.3  # float less than 1 and greater than 0
+BIASING_DEPTH = 16
+BIAS_MARGIN_OF_ERROR = 0.1  # float less than 1 and greater than 0
 
 INDIVIDUAL_WEIGHTS = {
-    DisasterType.fire : 0.01,
-    DisasterType.tornado : 0.01,
-    DisasterType.hurricane : 0.005,
-    DisasterType.earthquake : 0.005,
-    DisasterType.monster : 0.001,
-    DisasterType.ufo : 0.001,
+    DisasterType.fire: 0.01,
+    DisasterType.tornado: 0.01,
+    DisasterType.hurricane: 0.005,
+    DisasterType.earthquake: 0.005,
+    DisasterType.monster: 0.001,
+    DisasterType.ufo: 0.001,
+}
+DISASTER_WEIGHTS = {
+    DisasterType.fire: 0.2,
+    DisasterType.tornado: 0.2,
+    DisasterType.hurricane: 0.15,
+    DisasterType.earthquake: 0.15,
+    DisasterType.monster: 0.15,
+    DisasterType.ufo: 0.15,
 }
 
 DISASTER_CHANCE_GROWTH_RATE = 1 / (MAX_TURNS / 4)
