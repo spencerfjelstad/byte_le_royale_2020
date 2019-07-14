@@ -36,7 +36,7 @@ def loop():
     odds = load()
     max_turns = len(odds)
 
-    for turn in tqdm(range(1, max_turns + 1), "Game progressing", float("inf"), unit=" turns"):
+    for turn in tqdm(range(1, max_turns + 1), bar_format="Game running at {rate_fmt}", unit=" turns"):
         if len(clients) <= 0:
             print("No clients found")
             exit()
@@ -52,6 +52,7 @@ def loop():
     print("Game reached max turns and is closing.")
 
 
+# Gets players established with their objects and such
 def boot():
     # Load clients in
     global clients
@@ -72,6 +73,7 @@ def boot():
         client.team_name = client.code.team_name()
 
 
+# Loads all of the results of the generate() functionality into memory
 def load():
     if not os.path.exists('logs/'):
         raise FileNotFoundError('Log directory not found.')
@@ -88,6 +90,7 @@ def load():
     return world 
 
 
+# Read from the outlined game map and establish the world given
 def pre_tick(turn, odds):
     # Turn disaster notification into a real disaster
     for disaster in odds['disasters']:
@@ -127,6 +130,12 @@ def pre_tick(turn, odds):
 
 # Send client state of the world and a place to put what they want to do
 def tick(turn, odds):
+    take_players_turn()
+    apply_turn_logic()
+
+
+# Send clients their respective world information and receive their turn actions
+def take_players_turn():
     global clients
 
     # Create list of threads that run the client's code
@@ -137,11 +146,13 @@ def tick(turn, odds):
         client.action = actions
 
         # Create the thread, args being the things the client will need
-        thr = Thread(func=client.code.take_turn, args=(actions, client.city, client.disasters, ))
+        thr = Thread(func=client.code.take_turn, args=(actions, client.city, client.disasters,))
         threads.append(thr)
 
     # Sets the threads to be daemonic
-    def dae(d): d.daemon = True
+    def dae(d):
+        d.daemon = True
+
     [dae(thr) for thr in threads]
 
     # Start all of the threads. This is where the client's code is actually be run.
@@ -159,7 +170,10 @@ def tick(turn, odds):
             clients.remove(client)
             print(f'{client.id} failed to reply in time and has been dropped')
 
-    # Process client actions
+
+# Take the given actions and apply logic through the logic controllers
+def apply_turn_logic():
+    global clients
 
     # Set the clients up for logic controller
     player = clients[0]
@@ -176,6 +190,7 @@ def tick(turn, odds):
         game_over = True
 
 
+# Create log of the turn and end the game if necessary
 def post_tick(turn, odds):
     global clients
 
