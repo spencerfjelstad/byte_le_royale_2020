@@ -11,11 +11,19 @@ from game.common.action import *
 from game.common.disasters import *
 from game.common.city import *
 from game.config import *
-from game.controllers import *
+
+from game.controllers.destruction_controller import DestructionController
+from game.controllers.sensor_controller import SensorController
+
 from game.utils.thread import Thread
 
 clients = list()
-controllers = dict()
+
+destructionController = DestructionController()
+sensorController = SensorController()
+
+game_over = False
+
 
 def main():
     loop()
@@ -28,7 +36,7 @@ def loop():
     odds = load()
     max_turns = len(odds)
 
-    for turn in tqdm(range(1, max_turns + 1)):
+    for turn in tqdm(range(1, max_turns + 1), "Game progressing", float("inf"), unit=" turns"):
         if len(clients) <= 0:
             print("No clients found")
             exit()
@@ -62,11 +70,6 @@ def boot():
     for client in clients:
         client.city = City()
         client.team_name = client.code.team_name()
-
-    # create controllers
-    controllers["disaster"] = DisasterController()
-    controllers["economy"] = EconomyController()
-    controllers["sensor"] = SensorController()
 
 
 def load():
@@ -103,17 +106,16 @@ def pre_tick(turn, odds):
             dis = Ufo()
 
         if dis is None:
-            raise TypeError('Attempt to create disaster failed because given type does not exist.')
+            raise TypeError(f'Attempt to create disaster failed because given type: {disaster}, does not exist.')
 
         for client in clients:
             client.disasters.append(dis)
     pass
 
-    # Modify odds rates here
-
     # Calculate error ranges
-    controllers['sensor'].calculate_turn_ranges(turn, odds['rates'])
-    sensor_estimates = controllers["sensor"].turn_ranges[turn]
+    global sensorController
+    sensorController.calculate_turn_ranges(turn, odds['rates'])
+    sensor_estimates = sensorController.turn_ranges[turn]
 
     # give clients their corresponding sensor odds
     for client in clients:
@@ -122,38 +124,17 @@ def pre_tick(turn, odds):
             sensor_results[sensor] = sensor_estimates[sensor][level]
         client.city.sensor_results = sensor_results
 
+
 # Send client state of the world and a place to put what they want to do
 def tick(turn, odds):
     global clients
-    action_receipt = dict()
 
-    '''Multi-processing method'''
-    # processes = [Process(target=client.code.take_turn) for client in clients]
-    #
-    # def dae(d): d.daemon = True
-    # [dae(proc) for proc in processes]
-    #
-    # [proc.start() for proc in processes]
-    #
-    # # Wait until the client returns or runs out of time
-    # _ = 0
-    # while None in [proc.exitcode for proc in processes] and _ < MAX_OPERATIONS_PER_TURN:
-    #     _ += 1
-    #
-    # for x in range(len(processes)):
-    #     p = processes[x]
-    #     if p.exitcode is None:
-    #         p.terminate()
-    #         print(f'{clients[x].id} failed to reply in time')
-
-    '''Multi-threading method'''
     # Create list of threads that run the client's code
     threads = list()
     for client in clients:
         # This creates a chunk of memory that the client can write to without overwriting other people's actions
         actions = Action()
         client.action = actions
-        action_receipt[client.id] = actions
 
         # Create the thread, args being the things the client will need
         thr = Thread(func=client.code.take_turn, args=(actions, client.city, client.disasters, ))
@@ -176,12 +157,23 @@ def tick(turn, odds):
     for client, thr in zip(clients, threads):
         if thr.is_alive():
             clients.remove(client)
-            action_receipt.pop(client.id, None)
             print(f'{client.id} failed to reply in time and has been dropped')
 
     # Process client actions
-    for key, item in action_receipt.items():
-        pass
+
+    # Set the clients up for logic controller
+    player = clients[0]
+
+    # Apply world logic
+    global destructionController
+
+    destructionController.handle_actions(player)
+
+    # I  II
+    # II IL
+    if player.city.population <= 0 or player.city.structure <= 0:
+        global game_over
+        game_over = True
 
 
 def post_tick(turn, odds):
@@ -195,6 +187,13 @@ def post_tick(turn, odds):
         turn_dict['players'].append(client.to_json())
     with open(f"logs/turn_{turn:04d}.json", 'w+') as f:
         json.dump(turn_dict, f)
+
+    # Check if game has ended
+    global game_over
+    if game_over:
+        # Game is over, create the results file and end the game
+        print("\nCity has been defeated. Game has ended.")
+        exit()
 
 
 if __name__ == '__main__':

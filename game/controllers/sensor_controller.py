@@ -3,7 +3,7 @@ import random
 
 from game.common.stats import GameStats
 from game.common.enums import *
-from game.controllers import Controller
+from game.controllers.controller import Controller
 from game.utils.helpers import *
 
 
