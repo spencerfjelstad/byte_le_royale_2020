@@ -21,12 +21,12 @@ def main():
 
 def loop():
     global clients
-    boot()
-        
-    world = load()
-    max_turns = len(world)
+    global masterController
 
-    for turn in tqdm(range(1, max_turns + 1), bar_format="Game running at {rate_fmt}", unit=" turns"):
+    boot()
+    world = load()
+
+    for turn in tqdm(masterController.game_loop_logic(), bar_format="Game running at {rate_fmt}", unit=" turns"):
         if len(clients) <= 0:
             print("No clients found")
             exit()

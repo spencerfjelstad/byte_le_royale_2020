@@ -26,6 +26,21 @@ class MasterController(Controller):
         client.city = City()
         client.team_name = client.code.team_name()
 
+    # Generator function. Given a key:value pair where the key is the identifier for the current world and the value is
+    # the state of the world, returns the key that will give the appropriate world information
+    def game_loop_logic(self, start=1):
+        turn = start
+
+        # Basic loop from 1 to max turns
+        while True:
+            # Wait until the next call to give the number
+            yield turn
+            # Increment the turn counter by 1
+            turn += 1
+            # If the next turn number is above the max, the iterator ends
+            if turn > MAX_TURNS:
+                break
+
     # Receives world data from the generated game log and is responsible for interpreting it
     def interpret_current_turn_data(self, client, world, turn):
         # Turn disaster occurrence into a real disaster
