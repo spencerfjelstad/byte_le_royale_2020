@@ -8,10 +8,10 @@ class GameStats:
 
     # damage done at each damage level
     disaster_damage_scale = {
-        DamageScaling.low: 10,
-        DamageScaling.medium: 20,
-        DamageScaling.high: 30,
-        DamageScaling.extreme: 40
+        DamageScaling.low: 1,
+        DamageScaling.medium: 2,
+        DamageScaling.high: 3,
+        DamageScaling.extreme: 4
     }
 
     # required effort to stop lasting disasters
@@ -46,7 +46,7 @@ class GameStats:
     #population
     city_population = 10000
     #health
-    city_health = 10000
+    city_structure = 10000
     #resources
     resources = 100
     #gold

@@ -5,11 +5,10 @@ from game.common.enums import *
 
 
 class Action:
-    def __init__(self, assigned_players_id=None):
+    def __init__(self):
         self._allocation_list = deque(maxlen=MAX_ALLOCATIONS_ALLOWED_PER_TURN)
         self._decree = None
         self.object_type = ObjectType.action
-        self.assigned_players_id = assigned_players_id
 
     def add_effort(self, effort, number):
         # TODO enforce input to match a standard
@@ -24,7 +23,6 @@ class Action:
         data['effort'] = list(self._allocation_list)
         data['decree'] = self._decree
         data['object_type'] = self.object_type
-        data['assigned_players_id'] = self.assigned_players_id
 
         return data
 
@@ -32,4 +30,3 @@ class Action:
         self._allocation_list = data["effort"]
         self._decree = data["decree"]
         self.object_type = data["object_type"]
-        self.assigned_players_id = data['assigned_players_id']
