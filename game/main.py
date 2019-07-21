@@ -1,21 +1,19 @@
 import os
-import sys
 import importlib
 import json
-import time
 from tqdm import tqdm
-from multiprocessing import Process
 
 from game.common.player import *
-from game.common.action import *
-from game.common.disasters import *
-from game.common.city import *
 from game.config import *
-from game.controllers import *
+
+from game.controllers.master_controller import MasterController
+
 from game.utils.thread import Thread
 
 clients = list()
-controllers = dict()
+current_world = None
+masterController = MasterController()
+
 
 def main():
     loop()
@@ -23,30 +21,29 @@ def main():
 
 def loop():
     global clients
-    boot()
-        
-    odds = load()
-    max_turns = len(odds)
+    global masterController
 
-    for turn in tqdm(range(1, max_turns + 1)):
+    boot()
+    world = load()
+
+    for turn in tqdm(masterController.game_loop_logic(), bar_format="Game running at {rate_fmt}", unit=" turns"):
         if len(clients) <= 0:
             print("No clients found")
             exit()
 
-        current_odds = odds[str(turn)]
-
-        current_odds['rates'] = {int(key): val for key, val in current_odds['rates'].items()}
-
-        pre_tick(turn, current_odds)
-        tick(turn, current_odds)
-        post_tick(turn, current_odds)
+        pre_tick(turn, world)
+        tick(turn)
+        post_tick(turn)
 
     print("Game reached max turns and is closing.")
 
 
+# Gets players established with their objects and such
 def boot():
-    # Load clients in
     global clients
+    global masterController
+
+    # Load clients in
     for filename in os.listdir('game/clients/'):
         filename = filename.replace('.py', '')
         if filename in ['__init__', '__pycache__']:
@@ -59,22 +56,20 @@ def boot():
         clients.append(player)
 
     # Set up player objects
-    for client in clients:
-        client.city = City()
-        client.team_name = client.code.team_name()
 
-    # create controllers
-    controllers["disaster"] = DisasterController()
-    controllers["economy"] = EconomyController()
-    controllers["sensor"] = SensorController()
+    if SET_NUMBER_OF_CLIENTS == 1:
+        masterController.give_clients_objects(clients[0])
+    else:
+        masterController.give_clients_objects(clients)
 
 
+# Loads all of the results of the generate() functionality into memory
 def load():
     if not os.path.exists('logs/'):
         raise FileNotFoundError('Log directory not found.')
         
     if not os.path.exists('logs/game_map.json'):
-        raise FileNotFoundError('Game map not found. This is likely because it has not been generated.')
+        raise FileNotFoundError('Game map not found.')
 
     # Delete previous logs
     [os.remove(f'logs/{path}') for path in os.listdir('logs/') if 'turn' in path]
@@ -85,82 +80,38 @@ def load():
     return world 
 
 
-def pre_tick(turn, odds):
-    # Turn disaster notification into a real disaster
-    for disaster in odds['disasters']:
-        dis = None
-        if disaster is DisasterType.earthquake:
-            dis = Earthquake()
-        elif disaster is DisasterType.fire:
-            dis = Fire()
-        elif disaster is DisasterType.hurricane:
-            dis = Hurricane()
-        elif disaster is DisasterType.monster:
-            dis = Monster()
-        elif disaster is DisasterType.tornado:
-            dis = Tornado()
-        elif disaster is DisasterType.ufo:
-            dis = Ufo()
+# Read from the outlined game map and establish the world given
+def pre_tick(turn, world):
+    global masterController
+    global current_world
 
-        if dis is None:
-            raise TypeError('Attempt to create disaster failed because given type does not exist.')
+    current_world = world[str(turn)]
 
-        for client in clients:
-            client.disasters.append(dis)
-    pass
+    if SET_NUMBER_OF_CLIENTS == 1:
+        masterController.interpret_current_turn_data(clients[0], current_world, turn)
+    else:
+        masterController.interpret_current_turn_data(clients, current_world, turn)
 
-    # Modify odds rates here
-
-    # Calculate error ranges
-    controllers['sensor'].calculate_turn_ranges(turn, odds['rates'])
-    sensor_estimates = controllers["sensor"].turn_ranges[turn]
-
-    # give clients their corresponding sensor odds
-    for client in clients:
-        sensor_results = dict()
-        for sensor, level in client.city.sensors.items():
-            sensor_results[sensor] = sensor_estimates[sensor][level]
-        client.city.sensor_results = sensor_results
 
 # Send client state of the world and a place to put what they want to do
-def tick(turn, odds):
+def tick(turn):
     global clients
-    action_receipt = dict()
+    global current_world
+    global masterController
 
-    '''Multi-processing method'''
-    # processes = [Process(target=client.code.take_turn) for client in clients]
-    #
-    # def dae(d): d.daemon = True
-    # [dae(proc) for proc in processes]
-    #
-    # [proc.start() for proc in processes]
-    #
-    # # Wait until the client returns or runs out of time
-    # _ = 0
-    # while None in [proc.exitcode for proc in processes] and _ < MAX_OPERATIONS_PER_TURN:
-    #     _ += 1
-    #
-    # for x in range(len(processes)):
-    #     p = processes[x]
-    #     if p.exitcode is None:
-    #         p.terminate()
-    #         print(f'{clients[x].id} failed to reply in time')
-
-    '''Multi-threading method'''
     # Create list of threads that run the client's code
     threads = list()
     for client in clients:
-        # This creates a chunk of memory that the client can write to without overwriting other people's actions
-        actions = Action()
-        client.action = actions
-        action_receipt[client.id] = actions
+        arguments = masterController.clients_turn_arguments(client, current_world, turn)
 
         # Create the thread, args being the things the client will need
-        thr = Thread(func=client.code.take_turn, args=(actions, client.city, client.disasters, ))
+        thr = Thread(func=client.code.take_turn, args=arguments)
         threads.append(thr)
 
     # Sets the threads to be daemonic
-    def dae(d): d.daemon = True
+    def dae(d):
+        d.daemon = True
+
     [dae(thr) for thr in threads]
 
     # Start all of the threads. This is where the client's code is actually be run.
@@ -176,25 +127,36 @@ def tick(turn, odds):
     for client, thr in zip(clients, threads):
         if thr.is_alive():
             clients.remove(client)
-            action_receipt.pop(client.id, None)
             print(f'{client.id} failed to reply in time and has been dropped')
 
-    # Process client actions
-    for key, item in action_receipt.items():
-        pass
+    # Apply bulk of game logic
+    if SET_NUMBER_OF_CLIENTS == 1:
+        masterController.turn_logic(clients[0], current_world, turn)
+    else:
+        masterController.turn_logic(clients, current_world, turn)
 
 
-def post_tick(turn, odds):
+# Create log of the turn and end the game if necessary
+def post_tick(turn):
     global clients
+    global current_world
+    global masterController
 
     # Write turn results to log file
-    turn_dict = dict()
-    turn_dict['rates'] = odds['rates']
-    turn_dict['players'] = list()
-    for client in clients:
-        turn_dict['players'].append(client.to_json())
+    data = None
+    if SET_NUMBER_OF_CLIENTS == 1:
+        data = masterController.create_turn_log(clients[0], current_world, turn)
+    else:
+        data = masterController.create_turn_log(clients, current_world, turn)
+
     with open(f"logs/turn_{turn:04d}.json", 'w+') as f:
-        json.dump(turn_dict, f)
+        json.dump(data, f)
+
+    # Check if game has ended
+    if masterController.game_over_check():
+        # Game is over, create the results file and end the game
+        print("\nGame has ended.")
+        exit()
 
 
 if __name__ == '__main__':
