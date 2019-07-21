@@ -7,13 +7,11 @@ from game.common.player import *
 from game.config import *
 
 from game.controllers.master_controller import MasterController
-
 from game.utils.thread import Thread
 
 clients = list()
 current_world = None
-masterController = MasterController()
-
+master_controller = MasterController()
 
 def main():
     loop()
@@ -21,12 +19,12 @@ def main():
 
 def loop():
     global clients
-    global masterController
+    global master_controller
 
     boot()
     world = load()
 
-    for turn in tqdm(masterController.game_loop_logic(), bar_format="Game running at {rate_fmt}", unit=" turns"):
+    for turn in tqdm(master_controller.game_loop_logic(), bar_format="Game running at {rate_fmt}", unit=" turns"):
         if len(clients) <= 0:
             print("No clients found")
             exit()
@@ -41,7 +39,7 @@ def loop():
 # Gets players established with their objects and such
 def boot():
     global clients
-    global masterController
+    global master_controller
 
     # Load clients in
     for filename in os.listdir('game/clients/'):
@@ -56,11 +54,8 @@ def boot():
         clients.append(player)
 
     # Set up player objects
-
-    if SET_NUMBER_OF_CLIENTS == 1:
-        masterController.give_clients_objects(clients[0])
-    else:
-        masterController.give_clients_objects(clients)
+    for client in clients:
+        master_controller.give_clients_objects(client)
 
 
 # Loads all of the results of the generate() functionality into memory
@@ -82,27 +77,25 @@ def load():
 
 # Read from the outlined game map and establish the world given
 def pre_tick(turn, world):
-    global masterController
+    global master_controller
     global current_world
 
     current_world = world[str(turn)]
 
-    if SET_NUMBER_OF_CLIENTS == 1:
-        masterController.interpret_current_turn_data(clients[0], current_world, turn)
-    else:
-        masterController.interpret_current_turn_data(clients, current_world, turn)
+    for client in clients:
+        master_controller.interpret_current_turn_data(client, current_world, turn)
 
 
 # Send client state of the world and a place to put what they want to do
 def tick(turn):
     global clients
     global current_world
-    global masterController
+    global master_controller
 
     # Create list of threads that run the client's code
     threads = list()
     for client in clients:
-        arguments = masterController.clients_turn_arguments(client, current_world, turn)
+        arguments = master_controller.clients_turn_arguments(client, current_world, turn)
 
         # Create the thread, args being the things the client will need
         thr = Thread(func=client.code.take_turn, args=arguments)
@@ -129,31 +122,26 @@ def tick(turn):
             clients.remove(client)
             print(f'{client.id} failed to reply in time and has been dropped')
 
+
     # Apply bulk of game logic
-    if SET_NUMBER_OF_CLIENTS == 1:
-        masterController.turn_logic(clients[0], current_world, turn)
-    else:
-        masterController.turn_logic(clients, current_world, turn)
+    for client in clients:
+        master_controller.turn_logic(client, current_world, turn)
 
 
 # Create log of the turn and end the game if necessary
 def post_tick(turn):
     global clients
     global current_world
-    global masterController
+    global master_controller
 
     # Write turn results to log file
-    data = None
-    if SET_NUMBER_OF_CLIENTS == 1:
-        data = masterController.create_turn_log(clients[0], current_world, turn)
-    else:
-        data = masterController.create_turn_log(clients, current_world, turn)
+    data = master_controller.create_turn_log(clients, current_world, turn)
 
     with open(f"logs/turn_{turn:04d}.json", 'w+') as f:
         json.dump(data, f)
 
     # Check if game has ended
-    if masterController.game_over_check():
+    if master_controller.game_over_check():
         # Game is over, create the results file and end the game
         print("\nGame has ended.")
         exit()
