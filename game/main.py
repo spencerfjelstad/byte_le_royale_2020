@@ -13,6 +13,7 @@ from game.utils.thread import Thread
 clients = list()
 current_world = None
 masterController = MasterController()
+turn_number = 1
 
 
 def main():
@@ -149,8 +150,10 @@ def post_tick(turn):
     else:
         data = masterController.create_turn_log(clients, current_world, turn)
 
-    with open(f"logs/turn_{turn:04d}.json", 'w+') as f:
+    global turn_number
+    with open(f"logs/turn_{turn_number:04d}.json", 'w+') as f:
         json.dump(data, f)
+    turn_number += 1
 
     # Check if game has ended
     if masterController.game_over_check():
