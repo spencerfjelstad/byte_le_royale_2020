@@ -56,6 +56,18 @@ def boot():
         )
         clients.append(player)
 
+    # Verify correct number of clients
+
+    if SET_NUMBER_OF_CLIENTS is not None and len(clients) != SET_NUMBER_OF_CLIENTS:
+        raise ValueError("Number of clients is not the set value.\n"
+                         "Number of clients: " + str(len(clients)) + "  |  Set number: " + str(SET_NUMBER_OF_CLIENTS))
+    elif MIN_CLIENTS is not None and len(clients) < MIN_CLIENTS:
+        raise ValueError("Number of clients is less than the minimum required.\n"
+                         "Number of clients: " + str(len(clients)) + "  |  Minimum: " + str(MIN_CLIENTS))
+    elif MAX_CLIENTS is not None and len(clients) > MAX_CLIENTS:
+        raise ValueError("Number of clients exceeds the maximum allowed.\n"
+                         "Number of clients: " + str(len(clients)) + "  |  Maximum: " + str(MAX_CLIENTS))
+
     # Set up player objects
 
     if SET_NUMBER_OF_CLIENTS == 1:
