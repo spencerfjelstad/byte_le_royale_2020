@@ -22,7 +22,8 @@ class MasterController(Controller):
         self.game_over = False
 
     # Receives all clients for the purpose of giving them the objects they will control
-    def give_clients_objects(self, client):
+    def give_clients_objects(self, clients):
+        client = clients[0]
         client.city = City()
         client.team_name = client.code.team_name()
 
@@ -42,7 +43,8 @@ class MasterController(Controller):
                 break
 
     # Receives world data from the generated game log and is responsible for interpreting it
-    def interpret_current_turn_data(self, client, world, turn):
+    def interpret_current_turn_data(self, clients, world, turn):
+        client = clients[0]
         # Turn disaster occurrence into a real disaster
         for disaster in world['disasters']:
             dis = None
@@ -70,14 +72,14 @@ class MasterController(Controller):
             self.sensorController.calculate_turn_ranges(turn, world['rates'])
         sensor_estimates = self.sensorController.turn_ranges[turn]
 
-        # give clients their corresponding sensor odds
+        # give client their corresponding sensor odds
         sensor_results = dict()
         for sens_type, sensor in client.city.sensors.items():
             sensor_results[sens_type] = sensor_estimates[sensor.sensor_type][sensor.sensor_level]
         client.city.sensor_results = sensor_results
 
     # Receive a specific client and send them what they get per turn. Also obfuscates necessary objects.
-    def clients_turn_arguments(self, client, world, turn):
+    def client_turn_arguments(self, client, world, turn):
         actions = Action()
         client.action = actions
 
@@ -88,7 +90,8 @@ class MasterController(Controller):
         return args
 
     # Perform the main logic that happens per turn
-    def turn_logic(self, client, world, turn):
+    def turn_logic(self, clients, world, turn):
+        client = clients[0]
         self.sensorController.handle_actions(client)
         self.destructionController.handle_actions(client)
         if client.city.structure <= 0 or client.city.population <= 0:
@@ -96,11 +99,10 @@ class MasterController(Controller):
 
     # Return serialized version of game
     def create_turn_log(self, clients, world, turn):
+        client = clients[0]
         data = dict()
         data['rates'] = world['rates']
-        data['players'] = list()
-        for client in clients:
-            data['players'].append(client.to_json())
+        data['player'] = client.to_json()
 
         return data
 

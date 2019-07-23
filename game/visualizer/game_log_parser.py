@@ -36,8 +36,8 @@ class GameLogParser:
             info = self.turns[turn-1]
 
             # if statements provide for reviewing logs that have already been deserialized
-            if 'players' not in info:
-                info['players'] = self.deserialize(info['players'])
+            if 'player' not in info:
+                info['player'] = self.deserialize(info['player'])
             return info
         else:
             return None

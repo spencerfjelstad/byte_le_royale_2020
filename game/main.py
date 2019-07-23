@@ -55,22 +55,24 @@ def boot():
         )
         clients.append(player)
 
+    # Limit the amount of players to set number
+    clients = list(clients[:SET_NUMBER_OF_CLIENTS])
+
     # Set up player objects
-    for client in clients:
-        master_controller.give_clients_objects(client)
+    master_controller.give_clients_objects(clients)
 
 
 # Loads all of the results of the generate() functionality into memory
 def load():
     if not os.path.exists('logs/'):
         raise FileNotFoundError('Log directory not found.')
-        
+
     if not os.path.exists('logs/game_map.json'):
         raise FileNotFoundError('Game map not found.')
 
     # Delete previous logs
     [os.remove(f'logs/{path}') for path in os.listdir('logs/') if 'turn' in path]
-        
+
     world = None
     with open('logs/game_map.json') as json_file:
         world = json.load(json_file)
@@ -84,8 +86,7 @@ def pre_tick(turn, world):
 
     current_world = world[str(turn)]
 
-    for client in clients:
-        master_controller.interpret_current_turn_data(client, current_world, turn)
+    master_controller.interpret_current_turn_data(clients, current_world, turn)
 
 
 # Send client state of the world and a place to put what they want to do
@@ -97,7 +98,7 @@ def tick(turn):
     # Create list of threads that run the client's code
     threads = list()
     for client in clients:
-        arguments = master_controller.clients_turn_arguments(client, current_world, turn)
+        arguments = master_controller.client_turn_arguments(client, current_world, turn)
 
         # Create the thread, args being the things the client will need
         thr = Thread(func=client.code.take_turn, args=arguments)
@@ -126,8 +127,7 @@ def tick(turn):
 
 
     # Apply bulk of game logic
-    for client in clients:
-        master_controller.turn_logic(client, current_world, turn)
+    master_controller.turn_logic(clients, current_world, turn)
 
 
 # Create log of the turn and end the game if necessary
