@@ -45,11 +45,19 @@ def boot():
     global masterController
 
     # Load clients in
-    for filename in os.listdir('game/clients/'):
+    for filename in os.listdir(CLIENT_DIRECTORY):
         filename = filename.replace('.py', '')
-        if filename in ['__init__', '__pycache__']:
+
+        if CLIENT_KEYWORD.upper() not in filename.upper():
+            # Skips files that do not contain CLIENT_KEYWORD
             continue
-        im = importlib.import_module(f'game.clients.{filename}')
+
+        if os.path.isdir(os.path.join(CLIENT_DIRECTORY, filename)):
+            # Skips folders
+            continue
+
+        directory_with_dots = CLIENT_DIRECTORY.replace('/', '.')
+        im = importlib.import_module(f'{directory_with_dots}{filename}')
         obj = im.Client()
         player = Player(
            code=obj
