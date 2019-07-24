@@ -1,3 +1,4 @@
+@echo off
 del /q *.pyz
 
 xcopy /s/e/i "game" "wrapper/game"

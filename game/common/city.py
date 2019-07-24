@@ -1,5 +1,7 @@
 from game.common.enums import *
+from game.common.sensor import Sensor
 from game.common.stats import *
+from game.utils.helpers import enum_iter
 
 
 class City:
@@ -10,16 +12,14 @@ class City:
         self.gold = GameStats.city_gold
         self.resources = GameStats.resources
         self.location = CityLocation.default
-        self.sensors = {
-            SensorType.fire_alarm: SensorLevel.level_zero,
-            SensorType.rock_on_a_rope: SensorLevel.level_zero,
-            SensorType.coast_guard: SensorLevel.level_zero,
-            SensorType.seismograph: SensorLevel.level_zero,
-            SensorType.scp_foundation: SensorLevel.level_zero,
-            SensorType.satellite_dish: SensorLevel.level_zero
-        }
-        self.sensor_results = dict() # TODO: move this into sensor object plz && thx
-    
+        self.sensors = dict()
+        for sens_type in enum_iter(SensorType):
+            sens = Sensor()
+            sens.sensor_type = sens_type
+            self.sensors[sens_type] = sens
+
+        self.sensor_results = dict()  # TODO: move this into sensor object plz && thx
+
     def to_json(self):
         data = dict()
 
@@ -29,7 +29,7 @@ class City:
         data['gold'] = self.gold
         data['resources'] = self.resources
         data['location'] = self.location
-        data['sensors'] = self.sensors
+        data['sensors'] = {sensor_type: sensor.to_json() for sensor_type, sensor in self.sensors.items()}
         data['sensor_results'] = self.sensor_results
 
         return data
@@ -41,6 +41,10 @@ class City:
         self.gold = data['gold']
         self.resources = data['resources']
         self.location = data['location']
-        self.sensors = data['sensors']
+        self.sensors = dict()
+        for sensor_type, sensor_data in data['sensors'].items():
+            sensor = Sensor()
+            sensor.from_json(sensor_data)
+            self.sensors[sensor_type] = sensor
         self.sensor_results = data['sensor_results']
 

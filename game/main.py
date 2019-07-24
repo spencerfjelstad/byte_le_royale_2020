@@ -7,7 +7,6 @@ from game.common.player import *
 from game.config import *
 
 from game.controllers.master_controller import MasterController
-
 from game.utils.thread import Thread
 
 clients = list()
@@ -86,13 +85,13 @@ def boot():
 def load():
     if not os.path.exists('logs/'):
         raise FileNotFoundError('Log directory not found.')
-        
+
     if not os.path.exists('logs/game_map.json'):
         raise FileNotFoundError('Game map not found.')
 
     # Delete previous logs
     [os.remove(f'logs/{path}') for path in os.listdir('logs/') if 'turn' in path]
-        
+
     world = None
     with open('logs/game_map.json') as json_file:
         world = json.load(json_file)
@@ -121,7 +120,7 @@ def tick(turn):
     # Create list of threads that run the client's code
     threads = list()
     for client in clients:
-        arguments = master_controller.clients_turn_arguments(client, current_world, turn)
+        arguments = master_controller.client_turn_arguments(client, current_world, turn)
 
         # Create the thread, args being the things the client will need
         thr = Thread(func=client.code.take_turn, args=arguments)

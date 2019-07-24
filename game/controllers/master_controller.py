@@ -66,17 +66,18 @@ class MasterController(Controller):
 
         world['rates'] = {int(key): val for key, val in world['rates'].items()}
         # Calculate error ranges
-        self.sensor_controller.calculate_turn_ranges(turn, world['rates'])
+        if turn not in self.sensor_controller.turn_ranges:
+            self.sensor_controller.calculate_turn_ranges(turn, world['rates'])
         sensor_estimates = self.sensor_controller.turn_ranges[turn]
 
-        # give clients their corresponding sensor odds
+        # give client their corresponding sensor odds
         sensor_results = dict()
-        for sensor, level in client.city.sensors.items():
-            sensor_results[sensor] = sensor_estimates[sensor][level]
+        for sens_type, sensor in client.city.sensors.items():
+            sensor_results[sens_type] = sensor_estimates[sensor.sensor_type][sensor.sensor_level]
         client.city.sensor_results = sensor_results
 
     # Receive a specific client and send them what they get per turn. Also obfuscates necessary objects.
-    def clients_turn_arguments(self, client, world, turn):
+    def client_turn_arguments(self, client, world, turn):
         actions = Action()
         client.action = actions
 
@@ -88,6 +89,7 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, client, world, turn):
+        self.sensor_controller.handle_actions(client)
         self.destruction_controller.handle_actions(client)
 
         if client.city.structure <= 0 or client.city.population <= 0:
@@ -97,8 +99,7 @@ class MasterController(Controller):
     def create_turn_log(self, client, world, turn):
         data = dict()
         data['rates'] = world['rates']
-        data['players'] = list()
-        data['players'].append(client.to_json())
+        data['player'] = client.to_json()
 
         return data
 
