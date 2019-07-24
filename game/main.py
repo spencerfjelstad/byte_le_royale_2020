@@ -49,7 +49,7 @@ def boot():
         filename = filename.replace('.py', '')
 
         if CLIENT_KEYWORD.upper() not in filename.upper():
-            # Skips files that do not contain CLIENT_KEYWORD
+            # Filters out files that do not contain CLIENT_KEYWORD in their filename
             continue
 
         if os.path.isdir(os.path.join(CLIENT_DIRECTORY, filename)):
@@ -65,7 +65,6 @@ def boot():
         clients.append(player)
 
     # Verify correct number of clients
-
     if SET_NUMBER_OF_CLIENTS is not None and len(clients) != SET_NUMBER_OF_CLIENTS:
         raise ValueError("Number of clients is not the set value.\n"
                          "Number of clients: " + str(len(clients)) + "  |  Set number: " + str(SET_NUMBER_OF_CLIENTS))
@@ -77,7 +76,6 @@ def boot():
                          "Number of clients: " + str(len(clients)) + "  |  Maximum: " + str(MAX_CLIENTS))
 
     # Set up player objects
-
     if SET_NUMBER_OF_CLIENTS == 1:
         masterController.give_clients_objects(clients[0])
     else:
