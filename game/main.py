@@ -55,6 +55,9 @@ def boot():
         )
         clients.append(player)
 
+    # ensure clients is of set length ( DEV, please remove this after permanent update )
+    clients = list(clients[:SET_NUMBER_OF_CLIENTS])
+
     # Set up player objects
     if SET_NUMBER_OF_CLIENTS == 1:
         master_controller.give_clients_objects(clients[0])
