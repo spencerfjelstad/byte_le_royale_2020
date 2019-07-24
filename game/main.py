@@ -11,9 +11,9 @@ from game.utils.thread import Thread
 
 clients = list()
 current_world = None
-
 master_controller = MasterController()
 turn_number = 1
+
 
 def main():
     loop()
@@ -44,19 +44,35 @@ def boot():
     global master_controller
 
     # Load clients in
-    for filename in os.listdir('game/clients/'):
+    for filename in os.listdir(CLIENT_DIRECTORY):
         filename = filename.replace('.py', '')
-        if filename in ['__init__', '__pycache__']:
+
+        if CLIENT_KEYWORD.upper() not in filename.upper():
+            # Filters out files that do not contain CLIENT_KEYWORD in their filename
             continue
-        im = importlib.import_module(f'game.clients.{filename}')
+
+        if os.path.isdir(os.path.join(CLIENT_DIRECTORY, filename)):
+            # Skips folders
+            continue
+
+        directory_with_dots = CLIENT_DIRECTORY.replace('/', '.')
+        im = importlib.import_module(f'{directory_with_dots}{filename}')
         obj = im.Client()
         player = Player(
            code=obj
         )
         clients.append(player)
 
-    # ensure clients is of set length ( DEV, please remove this after permanent update )
-    clients = list(clients[:SET_NUMBER_OF_CLIENTS])
+    # Verify correct number of clients
+    if SET_NUMBER_OF_CLIENTS is not None and len(clients) != SET_NUMBER_OF_CLIENTS:
+        raise ValueError("Number of clients is not the set value.\n"
+                         "Number of clients: " + str(len(clients)) + "  |  Set number: " + str(SET_NUMBER_OF_CLIENTS))
+    elif MIN_CLIENTS is not None and len(clients) < MIN_CLIENTS:
+        raise ValueError("Number of clients is less than the minimum required.\n"
+                         "Number of clients: " + str(len(clients)) + "  |  Minimum: " + str(MIN_CLIENTS))
+    elif MAX_CLIENTS is not None and len(clients) > MAX_CLIENTS:
+        raise ValueError("Number of clients exceeds the maximum allowed.\n"
+                         "Number of clients: " + str(len(clients)) + "  |  Maximum: " + str(MAX_CLIENTS))
 
     # Set up player objects
     if SET_NUMBER_OF_CLIENTS == 1:
