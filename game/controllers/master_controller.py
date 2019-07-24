@@ -22,8 +22,7 @@ class MasterController(Controller):
         self.game_over = False
 
     # Receives all clients for the purpose of giving them the objects they will control
-    def give_clients_objects(self, clients):
-        client = clients[0]
+    def give_clients_objects(self, client):
         client.city = City()
         client.team_name = client.code.team_name()
 
@@ -43,8 +42,7 @@ class MasterController(Controller):
                 break
 
     # Receives world data from the generated game log and is responsible for interpreting it
-    def interpret_current_turn_data(self, clients, world, turn):
-        client = clients[0]
+    def interpret_current_turn_data(self, client, world, turn):
         # Turn disaster occurrence into a real disaster
         for disaster in world['disasters']:
             dis = None
@@ -90,16 +88,14 @@ class MasterController(Controller):
         return args
 
     # Perform the main logic that happens per turn
-    def turn_logic(self, clients, world, turn):
-        client = clients[0]
+    def turn_logic(self, client, world, turn):
         self.sensorController.handle_actions(client)
         self.destructionController.handle_actions(client)
         if client.city.structure <= 0 or client.city.population <= 0:
             self.game_over = True
 
     # Return serialized version of game
-    def create_turn_log(self, clients, world, turn):
-        client = clients[0]
+    def create_turn_log(self, client, world, turn):
         data = dict()
         data['rates'] = world['rates']
         data['player'] = client.to_json()

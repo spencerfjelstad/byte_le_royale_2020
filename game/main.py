@@ -55,11 +55,11 @@ def boot():
         )
         clients.append(player)
 
-    # Limit the amount of players to set number
-    clients = list(clients[:SET_NUMBER_OF_CLIENTS])
-
     # Set up player objects
-    master_controller.give_clients_objects(clients)
+    if SET_NUMBER_OF_CLIENTS == 1:
+        master_controller.give_clients_objects(clients[0])
+    else:
+        master_controller.give_clients_objects(clients)
 
 
 # Loads all of the results of the generate() functionality into memory
@@ -86,7 +86,10 @@ def pre_tick(turn, world):
 
     current_world = world[str(turn)]
 
-    master_controller.interpret_current_turn_data(clients, current_world, turn)
+    if SET_NUMBER_OF_CLIENTS == 1:
+        master_controller.interpret_current_turn_data(clients[0], current_world, turn)
+    else:
+        master_controller.interpret_current_turn_data(clients, current_world, turn)
 
 
 # Send client state of the world and a place to put what they want to do
@@ -125,9 +128,11 @@ def tick(turn):
             clients.remove(client)
             print(f'{client.id} failed to reply in time and has been dropped')
 
-
     # Apply bulk of game logic
-    master_controller.turn_logic(clients, current_world, turn)
+    if SET_NUMBER_OF_CLIENTS == 1:
+        master_controller.turn_logic(clients[0], current_world, turn)
+    else:
+        master_controller.turn_logic(clients, current_world, turn)
 
 
 # Create log of the turn and end the game if necessary
@@ -137,7 +142,11 @@ def post_tick(turn):
     global master_controller
 
     # Write turn results to log file
-    data = master_controller.create_turn_log(clients, current_world, turn)
+    data = None
+    if SET_NUMBER_OF_CLIENTS == 1:
+        data = master_controller.create_turn_log(clients[0], current_world, turn)
+    else:
+        data = master_controller.create_turn_log(clients, current_world, turn)
 
     global turn_number
     with open(f"logs/turn_{turn_number:04d}.json", 'w+') as f:
