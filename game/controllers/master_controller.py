@@ -16,8 +16,8 @@ class MasterController(Controller):
     def __init__(self):
         super().__init__()
 
-        self.destructionController = DestructionController()
-        self.sensorController = SensorController()
+        self.destruction_controller = DestructionController()
+        self.sensor_controller = SensorController()
 
         self.game_over = False
 
@@ -66,8 +66,8 @@ class MasterController(Controller):
 
         world['rates'] = {int(key): val for key, val in world['rates'].items()}
         # Calculate error ranges
-        self.sensorController.calculate_turn_ranges(turn, world['rates'])
-        sensor_estimates = self.sensorController.turn_ranges[turn]
+        self.sensor_controller.calculate_turn_ranges(turn, world['rates'])
+        sensor_estimates = self.sensor_controller.turn_ranges[turn]
 
         # give clients their corresponding sensor odds
         sensor_results = dict()
@@ -88,7 +88,7 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, client, world, turn):
-        self.destructionController.handle_actions(client)
+        self.destruction_controller.handle_actions(client)
 
         if client.city.structure <= 0 or client.city.population <= 0:
             self.game_over = True
