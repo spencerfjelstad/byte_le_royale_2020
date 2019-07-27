@@ -25,6 +25,7 @@ class MasterController(Controller):
     def give_clients_objects(self, client):
         client.city = City()
         client.team_name = client.code.team_name()
+        client.city.city_name = client.code.city_name()
 
     # Generator function. Given a key:value pair where the key is the identifier for the current world and the value is
     # the state of the world, returns the key that will give the appropriate world information

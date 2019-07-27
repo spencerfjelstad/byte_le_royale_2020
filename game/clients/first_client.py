@@ -9,8 +9,13 @@ class Client(UserClient):
         super().__init__()
         self.number = 100
 
+    @overrides(UserClient)
     def team_name(self):
         return "crungy bungus"
+
+    @overrides(UserClient)
+    def city_name(self):
+        return "name this something funny"
 
     # This is where your AI will decide what to do
     @overrides(UserClient)
@@ -20,5 +25,6 @@ class Client(UserClient):
         actions.add_effort("heehee i'm not doing anything actually", 1)
         actions.add_effort("other action to make it look not funny in the logs", 1093)
 
+    @overrides(UserClient)
     def set_decree(self, my_decree):
         return "let them eat cake"
