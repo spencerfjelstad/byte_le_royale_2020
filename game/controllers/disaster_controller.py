@@ -17,9 +17,7 @@ class DisasterController(Controller):
                 self.__reduce_disaster(player, effort, number)
 
         # Remove any dead disasters from the disaster list
-        for disaster in player.disasters:
-            if disaster.status == DisasterStatus.dead:
-                player.disasters.remove(disaster)
+        player.disasters = [dis for dis in player.disasters if not dis.status == DisasterStatus.dead]
 
     def __reduce_disaster(self, player, lasting_disaster, number):
         # Validate input
