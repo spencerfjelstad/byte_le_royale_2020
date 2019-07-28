@@ -9,6 +9,7 @@ from game.config import *
 
 from game.controllers.controller import Controller
 from game.controllers.destruction_controller import DestructionController
+from game.controllers.disaster_controller import DisasterController
 from game.controllers.sensor_controller import SensorController
 
 
@@ -17,6 +18,7 @@ class MasterController(Controller):
         super().__init__()
 
         self.destruction_controller = DestructionController()
+        self.disaster_controller = DisasterController()
         self.sensor_controller = SensorController()
 
         self.game_over = False
@@ -91,6 +93,7 @@ class MasterController(Controller):
     # Perform the main logic that happens per turn
     def turn_logic(self, client, world, turn):
         self.sensor_controller.handle_actions(client)
+        self.disaster_controller.handle_actions(client)
         self.destruction_controller.handle_actions(client)
 
         if client.city.structure <= 0 or client.city.population <= 0:
