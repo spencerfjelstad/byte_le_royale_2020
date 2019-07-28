@@ -8,6 +8,11 @@ class ActionType:
 
 class CityLocation:
     default = 0
+    desert = 1
+    mountains = 2
+    coastal = 3
+    radioactive_wasteland = 4
+
 
 
 class DamageScaling:
