@@ -5,6 +5,7 @@ from game.common.enums import *
 from game.common.city import City
 from game.common.disasters import *
 from game.common.sensor import Sensor
+from game.utils.helpers import enum_iter
 
 class Action:
     def __init__(self):
@@ -12,13 +13,15 @@ class Action:
         self._decree = None
         self.object_type = ObjectType.action
 
-    def add_effort(self, effort, number):
-        # TODO enforce input to match a standard
-        self._allocation_list.append([effort, number])
+    def add_effort(self, action, amount):
+        if amount <= 0:
+            return
+        elif action in enum_iter(ActionType): 
+            self._allocation_list.append([action, amount])
 
     def set_decree(self, dec):
-        # TODO enforce input to match a standard
-        self._decree = dec
+        if dec in enum_iter(PreemptiveType):
+            self._decree = dec
 
     def to_json(self):
         data = dict()
