@@ -1,7 +1,7 @@
 import sys
 
 from game.utils.generate_game import generate
-from game.main import loop
+from game.engine import loop
 from game.config import *
 
 if __name__ == '__main__':

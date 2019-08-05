@@ -1,4 +1,5 @@
 import os
+import sys
 import importlib
 import json
 from tqdm import tqdm
@@ -43,6 +44,10 @@ def boot():
     global clients
     global master_controller
 
+    current_dir = os.getcwd()
+    sys.path.insert(0, current_dir)
+    sys.path.insert(0, f'{current_dir}/{CLIENT_DIRECTORY}')
+
     # Load clients in
     for filename in os.listdir(CLIENT_DIRECTORY):
         filename = filename.replace('.py', '')
@@ -55,8 +60,8 @@ def boot():
             # Skips folders
             continue
 
-        directory_with_dots = CLIENT_DIRECTORY.replace('/', '.')
-        im = importlib.import_module(f'{directory_with_dots}{filename}')
+        directory_with_dots = CLIENT_DIRECTORY.replace('/', '')
+        im = importlib.import_module(f'{filename}', directory_with_dots)
         obj = im.Client()
         player = Player(
            code=obj
@@ -102,13 +107,14 @@ def load():
 def pre_tick(turn, world):
     global master_controller
     global current_world
+    global turn_number
 
     current_world = world[str(turn)]
 
     if SET_NUMBER_OF_CLIENTS == 1:
-        master_controller.interpret_current_turn_data(clients[0], current_world, turn)
+        master_controller.interpret_current_turn_data(clients[0], current_world, turn_number)
     else:
-        master_controller.interpret_current_turn_data(clients, current_world, turn)
+        master_controller.interpret_current_turn_data(clients, current_world, turn_number)
 
 
 # Send client state of the world and a place to put what they want to do
@@ -116,11 +122,12 @@ def tick(turn):
     global clients
     global current_world
     global master_controller
+    global turn_number
 
     # Create list of threads that run the client's code
     threads = list()
     for client in clients:
-        arguments = master_controller.client_turn_arguments(client, current_world, turn)
+        arguments = master_controller.client_turn_arguments(client, current_world, turn_number)
 
         # Create the thread, args being the things the client will need
         thr = Thread(func=client.code.take_turn, args=arguments)
@@ -149,9 +156,9 @@ def tick(turn):
 
     # Apply bulk of game logic
     if SET_NUMBER_OF_CLIENTS == 1:
-        master_controller.turn_logic(clients[0], current_world, turn)
+        master_controller.turn_logic(clients[0], current_world, turn_number)
     else:
-        master_controller.turn_logic(clients, current_world, turn)
+        master_controller.turn_logic(clients, current_world, turn_number)
 
 
 # Create log of the turn and end the game if necessary
@@ -159,15 +166,15 @@ def post_tick(turn):
     global clients
     global current_world
     global master_controller
+    global turn_number
 
     # Write turn results to log file
     data = None
     if SET_NUMBER_OF_CLIENTS == 1:
-        data = master_controller.create_turn_log(clients[0], current_world, turn)
+        data = master_controller.create_turn_log(clients[0], current_world, turn_number)
     else:
-        data = master_controller.create_turn_log(clients, current_world, turn)
+        data = master_controller.create_turn_log(clients, current_world, turn_number)
 
-    global turn_number
     with open(f"logs/turn_{turn_number:04d}.json", 'w+') as f:
         json.dump(data, f)
     turn_number += 1

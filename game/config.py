@@ -38,7 +38,7 @@ MIN_CLIENTS = None
 MAX_CLIENTS = None
 SET_NUMBER_OF_CLIENTS = 1
 CLIENT_KEYWORD = "client"
-CLIENT_DIRECTORY = "game/clients/"
+CLIENT_DIRECTORY = "./"
 
 # Visualizer business
 DISPLAY_SIZE = (1280, 720)
