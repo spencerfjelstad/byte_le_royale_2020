@@ -6,6 +6,7 @@ from tqdm import tqdm
 
 from game.common.player import *
 from game.config import *
+import game.config
 
 from game.controllers.master_controller import MasterController
 from game.utils.thread import Thread
@@ -27,7 +28,7 @@ def loop():
     boot()
     world = load()
 
-    for turn in tqdm(master_controller.game_loop_logic(), bar_format="Game running at {rate_fmt}", unit=" turns"):
+    for turn in tqdm(master_controller.game_loop_logic(), bar_format=TQDM_BAR_FORMAT, unit=TQDM_UNITS):
         if len(clients) <= 0:
             print("No clients found")
             exit()
@@ -68,6 +69,7 @@ def boot():
         )
         clients.append(player)
 
+    debug(f'Clients found: {len(clients)}')
     # Verify correct number of clients
     if SET_NUMBER_OF_CLIENTS is not None and len(clients) != SET_NUMBER_OF_CLIENTS:
         raise ValueError("Number of clients is not the set value.\n"
@@ -133,12 +135,6 @@ def tick(turn):
         thr = Thread(func=client.code.take_turn, args=arguments)
         threads.append(thr)
 
-    # Sets the threads to be daemonic
-    def dae(d):
-        d.daemon = True
-
-    [dae(thr) for thr in threads]
-
     # Start all of the threads. This is where the client's code is actually be run.
     [thr.start() for thr in threads]
 
@@ -153,6 +149,11 @@ def tick(turn):
         if thr.is_alive():
             clients.remove(client)
             print(f'{client.id} failed to reply in time and has been dropped')
+
+    # End if there are no remaining clients
+    if len(clients) <= 0:
+        print("All clients ran out of time")
+        exit()
 
     # Apply bulk of game logic
     if SET_NUMBER_OF_CLIENTS == 1:
@@ -184,6 +185,13 @@ def post_tick(turn):
         # Game is over, create the results file and end the game
         print("\nGame has ended.")
         exit()
+
+
+# Debug print statement
+def debug(*args):
+    if Debug.level >= DebugLevel.engine:
+        print('Engine: ', end='')
+        print(*args)
 
 
 if __name__ == '__main__':

@@ -1,9 +1,19 @@
 from abc import ABC, abstractmethod
 
+from game.common.enums import DebugLevel
+from game.config import Debug
+
 
 class UserClient(ABC):
     def __init__(self):
         self.my_decree = None
+        self.debug_level = DebugLevel.client
+        self.debug = True
+
+    def print(self, *args):
+        if self.debug and Debug.level >= self.debug_level:
+            print(f'{self.__class__.__name__}: ', end='')
+            print(*args)
 
     @staticmethod
     def team_name():

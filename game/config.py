@@ -31,7 +31,10 @@ STARTING_FREE_TURNS = 10
 ACTIVATION_DEPRECIATION_RATE = 0.95
 
 # Runtime settings / Restrictions
-MAX_OPERATIONS_PER_TURN = 25000
+TQDM_BAR_FORMAT = "Game running at {rate_fmt} "
+TQDM_UNITS = " turns"
+
+MAX_OPERATIONS_PER_TURN = 450000
 MAX_ALLOCATIONS_ALLOWED_PER_TURN = 30
 
 MIN_CLIENTS = None
@@ -39,6 +42,11 @@ MAX_CLIENTS = None
 SET_NUMBER_OF_CLIENTS = 1
 CLIENT_KEYWORD = "client"
 CLIENT_DIRECTORY = "./"
+
+
+# Keeps track of the current debug level of the game (not a variable because it doesn't when changed)
+class Debug:
+    level = DebugLevel.none
 
 # Visualizer business
 DISPLAY_SIZE = (1280, 720)
