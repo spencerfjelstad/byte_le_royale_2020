@@ -48,7 +48,7 @@ class Client(UserClient):
         self.print("Don't I believe that there never is an end?")
         self.print()
         self.print("As the guards march me out to the courtyard")
-        self.print('Somebody cries from a cell "God be with your"')
+        self.print('Somebody cries from a cell "God be with you"')
         self.print("If there's a God then why has he let me go?")
         self.print()
         self.print("As I walk all my life drifts before me")
