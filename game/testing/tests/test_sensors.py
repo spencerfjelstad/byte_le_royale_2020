@@ -1,7 +1,11 @@
 import unittest
 
 from game.common.enums import *
-from game.controllers import SensorController
+from game.common.action import Action
+from game.common.city import City
+from game.common.player import Player
+
+from game.controllers.sensor_controller import SensorController
 
 
 class TestSensors(unittest.TestCase):
@@ -49,3 +53,24 @@ class TestSensors(unittest.TestCase):
                         min_val = val
         self.assertGreaterEqual(1, max_val)
         self.assertLessEqual(0, min_val)
+
+    def test_upgrade(self):
+        # Setup
+        player = Player()
+        player.action = Action()
+        player.city = City()
+        fire_sensor = player.city.sensors[SensorType.fire_alarm]
+
+        self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_zero)
+
+        player.action.add_effort(fire_sensor, 50)
+        self.test_sensor_controller.handle_actions(player)
+        self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_one)
+
+        player.action.add_effort(fire_sensor, 100)
+        self.test_sensor_controller.handle_actions(player)
+        self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_two)
+
+        player.action.add_effort(fire_sensor, 500)
+        self.test_sensor_controller.handle_actions(player)
+        self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_three)
