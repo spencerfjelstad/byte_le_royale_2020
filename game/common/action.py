@@ -27,7 +27,7 @@ class Action:
         data = dict()
         json_allocation_list = deque(maxlen=MAX_ALLOCATIONS_ALLOWED_PER_TURN)
         for effort, number in self._allocation_list:
-            if type(effort) in {City, Disaster, Sensor}:
+            if isinstance(effort, (City, Disaster, Sensor)):
                 json_allocation_list.append([effort.to_json(), number])
             else:
                 json_allocation_list.append([effort, number])
