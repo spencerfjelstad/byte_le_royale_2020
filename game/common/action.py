@@ -16,12 +16,15 @@ class Action:
     def add_effort(self, action, amount):
         if amount <= 0:
             return
-        elif action in enum_iter(ActionType): 
-            self._allocation_list.append([action, amount])
+        if action not in enum_iter(ActionType): 
+            if not isinstance(action, Disaster) or not isinstance(action, Sensor):
+                return
+        self._allocation_list.append([action, amount])
 
     def set_decree(self, dec):
-        if dec in enum_iter(PreemptiveType):
-            self._decree = dec
+        if dec not in enum_iter(PreemptiveType):
+            return
+        self._decree = dec
 
     def to_json(self):
         data = dict()
