@@ -14,12 +14,14 @@ class Action:
         self.object_type = ObjectType.action
 
     def add_effort(self, action, amount):
+        if not isinstance(amount, int) or not isinstance(amount, float):
+            return
         if amount <= 0:
             return
         if action not in enum_iter(ActionType): 
             if not isinstance(action, Disaster) or not isinstance(action, Sensor):
                 return
-        self._allocation_list.append([action, amount])
+        self._allocation_list.append([action, int(amount)])
 
     def set_decree(self, dec):
         if dec not in enum_iter(PreemptiveType):
