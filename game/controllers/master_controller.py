@@ -8,6 +8,7 @@ from game.common.city import City
 from game.config import *
 
 from game.controllers.controller import Controller
+from game.controllers.action_controller import ActionController
 from game.controllers.destruction_controller import DestructionController
 from game.controllers.disaster_controller import DisasterController
 from game.controllers.sensor_controller import SensorController
@@ -17,6 +18,7 @@ class MasterController(Controller):
     def __init__(self):
         super().__init__()
 
+        self.action_controller = ActionController()
         self.destruction_controller = DestructionController()
         self.disaster_controller = DisasterController()
         self.sensor_controller = SensorController()
@@ -92,6 +94,7 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, client, world, turn):
+        self.action_controller.handle_actions(client)
         self.sensor_controller.handle_actions(client)
         self.disaster_controller.handle_actions(client)
         self.destruction_controller.handle_actions(client)

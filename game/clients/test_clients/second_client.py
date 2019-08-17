@@ -39,7 +39,15 @@ class Client(UserClient):
 
         glorious_fire_sensor = city.sensors[SensorType.fire_alarm]
         glorious_effort_allocation = ((2**11)-(23*89))  # complex algorithms
-        actions.add_effort(glorious_fire_sensor, glorious_effort_allocation)
+
+        # glorious waste of allocations
+        for _ in range(5):
+            actions.add_effort(glorious_fire_sensor, glorious_effort_allocation)
+
+        actions.add_effort(ActionType.repair, 10**7)
+
+        for _ in range(5):
+            actions.add_effort(glorious_fire_sensor, glorious_effort_allocation)
 
     @overrides(UserClient)
     def set_decree(self, my_decree):
