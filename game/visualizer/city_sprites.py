@@ -1,17 +1,9 @@
-import pygame
-import game.visualizer.sprite_sheet_functions
+from game.visualizer.sprite_sheet_functions import *
 
-class CitySpriteSheet(pygame.sprite.Sprite):
-    def __init__(self, sprite_sheet_data, x, y, color):
-        pass
+class CitySprite(pygame.sprite.Sprite):
+    def __init__(self):
+        super.__init__()
+        self.sprite = pygame.image.load("assets/city_assets/city_default.png")
 
-class CityLevelOneSprite(CitySpriteSheet):
-    def __init__(self, x, y, color):
-        pass
-class CityLevelTwoSprite(CitySpriteSheet):
-    def __init__(self, x, y, color):
-        pass
 
-class CityLevelThreeSprite(CitySpriteSheet):
-    def __init__(self, x, y, color):
-        pass
+

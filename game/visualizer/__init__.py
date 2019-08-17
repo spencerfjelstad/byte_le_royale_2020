@@ -9,6 +9,7 @@ from pygame.locals import *
 
 from game.visualizer.game_log_parser import GameLogParser
 from game.config import *
+from game.visualizer.city_sprites import CitySprite
 
 pause = False
 log_parser = None
@@ -75,23 +76,24 @@ def draw_screen(current_turn):
     global turn
 
     # clear screen
-    global_surf.fill(pygame.Color(0, 0, 0))
+    global_surf.fill(pygame.Color(128, 212, 255))
+    global_surf.blit(pygame.image.load("game/visualizer/assets/city_assets/city_default.png"), (200, 200))
 
-    # This is all trash for testing
-    font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
-
-    turn_info = log_parser.get_turn(current_turn)
-    if turn_info is None:
-        pygame.quit()
-        sys.exit(0)
-    turn_indicator = font.render(f'Turn {turn}', True, (150, 140, 130))
-    global_surf.blit(turn_indicator, (30, 500))
-    n = 0
-    for key, item in turn_info['rates'].items():
-        n += 1
-        text = f'{key}: {item}'
-        render_text = font.render(text, True, (0, 150, 150))
-        global_surf.blit(render_text, (30, 30*n))
+    # # This is all trash for testing
+    # font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
+    #
+    # turn_info = log_parser.get_turn(current_turn)
+    # if turn_info is None:
+    #     pygame.quit()
+    #     sys.exit(0)
+    # turn_indicator = font.render(f'Turn {turn}', True, (150, 140, 130))
+    # global_surf.blit(turn_indicator, (30, 500))
+    # n = 0
+    # for key, item in turn_info['rates'].items():
+    #     n += 1
+    #     text = f'{key}: {item}'
+    #     render_text = font.render(text, True, (0, 150, 150))
+    #     global_surf.blit(render_text, (30, 30*n))
 
 
 def handle_events():
