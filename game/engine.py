@@ -61,8 +61,7 @@ def boot():
             # Skips folders
             continue
 
-        directory_with_dots = CLIENT_DIRECTORY.replace('/', '')
-        im = importlib.import_module(f'{filename}', directory_with_dots)
+        im = importlib.import_module(f'{filename}', CLIENT_DIRECTORY)
         obj = im.Client()
         player = Player(
            code=obj
