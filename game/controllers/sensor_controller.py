@@ -17,10 +17,7 @@ class SensorController(Controller):
         self.debug = False
 
     def handle_actions(self, player):
-        for act in player.action._allocation_list:
-            effort, number = act
-            if isinstance(effort, Sensor):
-                self.__upgrade_sensor(player, effort, number)
+        pass
 
     def calculate_turn_ranges(self, turn, odds):
         if turn in self.turn_ranges:
@@ -59,7 +56,7 @@ class SensorController(Controller):
 
         self.turn_ranges[turn] = adjusted_weights
 
-    def __upgrade_sensor(self, player, sensor, number):
+    def upgrade_sensor(self, player, sensor, number):
         # Validate input
         if number < 0:
             self.log("Negative effort not accepted.")
@@ -102,4 +99,4 @@ class SensorController(Controller):
             sensor.sensor_level = next_level
 
             # with left over effort, attempt upgrade again
-            self.__upgrade_sensor(player, sensor, left_over)
+            self.upgrade_sensor(player, sensor, left_over)
