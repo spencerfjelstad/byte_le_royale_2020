@@ -92,12 +92,17 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, client, world, turn):
+        self.print("Performing turn logic :)")
         self.sensor_controller.handle_actions(client)
         self.disaster_controller.handle_actions(client)
         self.destruction_controller.handle_actions(client)
 
         if client.city.structure <= 0 or client.city.population <= 0:
             self.game_over = True
+            if client.city.structure <= 0:
+                self.print("Game is ending because city has been destroyed.")
+            if client.city.population <= 0:
+                self.print("Game is ending because population has died.")
 
     # Return serialized version of game
     def create_turn_log(self, client, world, turn):
