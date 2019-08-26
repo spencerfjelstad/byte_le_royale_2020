@@ -1,4 +1,5 @@
 from game.client.user_client import UserClient
+from game.common.enums import *
 from game.utils.oop import *
 
 
@@ -11,6 +12,9 @@ class Client(UserClient):
 
     def team_name(self):
         return "crungy bungus"
+
+    def city_type(self):
+        return CityType.healthy
 
     # This is where your AI will decide what to do
     @overrides(UserClient)
