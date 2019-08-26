@@ -13,6 +13,11 @@ class CityLocation:
     coastal = 3
     radioactive_wasteland = 4
 
+class CityLevel:
+    level_zero = 0
+    level_one = 1
+    level_two = 2
+
 
 
 class DamageScaling:

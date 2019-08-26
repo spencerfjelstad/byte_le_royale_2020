@@ -4,7 +4,7 @@ import zipfile
 class SpriteSheet(object):
 
     def __init__(self, file_name):
-        f = zipfile.ZipFile("br_launcher.pyz", 'r')
+        f = zipfile.ZipFile("launcher.pyz", 'r')
         self.sprite_sheet = pygame.image.load(f.open(file_name)).convert_alpha()
 
     def get_image(self, x, y, width, height):

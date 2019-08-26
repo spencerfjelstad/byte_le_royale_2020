@@ -19,6 +19,9 @@ turn = 0 # current turn of the visualizer
 
 debug = False
 
+#Sprite Groups
+city_group = pygame.sprite.Group()
+
 _VIS_INTERMEDIATE_FRAMES = VIS_INTERMEDIATE_FRAMES
 _FPS = FPS
 
@@ -48,6 +51,7 @@ def start(gamma, fullscreen=False):
     pygame.display.set_caption('Byte-le Royale: Shitty City')
 
     pygame.display.set_gamma(gamma)
+    
 
     # prep for game loop
     turn_wait_counter = 1
@@ -77,7 +81,10 @@ def draw_screen(current_turn):
 
     # clear screen
     global_surf.fill(pygame.Color(128, 212, 255))
-    global_surf.blit(pygame.image.load("game/visualizer/assets/city_assets/city_default.png"), (200, 200))
+
+    #Draw groups
+    city_group.draw(global_surf)
+
 
     # # This is all trash for testing
     # font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
