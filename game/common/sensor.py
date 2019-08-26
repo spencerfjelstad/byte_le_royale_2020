@@ -6,7 +6,7 @@ class Sensor:
         self.sensor_type = None
         self.object_type = ObjectType.sensor
         self.sensor_level = SensorLevel.level_zero
-        self.sensor_effort_progress = 0
+        self.sensor_effort_remaining = 0
 
     def to_json(self):
         data = dict()
@@ -14,11 +14,11 @@ class Sensor:
         data['sensor_type'] = self.sensor_type
         data['object_type'] = self.object_type
         data['sensor_level'] = self.sensor_level
-        data['sensor_effort_progress'] = self.sensor_effort_progress
+        data['sensor_effort_remaining'] = self.sensor_effort_remaining
         return data
 
     def from_json(self, data):
         self.sensor_type = data['sensor_type']
         self.object_type = data['object_type']
         self.sensor_level = data['sensor_level']
-        self.sensor_effort_progress = data['sensor_effort_progress']
+        self.sensor_effort_remaining = data['sensor_effort_remaining']

@@ -14,6 +14,9 @@ class EffortController(Controller):
         super().__init__()
 
     def handle_actions(self, player):
+        if self.controllers is None:
+            raise Exception("Effort controller currently requires importing other controllers first.")
+
         # handle advanced verification of allocation list
         player.city.remaining_man_power = player.city.population
         allocations = dict()  # condensed duplicate entries

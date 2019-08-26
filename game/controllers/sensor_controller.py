@@ -28,7 +28,7 @@ class SensorController(Controller):
         for disaster in enum_iter(DisasterType):
             sensor_odds = {}
 
-            disaster_odds = math.floor( odds[disaster] * 100 )
+            disaster_odds = math.floor(odds[disaster] * 100)
 
             for sensor_level in enum_iter(SensorLevel):
 
@@ -88,14 +88,13 @@ class SensorController(Controller):
             self.log("sensor's sensor_level value is invalid.")
             return
 
-        sensor.sensor_effort_progress += number
-        next_effort_cost = GameStats.sensor_effort[next_level]
+        sensor.sensor_effort_remaining -= number
         # if limit maxed, begin upgrade
-        if sensor.sensor_effort_progress >= next_effort_cost:
+        if sensor.sensor_effort_remaining <= 0:
             self.log("Sensor level {} reached!".format(next_level))
             # apply changes
-            left_over = sensor.sensor_effort_progress - next_effort_cost
-            sensor.sensor_effort_progress = 0
+            left_over = sensor.sensor_effort_remaining * -1  # reverse, because effort allocation must be positive
+            sensor.sensor_effort_remaining = GameStats.sensor_effort[next_level]
             sensor.sensor_level = next_level
 
             # with left over effort, attempt upgrade again

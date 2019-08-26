@@ -17,6 +17,7 @@ class City:
         for sens_type in enum_iter(SensorType):
             sens = Sensor()
             sens.sensor_type = sens_type
+            sens.sensor_effort_remaining = GameStats.sensor_effort[SensorLevel.level_one]
             self.sensors[sens_type] = sens
 
         self.sensor_results = dict()  # TODO: move this into sensor object plz && thx
