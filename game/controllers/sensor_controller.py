@@ -14,7 +14,7 @@ class SensorController(Controller):
     def __init__(self):
         super().__init__()
         self.turn_ranges = dict()
-        self.debug = False
+        self.debug = True
 
     def handle_actions(self, player):
         pass
@@ -59,22 +59,22 @@ class SensorController(Controller):
     def upgrade_sensor(self, player, sensor, number):
         # Validate input
         if number < 0:
-            self.log("Negative effort not accepted.")
+            self.print("Negative effort not accepted.")
             return
         if not isinstance(player, Player):
-            self.log("The player argument is not a Player object.")
+            self.print("The player argument is not a Player object.")
             return
         if not isinstance(sensor, Sensor):
-            self.log("The sensor argument is not a Sensor object.")
+            self.print("The sensor argument is not a Sensor object.")
             return
         if sensor not in player.city.sensors.values():
-            self.log("Sensor is not a part of the city.")
-            self.log("Sensor: {}".format(sensor))
+            self.print("Sensor is not a part of the city.")
+            self.print("Sensor: {}".format(sensor))
             for sens in player.city.sensors:
-                self.log("City sensor: {}".format(sens))
+                self.print("City sensor: {}".format(sens))
             return
         if sensor.sensor_level == SensorLevel.level_three:
-            self.log("Sensor level is already maxed.")
+            self.print("Sensor level is already maxed.")
             return
 
         current_level = sensor.sensor_level
@@ -85,7 +85,7 @@ class SensorController(Controller):
         elif current_level == SensorLevel.level_two:
             next_level = SensorLevel.level_three
         else:
-            self.log("sensor's sensor_level value is invalid.")
+            self.print("sensor's sensor_level value is invalid.")
             return
 
         sensor.sensor_effort_remaining -= number

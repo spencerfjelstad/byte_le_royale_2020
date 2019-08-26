@@ -1,9 +1,12 @@
+from game.common.enums import DebugLevel
+from game.config import Debug
+
 
 class Controller:
 
     def __init__(self):
-        self.debug = False
-        self.controllers = None
+        self.debug_level = DebugLevel.controller
+        self.debug = True
 
     def import_controllers(self, controllers):
         if not isinstance(controllers, dict):
@@ -18,6 +21,7 @@ class Controller:
         if "sensor" in self.controllers:
             self.sensor_controller = self.controllers["sensor"]
 
-    def log(self, message):
-        if self.debug is True:
-            print(message)
+    def print(self, *args):
+        if self.debug and Debug.level >= self.debug_level:
+            print(f'{self.__class__.__name__}: ', end='')
+            print(*args)
