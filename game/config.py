@@ -50,7 +50,7 @@ class Debug:
 
 # Visualizer business
 DISPLAY_SIZE = (1280, 720)
-GAMMA = 0
+GAMMA = 1
 if platform.system() == 'Linux':
     VIS_INTERMEDIATE_FRAMES = 10
     FPS = 60
