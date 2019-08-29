@@ -3,7 +3,6 @@ from game.common.sensor import Sensor
 from game.common.stats import GameStats
 from game.utils.helpers import enum_iter
 
-import math
 
 class City:
     def __init__(self):
