@@ -8,8 +8,10 @@ import pygame
 from pygame.locals import *
 
 from game.visualizer.game_log_parser import GameLogParser
+from game.utils.helpers import *
+from game.common.enums import *
 from game.config import *
-from game.visualizer.city_sprites import CitySprite
+from game.visualizer.city_sprites import *
 
 pause = False
 log_parser = None
@@ -21,6 +23,7 @@ debug = False
 
 #Sprite Groups
 city_group = pygame.sprite.Group()
+location_group = pygame.sprite.Group()
 
 _VIS_INTERMEDIATE_FRAMES = VIS_INTERMEDIATE_FRAMES
 _FPS = FPS
@@ -43,6 +46,9 @@ def start(gamma, fullscreen=False):
     fpsClock = pygame.time.Clock()
     pygame.font.init()
 
+    city_sprite = CitySpriteLevel0(200, 200, CityLevel.level_zero)
+    city_group.add(city_sprite)
+
     global global_surf
     if fullscreen:
         global_surf = pygame.display.set_mode(DISPLAY_SIZE, pygame.FULLSCREEN)
@@ -51,7 +57,7 @@ def start(gamma, fullscreen=False):
     pygame.display.set_caption('Byte-le Royale: Shitty City')
 
     pygame.display.set_gamma(gamma)
-    
+
 
     # prep for game loop
     turn_wait_counter = 1

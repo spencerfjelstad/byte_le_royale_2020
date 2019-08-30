@@ -9,23 +9,23 @@ class CitySprite(pygame.sprite.Sprite):
         self.image = sprite_sheet.get_image(sprite_sheet_data[0], sprite_sheet_data[1], sprite_sheet_data[2], sprite_sheet_data[3])
 
 class CitySpriteLevel0(CitySprite):
-    def __init__(self, x, y):
-        CitySprite.__init__(self, [0, 0, 1000, 1000], x, y, CityLevel.level_zero)
+    def __init__(self, x, y, city_level):
+        CitySprite.__init__(self, [0, 0, 300, 300], x, y, city_level)
 class CitySpriteLevel1(CitySprite):
-    def __init__(self, x, y):
-        CitySprite.__init__(self, [0, 0, 1000, 1000], x, y, CityLevel.level_one)
+    def __init__(self, x, y, city_level):
+        CitySprite.__init__(self, [0, 0, 1000, 1000], x, y, city_level)
 class CitySpriteLevel2(CitySprite):
-    def __init__(self, x, y):
-        CitySprite.__init__(self, [0, 0, 1000, 1000], x, y, CityLevel.level_two)
+    def __init__(self, x, y, city_level):
+        CitySprite.__init__(self, [0, 0, 1000, 1000], x, y, city_level)
 class CitySpriteDestroyedLevel0(CitySprite):
-    def __init__(self, x, y):
-        CitySprite.__init__(self, [0, 0, 1000, 1000], x, y, CityLevel.level_zero)
+    def __init__(self, x, y, city_level):
+        CitySprite.__init__(self, [0, 0, 1000, 1000], x, y, city_level)
 class CitySpriteDestroyedLevel1(CitySprite):
-    def __init__(self, x, y):
-        CitySprite.__init__(self, [0, 0, 1000, 1000], x, y, CityLevel.level_zero)
+    def __init__(self, x, y, city_level):
+        CitySprite.__init__(self, [0, 0, 1000, 1000], x, y, city_level)
 class CitySpriteDestroyedLevel2(CitySprite):
-    def __init__(self, x, y):
-        CitySprite.__init__(self, [0, 0, 1000, 1000], x, y, CityLevel.level_zero)
+    def __init__(self, x, y, city_level):
+        CitySprite.__init__(self, [0, 0, 1000, 1000], x, y, city_level)
 
 
 
