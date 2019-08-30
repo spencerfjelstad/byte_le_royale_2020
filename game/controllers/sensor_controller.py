@@ -17,11 +17,7 @@ class SensorController(Controller):
         self.debug = True
 
     def handle_actions(self, player):
-        self.print("I've been called!")
-        for act in player.action._allocation_list:
-            effort, number = act
-            if isinstance(effort, Sensor):
-                self.__upgrade_sensor(player, effort, number)
+        pass
 
     def calculate_turn_ranges(self, turn, odds):
         if turn in self.turn_ranges:
@@ -32,7 +28,7 @@ class SensorController(Controller):
         for disaster in enum_iter(DisasterType):
             sensor_odds = {}
 
-            disaster_odds = math.floor( odds[disaster] * 100 )
+            disaster_odds = math.floor(odds[disaster] * 100)
 
             for sensor_level in enum_iter(SensorLevel):
 
@@ -60,7 +56,7 @@ class SensorController(Controller):
 
         self.turn_ranges[turn] = adjusted_weights
 
-    def __upgrade_sensor(self, player, sensor, number):
+    def upgrade_sensor(self, player, sensor, number):
         # Validate input
         if number < 0:
             self.print("Negative effort not accepted.")
@@ -92,15 +88,14 @@ class SensorController(Controller):
             self.print("sensor's sensor_level value is invalid.")
             return
 
-        sensor.sensor_effort_progress += number
-        next_effort_cost = GameStats.sensor_effort[next_level]
+        sensor.sensor_effort_remaining -= number
         # if limit maxed, begin upgrade
-        if sensor.sensor_effort_progress >= next_effort_cost:
-            self.print("Sensor level {} reached!".format(next_level))
+        if sensor.sensor_effort_remaining <= 0:
+            self.log("Sensor level {} reached!".format(next_level))
             # apply changes
-            left_over = sensor.sensor_effort_progress - next_effort_cost
-            sensor.sensor_effort_progress = 0
+            left_over = sensor.sensor_effort_remaining * -1  # reverse, because effort allocation must be positive
+            sensor.sensor_effort_remaining = GameStats.sensor_effort[next_level]
             sensor.sensor_level = next_level
 
             # with left over effort, attempt upgrade again
-            self.__upgrade_sensor(player, sensor, left_over)
+            self.upgrade_sensor(player, sensor, left_over)
