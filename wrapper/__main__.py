@@ -48,5 +48,5 @@ if __name__ == '__main__':
     elif '-help' in sys.argv:
         print("Here's a list of arguments:")
         print("-generate")
-        print("-run")
-        print("-visualizer  |  subarguments:[-fullscreen, -gamma]")
+        print("-run         |  subarguments:[-debug x]")
+        print("-visualizer  |  subarguments:[-fullscreen, -gamma x]")
