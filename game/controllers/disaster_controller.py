@@ -16,16 +16,16 @@ class DisasterController(Controller):
     def reduce_disaster(self, player, lasting_disaster, number):
         # Validate input
         if number < 0:
-            self.log("Negative effort not accepted.")
+            self.print("Negative effort not accepted.")
             return
         if not isinstance(player, Player):
-            self.log("The player argument is not a Player object.")
+            self.print("The player argument is not a Player object.")
             return
         if not isinstance(lasting_disaster, LastingDisaster):
-            self.log("The lasting_disaster argument is not a LastingDisaster object.")
+            self.print("The lasting_disaster argument is not a LastingDisaster object.")
             return
         if lasting_disaster.status != DisasterStatus.live:
-            self.log("Disaster has already been stopped.")
+            self.print("Disaster has already been stopped.")
             return
 
         lasting_disaster.reduce(number)
