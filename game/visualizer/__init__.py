@@ -131,7 +131,7 @@ def lineGraph():
     #Ticks
     #Num of ticks to be a constant 10, the turn and pop values divided to fit
     for i in range(0,9):
-        pygame.draw.line(global_surf, pygame.Color(0,0,0), (x_coord + (width*(i+1)/10), y_coord + length -1), (x_coord + (width*i/10), y_coord + length + 1))
+        pygame.draw.line(global_surf, pygame.Color(0,0,0), (x_coord + (width*(i+1)/10), y_coord + length -1), (x_coord + (width*(i+1)/10), y_coord + length + 1))
 
 
     #global_surf.draw.rect
