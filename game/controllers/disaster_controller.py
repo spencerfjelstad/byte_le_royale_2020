@@ -10,16 +10,10 @@ class DisasterController(Controller):
         self.debug = True
 
     def handle_actions(self, player):
-        # Handle effort allocation for disasters
-        for act in player.action._allocation_list:
-            effort, number = act
-            if isinstance(effort, LastingDisaster):
-                self.__reduce_disaster(player, effort, number)
-
         # Remove any dead disasters from the disaster list
         player.disasters = [dis for dis in player.disasters if not dis.status == DisasterStatus.dead]
 
-    def __reduce_disaster(self, player, lasting_disaster, number):
+    def reduce_disaster(self, player, lasting_disaster, number):
         # Validate input
         if number < 0:
             self.log("Negative effort not accepted.")

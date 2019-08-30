@@ -1,6 +1,6 @@
 from game.common.enums import *
 from game.common.sensor import Sensor
-from game.common.stats import *
+from game.common.stats import GameStats
 from game.utils.helpers import enum_iter
 
 
@@ -16,9 +16,11 @@ class City:
         for sens_type in enum_iter(SensorType):
             sens = Sensor()
             sens.sensor_type = sens_type
+            sens.sensor_effort_remaining = GameStats.sensor_effort[SensorLevel.level_one]
             self.sensors[sens_type] = sens
 
         self.sensor_results = dict()  # TODO: move this into sensor object plz && thx
+        self.remaining_man_power = self.population
 
     def to_json(self):
         data = dict()
@@ -31,6 +33,7 @@ class City:
         data['location'] = self.location
         data['sensors'] = {sensor_type: sensor.to_json() for sensor_type, sensor in self.sensors.items()}
         data['sensor_results'] = self.sensor_results
+        data['remaining_man_power'] = self.remaining_man_power
 
         return data
     
@@ -47,4 +50,5 @@ class City:
             sensor.from_json(sensor_data)
             self.sensors[sensor_type] = sensor
         self.sensor_results = data['sensor_results']
+        self.remaining_man_power = data['remaining_man_power']
 
