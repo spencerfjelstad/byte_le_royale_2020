@@ -56,6 +56,8 @@ class City:
         p = f"""City name: {self.city_name}
             Structure: {self.structure}
             Population: {self.population}
+            Gold: {self.gold}
+            Resources: {self.resources}
             """
 
         return p

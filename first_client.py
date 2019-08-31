@@ -15,7 +15,7 @@ class Client(UserClient):
         return "Crungy Spingus"
 
     def city_type(self):
-        return CityType.sturdy
+        return CityType.invested
 
     # This is where your AI will decide what to do
     def take_turn(self, actions, city, disasters):
@@ -24,7 +24,7 @@ class Client(UserClient):
         actions.add_effort("heehee i'm not doing anything actually", 1)
         actions.add_effort("other action to make it look not funny in the logs", 1093)
 
-        self.print(city.structure)
+        self.print(city.gold, city.resources)
 
     def set_decree(self, my_decree):
         return "let them eat cake"

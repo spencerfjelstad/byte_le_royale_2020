@@ -17,5 +17,3 @@ class CityGeneratorController(Controller):
         elif city_type is CityType.invested:
             player.city.resources += 25
             player.city.gold += 25
-
-        self.print(player.city)
