@@ -46,9 +46,6 @@ def start(gamma, fullscreen=False):
     fpsClock = pygame.time.Clock()
     pygame.font.init()
 
-    city_sprite = CitySpriteLevel0(200, 200, CityLevel.level_zero)
-    city_group.add(city_sprite)
-
     global global_surf
     if fullscreen:
         global_surf = pygame.display.set_mode(DISPLAY_SIZE, pygame.FULLSCREEN)
@@ -58,6 +55,8 @@ def start(gamma, fullscreen=False):
 
     pygame.display.set_gamma(gamma)
 
+    city_sprite = CitySpriteLevel0(200, 200, CityLevel.level_zero)
+    city_group.add(city_sprite)
 
     # prep for game loop
     turn_wait_counter = 1
@@ -107,7 +106,6 @@ def draw_screen(current_turn):
     #     text = f'{key}: {item}'
     #     render_text = font.render(text, True, (0, 150, 150))
     #     global_surf.blit(render_text, (30, 30*n))
-
 
 def handle_events():
     for event in pygame.event.get():
