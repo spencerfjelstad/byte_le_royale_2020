@@ -11,9 +11,11 @@ class CityGeneratorController(Controller):
         if city_type is CityType.none:
             pass
         elif city_type is CityType.healthy:
-            player.city.population += 25
+            player.city.population += 50
         elif city_type is CityType.sturdy:
-            player.city.structure += 25
+            player.city.structure += 50
         elif city_type is CityType.invested:
-            # bump city sensors up a level
-            pass
+            player.city.resources += 25
+            player.city.gold += 25
+
+        self.print(player.city)

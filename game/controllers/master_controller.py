@@ -42,7 +42,6 @@ class MasterController(Controller):
 
         self.city_generator_controller.handle_actions(client, city_type)
 
-
     # Generator function. Given a key:value pair where the key is the identifier for the current world and the value is
     # the state of the world, returns the key that will give the appropriate world information
     def game_loop_logic(self, start=1):
@@ -106,7 +105,6 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, client, world, turn):
-        self.print("Performing turn logic :)")
         self.effort_controller.handle_actions(client)
         self.sensor_controller.handle_actions(client)
         self.disaster_controller.handle_actions(client)
