@@ -14,13 +14,10 @@ class SensorController(Controller):
     def __init__(self):
         super().__init__()
         self.turn_ranges = dict()
-        self.debug = False
+        self.debug = True
 
     def handle_actions(self, player):
-        for act in player.action._allocation_list:
-            effort, number = act
-            if isinstance(effort, Sensor):
-                self.__upgrade_sensor(player, effort, number)
+        pass
 
     def calculate_turn_ranges(self, turn, odds):
         if turn in self.turn_ranges:
@@ -31,7 +28,7 @@ class SensorController(Controller):
         for disaster in enum_iter(DisasterType):
             sensor_odds = {}
 
-            disaster_odds = math.floor( odds[disaster] * 100 )
+            disaster_odds = math.floor(odds[disaster] * 100)
 
             for sensor_level in enum_iter(SensorLevel):
 
@@ -59,25 +56,25 @@ class SensorController(Controller):
 
         self.turn_ranges[turn] = adjusted_weights
 
-    def __upgrade_sensor(self, player, sensor, number):
+    def upgrade_sensor(self, player, sensor, number):
         # Validate input
         if number < 0:
-            self.log("Negative effort not accepted.")
+            self.print("Negative effort not accepted.")
             return
         if not isinstance(player, Player):
-            self.log("The player argument is not a Player object.")
+            self.print("The player argument is not a Player object.")
             return
         if not isinstance(sensor, Sensor):
-            self.log("The sensor argument is not a Sensor object.")
+            self.print("The sensor argument is not a Sensor object.")
             return
         if sensor not in player.city.sensors.values():
-            self.log("Sensor is not a part of the city.")
-            self.log("Sensor: {}".format(sensor))
+            self.print("Sensor is not a part of the city.")
+            self.print("Sensor: {}".format(sensor))
             for sens in player.city.sensors:
-                self.log("City sensor: {}".format(sens))
+                self.print("City sensor: {}".format(sens))
             return
         if sensor.sensor_level == SensorLevel.level_three:
-            self.log("Sensor level is already maxed.")
+            self.print("Sensor level is already maxed.")
             return
 
         current_level = sensor.sensor_level
@@ -88,18 +85,17 @@ class SensorController(Controller):
         elif current_level == SensorLevel.level_two:
             next_level = SensorLevel.level_three
         else:
-            self.log("sensor's sensor_level value is invalid.")
+            self.print("sensor's sensor_level value is invalid.")
             return
 
-        sensor.sensor_effort_progress += number
-        next_effort_cost = GameStats.sensor_effort[next_level]
+        sensor.sensor_effort_remaining -= number
         # if limit maxed, begin upgrade
-        if sensor.sensor_effort_progress >= next_effort_cost:
+        if sensor.sensor_effort_remaining <= 0:
             self.log("Sensor level {} reached!".format(next_level))
             # apply changes
-            left_over = sensor.sensor_effort_progress - next_effort_cost
-            sensor.sensor_effort_progress = 0
+            left_over = sensor.sensor_effort_remaining * -1  # reverse, because effort allocation must be positive
+            sensor.sensor_effort_remaining = GameStats.sensor_effort[next_level]
             sensor.sensor_level = next_level
 
             # with left over effort, attempt upgrade again
-            self.__upgrade_sensor(player, sensor, left_over)
+            self.upgrade_sensor(player, sensor, left_over)

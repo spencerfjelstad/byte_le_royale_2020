@@ -52,7 +52,7 @@ def start(gamma, fullscreen=False):
         global_surf = pygame.display.set_mode(DISPLAY_SIZE, pygame.FULLSCREEN)
     else:
         global_surf = pygame.display.set_mode(DISPLAY_SIZE)
-    pygame.display.set_caption('Byte-le Royale: Shitty City')
+    pygame.display.set_caption('Byte-le Royale: Disaster Dispatcher')
 
     pygame.display.set_gamma(gamma)
 
