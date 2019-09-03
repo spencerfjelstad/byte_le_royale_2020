@@ -11,6 +11,7 @@ from game.visualizer.game_log_parser import GameLogParser
 from game.utils.helpers import *
 from game.common.enums import *
 from game.config import *
+from game.common.stats import *
 from game.visualizer.city_sprites import *
 
 pause = False
@@ -55,7 +56,7 @@ def start(gamma, fullscreen=False):
 
     pygame.display.set_gamma(gamma)
 
-    city_sprite = CitySpriteLevel0(200, 200, CityLevel.level_zero)
+    city_sprite = CitySpriteLevel0(400, 200, CityLevel.level_two)
     city_group.add(city_sprite)
 
     # prep for game loop
