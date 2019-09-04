@@ -1,11 +1,8 @@
-from abc import abstractmethod
 from game.common.disasters.disaster import Disaster
-from game.utils.oop import *
 from game.common.enums import *
 
 
 class LastingDisaster(Disaster):
-    @abstractmethod
     def __init__(self):
         super().__init__()
         self.initial_effort = None

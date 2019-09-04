@@ -1,7 +1,5 @@
 import json
-import time
 import os
-import copy
 from numpy import random as nprandom
 
 from game.config import *
@@ -10,38 +8,6 @@ from game.utils.helpers import *
 
 def generate():
     print('generating map please wait :)')
-    time.sleep(1)
-
-    '''# Implementation: generate rates, generate disaster based on those odds
-    total = {}
-    act = 0
-    rates = {
-        DisasterType.fire: 0.0,
-        DisasterType.tornado: 0.0,
-        DisasterType.hurricane: 0.0,
-        DisasterType.earthquake: 0.0,
-        DisasterType.monster: 0.0,
-        DisasterType.ufo: 0.0,
-    }
-    
-    for x in range(1, MAX_TURNS + 1):
-        activations = []
-        
-        if x > STARTING_FREE_TURNS:  
-            for key,item in rates.items():
-                rates[key] += random.random() * INDIVIDUAL_WEIGHTS[key]
-                rates[key] = min(rates[key], 1.0)
-                if rates[key] == 1.0 or decision(rates[key]):
-                    activations.append(key)
-                    rates[key] = 0
-                    INDIVIDUAL_WEIGHTS[key] *= ACTIVATION_DEPRECIATION_RATE
-                    act += 1
-                
-                INDIVIDUAL_WEIGHTS[key] += DISASTER_CHANCE_GROWTH_RATE * random.random() * INDIVIDUAL_WEIGHTS[key]
-        
-        total[x] = {'rates': copy.deepcopy(rates), 'disasters': activations}
-        
-    write(total)'''
 
     # Implementation: pre-generate disaster list, generate rates to match
     # Generate basic list disasters will populate
@@ -168,17 +134,17 @@ def bias_list(given_list, current_depth=1):
     return first_half + second_half
 
 
-def print_dict(dict, name='dict'):
+def print_dict(data, name='dict'):
     res = name + '\n'
-    for key, item in dict.items():
-        res += (f'{key}: {item}\n')
+    for key, item in data.items():
+        res += f'{key}: {item}\n'
         
     print(res)
 
 
-def write(dict):
+def write(data):
     if not os.path.exists('logs'):
         os.makedirs('logs')
     
     with open('logs/game_map.json', 'w+') as out:
-        json.dump(dict, out)
+        json.dump(data, out)

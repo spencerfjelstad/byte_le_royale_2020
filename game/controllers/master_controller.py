@@ -8,6 +8,7 @@ from game.common.city import City
 from game.config import *
 
 from game.controllers.controller import Controller
+from game.controllers.city_generator_controller import CityGeneratorController
 from game.controllers.destruction_controller import DestructionController
 from game.controllers.disaster_controller import DisasterController
 from game.controllers.effort_controller import EffortController
@@ -18,6 +19,7 @@ class MasterController(Controller):
     def __init__(self):
         super().__init__()
 
+        self.city_generator_controller = CityGeneratorController()
         self.destruction_controller = DestructionController()
         self.disaster_controller = DisasterController()
         self.effort_controller = EffortController()
@@ -36,6 +38,9 @@ class MasterController(Controller):
         client.city = City()
         client.team_name = client.code.team_name()
         client.city.city_name = client.code.city_name()
+        city_type = client.code.city_type()
+
+        self.city_generator_controller.handle_actions(client, city_type)
 
     # Generator function. Given a key:value pair where the key is the identifier for the current world and the value is
     # the state of the world, returns the key that will give the appropriate world information
@@ -100,7 +105,6 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, client, world, turn):
-        self.print("Performing turn logic :)")
         self.effort_controller.handle_actions(client)
         self.sensor_controller.handle_actions(client)
         self.disaster_controller.handle_actions(client)
