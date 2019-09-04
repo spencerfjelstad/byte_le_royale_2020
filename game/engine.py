@@ -6,7 +6,6 @@ from tqdm import tqdm
 
 from game.common.player import *
 from game.config import *
-import game.config
 
 from game.controllers.master_controller import MasterController
 from game.utils.thread import Thread

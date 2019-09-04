@@ -1,6 +1,7 @@
 from game.common.enums import *
 from game.common.stats import *
 
+
 class Sensor:
     def __init__(self):
         self.sensor_type = None
