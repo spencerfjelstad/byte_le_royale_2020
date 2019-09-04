@@ -28,12 +28,12 @@ class EffortController(Controller):
 
             # Skip action (no man power left)
             if player.city.remaining_man_power == 0:
-                print("All man power exhausted. Skipping allocation: {}".format(allocation))
+                self.print("All man power exhausted. Skipping allocation: {}".format(allocation))
                 continue
 
             # Reduce requested amount to maximum remaining
             if amount > player.city.remaining_man_power:
-                print("Too much man power requested for action. Reducing to remaining man power.")
+                self.print("Too much man power requested for action. Reducing to remaining man power.")
                 amount = player.city.remaining_man_power
 
             # Reduce man power

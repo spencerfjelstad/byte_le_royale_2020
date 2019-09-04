@@ -44,13 +44,16 @@ class SensorController(Controller):
                 min_chance = disaster_odds - range
                 max_chance = disaster_odds + range
 
-                # Modify chance so it doesn't provide us odds out of bounds
-                if min_chance < 0:
-                    min_chance = 0
-                if max_chance > 100:
-                    max_chance = 100
+                captured_odds = random.randrange(min_chance, max_chance + 1)
 
-                sensor_odds[sensor_level] = random.randrange(min_chance, max_chance + 1) / 100
+                # handle results appearing below 0
+                captured_odds = abs(captured_odds)
+
+                # handle results appearing above 100
+                if captured_odds >= 100:
+                    captured_odds = 200 - captured_odds  # odds of 110 would become 90 (100 - 10 or 200 - 110)
+
+                sensor_odds[sensor_level] = captured_odds / 100
 
             adjusted_weights[disaster] = sensor_odds
 
@@ -91,7 +94,7 @@ class SensorController(Controller):
         sensor.sensor_effort_remaining -= number
         # if limit maxed, begin upgrade
         if sensor.sensor_effort_remaining <= 0:
-            self.log("Sensor level {} reached!".format(next_level))
+            self.print("Sensor level {} reached!".format(next_level))
             # apply changes
             left_over = sensor.sensor_effort_remaining * -1  # reverse, because effort allocation must be positive
             sensor.sensor_effort_remaining = GameStats.sensor_effort[next_level]
