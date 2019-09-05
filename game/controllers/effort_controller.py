@@ -120,4 +120,4 @@ class EffortController(Controller):
 
             # with left over effort, attempt upgrade again
             # TODO: look at making this non-recursive
-            self.upgrade_sensor(player, sensor, left_over)
+            self.apply_sensor_effort(player, sensor, left_over)
