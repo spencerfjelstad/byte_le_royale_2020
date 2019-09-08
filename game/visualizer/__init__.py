@@ -13,6 +13,7 @@ from game.common.enums import *
 from game.config import *
 from game.common.stats import *
 from game.visualizer.city_sprites import *
+from game.visualizer.location_sprites import *
 
 pause = False
 log_parser = None
@@ -56,8 +57,14 @@ def start(gamma, fullscreen=False):
 
     pygame.display.set_gamma(gamma)
 
-    city_sprite = CitySpriteLevel0(400, 200, CityLevel.level_two)
+    #Sprite changing logic
+    city_sprite = CitySpriteLevel0(484, 200, CityLevel.level_two)
     city_group.add(city_sprite)
+
+    location_sprite = LocationDefault(0,0, CityLocation.default)
+    location_group.add(location_sprite)
+
+
 
     # prep for game loop
     turn_wait_counter = 1
@@ -89,7 +96,9 @@ def draw_screen(current_turn):
     global_surf.fill(pygame.Color(128, 212, 255))
 
     #Draw groups
+    location_group.draw(global_surf)
     city_group.draw(global_surf)
+
 
 
     # # This is all trash for testing

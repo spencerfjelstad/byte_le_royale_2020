@@ -1,5 +1,4 @@
 import pygame
-from game.common.enums import CityLevel
 from game.visualizer.sprite_sheet_functions import *
 from game.config import *
 
