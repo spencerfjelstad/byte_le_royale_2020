@@ -5,7 +5,7 @@ from game.common.player import Player
 from game.common.action import Action
 from game.common.disasters import *
 from game.common.city import City
-from game.config import *
+import game.config as config
 
 from game.controllers.controller import Controller
 from game.controllers.city_generator_controller import CityGeneratorController
@@ -54,7 +54,7 @@ class MasterController(Controller):
             # Increment the turn counter by 1
             turn += 1
             # If the next turn number is above the max, the iterator ends
-            if turn > MAX_TURNS:
+            if turn > config.MAX_TURNS:
                 break
 
     # Receives world data from the generated game log and is responsible for interpreting it
@@ -110,18 +110,28 @@ class MasterController(Controller):
         self.disaster_controller.handle_actions(client)
         self.destruction_controller.handle_actions(client)
 
-        if client.city.structure <= 0 or client.city.population <= 0:
+        if client.city.structure <= 0:
+            self.print("Game is ending because city has been destroyed.")
             self.game_over = True
-            if client.city.structure <= 0:
-                self.print("Game is ending because city has been destroyed.")
-            if client.city.population <= 0:
-                self.print("Game is ending because population has died.")
+
+        if client.city.population <= 0:
+            self.print("Game is ending because population has died.")
+            self.game_over = True
 
     # Return serialized version of game
     def create_turn_log(self, client, world, turn):
         data = dict()
         data['rates'] = world['rates']
         data['player'] = client.to_json()
+
+        return data
+
+    def return_final_results(self, client, world, turn):
+        # Gather necessary data together in results file
+        data = {
+            "Team": client.team_name,  # TODO: Replace with an engine-safe ID of each team
+            "Score": turn
+        }
 
         return data
 

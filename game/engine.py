@@ -8,6 +8,7 @@ from game.common.player import *
 from game.config import *
 
 from game.controllers.master_controller import MasterController
+from game.utils.helpers import write
 from game.utils.thread import Thread
 
 clients = list()
@@ -180,9 +181,26 @@ def post_tick(turn):
 
     # Check if game has ended
     if master_controller.game_over_check():
-        # Game is over, create the results file and end the game
-        print("\nGame has ended.")
-        exit()
+        shutdown()
+
+
+def shutdown():
+    global clients
+    global current_world
+    global master_controller
+    global turn_number
+    # Game is over, create the results file and end the game.
+
+    results_information = None
+    if SET_NUMBER_OF_CLIENTS == 1:
+        results_information = master_controller.return_final_results(clients[0], current_world, turn_number)
+    else:
+        results_information = master_controller.return_final_results(clients, current_world, turn_number)
+
+    # Write results file
+    write(results_information, RESULTS_FILE)
+    print("\nGame has ended.")
+    exit()
 
 
 # Debug print statement

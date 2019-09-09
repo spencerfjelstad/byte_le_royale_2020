@@ -1,4 +1,5 @@
 from game.common.enums import *
+import os
 import platform
 
 # Runtime settings / Restrictions --------------------------------------------------------------------------------------
@@ -53,3 +54,8 @@ else:
     VIS_INTERMEDIATE_FRAMES = 4
     FPS = 120
     LOW_FPS = 60
+
+# Results file ---------------------------------------------------------------------------------------------------------
+RESULTS_FILE_NAME = "results.json"
+RESULTS_DIR = os.getcwd()
+RESULTS_FILE = os.path.join(RESULTS_DIR, RESULTS_FILE_NAME)
