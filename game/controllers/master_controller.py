@@ -126,13 +126,13 @@ class MasterController(Controller):
 
         return data
 
+    # Gather necessary data together in results file
     def return_final_results(self, client, world, turn):
-        # Gather necessary data together in results file
+        # data is the json information what will be written to the results file
         data = {
             "Team": client.team_name,  # TODO: Replace with an engine-safe ID of each team
             "Score": turn
         }
-
         return data
 
     # Return if the game should be over

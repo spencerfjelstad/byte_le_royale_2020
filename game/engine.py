@@ -183,14 +183,14 @@ def post_tick(turn):
     if master_controller.game_over_check():
         shutdown()
 
-
+# Game is over. Create the results file and end the game.
 def shutdown():
     global clients
     global current_world
     global master_controller
     global turn_number
-    # Game is over, create the results file and end the game.
 
+    # Retrieve results from master controller
     results_information = None
     if SET_NUMBER_OF_CLIENTS == 1:
         results_information = master_controller.return_final_results(clients[0], current_world, turn_number)
@@ -199,6 +199,8 @@ def shutdown():
 
     # Write results file
     write(results_information, RESULTS_FILE)
+
+    # Exit game
     print("\nGame has ended.")
     exit()
 

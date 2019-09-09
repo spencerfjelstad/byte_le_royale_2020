@@ -56,6 +56,6 @@ else:
     LOW_FPS = 60
 
 # Results file ---------------------------------------------------------------------------------------------------------
-RESULTS_FILE_NAME = "results.json"
-RESULTS_DIR = os.getcwd()
-RESULTS_FILE = os.path.join(RESULTS_DIR, RESULTS_FILE_NAME)
+RESULTS_FILE_NAME = "results.json"                              # Name and extension of results file
+RESULTS_DIR = os.getcwd()                                       # Location of the results file
+RESULTS_FILE = os.path.join(RESULTS_DIR, RESULTS_FILE_NAME)     # Results directory combined with file name
