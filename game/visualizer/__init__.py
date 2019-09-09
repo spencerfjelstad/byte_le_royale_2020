@@ -82,10 +82,9 @@ def draw_screen(current_turn):
 
     turn_info = log_parser.get_turn(current_turn)
     if turn_info is None:
-        # pygame.quit()
-        # sys.exit(0)
         endgame()
     turn_indicator = font.render(f'Turn {turn}', True, (150, 140, 130))
+    health_bar(turn_info)
     global_surf.blit(turn_indicator, (30, 500))
     n = 0
     for key, item in turn_info['rates'].items():
@@ -105,11 +104,18 @@ def endgame():
 
     pygame.display.update()
 
-
-
     #Stays running till exit button pressed
     while True:
         handle_events()
+        
+def health_bar(info):
+    structure = int(info['player'].get('city').get('structure'))
+    population = int(info['player'].get('city').get('population'))
+    struct = pygame.Rect(100, 600, structure//10, 50)
+    pop = pygame.Rect(100,550,population//10,50)
+    pygame.draw.rect(global_surf, pygame.Color(255,0,0), struct)
+    pygame.draw.rect(global_surf, pygame.Color(255,255,0), pop)
+
 
 def lineGraph():
     #For now, here's how to draw a basic graph with random points
