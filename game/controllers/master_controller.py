@@ -24,13 +24,7 @@ class MasterController(Controller):
         self.disaster_controller = DisasterController()
         self.effort_controller = EffortController()
         self.sensor_controller = SensorController()
-        self.controllers = {
-            "destruction": self.destruction_controller,
-            "disaster": self.disaster_controller,
-            "effort": self.effort_controller,
-            "sensor": self.sensor_controller
-        }
-        self.effort_controller.import_controllers(self.controllers)
+
         self.game_over = False
 
     # Receives all clients for the purpose of giving them the objects they will control
