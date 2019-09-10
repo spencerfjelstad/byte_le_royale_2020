@@ -1,3 +1,5 @@
+import json
+import os
 import random
 
 
@@ -28,3 +30,20 @@ def enum_iter(enum_class):
     :return: list containing all enum of the given type
     """
     return [enum_class.__dict__[key] for key in enum_class.__dict__ if not key.startswith("__")]
+
+
+def write(data, file):
+    """
+    Given json formatted data, create a new file at given directory and dump the information there
+    :param data: json formatted data to write to the new file
+    :param file: file directory and file name (preferably with .json extension)
+    """
+    file_dir = os.path.dirname(file)
+
+    # Make folders if necessary
+    if not os.path.exists(file_dir):
+        os.makedirs(file_dir)
+
+    # Open and write to file
+    with open(file, 'w+') as out:
+        json.dump(data, out)

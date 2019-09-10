@@ -1,5 +1,3 @@
-import json
-import os
 from numpy import random as nprandom
 
 from game.config import *
@@ -80,7 +78,7 @@ def generate():
                 disaster_rates[key]['rates'][disaster_type] = min(rate, 0.999)
 
     # Convert to json file
-    write(disaster_rates)
+    write(disaster_rates, 'logs/game_map.json')
 
 
 # Biases disasters towards the latter half of the game
@@ -140,11 +138,3 @@ def print_dict(data, name='dict'):
         res += f'{key}: {item}\n'
         
     print(res)
-
-
-def write(data):
-    if not os.path.exists('logs'):
-        os.makedirs('logs')
-    
-    with open('logs/game_map.json', 'w+') as out:
-        json.dump(data, out)
