@@ -20,6 +20,13 @@ class CityLevel:
 
 
 
+class CityType:
+    none = 0
+    healthy = 1
+    sturdy = 2
+    invested = 3
+
+
 class DamageScaling:
     low = 0
     medium = 1

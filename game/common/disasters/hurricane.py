@@ -1,7 +1,6 @@
 from game.common.disasters.lasting_disaster import LastingDisaster
 from game.common.enums import *
 from game.common.stats import GameStats
-from game.utils.oop import *
 
 
 class Hurricane(LastingDisaster):

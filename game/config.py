@@ -1,22 +1,36 @@
 from game.common.enums import *
+import os
 import platform
 
-# Game Generation
-# WARNING: Game will not function properly if MAX_TURNS is set beyond 9999.
-MAX_TURNS = 2000
-APPROXIMATE_DISASTER_COUNT = 150
-DISASTER_BIAS = 0.3  # float less than 1 and greater than 0
-BIASING_DEPTH = 16
-BIAS_MARGIN_OF_ERROR = 0.1  # float less than 1 and greater than 0
+# Runtime settings / Restrictions --------------------------------------------------------------------------------------
+# The engine requires these to operate
+MAX_TURNS = 2000                                    # max number of ticks the server will run regardless of game state
+TQDM_BAR_FORMAT = "Game running at {rate_fmt} "     # how TQDM displays the bar
+TQDM_UNITS = " turns"                               # units TQDM takes in the bar
 
-INDIVIDUAL_WEIGHTS = {
-    DisasterType.fire: 0.01,
-    DisasterType.tornado: 0.01,
-    DisasterType.hurricane: 0.005,
-    DisasterType.earthquake: 0.005,
-    DisasterType.monster: 0.001,
-    DisasterType.ufo: 0.001,
-}
+MAX_OPERATIONS_PER_TURN = 450000                    # max number of basic operations clients have for their turns
+
+MIN_CLIENTS = None                                  # minimum number of clients required to run the game; should be None when SET_NUMBER_OF_CLIENTS is used
+MAX_CLIENTS = None                                  # maximum number of clients required to run the game; should be None when SET_NUMBER_OF_CLIENTS is used
+SET_NUMBER_OF_CLIENTS = 1                           # required number of clients to run the game; should be None when MIN_CLIENTS or MAX_CLIENTS are used
+CLIENT_KEYWORD = "client"                           # string required to be in the name of every client file, not found otherwise
+CLIENT_DIRECTORY = "./"                             # location where client code will be found
+
+# Game Rule settings ---------------------------------------------------------------------------------------------------
+MAX_ALLOCATIONS_ALLOWED_PER_TURN = 30               # max number of unique effort allocations clients are allowed
+
+# Keeps track of the current debug level of the game (not a variable because it won't save when changed that way)
+class Debug:
+    level = DebugLevel.none
+
+
+# Game Generation ------------------------------------------------------------------------------------------------------
+APPROXIMATE_DISASTER_COUNT = 150    # approximate number of disasters to be spawned over the course of time
+DISASTER_BIAS = 0.3                 # percent of how many disasters will be located in the first half of the game, float less than 1 and greater than 0
+BIASING_DEPTH = 16                  # how deep the recursive biasing strategy will go, higher is more accurate
+BIAS_MARGIN_OF_ERROR = 0.1          # range around DISASTER_BIAS where the biasing will be accepted, float less than 1 and greater than 0
+
+# Breakdown percentages of approximately how many disasters of each type will spawn (must total to 1)
 DISASTER_WEIGHTS = {
     DisasterType.fire: 0.2,
     DisasterType.tornado: 0.2,
@@ -26,31 +40,12 @@ DISASTER_WEIGHTS = {
     DisasterType.ufo: 0.15,
 }
 
-DISASTER_CHANCE_GROWTH_RATE = 1 / (MAX_TURNS / 4)
-STARTING_FREE_TURNS = 10
-ACTIVATION_DEPRECIATION_RATE = 0.95
+STARTING_FREE_TURNS = 10            # how many turns at the beginning will be guaranteed free of disasters
 
-# Runtime settings / Restrictions
-TQDM_BAR_FORMAT = "Game running at {rate_fmt} "
-TQDM_UNITS = " turns"
-
-MAX_OPERATIONS_PER_TURN = 450000
-MAX_ALLOCATIONS_ALLOWED_PER_TURN = 30
-
-MIN_CLIENTS = None
-MAX_CLIENTS = None
-SET_NUMBER_OF_CLIENTS = 1
-CLIENT_KEYWORD = "client"
-CLIENT_DIRECTORY = "./"
-
-
-# Keeps track of the current debug level of the game (not a variable because it doesn't when changed)
-class Debug:
-    level = DebugLevel.none
-
-# Visualizer business
-DISPLAY_SIZE = (1280, 720)
-GAMMA = 0
+# Visualizer business --------------------------------------------------------------------------------------------------
+DISPLAY_SIZE = (1280, 720)          # resolution of the game window
+GAMMA = 0                           # monitor brightness
+# Used to help the game run better on Linux
 if platform.system() == 'Linux':
     VIS_INTERMEDIATE_FRAMES = 10
     FPS = 60
@@ -59,3 +54,8 @@ else:
     VIS_INTERMEDIATE_FRAMES = 4
     FPS = 120
     LOW_FPS = 60
+
+# Results file ---------------------------------------------------------------------------------------------------------
+RESULTS_FILE_NAME = "results.json"                              # Name and extension of results file
+RESULTS_DIR = os.getcwd()                                       # Location of the results file
+RESULTS_FILE = os.path.join(RESULTS_DIR, RESULTS_FILE_NAME)     # Results directory combined with file name

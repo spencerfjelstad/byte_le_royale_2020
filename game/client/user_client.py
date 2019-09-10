@@ -1,4 +1,4 @@
-from game.common.enums import DebugLevel
+from game.common.enums import *
 from game.config import Debug
 
 
@@ -18,6 +18,9 @@ class UserClient:
 
     def city_name(self):
         return "No_City_Name_Available"
+
+    def city_type(self):
+        return CityType.none
 
     def set_decree(self, my_decree):
         raise NotImplementedError("TODO: implement this function in UserClient")
