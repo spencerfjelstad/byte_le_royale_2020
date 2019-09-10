@@ -58,8 +58,20 @@ def start(gamma, fullscreen=False):
     pygame.display.set_gamma(gamma)
 
     #Sprite changing logic
-    city_sprite = CitySpriteLevel0(484, 200, CityLevel.level_two)
-    city_group.add(city_sprite)
+    city_x = 484
+    city_y = 200
+    city_struct = GameStats.city_structure
+
+    #Checks city_structure and draws sprite accordingly
+    if city_struct <= GameStats.city_structure / 3:
+        city_sprite = CitySpriteLevel0(city_x, city_y, CityLevel.level_zero)
+        city_group.add(city_sprite)
+    elif city_struct <= GameStats.city_structure / 2:
+        city_sprite = CitySpriteLevel0(city_x, city_y, CityLevel.level_one)
+        city_group.add(city_sprite)
+    elif city_struct <= GameStats.city_structure:
+        city_sprite = CitySpriteLevel0(city_x, city_y, CityLevel.level_two)
+        city_group.add(city_sprite)
 
     location_sprite = LocationDefault(0,0, CityLocation.default)
     location_group.add(location_sprite)
