@@ -4,7 +4,7 @@ from game.common.enums import *
 class GameStats:
 
     # multiplier done by instant disasters
-    disaster_damage_instant_multiplier = 10
+    disaster_damage_instant_multiplier = 5
 
     # damage done at each damage level
     disaster_damage_scale = {
@@ -44,13 +44,13 @@ class GameStats:
     # units of man_power per 1k population
     man_power = 5
     #population
-    city_population = 10000
+    city_population = 100
     #health
-    city_structure = 10000
+    city_structure = 200
     #resources
     resources = 100
     #gold
-    city_gold = 1000
+    city_gold = 100
 
     #cost in gold to build a sensor
     sensor_costs = {
@@ -67,8 +67,6 @@ class GameStats:
         SensorLevel.level_two: 100,
         SensorLevel.level_three: 500
     }
-
-
 
     # error range provided by each sensor
     sensor_ranges = {

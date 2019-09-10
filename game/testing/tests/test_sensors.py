@@ -5,13 +5,20 @@ from game.common.action import Action
 from game.common.city import City
 from game.common.player import Player
 
+from game.controllers.effort_controller import EffortController
 from game.controllers.sensor_controller import SensorController
 
 
 class TestSensors(unittest.TestCase):
 
     def setUp(self):
+        self.test_effort_controller = EffortController()
         self.test_sensor_controller = SensorController()
+        self.controllers = {
+            "effort": self.test_effort_controller,
+            "sensor": self.test_sensor_controller
+        }
+        self.test_effort_controller.import_controllers(self.controllers)
 
     def test_double_generate_fail(self):
         test_odds = {
@@ -65,12 +72,17 @@ class TestSensors(unittest.TestCase):
 
         player.action.add_effort(fire_sensor, 50)
         self.test_sensor_controller.handle_actions(player)
+        self.test_effort_controller.handle_actions(player)
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_one)
 
+        player.action = Action()
         player.action.add_effort(fire_sensor, 100)
         self.test_sensor_controller.handle_actions(player)
+        self.test_effort_controller.handle_actions(player)
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_two)
 
+        player.action = Action()
         player.action.add_effort(fire_sensor, 500)
         self.test_sensor_controller.handle_actions(player)
+        self.test_effort_controller.handle_actions(player)
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_three)
