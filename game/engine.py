@@ -31,13 +31,14 @@ def loop():
     for turn in tqdm(master_controller.game_loop_logic(), bar_format=TQDM_BAR_FORMAT, unit=TQDM_UNITS):
         if len(clients) <= 0:
             print("No clients found")
-            exit()
+            exit()  # TODO: Consider alternative exit
 
         pre_tick(turn, world)
         tick(turn)
         post_tick(turn)
 
     print("Game reached max turns and is closing.")
+    shutdown()
 
 
 # Gets players established with their objects and such
@@ -152,7 +153,7 @@ def tick(turn):
     # End if there are no remaining clients
     if len(clients) <= 0:
         print("All clients ran out of time")
-        exit()
+        shutdown()  # TODO: Consider alternative exit
 
     # Apply bulk of game logic
     if SET_NUMBER_OF_CLIENTS == 1:
@@ -183,6 +184,7 @@ def post_tick(turn):
     if master_controller.game_over_check():
         shutdown()
 
+
 # Game is over. Create the results file and end the game.
 def shutdown():
     global clients
@@ -201,7 +203,7 @@ def shutdown():
     write(results_information, RESULTS_FILE)
 
     # Exit game
-    print("\nGame has ended.")
+    print("\nGame has successfully ended.")
     exit()
 
 
