@@ -44,7 +44,7 @@ STARTING_FREE_TURNS = 10            # how many turns at the beginning will be gu
 
 # Visualizer business --------------------------------------------------------------------------------------------------
 DISPLAY_SIZE = (1280, 720)          # resolution of the game window
-GAMMA = 0                           # monitor brightness
+GAMMA = 1                           # monitor brightness
 # Used to help the game run better on Linux
 if platform.system() == 'Linux':
     VIS_INTERMEDIATE_FRAMES = 10
