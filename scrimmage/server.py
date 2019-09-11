@@ -2,15 +2,12 @@ import os
 import socket
 import datetime
 import uuid
-from thread import Thread
+
+from scrimmage.utilities import *
 
 
 class Server:
     def __init__(self):
-        self.port = 5007
-        self.ip = '127.0.0.1'
-        self.buffer_size = 4096
-
         self.connections = list()
 
         self.server_socket = None
@@ -19,7 +16,7 @@ class Server:
 
     def start(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.bind((self.ip, self.port))
+        self.server_socket.bind((IP, PORT))
         self.server_socket.listen(10)
         print('Server started and listening.')
 
@@ -34,19 +31,20 @@ class Server:
             client_thread.start()
 
     def handle_client(self, connection, address):
-        command = connection.recv(self.buffer_size).decode('utf-8')
+        command = receive_data(connection)
         if command in ['register', '-r']:
             self.register_client(connection, address)
         connection.close()
 
     def register_client(self, connection, address):
-        teamname = connection.recv(self.buffer_size).decode('utf-8')
-        team_uuid = self.generate_uid()
-        self.record_uid(teamname, team_uuid)
-        self.log(f'Registering team {teamname} with {team_uuid}')
-        connection.send(bytes(team_uuid,'utf-8'))
-
-
+        teamname = receive_data(connection)
+        team_uuid = str(uuid.uuid4())
+        if teamname in ['frankfurt', 'skungle dungus']:
+            team_uuid = 'name already taken'
+            self.log(f'Registration attempted for already taken teamname: {teamname}')
+        else:
+            self.log(f'Registering team: {teamname} with ID: {team_uuid}')
+        send_data(connection, team_uuid)
 
     def await_input(self):
         print('Server is awaiting admin input.')
@@ -61,14 +59,6 @@ class Server:
                 for s in self.logs:
                     print(s)
 
-    def generate_uid(self):
-	    id = str(uuid.uuid4())
-	    return id
-
-    def record_uid(self, team, uid):
-	    with open('s_vi.d', 'a') as f:
-	        f.write(team + ' ' + uid + '\n')
-	
     def log(self, *args):
         for arg in args:
             self.logs.append(f'{datetime.datetime.now()}: {arg}')
