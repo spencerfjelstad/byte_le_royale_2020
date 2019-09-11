@@ -115,7 +115,6 @@ def draw_screen(current_turn):
     # # This is all trash for testing
     # font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
     #
-    turn_info = log_parser.get_turn(current_turn)
     # if turn_info is None:
     #     pygame.quit()
     #     sys.exit(0)
@@ -127,7 +126,6 @@ def draw_screen(current_turn):
     #     text = f'{key}: {item}'
     #     render_text = font.render(text, True, (0, 150, 150))
     #     global_surf.blit(render_text, (30, 30*n))
-    global_surf.fill(pygame.Color(0, 0, 0))
 
     # This is all trash for testing
     font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
