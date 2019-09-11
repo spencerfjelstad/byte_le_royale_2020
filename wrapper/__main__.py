@@ -1,7 +1,8 @@
 import sys
 
-from game.utils.generate_game import generate
 from game.engine import loop
+from game.utils.generate_game import generate
+from scrimmage.client import Client
 import game.config
 
 if __name__ == '__main__':
@@ -43,6 +44,11 @@ if __name__ == '__main__':
                 print('Gamma input not found, using default value')
 
         start(gamma, full)
+        
+    # Boot up the scrimmage server client
+    elif '-scrimmage' in sys.argv:
+        cl = Client()
+        cl.start()
         
     # Help
     elif '-help' in sys.argv:
