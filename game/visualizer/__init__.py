@@ -8,6 +8,7 @@ import pygame
 from pygame.locals import *
 
 from game.visualizer.game_log_parser import GameLogParser
+from game.visualizer.graphs import *
 from game.config import *
 
 pause = False
@@ -82,9 +83,9 @@ def draw_screen(current_turn):
 
     turn_info = log_parser.get_turn(current_turn)
     if turn_info is None:
-        pygame.quit()
-        sys.exit(0)
+        endgame()
     turn_indicator = font.render(f'Turn {turn}', True, (150, 140, 130))
+    health_bar(turn_info, global_surf)
     global_surf.blit(turn_indicator, (30, 500))
     n = 0
     for key, item in turn_info['rates'].items():
@@ -92,6 +93,21 @@ def draw_screen(current_turn):
         text = f'{key}: {item}'
         render_text = font.render(text, True, (0, 150, 150))
         global_surf.blit(render_text, (30, 30*n))
+
+#Display endgame screen
+def endgame():
+    global_surf.fill(pygame.Color(0, 255, 255))
+    font = pygame.font.SysFont('Comic Sans MS', 30)
+    textsurface = font.render('Some Text', False, (0, 0, 0))
+    global_surf.blit(textsurface,(0,0))
+    # Draws graph of round's data
+    lineGraph(global_surf)
+
+    pygame.display.update()
+
+    #Stays running till exit button pressed
+    while True:
+        handle_events()
 
 
 def handle_events():
