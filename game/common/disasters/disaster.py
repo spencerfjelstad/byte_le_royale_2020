@@ -1,9 +1,7 @@
-from abc import ABC, abstractmethod
 from game.common.enums import *
 
 
-class Disaster(ABC):
-    @abstractmethod
+class Disaster:
     def __init__(self):
         self.status = DisasterStatus.dead
         self.type = None

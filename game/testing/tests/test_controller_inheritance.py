@@ -6,6 +6,7 @@ from game.controllers.destruction_controller import DestructionController
 from game.controllers.disaster_controller import DisasterController
 from game.controllers.master_controller import MasterController
 from game.controllers.sensor_controller import SensorController
+from game.common.enums import *
 
 
 class TestControllerInheritance(unittest.TestCase):
@@ -26,7 +27,7 @@ class TestControllerInheritance(unittest.TestCase):
         saved_stdout = sys.stdout
         try:
             sys.stdout = capture_output
-            self.test_disaster_controller.log("Hello There!")
+            self.test_disaster_controller.print("Hello There!")
             actual_message = capture_output.getvalue().strip()
             self.assertEqual(actual_message, "")
         finally:
@@ -34,13 +35,14 @@ class TestControllerInheritance(unittest.TestCase):
 
     def test_debug_true(self):
         self.test_disaster_controller.debug = True
+        self.test_disaster_controller.debug_level = DebugLevel.none
         capture_output = io.StringIO()
         saved_stdout = sys.stdout
         try:
             sys.stdout = capture_output
-            self.test_disaster_controller.log("General Kenobi.")
+            self.test_disaster_controller.print("General Kenobi.")
             actual_message = capture_output.getvalue().strip()
-            self.assertEqual(actual_message, "General Kenobi.")
+            self.assertEqual(actual_message, "DisasterController: General Kenobi.")
         finally:
             sys.stdout = saved_stdout
 
