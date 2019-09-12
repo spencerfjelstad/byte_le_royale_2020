@@ -18,11 +18,6 @@ class TestDisasters(unittest.TestCase):
         # Setup
         self.test_disaster_controller = DisasterController()
         self.test_effort_controller = EffortController()
-        self.controllers = {
-            "disaster": self.test_disaster_controller,
-            "effort": self.test_effort_controller
-        }
-        self.test_effort_controller.import_controllers(self.controllers)
         self.player = Player()
         self.player.action = Action()
         self.player.city = City()

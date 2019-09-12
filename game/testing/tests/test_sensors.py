@@ -14,11 +14,6 @@ class TestSensors(unittest.TestCase):
     def setUp(self):
         self.test_effort_controller = EffortController()
         self.test_sensor_controller = SensorController()
-        self.controllers = {
-            "effort": self.test_effort_controller,
-            "sensor": self.test_sensor_controller
-        }
-        self.test_effort_controller.import_controllers(self.controllers)
 
     def test_double_generate_fail(self):
         test_odds = {

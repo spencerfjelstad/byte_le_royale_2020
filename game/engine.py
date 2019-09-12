@@ -31,7 +31,7 @@ def loop():
     for turn in tqdm(master_controller.game_loop_logic(), bar_format=TQDM_BAR_FORMAT, unit=TQDM_UNITS):
         if len(clients) <= 0:
             print("No clients found")
-            exit()  # TODO: Consider alternative exit
+            os._exit(0)  # TODO: Consider alternative exit
 
         pre_tick(turn, world)
         tick(turn)
@@ -204,7 +204,7 @@ def shutdown():
 
     # Exit game
     print("\nGame has successfully ended.")
-    exit()
+    os._exit(0)
 
 
 # Debug print statement
