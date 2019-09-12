@@ -3,12 +3,14 @@ import socket
 import datetime
 import uuid
 
+from scrimmage.db import DB
 from scrimmage.utilities import *
 
 
 class Server:
     def __init__(self):
         self.connections = list()
+        self.database = DB()
 
         self.server_socket = None
 
@@ -58,6 +60,18 @@ class Server:
             elif 'log' in com:
                 for s in self.logs:
                     print(s)
+            elif 'query' in com:
+                tid = input('TID: ').strip()
+                teamname = input('Team name: ').strip()
+
+                if tid == '':
+                    tid = None
+                if teamname == '':
+                    teamname = None
+
+                print(*self.database.query(tid, teamname))
+            elif 'dump' in com:
+                print(*self.database.dump())
 
     def log(self, *args):
         for arg in args:
