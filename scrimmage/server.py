@@ -20,7 +20,7 @@ class Server:
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((IP, PORT))
         self.server_socket.listen(10)
-        print('Server started and listening.')
+        print('❤❤❤Welcome to HeartDB!❤❤❤')
 
         server_input = Thread(self.await_input, ())
         server_input.start()
@@ -51,7 +51,7 @@ class Server:
     def await_input(self):
         print('Server is awaiting admin input.')
         while True:
-            com = input()
+            com = input('Ɛ>')
             self.log(f'Server command: {com}')
             if com == 'exit':
                 os._exit(0)
@@ -75,7 +75,7 @@ class Server:
 
     def log(self, *args):
         for arg in args:
-            self.logs.append(f'{datetime.datetime.now()}: {arg}')
+            self.logs.append(f'❤❤❤{datetime.datetime.now()}: {arg}❤❤❤')
 
 
 if __name__ == '__main__':
