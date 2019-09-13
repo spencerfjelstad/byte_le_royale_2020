@@ -8,6 +8,16 @@ class ActionType:
 
 class CityLocation:
     default = 0
+    desert = 1
+    mountains = 2
+    coastal = 3
+    radioactive_wasteland = 4
+
+class CityLevel:
+    level_zero = 0
+    level_one = 1
+    level_two = 2
+
 
 
 class CityType:
