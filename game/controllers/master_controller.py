@@ -74,16 +74,13 @@ class MasterController(Controller):
 
             client.disasters.append(dis)
 
-        world['rates'] = {int(key): val for key, val in world['rates'].items()}
-        # Calculate error ranges
-        if turn not in self.sensor_controller.turn_ranges:
-            self.sensor_controller.calculate_turn_ranges(turn, world['rates'])
-        sensor_estimates = self.sensor_controller.turn_ranges[turn]
+        # read the sensor results from the game map, converting strings to ints and/or floats
+        world['sensors'] = {int(key): {int(key2): float(val2) for key2, val2 in val.items()} for key, val in world['sensors'].items()}
 
         # give client their corresponding sensor odds
         sensor_results = dict()
-        for sens_type, sensor in client.city.sensors.items():
-            sensor_results[sens_type] = sensor_estimates[sensor.sensor_type][sensor.sensor_level]
+        for sensor in client.city.sensors.values():
+            sensor_results[sensor.sensor_type] = world['sensors'][sensor.sensor_type][sensor.sensor_level]
         client.city.sensor_results = sensor_results
 
     # Receive a specific client and send them what they get per turn. Also obfuscates necessary objects.
@@ -115,7 +112,9 @@ class MasterController(Controller):
     # Return serialized version of game
     def create_turn_log(self, client, world, turn):
         data = dict()
+
         data['rates'] = world['rates']
+
         data['player'] = client.to_json()
 
         return data
