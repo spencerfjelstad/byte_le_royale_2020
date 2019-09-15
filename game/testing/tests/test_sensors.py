@@ -4,31 +4,14 @@ from game.common.enums import *
 from game.common.action import Action
 from game.common.city import City
 from game.common.player import Player
-
+from game.utils.generate_game import calculate_sensor_ranges
 from game.controllers.effort_controller import EffortController
-from game.controllers.sensor_controller import SensorController
 
 
 class TestSensors(unittest.TestCase):
 
     def setUp(self):
         self.test_effort_controller = EffortController()
-        self.test_sensor_controller = SensorController()
-
-    def test_double_generate_fail(self):
-        test_odds = {
-            DisasterType.fire: 0.3,
-            DisasterType.tornado: 0.2,
-            DisasterType.hurricane: 0.14,
-            DisasterType.earthquake: 0.29,
-            DisasterType.monster: 0.9,
-            DisasterType.ufo: 0.1
-        }
-
-        self.test_sensor_controller.calculate_turn_ranges(turn=1, odds=test_odds)
-
-        self.assertRaises(ValueError,
-                          lambda: self.test_sensor_controller.calculate_turn_ranges(turn=1, odds=test_odds))
 
     # Note: not a guaranteed success rate
     def test_legal_odds(self):
@@ -40,9 +23,9 @@ class TestSensors(unittest.TestCase):
             DisasterType.monster: 1.00,
             DisasterType.ufo: 0.0
         }
+        turn_ranges = dict()
         for turn in range(10000):
-            self.test_sensor_controller.calculate_turn_ranges(turn, test_odds)
-        turn_ranges = self.test_sensor_controller.turn_ranges
+            turn_ranges[turn] = calculate_sensor_ranges(test_odds)
 
         max_val = -0.01
         min_val = 1.01
@@ -66,18 +49,15 @@ class TestSensors(unittest.TestCase):
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_zero)
 
         player.action.add_effort(fire_sensor, 50)
-        self.test_sensor_controller.handle_actions(player)
         self.test_effort_controller.handle_actions(player)
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_one)
 
         player.action = Action()
         player.action.add_effort(fire_sensor, 100)
-        self.test_sensor_controller.handle_actions(player)
         self.test_effort_controller.handle_actions(player)
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_two)
 
         player.action = Action()
         player.action.add_effort(fire_sensor, 500)
-        self.test_sensor_controller.handle_actions(player)
         self.test_effort_controller.handle_actions(player)
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_three)

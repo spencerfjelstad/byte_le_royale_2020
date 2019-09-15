@@ -12,7 +12,6 @@ from game.controllers.city_generator_controller import CityGeneratorController
 from game.controllers.destruction_controller import DestructionController
 from game.controllers.disaster_controller import DisasterController
 from game.controllers.effort_controller import EffortController
-from game.controllers.sensor_controller import SensorController
 
 
 class MasterController(Controller):
@@ -23,7 +22,6 @@ class MasterController(Controller):
         self.destruction_controller = DestructionController()
         self.disaster_controller = DisasterController()
         self.effort_controller = EffortController()
-        self.sensor_controller = SensorController()
 
         self.game_over = False
 
@@ -97,7 +95,6 @@ class MasterController(Controller):
     # Perform the main logic that happens per turn
     def turn_logic(self, client, world, turn):
         self.effort_controller.handle_actions(client)
-        self.sensor_controller.handle_actions(client)
         self.disaster_controller.handle_actions(client)
         self.destruction_controller.handle_actions(client)
 
