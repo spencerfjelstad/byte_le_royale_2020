@@ -1,6 +1,7 @@
 import time
 import json
 import os
+import shutil
 
 from scrimmage.utilities import Thread
 
@@ -13,26 +14,36 @@ class DB:
         else:
             with open('db.json', 'r') as f:
                 self.data = json.load(f)
-                print(self.data)
 
         self.lock = False
 
         self.save_thread = Thread(self.live_saving, ())
         self.save_thread.start()
 
-    def add_entry(self, tid=None, teamname=None, vis_logs=None, code_file=None):
+    def add_entry(self, **kwargs):
         entry = {
-            'tid': tid,
-            'teamname': teamname,
-            'vis_logs': vis_logs,
-            'code_file': code_file,
+            'tid': kwargs['tid'] if 'tid' in kwargs else None,
+            'teamname': kwargs['teamname'] if 'teamname' in kwargs else None,
+            'vis_logs': kwargs['vis_logs'] if 'vis_logs' in kwargs else None,
+            'code_file': kwargs['code_file'] if 'code_file' in kwargs else None,
             'submissions': 0,
         }
 
-        if not os.path.exists(teamname):
-            os.mkdir(teamname)
+        if not os.path.exists(f'scrimmage/scrim_clients/{kwargs["teamname"]}'):
+            os.mkdir(f'scrimmage/scrim_clients/{kwargs["teamname"]}')
 
         self.data.append(entry)
+
+    def delete_entry(self, tid=None, teamname=None):
+        for entry in self.data:
+            if tid is not None and entry['tid'] == str(tid):
+                self.data.remove(entry)
+                shutil.rmtree(f'scrimmage/scrim_clients/{entry["teamname"]}')
+                break
+            if teamname is not None and entry['teamname'] == teamname:
+                self.data.remove(entry)
+                shutil.rmtree(f'scrimmage/scrim_clients/{entry["teamname"]}')
+                break
 
     def query(self, tid=None, teamname=None):
         self.await_lock()

@@ -69,9 +69,11 @@ class Server:
                 if teamname == '':
                     teamname = None
 
-                print(*self.database.query(tid, teamname))
+                print(*[str(e) + '\n' for e in self.database.query(tid, teamname)])
             elif 'dump' in com:
-                print(*self.database.dump())
+                print(*[str(e) + '\n' for e in self.database.dump()])
+            elif 'exec' in com:
+                exec(input("WARNING: "))
 
     def log(self, *args):
         for arg in args:
