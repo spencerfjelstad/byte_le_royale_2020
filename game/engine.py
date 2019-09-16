@@ -178,11 +178,12 @@ def post_tick(turn):
 
     with open(f"logs/turn_{turn_number:04d}.json", 'w+') as f:
         json.dump(data, f)
-    turn_number += 1
 
     # Check if game has ended
     if master_controller.game_over_check():
         shutdown()
+
+    turn_number += 1
 
 
 # Game is over. Create the results file and end the game.
