@@ -76,10 +76,8 @@ class MasterController(Controller):
         world['sensors'] = {int(key): {int(key2): float(val2) for key2, val2 in val.items()} for key, val in world['sensors'].items()}
 
         # give client their corresponding sensor odds
-        sensor_results = dict()
         for sensor in client.city.sensors.values():
-            sensor_results[sensor.sensor_type] = world['sensors'][sensor.sensor_type][sensor.sensor_level]
-        client.city.sensor_results = sensor_results
+            sensor.sensor_results = world['sensors'][sensor.sensor_type][sensor.sensor_level]
 
     # Receive a specific client and send them what they get per turn. Also obfuscates necessary objects.
     def client_turn_arguments(self, client, world, turn):
