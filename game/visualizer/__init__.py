@@ -16,6 +16,8 @@ log_parser = None
 global_surf = None
 fpsClock = None
 turn = 0 # current turn of the visualizer
+# List that stores population information
+population_list = []
 
 debug = False
 
@@ -32,6 +34,7 @@ def start(gamma, fullscreen=False):
     global fpsClock
     global log_parser
     global turn
+
 
     log_parser = GameLogParser("logs/")
 
@@ -85,6 +88,10 @@ def draw_screen(current_turn):
     if turn_info is None:
         endgame()
     turn_indicator = font.render(f'Turn {turn}', True, (150, 140, 130))
+
+    #List to keep track of population information
+    population_list.append(int(turn_info['player'].get('city').get('population')))
+
     health_bar(turn_info, global_surf)
     global_surf.blit(turn_indicator, (30, 500))
     n = 0
@@ -98,10 +105,10 @@ def draw_screen(current_turn):
 def endgame():
     global_surf.fill(pygame.Color(0, 255, 255))
     font = pygame.font.SysFont('Comic Sans MS', 30)
-    textsurface = font.render('Some Text', False, (0, 0, 0))
-    global_surf.blit(textsurface,(0,0))
+    text_surface = font.render('Some Text', False, (0, 0, 0))
+    global_surf.blit(text_surface,(0,0))
     # Draws graph of round's data
-    lineGraph(global_surf)
+    lineGraph(population_list,global_surf)
 
     pygame.display.update()
 

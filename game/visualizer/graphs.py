@@ -9,11 +9,12 @@ def health_bar(info, surf):
     pygame.draw.rect(surf, pygame.Color(255,255,0), pop)
 
 
-def lineGraph(surf):
+def lineGraph(population_list, surf):
     #For now, here's how to draw a basic graph with random points
-    #Game results, to be gotten from logs
-    max_population = 100
-    max_turns = 200
+    #Game results, gotten from logs
+    max_population = population_list.max()
+    max_turns = len(population_list)
+
     #Border
     #Variables and rectangle declaration
     x_coord = 100
@@ -26,7 +27,12 @@ def lineGraph(surf):
     pygame.draw.rect(surf, pygame.Color(0,0,0), border)
     pygame.draw.rect(surf, pygame.Color(0,255,255), inner_border)
 
-    #Ticks
+    # Ticks
+    #Calculating values at each tick for x and y
+    #Note: Only works if length is divisible by max population
+    double
+
+
     #Num of ticks to be a constant 10, the turn and pop values divided to fit
     for i in range(0,9):
         #x-axis ticks
