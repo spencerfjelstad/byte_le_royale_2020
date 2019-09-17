@@ -8,8 +8,13 @@ import pygame
 from pygame.locals import *
 
 from game.visualizer.game_log_parser import GameLogParser
+from game.utils.helpers import *
+from game.common.enums import *
 from game.visualizer.graphs import *
 from game.config import *
+from game.common.stats import *
+from game.visualizer.city_sprites import *
+from game.visualizer.location_sprites import *
 
 pause = False
 log_parser = None
@@ -19,10 +24,16 @@ turn = 0 # current turn of the visualizer
 # List that stores population information
 population_list = []
 
+
 debug = False
+
+# Sprite Groups
+city_group = pygame.sprite.Group()
+location_group = pygame.sprite.Group()
 
 _VIS_INTERMEDIATE_FRAMES = VIS_INTERMEDIATE_FRAMES
 _FPS = FPS
+
 
 def log(msg):
     if debug:
@@ -52,6 +63,25 @@ def start(gamma, fullscreen=False):
 
     pygame.display.set_gamma(gamma)
 
+    # Sprite changing logic
+    city_x = 484
+    city_y = 200
+    city_struct = GameStats.city_structure
+
+    # Checks city_structure and draws sprite accordingly
+    if city_struct <= GameStats.city_structure / 3:
+        city_sprite = CitySpriteLevel0(city_x, city_y, CityLevel.level_zero)
+        city_group.add(city_sprite)
+    elif city_struct <= GameStats.city_structure / 2:
+        city_sprite = CitySpriteLevel0(city_x, city_y, CityLevel.level_one)
+        city_group.add(city_sprite)
+    elif city_struct <= GameStats.city_structure:
+        city_sprite = CitySpriteLevel0(city_x, city_y, CityLevel.level_two)
+        city_group.add(city_sprite)
+
+    location_sprite = LocationDefault(0,0, CityLocation.default)
+    location_group.add(location_sprite)
+
     # prep for game loop
     turn_wait_counter = 1
 
@@ -64,6 +94,7 @@ def start(gamma, fullscreen=False):
             # increment forward and display page
             turn += 1
             show()
+
 
 # Update the visualizer to display the current turn data
 def show():
@@ -79,7 +110,26 @@ def draw_screen(current_turn):
     global turn
 
     # clear screen
-    global_surf.fill(pygame.Color(0, 0, 0))
+    global_surf.fill(pygame.Color(128, 212, 255))
+
+    # Draw groups
+    location_group.draw(global_surf)
+    city_group.draw(global_surf)
+
+    # # This is all trash for testing
+    # font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
+    #
+    # if turn_info is None:
+    #     pygame.quit()
+    #     sys.exit(0)
+    # turn_indicator = font.render(f'Turn {turn}', True, (150, 140, 130))
+    # global_surf.blit(turn_indicator, (30, 500))
+    # n = 0
+    # for key, item in turn_info['rates'].items():
+    #     n += 1
+    #     text = f'{key}: {item}'
+    #     render_text = font.render(text, True, (0, 150, 150))
+    #     global_surf.blit(render_text, (30, 30*n))
 
     # This is all trash for testing
     font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
@@ -101,7 +151,8 @@ def draw_screen(current_turn):
         render_text = font.render(text, True, (0, 150, 150))
         global_surf.blit(render_text, (30, 30*n))
 
-#Display endgame screen
+
+# Display endgame screen
 def endgame():
     global_surf.fill(pygame.Color(0, 255, 255))
     font = pygame.font.SysFont('Comic Sans MS', 30)
@@ -112,7 +163,7 @@ def endgame():
 
     pygame.display.update()
 
-    #Stays running till exit button pressed
+    # Stays running till exit button pressed
     while True:
         handle_events()
 
