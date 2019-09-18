@@ -16,6 +16,8 @@ class Server:
 
         self.logs = list()
 
+        self.max_simultaneous_runs = 8
+
     def start(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((IP, PORT))
@@ -24,6 +26,12 @@ class Server:
 
         server_input = Thread(self.await_input, ())
         server_input.start()
+
+        game_runner = Thread(self.runner_loop, ())
+        game_runner.start()
+
+        visualizer_runner = Thread(self.visualizer_loop, ())
+        visualizer_runner.start()
 
         while True:
             connection, address = self.server_socket.accept()
@@ -74,6 +82,25 @@ class Server:
                 print(*[str(e) + '\n' for e in self.database.dump()])
             elif 'exec' in com:
                 exec(input("WARNING: "))
+
+    def runner_loop(self):
+        current_running = 0
+        while True:
+            while current_running > self.max_simultaneous_runs:
+                pass
+
+            current_running += 1
+
+            # Run game
+
+            current_running -= 1
+
+    def visualizer_loop(self):
+        while True:
+            # Pick game to run
+
+            # Run game
+            pass
 
     def log(self, *args):
         for arg in args:

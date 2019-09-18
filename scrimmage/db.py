@@ -9,10 +9,10 @@ from scrimmage.utilities import Thread
 class DB:
     def __init__(self):
         self.data = None
-        if not os.path.exists('db.json'):
+        if not os.path.exists('scrimmage/db.json'):
             self.data = list()
         else:
-            with open('db.json', 'r') as f:
+            with open('scrimmage/db.json', 'r') as f:
                 self.data = json.load(f)
 
         self.lock = False
@@ -76,7 +76,7 @@ class DB:
             time.sleep(5)
 
             self.await_lock()
-            with open('db.json', 'w+') as f:
+            with open('scrimmage/db.json', 'w+') as f:
                 json.dump(self.data, f)
 
             self.lock = False
