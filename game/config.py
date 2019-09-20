@@ -57,5 +57,5 @@ else:
 
 # Results file ---------------------------------------------------------------------------------------------------------
 RESULTS_FILE_NAME = "results.json"                              # Name and extension of results file
-RESULTS_DIR = os.getcwd()                                       # Location of the results file
+RESULTS_DIR = os.path.join(os.getcwd(), "logs")                 # Location of the results file
 RESULTS_FILE = os.path.join(RESULTS_DIR, RESULTS_FILE_NAME)     # Results directory combined with file name
