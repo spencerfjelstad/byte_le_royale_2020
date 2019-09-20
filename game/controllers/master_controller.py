@@ -12,11 +12,14 @@ from game.controllers.city_generator_controller import CityGeneratorController
 from game.controllers.destruction_controller import DestructionController
 from game.controllers.disaster_controller import DisasterController
 from game.controllers.effort_controller import EffortController
-
+from game.controllers.event_controller import EventController
 
 class MasterController(Controller):
     def __init__(self):
         super().__init__()
+
+        # Singletons first
+        self.event_controller = EventController()
 
         self.city_generator_controller = CityGeneratorController()
         self.destruction_controller = DestructionController()
@@ -92,9 +95,9 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, client, world, turn):
-        self.effort_controller.handle_actions(client)
-        self.disaster_controller.handle_actions(client)
-        self.destruction_controller.handle_actions(client)
+        self.effort_controller.handle_actions(client, world, turn)
+        self.disaster_controller.handle_actions(client, world, turn)
+        self.destruction_controller.handle_actions(client, world, turn)
 
         if client.city.structure <= 0:
             self.print("Game is ending because city has been destroyed.")
@@ -119,7 +122,8 @@ class MasterController(Controller):
         # data is the json information what will be written to the results file
         data = {
             "Team": client.team_name,  # TODO: Replace with an engine-safe ID of each team
-            "Score": turn
+            "Score": turn,
+            "Stats": self.event_controller.events
         }
         return data
 

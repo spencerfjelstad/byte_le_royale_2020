@@ -51,8 +51,8 @@ class TestDisasters(unittest.TestCase):
         self.player.disasters.append(unhandled_fire)
 
         # Run controllers
-        self.test_effort_controller.handle_actions(self.player)
-        self.test_disaster_controller.handle_actions(self.player)
+        self.test_effort_controller.handle_actions(self.player, None, 1)
+        self.test_disaster_controller.handle_actions(self.player, None, 1)
 
         # Test outcome
         for dis in test_disaster_list:

@@ -9,6 +9,6 @@ class DisasterController(Controller):
         super().__init__()
         self.debug = True
 
-    def handle_actions(self, player):
+    def handle_actions(self, player, world, turn):
         # Remove any dead disasters from the disaster list
         player.disasters = [dis for dis in player.disasters if not dis.status == DisasterStatus.dead]

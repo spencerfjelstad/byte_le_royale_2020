@@ -26,7 +26,7 @@ class TestEfforts(unittest.TestCase):
         for sensor_type in enum_iter(SensorType):
             self.player.action.add_effort(self.player.city.sensors[sensor_type], TEST_SENSOR_AMOUNT)
 
-        self.test_effort_controller.handle_actions(self.player)
+        self.test_effort_controller.handle_actions(self.player, None, 1)
         for sensor in self.player.city.sensors.values():
             self.assertEqual(sensor.sensor_effort_remaining,
                              GameStats.sensor_effort[SensorLevel.level_one] - TEST_SENSOR_AMOUNT)
@@ -41,7 +41,7 @@ class TestEfforts(unittest.TestCase):
         for dis in test_disaster_list:
             self.player.action.add_effort(dis, TEST_DISASTER_AMOUNT)
 
-        self.test_effort_controller.handle_actions(self.player)
+        self.test_effort_controller.handle_actions(self.player, None, 1)
         for dis in test_disaster_list:
             self.assertEqual(dis.effort_remaining,
                              GameStats.disaster_initial_efforts[dis.type] - TEST_DISASTER_AMOUNT)

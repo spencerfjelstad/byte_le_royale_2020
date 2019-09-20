@@ -13,11 +13,11 @@ class CityLocation:
     coastal = 3
     radioactive_wasteland = 4
 
+
 class CityLevel:
     level_zero = 0
     level_one = 1
     level_two = 2
-
 
 
 class CityType:
@@ -46,6 +46,14 @@ class DisasterType:
     earthquake = 3
     monster = 4
     ufo = 5
+
+
+class EventType:
+    sensor_upgrade = 0
+# ideas
+#    disaster_started = 1
+#    disaster_ended = 2
+#    city_upgrade = 3
 
 
 class ObjectType:

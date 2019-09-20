@@ -4,6 +4,7 @@ from game.common.disasters import LastingDisaster
 from game.common.player import Player
 from game.common.sensor import Sensor
 from game.controllers.controller import Controller
+from game.controllers.event_controller import EventController
 from game.config import *
 from game.utils.helpers import enum_iter
 
@@ -13,8 +14,9 @@ import math
 class EffortController(Controller):
     def __init__(self):
         super().__init__()
+        self.event_controller = EventController.get_instance()
 
-    def handle_actions(self, player):
+    def handle_actions(self, player, world, turn):
         # handle advanced verification of allocation list
         player.city.remaining_man_power = player.city.population
         allocations = dict()  # condensed duplicate entries
@@ -48,9 +50,9 @@ class EffortController(Controller):
                 # TODO: Implement or remove from action.py
                 raise NotImplementedError("Effort allocated towards city not yet implemented.")
             if isinstance(act, LastingDisaster):
-                self.apply_disaster_effort(player, act, amount)
+                self.apply_disaster_effort(player, world, turn, act, amount)
             elif isinstance(act, Sensor):
-                self.apply_sensor_effort(player, act, amount)
+                self.apply_sensor_effort(player, world, turn, act, amount)
             elif act in enum_iter(ActionType):
                 # TODO: Implement or remove from action.py
                 raise NotImplementedError("Effort allocated towards ActionType not yet implemented.")
@@ -59,7 +61,7 @@ class EffortController(Controller):
                                  "Validation should have prevented this.")
 
     # Reduces disaster life when effort is applied
-    def apply_disaster_effort(self, player, lasting_disaster, number):
+    def apply_disaster_effort(self, player, world, turn, lasting_disaster, number):
         # Validate input
         if number < 0:
             self.print("Negative effort not accepted.")
@@ -77,7 +79,7 @@ class EffortController(Controller):
         lasting_disaster.reduce(number)
 
     # Upgrades sensors when effort is applied
-    def apply_sensor_effort(self, player, sensor, number):
+    def apply_sensor_effort(self, player, world, turn, sensor, number):
         # Validate input
         if number < 0:
             self.print("Negative effort not accepted.")
@@ -118,6 +120,12 @@ class EffortController(Controller):
             sensor.sensor_effort_remaining = GameStats.sensor_effort[next_level]
             sensor.sensor_level = next_level
 
+            # log upgrade
+            self.event_controller.add_event({
+                "type": EventType.sensor_upgrade,
+                "turn": turn
+            })
+
             # with left over effort, attempt upgrade again
             # TODO: look at making this non-recursive
-            self.apply_sensor_effort(player, sensor, left_over)
+            self.apply_sensor_effort(player, world, turn, sensor, left_over)

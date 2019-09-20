@@ -7,7 +7,7 @@ class DestructionController(Controller):
     def __init__(self):
         super().__init__()
 
-    def handle_actions(self, player):
+    def handle_actions(self, player, world, turn):
         # Loop through each disaster
         city = player.city
         for disaster in player.disasters:

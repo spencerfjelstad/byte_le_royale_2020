@@ -49,15 +49,15 @@ class TestSensors(unittest.TestCase):
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_zero)
 
         player.action.add_effort(fire_sensor, 50)
-        self.test_effort_controller.handle_actions(player)
+        self.test_effort_controller.handle_actions(player, None, 1)
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_one)
 
         player.action = Action()
         player.action.add_effort(fire_sensor, 100)
-        self.test_effort_controller.handle_actions(player)
+        self.test_effort_controller.handle_actions(player, None, 1)
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_two)
 
         player.action = Action()
         player.action.add_effort(fire_sensor, 500)
-        self.test_effort_controller.handle_actions(player)
+        self.test_effort_controller.handle_actions(player, None, 1)
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_three)
