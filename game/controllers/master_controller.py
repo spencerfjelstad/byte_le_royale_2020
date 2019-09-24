@@ -111,6 +111,8 @@ class MasterController(Controller):
     def create_turn_log(self, client, world, turn):
         data = dict()
 
+        data['events'] = self.event_controller.get_events("turn", turn)
+
         data['rates'] = world['rates']
 
         data['player'] = client.to_json()
@@ -123,7 +125,7 @@ class MasterController(Controller):
         data = {
             "Team": client.team_name,  # TODO: Replace with an engine-safe ID of each team
             "Score": turn,
-            "Stats": self.event_controller.events
+            "Events": self.event_controller.events
         }
         return data
 
