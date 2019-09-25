@@ -59,23 +59,10 @@ def start(gamma, fullscreen=False):
 
     pygame.display.set_gamma(gamma)
 
-    # Sprite changing logic
-    city_x = 484
-    city_y = 200
-    city_struct = GameStats.city_structure
 
-    # Checks city_structure and draws sprite accordingly
-    if city_struct <= GameStats.city_structure / 3:
-        city_sprite = CitySpriteLevel0(city_x, city_y, CityLevel.level_zero)
-        city_group.add(city_sprite)
-    elif city_struct <= GameStats.city_structure / 2:
-        city_sprite = CitySpriteLevel0(city_x, city_y, CityLevel.level_one)
-        city_group.add(city_sprite)
-    elif city_struct <= GameStats.city_structure:
-        city_sprite = CitySpriteLevel0(city_x, city_y, CityLevel.level_two)
-        city_group.add(city_sprite)
 
-    location_sprite = LocationDefault(0,0, CityLocation.default)
+
+    location_sprite = LocationDefault(0, 0, CityLocation.default)
     location_group.add(location_sprite)
 
     # prep for game loop
@@ -108,10 +95,6 @@ def draw_screen(current_turn):
     # clear screen
     global_surf.fill(pygame.Color(128, 212, 255))
 
-    # Draw groups
-    location_group.draw(global_surf)
-    city_group.draw(global_surf)
-
     # # This is all trash for testing
     # font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
     #
@@ -131,6 +114,13 @@ def draw_screen(current_turn):
     font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
 
     turn_info = log_parser.get_turn(current_turn)
+
+
+
+    # Draw groups
+    location_group.draw(global_surf)
+    draw_city_sprites(turn_info, city_group, global_surf)
+
     if turn_info is None:
         endgame()
     turn_indicator = font.render(f'Turn {turn}', True, (150, 140, 130))
@@ -142,7 +132,6 @@ def draw_screen(current_turn):
         text = f'{key}: {item}'
         render_text = font.render(text, True, (0, 150, 150))
         global_surf.blit(render_text, (30, 30*n))
-
 
 # Display endgame screen
 def endgame():
