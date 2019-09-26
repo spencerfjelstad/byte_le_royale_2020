@@ -20,6 +20,7 @@ pause = False
 log_parser = None
 global_surf = None
 fpsClock = None
+
 turn = 0 # current turn of the visualizer
 # List that stores population information
 population_list = []
@@ -116,20 +117,6 @@ def draw_screen(current_turn):
     location_group.draw(global_surf)
     city_group.draw(global_surf)
 
-    # # This is all trash for testing
-    # font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
-    #
-    # if turn_info is None:
-    #     pygame.quit()
-    #     sys.exit(0)
-    # turn_indicator = font.render(f'Turn {turn}', True, (150, 140, 130))
-    # global_surf.blit(turn_indicator, (30, 500))
-    # n = 0
-    # for key, item in turn_info['rates'].items():
-    #     n += 1
-    #     text = f'{key}: {item}'
-    #     render_text = font.render(text, True, (0, 150, 150))
-    #     global_surf.blit(render_text, (30, 30*n))
 
     # This is all trash for testing
     font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
@@ -169,7 +156,10 @@ def endgame():
     text_surface = font.render('Some Text', False, (0, 0, 0))
     global_surf.blit(text_surface,(0,0))
     # Draws graph of round's data
-    lineGraph(population_list,global_surf)
+    line_graph_surface = lineGraph(population_list, 500,250)
+
+
+    global_surf.blit(line_graph_surface,(300,300))
 
     pygame.display.update()
 
