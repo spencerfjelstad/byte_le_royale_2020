@@ -144,12 +144,22 @@ def draw_screen(current_turn):
 
     health_bar(turn_info, global_surf)
     global_surf.blit(turn_indicator, (30, 500))
+
+    # Display actual rates
     n = 0
     for key, item in turn_info['rates'].items():
         n += 1
         text = f'{key}: {item}'
         render_text = font.render(text, True, (0, 150, 150))
         global_surf.blit(render_text, (30, 30*n))
+
+    # Display city sensor rates
+    n = 0
+    for sensor in turn_info['player']['city']['sensors'].values():
+        n += 1
+        text = f'{sensor["sensor_type"]}: {sensor["sensor_results"]}'
+        render_text = font.render(text, True, (0, 150, 150))
+        global_surf.blit(render_text, (500, 30*n))
 
 
 # Display endgame screen

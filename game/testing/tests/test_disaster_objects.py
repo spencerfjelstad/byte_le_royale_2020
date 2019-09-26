@@ -6,13 +6,7 @@ class TestDisasterObjects(unittest.TestCase):
 
     # General Disaster Testing
 
-    def test_abstract_init_fail(self):
-        self.assertRaises(TypeError, lambda: Disaster())
-
     # Lasting Disaster Testing
-
-    def test_abstract_lasting_init_fail(self):
-        self.assertRaises(TypeError, lambda: LastingDisaster())
 
     # Earthquake Object Testing
 
