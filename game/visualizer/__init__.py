@@ -25,7 +25,6 @@ turn = 0  # current turn of the visualizer
 debug = False
 
 # Sprite Groups
-city_group = pygame.sprite.Group()
 location_group = pygame.sprite.Group()
 
 _VIS_INTERMEDIATE_FRAMES = VIS_INTERMEDIATE_FRAMES
@@ -119,7 +118,7 @@ def draw_screen(current_turn):
 
     # Draw groups
     location_group.draw(global_surf)
-    draw_city_sprites(turn_info, city_group, global_surf)
+    draw_city_sprites(turn_info, global_surf)
 
     if turn_info is None:
         endgame()
