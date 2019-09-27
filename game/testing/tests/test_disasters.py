@@ -18,11 +18,6 @@ class TestDisasters(unittest.TestCase):
         # Setup
         self.test_disaster_controller = DisasterController()
         self.test_effort_controller = EffortController()
-        self.controllers = {
-            "disaster": self.test_disaster_controller,
-            "effort": self.test_effort_controller
-        }
-        self.test_effort_controller.import_controllers(self.controllers)
         self.player = Player()
         self.player.action = Action()
         self.player.city = City()
@@ -33,6 +28,13 @@ class TestDisasters(unittest.TestCase):
         for dis in {Fire(), Hurricane(), Monster()}:
             test_disaster_list.append(dis)
             self.player.disasters.append(dis)
+
+        # Cheat the population to be higher than intended
+        pop = 0
+        pop += GameStats.disaster_initial_efforts[DisasterType.fire]
+        pop += GameStats.disaster_initial_efforts[DisasterType.hurricane]
+        pop += GameStats.disaster_initial_efforts[DisasterType.monster]
+        self.player.city.population = pop
 
         # Have player handle disasters
         for dis in self.player.disasters:
@@ -59,6 +61,8 @@ class TestDisasters(unittest.TestCase):
                 self.assertEqual(dis.status, DisasterStatus.live)
                 self.assertIn(dis, self.player.disasters)
             else:
+                if dis.effort_remaining != 0:
+                    print(dis)
                 self.assertEqual(dis.effort_remaining, 0)
                 self.assertEqual(dis.status, DisasterStatus.dead)
                 self.assertNotIn(dis, self.player.disasters)
