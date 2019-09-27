@@ -1,4 +1,5 @@
 from game.common.enums import *
+import os
 import platform
 
 # Runtime settings / Restrictions --------------------------------------------------------------------------------------
@@ -43,7 +44,7 @@ STARTING_FREE_TURNS = 10            # how many turns at the beginning will be gu
 
 # Visualizer business --------------------------------------------------------------------------------------------------
 DISPLAY_SIZE = (1280, 720)          # resolution of the game window
-GAMMA = 0                           # monitor brightness
+GAMMA = 1                           # monitor brightness
 # Used to help the game run better on Linux
 if platform.system() == 'Linux':
     VIS_INTERMEDIATE_FRAMES = 10
@@ -53,3 +54,8 @@ else:
     VIS_INTERMEDIATE_FRAMES = 4
     FPS = 120
     LOW_FPS = 60
+
+# Results file ---------------------------------------------------------------------------------------------------------
+RESULTS_FILE_NAME = "results.json"                              # Name and extension of results file
+RESULTS_DIR = os.path.join(os.getcwd(), "logs")                 # Location of the results file
+RESULTS_FILE = os.path.join(RESULTS_DIR, RESULTS_FILE_NAME)     # Results directory combined with file name

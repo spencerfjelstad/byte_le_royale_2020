@@ -1,8 +1,8 @@
-import json
-import os
 from numpy import random as nprandom
+import math
 
 from game.config import *
+from game.common.stats import GameStats
 from game.utils.helpers import *
 
 
@@ -56,7 +56,7 @@ def generate():
 
     # Go through each disaster individually to determine rates
     for disaster_type in range(6):
-        for key, item in disaster_rates.items():
+        for key in disaster_rates.keys():
             # If disaster is happening set the odds to 0
             if disaster_type in disaster_rates[key]['disasters']:
                 disaster_rates[key]['rates'][disaster_type] = 0
@@ -79,8 +79,13 @@ def generate():
                     rate += disaster_rates[key - 1]['rates'][disaster_type]
                 disaster_rates[key]['rates'][disaster_type] = min(rate, 0.999)
 
+    # Calculate the sensor readings for each turn
+    for key, value in disaster_rates.items():
+        disaster_rates[key]['sensors'] = calculate_sensor_ranges(value['rates'])
+        # del disaster_rates[key]['rates']  # rates aren't necessary anymore, but it might be nice to keep for reference
+
     # Convert to json file
-    write(disaster_rates)
+    write(disaster_rates, 'logs/game_map.json')
 
 
 # Biases disasters towards the latter half of the game
@@ -134,17 +139,47 @@ def bias_list(given_list, current_depth=1):
     return first_half + second_half
 
 
+def calculate_sensor_ranges(odds):
+
+    adjusted_weights = {}
+
+    for disaster in enum_iter(DisasterType):
+        sensor_odds = {}
+
+        disaster_odds = math.floor(odds[disaster] * 100)
+
+        for sensor_level in enum_iter(SensorLevel):
+
+            for level in enum_iter(SensorLevel):
+                if sensor_level == level:
+                    range = GameStats.sensor_ranges[level]
+                    break
+            else:
+                raise Exception(
+                    "Sensor level out of bounds. Should be SensorLevel.level_zero <= x <= SensorLevel.level_three.")
+
+            range = math.floor(range / 2)
+            min_chance = disaster_odds - range
+            max_chance = disaster_odds + range
+
+            captured_odds = random.randrange(min_chance, max_chance + 1)
+
+            # handle results appearing below 0
+            captured_odds = abs(captured_odds)
+
+            # handle results appearing above 100
+            if captured_odds >= 100:
+                captured_odds = 200 - captured_odds  # odds of 110 would become 90 (100 - 10 or 200 - 110)
+
+            sensor_odds[sensor_level] = captured_odds / 100
+
+        adjusted_weights[disaster] = sensor_odds
+
+    return adjusted_weights
+
 def print_dict(data, name='dict'):
     res = name + '\n'
     for key, item in data.items():
         res += f'{key}: {item}\n'
         
     print(res)
-
-
-def write(data):
-    if not os.path.exists('logs'):
-        os.makedirs('logs')
-    
-    with open('logs/game_map.json', 'w+') as out:
-        json.dump(data, out)

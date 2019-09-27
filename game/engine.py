@@ -8,6 +8,7 @@ from game.common.player import *
 from game.config import *
 
 from game.controllers.master_controller import MasterController
+from game.utils.helpers import write
 from game.utils.thread import Thread
 
 clients = list()
@@ -30,13 +31,14 @@ def loop():
     for turn in tqdm(master_controller.game_loop_logic(), bar_format=TQDM_BAR_FORMAT, unit=TQDM_UNITS):
         if len(clients) <= 0:
             print("No clients found")
-            exit()
+            os._exit(0)  # TODO: Consider alternative exit
 
         pre_tick(turn, world)
         tick(turn)
         post_tick(turn)
 
     print("Game reached max turns and is closing.")
+    shutdown()
 
 
 # Gets players established with their objects and such
@@ -151,7 +153,7 @@ def tick(turn):
     # End if there are no remaining clients
     if len(clients) <= 0:
         print("All clients ran out of time")
-        exit()
+        shutdown()  # TODO: Consider alternative exit
 
     # Apply bulk of game logic
     if SET_NUMBER_OF_CLIENTS == 1:
@@ -176,13 +178,34 @@ def post_tick(turn):
 
     with open(f"logs/turn_{turn_number:04d}.json", 'w+') as f:
         json.dump(data, f)
-    turn_number += 1
 
     # Check if game has ended
     if master_controller.game_over_check():
-        # Game is over, create the results file and end the game
-        print("\nGame has ended.")
-        exit()
+        shutdown()
+
+    turn_number += 1
+
+
+# Game is over. Create the results file and end the game.
+def shutdown():
+    global clients
+    global current_world
+    global master_controller
+    global turn_number
+
+    # Retrieve results from master controller
+    results_information = None
+    if SET_NUMBER_OF_CLIENTS == 1:
+        results_information = master_controller.return_final_results(clients[0], current_world, turn_number)
+    else:
+        results_information = master_controller.return_final_results(clients, current_world, turn_number)
+
+    # Write results file
+    write(results_information, RESULTS_FILE)
+
+    # Exit game
+    print("\nGame has successfully ended.")
+    os._exit(0)
 
 
 # Debug print statement

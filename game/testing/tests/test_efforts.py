@@ -9,7 +9,6 @@ from game.common.enums import *
 from game.common.stats import GameStats
 from game.controllers.effort_controller import EffortController
 from game.controllers.disaster_controller import DisasterController
-from game.controllers.sensor_controller import SensorController
 from game.utils.helpers import enum_iter
 
 
@@ -18,13 +17,6 @@ class TestEfforts(unittest.TestCase):
     def setUp(self):
         self.test_effort_controller = EffortController()
         self.test_disaster_controller = DisasterController()
-        self.test_sensor_controller = SensorController()
-        self.controllers = {
-            "sensor": self.test_sensor_controller,
-            "disaster": self.test_disaster_controller,
-            "effort": self.test_effort_controller
-        }
-        self.test_effort_controller.import_controllers(self.controllers)
         self.player = Player()
         self.player.action = Action()
         self.player.city = City()

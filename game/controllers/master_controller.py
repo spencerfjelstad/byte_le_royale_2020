@@ -5,14 +5,13 @@ from game.common.player import Player
 from game.common.action import Action
 from game.common.disasters import *
 from game.common.city import City
-from game.config import *
+import game.config as config
 
 from game.controllers.controller import Controller
 from game.controllers.city_generator_controller import CityGeneratorController
 from game.controllers.destruction_controller import DestructionController
 from game.controllers.disaster_controller import DisasterController
 from game.controllers.effort_controller import EffortController
-from game.controllers.sensor_controller import SensorController
 
 
 class MasterController(Controller):
@@ -23,7 +22,6 @@ class MasterController(Controller):
         self.destruction_controller = DestructionController()
         self.disaster_controller = DisasterController()
         self.effort_controller = EffortController()
-        self.sensor_controller = SensorController()
 
         self.game_over = False
 
@@ -48,7 +46,7 @@ class MasterController(Controller):
             # Increment the turn counter by 1
             turn += 1
             # If the next turn number is above the max, the iterator ends
-            if turn > MAX_TURNS:
+            if turn > config.MAX_TURNS:
                 break
 
     # Receives world data from the generated game log and is responsible for interpreting it
@@ -74,17 +72,12 @@ class MasterController(Controller):
 
             client.disasters.append(dis)
 
-        world['rates'] = {int(key): val for key, val in world['rates'].items()}
-        # Calculate error ranges
-        if turn not in self.sensor_controller.turn_ranges:
-            self.sensor_controller.calculate_turn_ranges(turn, world['rates'])
-        sensor_estimates = self.sensor_controller.turn_ranges[turn]
+        # read the sensor results from the game map, converting strings to ints and/or floats
+        world['sensors'] = {int(key): {int(key2): float(val2) for key2, val2 in val.items()} for key, val in world['sensors'].items()}
 
         # give client their corresponding sensor odds
-        sensor_results = dict()
-        for sens_type, sensor in client.city.sensors.items():
-            sensor_results[sens_type] = sensor_estimates[sensor.sensor_type][sensor.sensor_level]
-        client.city.sensor_results = sensor_results
+        for sensor in client.city.sensors.values():
+            sensor.sensor_results = world['sensors'][sensor.sensor_type][sensor.sensor_level]
 
     # Receive a specific client and send them what they get per turn. Also obfuscates necessary objects.
     def client_turn_arguments(self, client, world, turn):
@@ -100,23 +93,34 @@ class MasterController(Controller):
     # Perform the main logic that happens per turn
     def turn_logic(self, client, world, turn):
         self.effort_controller.handle_actions(client)
-        self.sensor_controller.handle_actions(client)
         self.disaster_controller.handle_actions(client)
         self.destruction_controller.handle_actions(client)
 
-        if client.city.structure <= 0 or client.city.population <= 0:
+        if client.city.structure <= 0:
+            self.print("Game is ending because city has been destroyed.")
             self.game_over = True
-            if client.city.structure <= 0:
-                self.print("Game is ending because city has been destroyed.")
-            if client.city.population <= 0:
-                self.print("Game is ending because population has died.")
+
+        if client.city.population <= 0:
+            self.print("Game is ending because population has died.")
+            self.game_over = True
 
     # Return serialized version of game
     def create_turn_log(self, client, world, turn):
         data = dict()
+
         data['rates'] = world['rates']
+
         data['player'] = client.to_json()
 
+        return data
+
+    # Gather necessary data together in results file
+    def return_final_results(self, client, world, turn):
+        # data is the json information what will be written to the results file
+        data = {
+            "Team": client.team_name,  # TODO: Replace with an engine-safe ID of each team
+            "Score": turn
+        }
         return data
 
     # Return if the game should be over
