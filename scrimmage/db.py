@@ -29,6 +29,8 @@ class DB:
             'submissions': 0,
         }
 
+        if not os.path.exists(f'scrimmage/scrim_clients'):
+            os.mkdir(f'scrimmage/scrim_clients')
         if not os.path.exists(f'scrimmage/scrim_clients/{kwargs["teamname"]}'):
             os.mkdir(f'scrimmage/scrim_clients/{kwargs["teamname"]}')
 
@@ -36,26 +38,29 @@ class DB:
 
     def delete_entry(self, tid=None, teamname=None):
         for entry in self.data:
-            if tid is not None and entry['tid'] == str(tid):
-                self.data.remove(entry)
-                shutil.rmtree(f'scrimmage/scrim_clients/{entry["teamname"]}')
-                break
-            if teamname is not None and entry['teamname'] == teamname:
-                self.data.remove(entry)
-                shutil.rmtree(f'scrimmage/scrim_clients/{entry["teamname"]}')
-                break
+            if tid is not None and entry['tid'] != str(tid):
+                continue
+            if teamname is not None and entry['teamname'] != teamname:
+                continue
 
-    def query(self, tid=None, teamname=None):
+            self.data.remove(entry)
+            shutil.rmtree(f'scrimmage/scrim_clients/{entry["teamname"]}')
+            break
+
+    def query(self, tid=None, teamname=None, sortby=None):
         self.await_lock()
 
         results = list()
         for entry in self.data:
-            if tid is not None and entry['tid'] != tid:
+            if tid is not None and entry['tid'] != str(tid):
                 continue
             if teamname is not None and entry['teamname'] != teamname:
                 continue
 
             results.append(entry)
+
+        if sortby is not None:
+            results = sorted(results, key=sortby)
 
         self.lock = False
         return results

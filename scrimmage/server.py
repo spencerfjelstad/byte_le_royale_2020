@@ -2,6 +2,7 @@ import os
 import socket
 import datetime
 import uuid
+import time
 
 from scrimmage.db import DB
 from scrimmage.utilities import *
@@ -49,6 +50,7 @@ class Server:
     def register_client(self, connection, address):
         teamname = receive_data(connection)
         team_uuid = str(uuid.uuid4())
+        # TODO: browse database to prevent repeat names
         if teamname in ['frankfurt', 'skungle dungus']:
             team_uuid = 'name already taken'
             self.log(f'Registration attempted for already taken teamname: {teamname}')
@@ -61,13 +63,20 @@ class Server:
         while True:
             com = input('Ɛ>')
             self.log(f'Server command: {com}')
+            # Exit command for shutting down the server
             if com == 'exit':
                 os._exit(0)
+
+            # Echo back the given string to the user, mostly for testing
             elif 'echo ' in com:
                 print(com.replace('echo ', ''))
+
+            # Display all the logs from the current server instance
             elif 'log' in com:
                 for s in self.logs:
                     print(s)
+
+            # Create a query of all entries in the database
             elif 'query' in com:
                 tid = input('TID: ').strip()
                 teamname = input('Team name: ').strip()
@@ -78,10 +87,17 @@ class Server:
                     teamname = None
 
                 print(*[str(e) + '\n' for e in self.database.query(tid, teamname)])
+
+            # Show all entries in the database, equivalent to query with no parameters
             elif 'dump' in com:
                 print(*[str(e) + '\n' for e in self.database.dump()])
+
+            # Write a python command that will get executed
             elif 'exec' in com:
-                exec(input("WARNING: "))
+                try:
+                    exec(input("WARNING: "))
+                except Exception:
+                    print('You did it wrong.')
 
     def runner_loop(self):
         current_running = 0
@@ -92,6 +108,8 @@ class Server:
             current_running += 1
 
             # Run game
+            self.log(f'Running client: {1}')
+            time.sleep(10)
 
             current_running -= 1
 
@@ -100,6 +118,8 @@ class Server:
             # Pick game to run
 
             # Run game
+            self.log(f'Visualizing game from client: {1}')
+            time.sleep(30)
             pass
 
     def log(self, *args):
