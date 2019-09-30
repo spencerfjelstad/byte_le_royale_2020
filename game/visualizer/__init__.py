@@ -244,24 +244,23 @@ def start(gamma, fullscreen=False):
 
     # initialize cocos
     director.init(width=size[0], height=size[1], caption="Byte-le Royale: Disaster Dispatcher", fullscreen=fullscreen)
-    draw_screen()
 
-
-def draw_screen():
-    global log_parser
-    global turn
-
+    # Get turn info from logs, if None go to end scene
     turn_info = log_parser.get_turn(turn)
     if turn_info is None:
         end = EndLayer(size)
         end_scene = cocos.scene.Scene().add(end)
         director.replace(end_scene)
     else:
-        clock = TimeLayer(size, turn)
+        # Initialize clock layer and add an interval
+        clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=0)
+
         first_scene = create_scene(turn_info)
         first_scene.add(clock)
+
         director.run(first_scene)
+
 
 def timer(interval):
     global turn
@@ -274,7 +273,7 @@ def timer(interval):
         end_scene = cocos.scene.Scene().add(end)
         director.replace(end_scene)
     else:
-        clock = TimeLayer(size, turn)
+        clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=0.1)
 
         current_scene = create_scene(turn_info)
@@ -284,14 +283,16 @@ def timer(interval):
 
 
 def create_scene(info):
+    # Generate layers
     health_layer = HealthBar(size, info)
     location_layer = LocationLayer(size, 'plains')
     city_layer = CityLayer(size, info)
 
-    main_scene = cocos.scene.Scene()
-    main_scene.add(location_layer, 0)
-    main_scene.add(city_layer, 1)
-    main_scene.add(health_layer, 1)
+    # Add layers to
+    scene = cocos.scene.Scene()
+    scene.add(location_layer, 0)
+    scene.add(city_layer, 1)
+    scene.add(health_layer, 1)
 
-    return main_scene
+    return scene
 
