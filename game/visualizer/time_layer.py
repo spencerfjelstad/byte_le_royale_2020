@@ -38,5 +38,5 @@ class TimeLayer(cocos.layer.Layer):
                 font_name="Comic Sans",
                 font_size=15
             )
-            label.position = 500, self.display[1] -50- 30 * n
+            label.position = 500, self.display[1]-50-30 * n
             self.add(label)
