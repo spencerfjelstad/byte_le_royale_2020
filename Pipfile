@@ -7,8 +7,8 @@ verify_ssl = true
 
 [packages]
 tqdm = "*"
-pygame = "*"
 numpy = "*"
+cocos2d = "*"
 
 [requires]
 python_version = "3.7"

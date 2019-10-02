@@ -1,12 +1,5 @@
 import pygame
-
-def health_bar(info, surf):
-    structure = int(info['player'].get('city').get('structure'))
-    population = int(info['player'].get('city').get('population'))
-    struct = pygame.Rect(100, 600, structure, 50)
-    pop = pygame.Rect(100,550,population,50)
-    pygame.draw.rect(surf, pygame.Color(255,0,0), struct)
-    pygame.draw.rect(surf, pygame.Color(255,255,0), pop)
+import cocos
 
 
 def lineGraph(population_list, final_width, final_height):
