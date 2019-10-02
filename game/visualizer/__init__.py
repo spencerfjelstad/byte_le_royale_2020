@@ -55,12 +55,6 @@ def start(gamma, fullscreen=False):
 
         first_scene = create_scene(turn_info)
         first_scene.add(clock)
-
-    location_sprite = LocationDefault(0, 0, CityLocation.default)
-    location_group.add(location_sprite)
-
-    # prep for game loop
-    turn_wait_counter = 1
         director.run(first_scene)
 
 
@@ -97,117 +91,9 @@ def create_scene(info):
     scene.add(city_layer, 1)
     scene.add(health_layer, 1)
 
-
-def draw_screen(current_turn):
-    global global_surf
-    global log_parser
-    global turn
-
-    # clear screen
-    global_surf.fill(pygame.Color(128, 212, 255))
-
-    # # This is all trash for testing
-    # font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
-    #
-    # if turn_info is None:
-    #     pygame.quit()
-    #     sys.exit(0)
-    # turn_indicator = font.render(f'Turn {turn}', True, (150, 140, 130))
-    # global_surf.blit(turn_indicator, (30, 500))
-    # n = 0
-    # for key, item in turn_info['rates'].items():
-    #     n += 1
-    #     text = f'{key}: {item}'
-    #     render_text = font.render(text, True, (0, 150, 150))
-    #     global_surf.blit(render_text, (30, 30*n))
-
-    # This is all trash for testing
-    font = pygame.font.SysFont(pygame.font.get_default_font(), 30, True)
-
-    turn_info = log_parser.get_turn(current_turn)
-
-
-
-    # Draw groups
-    location_group.draw(global_surf)
-    draw_city_sprites(turn_info, global_surf)
-
-    if turn_info is None:
-        endgame()
-    turn_indicator = font.render(f'Turn {turn}', True, (150, 140, 130))
-    health_bar(turn_info, global_surf)
-    global_surf.blit(turn_indicator, (30, 500))
-    n = 0
-    for key, item in turn_info['rates'].items():
-        n += 1
-        text = f'{key}: {item}'
-        render_text = font.render(text, True, (0, 150, 150))
-        global_surf.blit(render_text, (30, 30*n))
-
-# Display endgame screen
-def endgame():
-    global_surf.fill(pygame.Color(0, 255, 255))
-    font = pygame.font.SysFont('Comic Sans MS', 30)
-    textsurface = font.render('Some Text', False, (0, 0, 0))
-    global_surf.blit(textsurface,(0,0))
-    # Draws graph of round's data
-    lineGraph(global_surf)
-
-    pygame.display.update()
-
-    # Stays running till exit button pressed
-    while True:
-        handle_events()
-
-
-def handle_events():
-    for event in pygame.event.get():
-        # Application exited by user
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-
-        # Keyboard events
-        elif event.type == KEYUP:
-            global turn
-
-            # Pause toggle
-            if event.key == K_p:
-                global pause
-                pause = not pause
-
-            # Toggle fullscreen (may not work on windows)
-            if event.key == K_f:
-                pygame.display.toggle_fullscreen()
-
-            # Exit
-            if event.key == K_ESCAPE:
-                pygame.quit()
-                sys.exit()
-
-            # Back up a turn
-            if event.key == K_LEFT:
-                turn -= 1
-                show()
-
-            # Forward a turn
-            if event.key == K_RIGHT:
-                turn += 1
-                show()
-
-            # start
-            if event.key == K_DOWN:
-                turn = 1
-                show()
-
-            # end
-            if event.key == K_UP:
-                turn = MAX_TURNS
-                show()
-
-            # yeet
-            if event.key == K_y:
-                turn = random.randint(1, MAX_TURNS)
-                show()
     return scene
+
+
+
+
 
