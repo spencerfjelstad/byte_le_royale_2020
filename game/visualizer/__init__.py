@@ -1,22 +1,17 @@
-import sys
-import math
-import random
-import time
-import zipfile
+import cocos
+from cocos.director import director
+import pyglet
 
-import pygame
-from pygame.locals import *
-
-from game.visualizer.game_log_parser import GameLogParser
-from game.utils.helpers import *
-from game.common.enums import *
-from game.visualizer.graphs import *
 from game.config import *
-from game.common.stats import *
+from game.visualizer.game_log_parser import GameLogParser
+from game.visualizer.graphs import *
 from game.visualizer.city_sprites import *
 from game.visualizer.location_sprites import *
+from game.visualizer.health_bar import *
+from game.visualizer.time_layer import *
+from game.visualizer.end_layer import *
 
-pause = False
+size = DISPLAY_SIZE
 log_parser = None
 global_surf = None
 fpsClock = None
@@ -34,56 +29,73 @@ _FPS = FPS
 def log(msg):
     if debug:
         print(str(msg))
+turn = 1
+
 
 
 def start(gamma, fullscreen=False):
-    global pause
-    global fpsClock
     global log_parser
     global turn
 
     log_parser = GameLogParser("logs/")
 
-    # initialize pygame
-    pygame.init()
-    fpsClock = pygame.time.Clock()
-    pygame.font.init()
+    # initialize cocos
+    director.init(width=size[0], height=size[1], caption="Byte-le Royale: Disaster Dispatcher", fullscreen=fullscreen)
 
-    global global_surf
-    if fullscreen:
-        global_surf = pygame.display.set_mode(DISPLAY_SIZE, pygame.FULLSCREEN)
+    # Get turn info from logs, if None go to end scene
+    turn_info = log_parser.get_turn(turn)
+    if turn_info is None:
+        end = EndLayer(size)
+        end_scene = cocos.scene.Scene().add(end)
+        director.replace(end_scene)
     else:
-        global_surf = pygame.display.set_mode(DISPLAY_SIZE)
-    pygame.display.set_caption('Byte-le Royale: Disaster Dispatcher')
+        # Initialize clock layer and add an interval
+        clock = TimeLayer(size, turn_info, turn)
+        clock.schedule_interval(callback=timer, interval=0)
 
-    pygame.display.set_gamma(gamma)
-
-
-
+        first_scene = create_scene(turn_info)
+        first_scene.add(clock)
 
     location_sprite = LocationDefault(0, 0, CityLocation.default)
     location_group.add(location_sprite)
 
     # prep for game loop
     turn_wait_counter = 1
-
-    # the big boy
-    while True:
-
-        handle_events()
-
-        if not pause:
-            # increment forward and display page
-            turn += 1
-            show()
+        director.run(first_scene)
 
 
-# Update the visualizer to display the current turn data
-def show():
+def timer(interval):
     global turn
-    draw_screen(turn)
-    pygame.display.update()
-    fpsClock.tick(_FPS)
+    turn += 1
+    director.scene_stack.clear()
+
+
+    turn_info=log_parser.get_turn(turn)
+    if turn_info is None:
+        end = EndLayer(size)
+        end_scene = cocos.scene.Scene().add(end)
+        director.replace(end_scene)
+    else:
+        clock = TimeLayer(size, turn_info, turn)
+        clock.schedule_interval(callback=timer, interval=0.1)
+
+        current_scene = create_scene(turn_info)
+        current_scene.add(clock)
+
+        director.replace(current_scene)
+
+
+def create_scene(info):
+    # Generate layers
+    health_layer = HealthBar(size, info)
+    location_layer = LocationLayer(size, 'plains')
+    city_layer = CityLayer(size, info)
+
+    # Add layers to
+    scene = cocos.scene.Scene()
+    scene.add(location_layer, 0)
+    scene.add(city_layer, 1)
+    scene.add(health_layer, 1)
 
 
 def draw_screen(current_turn):
@@ -197,3 +209,5 @@ def handle_events():
             if event.key == K_y:
                 turn = random.randint(1, MAX_TURNS)
                 show()
+    return scene
+

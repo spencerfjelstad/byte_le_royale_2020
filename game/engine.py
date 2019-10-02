@@ -31,7 +31,7 @@ def loop():
     for turn in tqdm(master_controller.game_loop_logic(), bar_format=TQDM_BAR_FORMAT, unit=TQDM_UNITS):
         if len(clients) <= 0:
             print("No clients found")
-            exit()  # TODO: Consider alternative exit
+            os._exit(0)  # TODO: Consider alternative exit
 
         pre_tick(turn, world)
         tick(turn)
@@ -178,11 +178,12 @@ def post_tick(turn):
 
     with open(f"logs/turn_{turn_number:04d}.json", 'w+') as f:
         json.dump(data, f)
-    turn_number += 1
 
     # Check if game has ended
     if master_controller.game_over_check():
         shutdown()
+
+    turn_number += 1
 
 
 # Game is over. Create the results file and end the game.
@@ -204,7 +205,7 @@ def shutdown():
 
     # Exit game
     print("\nGame has successfully ended.")
-    exit()
+    os._exit(0)
 
 
 # Debug print statement
