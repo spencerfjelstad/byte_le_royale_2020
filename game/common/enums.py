@@ -50,10 +50,8 @@ class DisasterType:
 
 class EventType:
     sensor_upgrade = 0
-# ideas
-#    disaster_started = 1
-#    disaster_ended = 2
-#    city_upgrade = 3
+    disaster_spawned = 1
+    disaster_eliminated = 2
 
 
 class ObjectType:

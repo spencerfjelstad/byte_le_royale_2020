@@ -75,6 +75,12 @@ class MasterController(Controller):
 
             client.disasters.append(dis)
 
+            self.event_controller.add_event({
+                "event_type": EventType.disaster_spawned,
+                "turn": turn,
+                "disaster": dis.to_json()
+            })
+
         # read the sensor results from the game map, converting strings to ints and/or floats
         world['sensors'] = {int(key): {int(key2): float(val2) for key2, val2 in val.items()} for key, val in world['sensors'].items()}
 
@@ -95,9 +101,11 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, client, world, turn):
-        self.effort_controller.handle_actions(client, world, turn)
-        self.disaster_controller.handle_actions(client, world, turn)
-        self.destruction_controller.handle_actions(client, world, turn)
+        self.event_controller.update(turn)
+
+        self.effort_controller.handle_actions(client)
+        self.disaster_controller.handle_actions(client)
+        self.destruction_controller.handle_actions(client)
 
         if client.city.structure <= 0:
             self.print("Game is ending because city has been destroyed.")
@@ -111,7 +119,8 @@ class MasterController(Controller):
     def create_turn_log(self, client, world, turn):
         data = dict()
 
-        data['events'] = self.event_controller.get_events("turn", turn)
+        # Retrieve all events on this turn
+        data['events'] = [event for event in self.event_controller.get_events() if event.get('turn') == turn]
 
         data['rates'] = world['rates']
 
@@ -125,7 +134,7 @@ class MasterController(Controller):
         data = {
             "Team": client.team_name,  # TODO: Replace with an engine-safe ID of each team
             "Score": turn,
-            "Events": self.event_controller.events
+            "Events": self.event_controller.get_events()
         }
         return data
 
