@@ -24,7 +24,7 @@ class TestSensors(unittest.TestCase):
             DisasterType.ufo: 0.0
         }
         turn_ranges = dict()
-        for turn in range(10000):
+        for turn in range(100):
             turn_ranges[turn] = calculate_sensor_ranges(test_odds)
 
         max_val = -0.01
@@ -49,15 +49,15 @@ class TestSensors(unittest.TestCase):
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_zero)
 
         player.action.add_effort(fire_sensor, 50)
-        self.test_effort_controller.handle_actions(player, None, 1)
+        self.test_effort_controller.handle_actions(player)
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_one)
 
         player.action = Action()
         player.action.add_effort(fire_sensor, 100)
-        self.test_effort_controller.handle_actions(player, None, 1)
+        self.test_effort_controller.handle_actions(player)
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_two)
 
         player.action = Action()
         player.action.add_effort(fire_sensor, 500)
-        self.test_effort_controller.handle_actions(player, None, 1)
+        self.test_effort_controller.handle_actions(player)
         self.assertEqual(fire_sensor.sensor_level, SensorLevel.level_three)
