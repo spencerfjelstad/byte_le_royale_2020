@@ -17,14 +17,17 @@ if __name__ == '__main__':
     # Run game options
     elif '-run' in sys.argv:
         # Additional args
+        quiet = False
         if '-debug' in sys.argv:
             debug_in = sys.argv.index('-debug') + 1
             if len(sys.argv) > debug_in:
                 game.config.Debug.level = int(sys.argv[debug_in])
             else:
                 print('Debug input not found, using default value')
+        if '-q' in sys.argv:
+            quiet = True
 
-        loop()
+        loop(quiet)
     
     # Visualizer options
     elif '-visualizer' in sys.argv:

@@ -3,6 +3,9 @@ import socket
 import datetime
 import uuid
 import time
+import shutil
+import json
+from subprocess import Popen
 
 from scrimmage.db import DB
 from scrimmage.utilities import *
@@ -17,7 +20,8 @@ class Server:
 
         self.logs = list()
 
-        self.max_simultaneous_runs = 8
+        self.max_simultaneous_runs = 4
+        self.current_running = [x for x in range(self.max_simultaneous_runs)]
 
     def start(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -100,18 +104,42 @@ class Server:
                     print('You did it wrong.')
 
     def runner_loop(self):
-        current_running = 0
         while True:
-            while current_running > self.max_simultaneous_runs:
+            while len(self.current_running) == 0:
                 pass
 
-            current_running += 1
+            num = self.current_running.pop(0)
 
+            thr = Thread(self.internal, (None, num,))
+            thr.start()
+
+    def internal(self, client, number):
+        try:
             # Run game
             self.log(f'Running client: {1}')
-            time.sleep(10)
+            if not os.path.exists(f'scrimmage/temp'):
+                os.mkdir(f'scrimmage/temp')
+            end_path = f'scrimmage/temp/{number}'
+            if not os.path.exists(end_path):
+                os.mkdir(end_path)
 
-            current_running -= 1
+            shutil.copy('launcher.pyz', end_path)
+            shutil.copy('first_client.py', end_path)
+            shutil.copy('scrimmage/runner.bat', end_path)
+
+            f = open(os.devnull, 'w')
+            p = Popen('runner.bat', stdout=f, cwd=end_path, shell=True)
+            stdout, stderr = p.communicate()
+
+            with open(end_path + '/logs/results.json') as f:
+                woop = json.load(f)
+
+            shutil.rmtree(end_path)
+            
+        except Exception:
+            pass
+
+        self.current_running.append(number)
 
     def visualizer_loop(self):
         while True:
