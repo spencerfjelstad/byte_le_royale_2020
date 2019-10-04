@@ -16,7 +16,7 @@ class Disaster:
         data = dict()
 
         data["status"] = self.status
-        data["type"] = self.type
+        data["disaster_type"] = self.type
         data["population_damage"] = self.population_damage
         data["structure_damage"] = self.structure_damage
         data["object_type"] = self.object_type
@@ -25,7 +25,7 @@ class Disaster:
 
     def from_json(self, data):
         self.status = data["status"]
-        self.type = data["type"]
+        self.type = data["disaster_type"]
         self.population_damage = data["population_damage"]
         self.structure_damage = data["structure_damage"]
         self.object_type = data["object_type"]
