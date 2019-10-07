@@ -4,17 +4,17 @@ import pyglet
 
 from game.config import *
 from game.visualizer.game_log_parser import GameLogParser
-from game.visualizer.graphs import *
+# from game.visualizer.graphs import *
 from game.visualizer.city_sprites import *
 from game.visualizer.location_sprites import *
 from game.visualizer.health_bar import *
 from game.visualizer.time_layer import *
 from game.visualizer.end_layer import *
+from game.visualizer.forecast_sprite import *
 
 size = DISPLAY_SIZE
 log_parser = None
 turn = 1
-
 
 def start(gamma, fullscreen=False):
     global log_parser
@@ -36,9 +36,8 @@ def start(gamma, fullscreen=False):
         clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=0)
 
-        first_scene = create_scene(turn_info)
+        first_scene = create_scene(turn_info, log_parser)
         first_scene.add(clock)
-
         director.run(first_scene)
 
 
@@ -56,22 +55,24 @@ def timer(interval):
         clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=0.1)
 
-        current_scene = create_scene(turn_info)
+        current_scene = create_scene(turn_info, log_parser)
         current_scene.add(clock)
 
         director.replace(current_scene)
 
 
-def create_scene(info):
+def create_scene(info, parser):
     # Generate layers
     health_layer = HealthBar(size, info)
     location_layer = LocationLayer(size, 'plains')
     city_layer = CityLayer(size, info)
+    forecast_layer = ForecastLayer(turn, parser)
 
     # Add layers to
     scene = cocos.scene.Scene()
     scene.add(location_layer, 0)
     scene.add(city_layer, 1)
     scene.add(health_layer, 1)
+    scene.add(forecast_layer, 1)
 
     return scene
