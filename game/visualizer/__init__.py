@@ -13,22 +13,6 @@ from game.visualizer.end_layer import *
 
 size = DISPLAY_SIZE
 log_parser = None
-global_surf = None
-fpsClock = None
-turn = 0  # current turn of the visualizer
-
-debug = False
-
-# Sprite Groups
-location_group = pygame.sprite.Group()
-
-_VIS_INTERMEDIATE_FRAMES = VIS_INTERMEDIATE_FRAMES
-_FPS = FPS
-
-
-def log(msg):
-    if debug:
-        print(str(msg))
 turn = 1
 
 
