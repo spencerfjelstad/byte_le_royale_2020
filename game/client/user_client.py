@@ -22,9 +22,6 @@ class UserClient:
     def city_type(self):
         return CityType.none
 
-    def set_decree(self, my_decree):
-        raise NotImplementedError("TODO: implement this function in UserClient")
-
     def take_turn(self, actions, city, disasters):
         raise NotImplementedError("Implement this in subclass")
 

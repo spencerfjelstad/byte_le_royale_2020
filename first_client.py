@@ -24,7 +24,14 @@ class Client(UserClient):
         actions.add_effort("heehee i'm not doing anything actually", 1)
         actions.add_effort("other action to make it look not funny in the logs", 1093)
 
-        self.print(city.gold, city.resources)
+        # Set decree
+        highest = -1
+        highest_sensor = None
+        for sensor in city.sensors.values():
+            if sensor.sensor_results > highest:
+                highest = sensor.sensor_results
+                highest_sensor = sensor
 
-    def set_decree(self, my_decree):
-        return "let them eat cake"
+        actions.set_decree(highest_sensor.sensor_type)
+
+        self.print(city.gold, city.resources)
