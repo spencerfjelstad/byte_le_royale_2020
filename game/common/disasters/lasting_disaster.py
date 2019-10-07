@@ -5,6 +5,7 @@ from game.common.enums import *
 class LastingDisaster(Disaster):
     def __init__(self):
         super().__init__()
+        self.newly_spawned = True
         self.initial_effort = None
         self.effort_remaining = None
 
@@ -20,6 +21,7 @@ class LastingDisaster(Disaster):
     def to_json(self):
         data = Disaster.to_json(self)
 
+        data["newly_spawned"] = self.newly_spawned
         data["initial_effort"] = self.initial_effort
         data["effort_remaining"] = self.effort_remaining
 
@@ -28,5 +30,6 @@ class LastingDisaster(Disaster):
     def from_json(self, data):
         Disaster.from_json(self, data)
 
+        self.newly_spawned = data["newly_spawned"]
         self.initial_effort = data["initial_effort"]
         self.effort_remaining = data["effort_remaining"]
