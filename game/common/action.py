@@ -17,8 +17,8 @@ class Action:
     )
 
     def __init__(self):
-        self._allocation_list = deque(maxlen=MAX_ALLOCATIONS_ALLOWED_PER_TURN)
-        self._decree = None
+        self.__allocation_list = deque(maxlen=MAX_ALLOCATIONS_ALLOWED_PER_TURN)
+        self.__decree = None
         self.object_type = ObjectType.action
 
     def add_effort(self, action, amount):
@@ -28,29 +28,35 @@ class Action:
             return
         if action not in enum_iter(ActionType) and not isinstance(action, Action.ACCEPTABLE_ACTION_OBJECTS):
             return
-        self._allocation_list.append([action, int(amount)])
+        self.__allocation_list.append([action, int(amount)])
+
+    def get_allocation_list(self):
+        return self.__allocation_list
+
+    def get_decree(self):
+        return self.__decree
 
     def set_decree(self, dec):
-        if dec not in enum_iter(PreemptiveType):
+        if dec not in enum_iter(DecreeType):
             return
-        self._decree = dec
+        self.__decree = dec
 
     def to_json(self):
         data = dict()
         json_allocation_list = deque(maxlen=MAX_ALLOCATIONS_ALLOWED_PER_TURN)
-        for effort, number in self._allocation_list:
+        for effort, number in self.__allocation_list:
             if isinstance(effort, Action.ACCEPTABLE_ACTION_OBJECTS):
                 json_allocation_list.append([effort.to_json(), number])
             else:
                 json_allocation_list.append([effort, number])
         data['effort'] = list(json_allocation_list)
-        data['decree'] = self._decree
+        data['decree'] = self.__decree
         data['object_type'] = self.object_type
 
         return data
 
     def from_json(self, data):
-        self._allocation_list = deque(maxlen=MAX_ALLOCATIONS_ALLOWED_PER_TURN)
+        self.__allocation_list = deque(maxlen=MAX_ALLOCATIONS_ALLOWED_PER_TURN)
         for effort, number in data["effort"]:
             if isinstance(effort, dict) and "object_type" in effort:
                 object_type = effort["object_type"]
@@ -76,8 +82,8 @@ class Action:
                 elif object_type == ObjectType.sensor:
                     obj = Sensor()
                     obj.from_json(effort)
-                self._allocation_list.append([obj, number])
+                self.__allocation_list.append([obj, number])
             else:
-                self._allocation_list.append([effort, number])
-        self._decree = data["decree"]
+                self.__allocation_list.append([effort, number])
+        self.__decree = data["decree"]
         self.object_type = data["object_type"]

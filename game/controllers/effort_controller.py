@@ -21,7 +21,7 @@ class EffortController(Controller):
         player.city.remaining_man_power = player.city.population
         allocations = dict()  # condensed duplicate entries
 
-        for allocation in player.action._allocation_list:
+        for allocation in player.action.get_allocation_list():
             act, amount = allocation
 
             # Do any additional, server side action validation here
