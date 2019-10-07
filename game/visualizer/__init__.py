@@ -16,6 +16,7 @@ size = DISPLAY_SIZE
 log_parser = None
 turn = 1
 
+
 def start(gamma, fullscreen=False):
     global log_parser
     global turn
@@ -43,7 +44,7 @@ def start(gamma, fullscreen=False):
 
 def timer(interval):
     global turn
-    turn += 1
+
     director.scene_stack.clear()
 
     turn_info=log_parser.get_turn(turn)
@@ -53,12 +54,13 @@ def timer(interval):
         director.replace(end_scene)
     else:
         clock = TimeLayer(size, turn_info, turn)
-        clock.schedule_interval(callback=timer, interval=0.1)
+        clock.schedule_interval(callback=timer, interval=1)
 
         current_scene = create_scene(turn_info, log_parser)
         current_scene.add(clock)
 
         director.replace(current_scene)
+        turn+=1
 
 
 def create_scene(info, parser):

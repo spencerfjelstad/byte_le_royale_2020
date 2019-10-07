@@ -11,10 +11,16 @@ class ForecastLayer(cocos.layer.Layer):
         forecast = self.parser.turns[clamp(turn-3, 0, turn):clamp(turn+2, 0, len(self.parser.turns)):]
 
         for i in range(len(forecast)):
-            label = cocos.text.Label(str(forecast[i]["player"].get('city').get('sensors').get('0').get('sensor_results')),
+            text = str(forecast[i]["player"].get('city').get('sensors').get('0').get('sensor_results'))
+            label = cocos.text.Label('0' if text is ' ' else text,
                                      font_name="Times New Roman",
                                      font_size=64,
                                      anchor_x='center',
                                      anchor_y='center')
-            label.position = (i+1)*192, 200
+            if self.turn < 2:
+                label.position = (i+3)*192, 200
+            elif self.turn < 3:
+                label.position = (i + 2) * 192, 200
+            else:
+                label.position = (i+1)*192, 200
             self.add(label)
