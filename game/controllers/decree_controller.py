@@ -3,6 +3,7 @@ from game.common.disasters.lasting_disaster import LastingDisaster
 from game.common.enums import *
 from game.common.stats import GameStats
 
+
 class DecreeController(Controller):
     DECREE_DISASTER_MAPPINGS = {
         DecreeType.anti_fire_bears: DisasterType.fire,

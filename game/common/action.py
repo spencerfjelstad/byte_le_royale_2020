@@ -31,7 +31,7 @@ class Action:
         self.__allocation_list.append([action, int(amount)])
 
     def get_allocation_list(self):
-        return self.__allocation_list
+        return self.__allocation_list.copy()
 
     def get_decree(self):
         return self.__decree
