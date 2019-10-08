@@ -10,11 +10,15 @@ TQDM_UNITS = " turns"                               # units TQDM takes in the ba
 
 MAX_OPERATIONS_PER_TURN = 450000                    # max number of basic operations clients have for their turns
 
-MIN_CLIENTS = None                                  # minimum number of clients required to run the game; should be None when SET_NUMBER_OF_CLIENTS is used
-MAX_CLIENTS = None                                  # maximum number of clients required to run the game; should be None when SET_NUMBER_OF_CLIENTS is used
-SET_NUMBER_OF_CLIENTS = 1                           # required number of clients to run the game; should be None when MIN_CLIENTS or MAX_CLIENTS are used
+MIN_CLIENTS_START = None                            # minimum number of clients required to start running the game; should be None when SET_NUMBER_OF_CLIENTS is used
+MAX_CLIENTS_START = None                            # maximum number of clients required to start running the game; should be None when SET_NUMBER_OF_CLIENTS is used
+SET_NUMBER_OF_CLIENTS_START = 1                     # required number of clients to start running the game; should be None when MIN_CLIENTS or MAX_CLIENTS are used
 CLIENT_KEYWORD = "client"                           # string required to be in the name of every client file, not found otherwise
 CLIENT_DIRECTORY = "./"                             # location where client code will be found
+
+MIN_CLIENTS_CONTINUE = None                         # minimum number of clients required to continue running the game; should be None when SET_NUMBER_OF_CLIENTS is used
+MAX_CLIENTS_CONTINUE = None                         # maximum number of clients required to continue running the game; should be None when SET_NUMBER_OF_CLIENTS is used
+SET_NUMBER_OF_CLIENTS_CONTINUE = 1                  # required number of clients to continue running the game; should be None when MIN_CLIENTS or MAX_CLIENTS are used
 
 # Game Rule settings ---------------------------------------------------------------------------------------------------
 MAX_ALLOCATIONS_ALLOWED_PER_TURN = 30               # max number of unique effort allocations clients are allowed

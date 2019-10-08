@@ -29,9 +29,7 @@ def loop():
     world = load()
 
     for turn in tqdm(master_controller.game_loop_logic(), bar_format=TQDM_BAR_FORMAT, unit=TQDM_UNITS):
-        if len(clients) <= 0:
-            print("No clients found")
-            os._exit(0)  # TODO: Consider alternative exit
+        check_game_continue(len(clients))
 
         pre_tick(turn, world)
         tick(turn)
@@ -65,24 +63,25 @@ def boot():
         im = importlib.import_module(f'{filename}', CLIENT_DIRECTORY)
         obj = im.Client()
         player = Player(
-           code=obj
+            code=obj
         )
         clients.append(player)
 
     debug(f'Clients found: {len(clients)}')
     # Verify correct number of clients
-    if SET_NUMBER_OF_CLIENTS is not None and len(clients) != SET_NUMBER_OF_CLIENTS:
+    if SET_NUMBER_OF_CLIENTS_START is not None and len(clients) != SET_NUMBER_OF_CLIENTS_START:
         raise ValueError("Number of clients is not the set value.\n"
-                         "Number of clients: " + str(len(clients)) + "  |  Set number: " + str(SET_NUMBER_OF_CLIENTS))
-    elif MIN_CLIENTS is not None and len(clients) < MIN_CLIENTS:
+                         "Number of clients: " + str(len(clients)) + "  |  Set number: " + str(
+            SET_NUMBER_OF_CLIENTS_START))
+    elif MIN_CLIENTS_START is not None and len(clients) < MIN_CLIENTS_START:
         raise ValueError("Number of clients is less than the minimum required.\n"
-                         "Number of clients: " + str(len(clients)) + "  |  Minimum: " + str(MIN_CLIENTS))
-    elif MAX_CLIENTS is not None and len(clients) > MAX_CLIENTS:
+                         "Number of clients: " + str(len(clients)) + "  |  Minimum: " + str(MIN_CLIENTS_START))
+    elif MAX_CLIENTS_START is not None and len(clients) > MAX_CLIENTS_START:
         raise ValueError("Number of clients exceeds the maximum allowed.\n"
-                         "Number of clients: " + str(len(clients)) + "  |  Maximum: " + str(MAX_CLIENTS))
+                         "Number of clients: " + str(len(clients)) + "  |  Maximum: " + str(MAX_CLIENTS_START))
 
     # Set up player objects
-    if SET_NUMBER_OF_CLIENTS == 1:
+    if SET_NUMBER_OF_CLIENTS_START == 1:
         master_controller.give_clients_objects(clients[0])
     else:
         master_controller.give_clients_objects(clients)
@@ -102,7 +101,7 @@ def load():
     world = None
     with open('logs/game_map.json') as json_file:
         world = json.load(json_file)
-    return world 
+    return world
 
 
 # Read from the outlined game map and establish the world given
@@ -113,7 +112,7 @@ def pre_tick(turn, world):
 
     current_world = world[str(turn)]
 
-    if SET_NUMBER_OF_CLIENTS == 1:
+    if SET_NUMBER_OF_CLIENTS_START == 1:
         master_controller.interpret_current_turn_data(clients[0], current_world, turn_number)
     else:
         master_controller.interpret_current_turn_data(clients, current_world, turn_number)
@@ -151,12 +150,10 @@ def tick(turn):
             print(f'{client.id} failed to reply in time and has been dropped')
 
     # End if there are no remaining clients
-    if len(clients) <= 0:
-        print("All clients ran out of time")
-        shutdown()  # TODO: Consider alternative exit
+    check_game_continue(len(clients))
 
     # Apply bulk of game logic
-    if SET_NUMBER_OF_CLIENTS == 1:
+    if SET_NUMBER_OF_CLIENTS_START == 1:
         master_controller.turn_logic(clients[0], current_world, turn_number)
     else:
         master_controller.turn_logic(clients, current_world, turn_number)
@@ -171,7 +168,7 @@ def post_tick(turn):
 
     # Write turn results to log file
     data = None
-    if SET_NUMBER_OF_CLIENTS == 1:
+    if SET_NUMBER_OF_CLIENTS_START == 1:
         data = master_controller.create_turn_log(clients[0], current_world, turn_number)
     else:
         data = master_controller.create_turn_log(clients, current_world, turn_number)
@@ -195,7 +192,7 @@ def shutdown():
 
     # Retrieve results from master controller
     results_information = None
-    if SET_NUMBER_OF_CLIENTS == 1:
+    if SET_NUMBER_OF_CLIENTS_START == 1:
         results_information = master_controller.return_final_results(clients[0], current_world, turn_number)
     else:
         results_information = master_controller.return_final_results(clients, current_world, turn_number)
@@ -206,6 +203,20 @@ def shutdown():
     # Exit game
     print("\nGame has successfully ended.")
     os._exit(0)
+
+
+def check_game_continue(num_clients):
+    error = ""
+    if SET_NUMBER_OF_CLIENTS_CONTINUE is not None and num_clients != SET_NUMBER_OF_CLIENTS_CONTINUE:
+        error = "Number of clients (", num_clients, ") is not SET number (", SET_NUMBER_OF_CLIENTS_CONTINUE, "). Ending game."
+    elif MIN_CLIENTS_CONTINUE is not None and num_clients < MIN_CLIENTS_CONTINUE:
+        error = "Number of clients (", num_clients, ") is less than MIN number (", MIN_CLIENTS_CONTINUE, "). Ending game."
+    elif MAX_CLIENTS_CONTINUE is not None and num_clients > MAX_CLIENTS_CONTINUE:
+        error = "Number of clients (", num_clients, ") is greater than MAX number (", MAX_CLIENTS_CONTINUE, "). Ending game."
+    else:
+        return True
+    write(error, RESULTS_FILE)
+    shutdown()
 
 
 # Debug print statement
