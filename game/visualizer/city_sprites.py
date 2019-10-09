@@ -27,8 +27,8 @@ class CityLayer(cocos.layer.Layer):
         else:
             self.city = cocos.sprite.Sprite(images[0])
 
-        self.city_x = self.display[0]-804/2
-        self.city_y = self.display[1]-498/2
+        self.city_x = int(self.display[0]-796/2)
+        self.city_y = int(self.display[1]/2)
 
         self.city.position = (self.city_x, self.city_y)
         self.add(self.city)

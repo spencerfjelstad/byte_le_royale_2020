@@ -55,7 +55,7 @@ def timer(interval):
         director.replace(end_scene)
     else:
         clock = TimeLayer(size, turn_info, turn)
-        clock.schedule_interval(callback=timer, interval=0.1)
+        clock.schedule_interval(callback=timer, interval=0.2)
 
         current_scene = create_scene(turn_info)
         current_scene.add(clock)
