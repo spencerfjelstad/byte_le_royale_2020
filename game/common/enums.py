@@ -34,6 +34,15 @@ class DamageScaling:
     extreme = 3
 
 
+class DecreeType:
+    anti_fire_bears = 0
+    paperweights = 1
+    hound_news = 2
+    moon_shoes = 3
+    away_spray = 4
+    giant_fly_swatter = 5
+
+
 class DisasterStatus:
     live = 1
     dead = 0
@@ -61,15 +70,6 @@ class ObjectType:
     sensor = 3
     city = 4
     player = 5
-
-
-class PreemptiveType:
-    anti_fire_bears = 0
-    paperweights = 1
-    moon_shoes = 2
-    hound_news = 3
-    away_spray = 4
-    giant_fly_swatter = 5
 
 
 class ReactiveType:

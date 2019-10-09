@@ -7,6 +7,14 @@ class Client(UserClient):
     def __init__(self):
         super().__init__()
         self.number = 100
+        self.SENSOR_DECREE_MAPPINGS = {
+            SensorType.fire_alarm: DecreeType.anti_fire_bears,
+            SensorType.rock_on_a_rope: DecreeType.paperweights,
+            SensorType.coast_guard: DecreeType.hound_news,
+            SensorType.seismograph: DecreeType.moon_shoes,
+            SensorType.scp_foundation: DecreeType.away_spray,
+            SensorType.satellite_dish: DecreeType.giant_fly_swatter
+        }
 
     def team_name(self):
         return "Scrimmy Bingus"
@@ -24,7 +32,15 @@ class Client(UserClient):
         actions.add_effort("heehee i'm not doing anything actually", 1)
         actions.add_effort("other action to make it look not funny in the logs", 1093)
 
-        self.print(city.gold, city.resources)
+        # Set decree
+        highest = -1
+        highest_sensor = None
+        for sensor in city.sensors.values():
+            if sensor.sensor_results > highest:
+                highest = sensor.sensor_results
+                highest_sensor = sensor
 
-    def set_decree(self, my_decree):
-        return "let them eat cake"
+        corresponding_decree = self.SENSOR_DECREE_MAPPINGS[highest_sensor.sensor_type]
+        actions.set_decree(corresponding_decree)
+
+        self.print(city.gold, city.resources)
