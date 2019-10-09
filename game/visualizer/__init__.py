@@ -16,7 +16,6 @@ log_parser = None
 turn = 1
 
 
-
 def start(gamma, fullscreen=False):
     global log_parser
     global turn
@@ -46,7 +45,6 @@ def timer(interval):
     global turn
     turn += 1
     director.scene_stack.clear()
-
 
     turn_info=log_parser.get_turn(turn)
     if turn_info is None:
