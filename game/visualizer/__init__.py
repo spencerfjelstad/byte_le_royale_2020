@@ -11,6 +11,7 @@ from game.visualizer.health_bar import *
 from game.visualizer.time_layer import *
 from game.visualizer.end_layer import *
 from game.visualizer.forecast_sprite import *
+from game.visualizer.decree_sprites import *
 
 size = DISPLAY_SIZE
 log_parser = None
@@ -54,7 +55,7 @@ def timer(interval):
         director.replace(end_scene)
     else:
         clock = TimeLayer(size, turn_info, turn)
-        clock.schedule_interval(callback=timer, interval=1)
+        clock.schedule_interval(callback=timer, interval=.25)
 
         current_scene = create_scene(turn_info, log_parser)
         current_scene.add(clock)
@@ -69,6 +70,7 @@ def create_scene(info, parser):
     location_layer = LocationLayer(size, 'plains')
     city_layer = CityLayer(size, info)
     forecast_layer = ForecastLayer(turn, parser)
+    decree_layer = DecreeLayer(info)
 
     # Add layers to
     scene = cocos.scene.Scene()
@@ -76,5 +78,6 @@ def create_scene(info, parser):
     scene.add(city_layer, 1)
     scene.add(health_layer, 1)
     scene.add(forecast_layer, 1)
+    scene.add(decree_layer, 1)
 
     return scene
