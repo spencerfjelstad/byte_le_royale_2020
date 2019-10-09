@@ -13,11 +13,11 @@ class CityLocation:
     coastal = 3
     radioactive_wasteland = 4
 
+
 class CityLevel:
     level_zero = 0
     level_one = 1
     level_two = 2
-
 
 
 class CityType:
@@ -34,6 +34,15 @@ class DamageScaling:
     extreme = 3
 
 
+class DecreeType:
+    anti_fire_bears = 0
+    paperweights = 1
+    hound_news = 2
+    moon_shoes = 3
+    away_spray = 4
+    giant_fly_swatter = 5
+
+
 class DisasterStatus:
     live = 1
     dead = 0
@@ -48,6 +57,12 @@ class DisasterType:
     ufo = 5
 
 
+class EventType:
+    sensor_upgrade = 0
+    disaster_spawned = 1
+    disaster_eliminated = 2
+
+
 class ObjectType:
     none = 0
     action = 1
@@ -55,15 +70,6 @@ class ObjectType:
     sensor = 3
     city = 4
     player = 5
-
-
-class PreemptiveType:
-    anti_fire_bears = 0
-    paperweights = 1
-    moon_shoes = 2
-    hound_news = 3
-    away_spray = 4
-    giant_fly_swatter = 5
 
 
 class ReactiveType:

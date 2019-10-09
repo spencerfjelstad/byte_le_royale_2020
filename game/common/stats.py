@@ -3,6 +3,11 @@ from game.common.enums import *
 
 class GameStats:
 
+    # Percentage of remaining strength of a disaster
+    # (100 implies decree has no effect, 0 implies decree completely negates the disaster)
+    decree_population_effect = 0
+    decree_structure_effect = 0
+
     # multiplier done by instant disasters
     disaster_damage_instant_multiplier = 5
 
@@ -43,16 +48,20 @@ class GameStats:
 
     # units of man_power per 1k population
     man_power = 5
-    #population
+
+    # population
     city_population = 100
-    #health
+
+    # health
     city_structure = 200
-    #resources
+
+    # resources
     resources = 100
-    #gold
+
+    # gold
     city_gold = 100
 
-    #cost in gold to build a sensor
+    # cost in gold to build a sensor
     sensor_costs = {
         SensorLevel.level_zero: 0,
         SensorLevel.level_one: 100,

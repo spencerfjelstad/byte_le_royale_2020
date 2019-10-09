@@ -143,25 +143,24 @@ def calculate_sensor_ranges(odds):
 
     adjusted_weights = {}
 
+    # For each disaster, find the corresponding sensor readings
     for disaster in enum_iter(DisasterType):
         sensor_odds = {}
 
+        # Convert disaster odds from a decimal to a percentage (with no trailing decimal, eg. 50% or 51% but not 50.5%)
         disaster_odds = math.floor(odds[disaster] * 100)
 
+        # Find the sensor readings given at every possible level
         for sensor_level in enum_iter(SensorLevel):
 
-            for level in enum_iter(SensorLevel):
-                if sensor_level == level:
-                    range = GameStats.sensor_ranges[level]
-                    break
-            else:
-                raise Exception(
-                    "Sensor level out of bounds. Should be SensorLevel.level_zero <= x <= SensorLevel.level_three.")
+            stat_range = GameStats.sensor_ranges[sensor_level]
 
-            range = math.floor(range / 2)
-            min_chance = disaster_odds - range
-            max_chance = disaster_odds + range
+            # Find minimum of the range and maximum of the range
+            sensor_range = math.floor(stat_range / 2)
+            min_chance = disaster_odds - sensor_range
+            max_chance = disaster_odds + sensor_range
 
+            # randomize (find a number between the bottom and the top)
             captured_odds = random.randrange(min_chance, max_chance + 1)
 
             # handle results appearing below 0
@@ -171,11 +170,14 @@ def calculate_sensor_ranges(odds):
             if captured_odds >= 100:
                 captured_odds = 200 - captured_odds  # odds of 110 would become 90 (100 - 10 or 200 - 110)
 
+            # Convert back to a decimal (57% -> 0.57)
             sensor_odds[sensor_level] = captured_odds / 100
 
+        # Save the sensor outputs for the given disaster
         adjusted_weights[disaster] = sensor_odds
 
     return adjusted_weights
+
 
 def print_dict(data, name='dict'):
     res = name + '\n'

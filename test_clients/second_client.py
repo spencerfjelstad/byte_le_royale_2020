@@ -40,7 +40,7 @@ class Client(UserClient):
         for _ in range(5):
             actions.add_effort(glorious_fire_sensor, glorious_effort_allocation)
 
-        actions.add_effort(ActionType.repair, 10**7)
+        #actions.add_effort(ActionType.repair, 10**7)
 
         for _ in range(5):
             actions.add_effort(glorious_fire_sensor, glorious_effort_allocation)
