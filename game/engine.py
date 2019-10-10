@@ -16,6 +16,7 @@ current_world = None
 master_controller = MasterController()
 turn_number = 1
 
+client_modules = list()
 
 def main():
     loop()
@@ -24,6 +25,9 @@ def main():
 def loop():
     global clients
     global master_controller
+
+    # Apply import restrictions
+    __builtins__['__import__'] = secure_importer
 
     boot()
     world = load()
@@ -38,12 +42,14 @@ def loop():
         post_tick(turn)
 
     print("Game reached max turns and is closing.")
+
     shutdown()
 
 
 # Gets players established with their objects and such
 def boot():
     global clients
+    global client_modules
     global master_controller
 
     current_dir = os.getcwd()
@@ -62,7 +68,17 @@ def boot():
             # Skips folders
             continue
 
-        im = importlib.import_module(f'{filename}', CLIENT_DIRECTORY)
+        # Add client as a module to keep an eye on
+        client_modules.append(filename)
+
+        try:
+            im = importlib.import_module(f'{filename}', CLIENT_DIRECTORY)
+        except ImportError as e:
+            del client_modules[-1]
+            print("Client attempted invalid imports.")
+            print(e)
+            continue
+
         obj = im.Client()
         player = Player(
            code=obj
@@ -130,9 +146,8 @@ def tick(turn):
     threads = list()
     for client in clients:
         arguments = master_controller.client_turn_arguments(client, current_world, turn_number)
-
         # Create the thread, args being the things the client will need
-        thr = Thread(func=client.code.take_turn, args=arguments)
+        thr = Thread(func=client_thread, args=(client, arguments))
         threads.append(thr)
 
     # Start all of the threads. This is where the client's code is actually be run.
@@ -186,6 +201,17 @@ def post_tick(turn):
     turn_number += 1
 
 
+def client_thread(client, arguments):
+    global turn_number
+    try:
+        client.code.take_turn(*arguments)
+    except ImportError as e:
+        debug(f"ignoring client {client}. Attempted to import restricted module.")
+        debug(e)
+    except Exception as e:
+        debug("client failed turn for unknown reason.")
+        debug(e)
+
 # Game is over. Create the results file and end the game.
 def shutdown():
     global clients
@@ -206,6 +232,28 @@ def shutdown():
     # Exit game
     print("\nGame has successfully ended.")
     os._exit(0)
+
+
+# replaces builtin import function to prevent clients from importing modules they shouldn't
+def secure_importer(name, globals=None, locals=None, fromlist=(), level=0):
+    global client_modules
+    # Find out what's the calling module (client or otherwise)
+    frommodule = globals['__name__'] if globals else None
+
+    # If the calling module is a client module, apply restrictions
+    if frommodule in client_modules:
+        # Check for restriction mode
+        if ALLOW_ONLY_MODE:
+            if name not in ALLOWED_MODULES:
+                raise ImportError(f"ALLOW_ONLY_MODE is activated. Only allowed modules are accessible, but "
+                                  f"module {frommodule} attempted access to module '{name}'.")
+
+        # Prevent any defined restricted modules
+        if name in RESTRICTED_MODULES:
+            raise ImportError(f"module '{name}' is restricted. Attempted access by module {frommodule}")
+
+    # Module is either a non-client or importing a valid module. Continue normal functionality
+    return importlib.__import__(name, globals, locals, fromlist, level)
 
 
 # Debug print statement
