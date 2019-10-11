@@ -22,7 +22,8 @@ class Server:
 
         self.max_simultaneous_runs = 4
         self.current_running = [x for x in range(self.max_simultaneous_runs)]
-        self.runner_stack = list()
+        self.runner_queue = list()
+        self.starting_runs = 20
 
     def start(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -62,6 +63,9 @@ class Server:
         if teamname in [x['teamname'] for x in self.database.dump()]:
             team_uuid = 'name already taken'
             self.log(f'Registration attempted for already taken teamname: {teamname}')
+        elif teamname == '':
+            self.log(f'Registration failed.')
+            return
         else:
             self.log(f'Registering team: {teamname} with ID: {team_uuid}')
         send_data(connection, team_uuid)
@@ -84,16 +88,40 @@ class Server:
         # Receive client uuid for verification
         tid = self.verify(connection, address)
         if tid == 0:
+            send_data(connection, 'does not exist')
             return
+        else:
+            send_data(connection, 'exists')
 
-
-        # Check uuid exists in database
         # Receive client file
-        # Save in correct location
+        client = None
+        for e in self.database.dump():
+            if e['tid'] == tid:
+                client = e
+                break
+
+        location = f'scrimmage/scrim_clients/{client["teamname"]}/client.py'
+        submission = open(location, 'wb')
+        line = connection.recv(BUFFER_SIZE)
+        while line:
+            submission.write(line)
+            line = connection.recv(BUFFER_SIZE)
+        submission.close()
+
         # Add location to database
-        # Increment submissions number
+        self.database.set_code_file(tid, location)
+
         # Wipe current stats
+        if client['stats_location'] is None:
+            with open(f'scrimmage/scrim_clients/{client["teamname"]}/stats.txt', 'w+') as f:
+                f.write('')
+        if os.path.isfile(client['stats_location']):
+            with open(client['stats_location'], 'w+') as f:
+                f.write('')
+
         # Add to runner queue
+        for x in range(self.starting_runs):
+            self.runner_queue.append(client)
 
     def send_stats(self, connection, address):
         tid = self.verify(connection, address)

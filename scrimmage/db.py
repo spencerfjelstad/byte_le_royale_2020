@@ -39,6 +39,14 @@ class DB:
 
         self.data.append(entry)
 
+    def set_code_file(self, tid, location):
+        for entry in self.data:
+            if entry['tid'] == tid:
+                entry['code_file'] = location
+                entry['submissions'] += 1
+                break
+
+
     def delete_entry(self, tid=None, teamname=None):
         for entry in self.data:
             if tid is not None and entry['tid'] != str(tid):
