@@ -16,7 +16,6 @@ current_world = None
 master_controller = MasterController()
 turn_number = 1
 
-client_modules = list()
 
 def main():
     loop()
@@ -25,9 +24,6 @@ def main():
 def loop():
     global clients
     global master_controller
-
-    # Apply import restrictions
-    __builtins__['__import__'] = secure_importer
 
     boot()
     world = load()
@@ -49,7 +45,6 @@ def loop():
 # Gets players established with their objects and such
 def boot():
     global clients
-    global client_modules
     global master_controller
 
     current_dir = os.getcwd()
@@ -68,16 +63,18 @@ def boot():
             # Skips folders
             continue
 
-        # Add client as a module to keep an eye on
-        client_modules.append(filename)
-
         try:
+            # Apply import restrictions
+            __original_importer = __builtins__['__import__']
+            __builtins__['__import__'] = secure_importer
             im = importlib.import_module(f'{filename}', CLIENT_DIRECTORY)
         except ImportError as e:
-            del client_modules[-1]
             print("Client attempted invalid imports.")
             print(e)
             continue
+        finally:
+            # Restore original importer for server use
+            __builtins__['__import__'] = __original_importer
 
         obj = im.Client()
         player = Player(
@@ -202,7 +199,12 @@ def post_tick(turn):
 
 
 def client_thread(client, arguments):
-    global turn_number
+
+    # Apply import restrictions
+    __original_importer = __builtins__['__import__']
+    __builtins__['__import__'] = secure_importer
+
+    # Try to run client code
     try:
         client.code.take_turn(*arguments)
     except ImportError as e:
@@ -211,6 +213,9 @@ def client_thread(client, arguments):
     except Exception as e:
         debug("client failed turn for unknown reason.")
         debug(e)
+    finally:
+        # Restore original importer for server use
+        __builtins__['__import__'] = __original_importer
 
 # Game is over. Create the results file and end the game.
 def shutdown():
@@ -236,23 +241,27 @@ def shutdown():
 
 # replaces builtin import function to prevent clients from importing modules they shouldn't
 def secure_importer(name, globals=None, locals=None, fromlist=(), level=0):
-    global client_modules
-    # Find out what's the calling module (client or otherwise)
+    # Determine name of calling module
     frommodule = globals['__name__'] if globals else None
 
-    # If the calling module is a client module, apply restrictions
-    if frommodule in client_modules:
-        # Check for restriction mode
-        if ALLOW_ONLY_MODE:
-            if name not in ALLOWED_MODULES:
-                raise ImportError(f"ALLOW_ONLY_MODE is activated. Only allowed modules are accessible, but "
-                                  f"module {frommodule} attempted access to module '{name}'.")
+    # break apart module into module and all submodules
+    sections = name.split(".")
+    accessed_modules = list()
+    for i in range(len(sections)):
+        accessed_modules.append(".".join(sections[:i+1]))
+
+    # check each submodule being imported
+    for module_name in accessed_modules:
+        # Prevent any undefined module in allow mode
+        if ALLOW_ONLY_MODE and module_name not in ALLOWED_MODULES:
+            raise ImportError(f"ALLOW_ONLY_MODE is activated. Only allowed modules are accessible, but "
+                              f"module {frommodule} attempted access to module '{module_name}'.")
 
         # Prevent any defined restricted modules
-        if name in RESTRICTED_MODULES:
-            raise ImportError(f"module '{name}' is restricted. Attempted access by module {frommodule}")
+        if module_name in RESTRICTED_MODULES:
+            raise ImportError(f"module '{module_name}' is restricted. Attempted access by module {frommodule}")
 
-    # Module is either a non-client or importing a valid module. Continue normal functionality
+    # Module is following restrictions. Continue normal functionality
     return importlib.__import__(name, globals, locals, fromlist, level)
 
 
