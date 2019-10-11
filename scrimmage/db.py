@@ -27,6 +27,9 @@ class DB:
             'vis_logs': kwargs['vis_logs'] if 'vis_logs' in kwargs else None,
             'code_file': kwargs['code_file'] if 'code_file' in kwargs else None,
             'submissions': 0,
+            'client_location': None,
+            'logs_location': None,
+            'stats_location': None,
         }
 
         if not os.path.exists(f'scrimmage/scrim_clients'):
@@ -47,7 +50,7 @@ class DB:
             shutil.rmtree(f'scrimmage/scrim_clients/{entry["teamname"]}')
             break
 
-    def query(self, tid=None, teamname=None, sortby=None):
+    def query(self, tid=None, teamname=None):
         self.await_lock()
 
         results = list()
@@ -58,9 +61,6 @@ class DB:
                 continue
 
             results.append(entry)
-
-        if sortby is not None:
-            results = sorted(results, key=sortby)
 
         self.lock = False
         return results

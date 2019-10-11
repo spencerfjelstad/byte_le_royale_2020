@@ -5,6 +5,10 @@ IP = '127.0.0.1'
 PORT = 5007
 BUFFER_SIZE = 4096
 
+REGISTER_COMMANDS = ['register', '-r']
+SUBMIT_COMMANDS = ['submit', '-s']
+VIEW_STATS_COMMANDS = ['view stats', 'view', '-v']
+
 
 class Thread(threading.Thread):
     def __init__(self, func, args):

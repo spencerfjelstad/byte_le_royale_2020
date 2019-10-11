@@ -22,6 +22,7 @@ class Server:
 
         self.max_simultaneous_runs = 4
         self.current_running = [x for x in range(self.max_simultaneous_runs)]
+        self.runner_stack = list()
 
     def start(self):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -47,20 +48,61 @@ class Server:
 
     def handle_client(self, connection, address):
         command = receive_data(connection)
-        if command in ['register', '-r']:
+        if command in REGISTER_COMMANDS:
             self.register_client(connection, address)
+        elif command in SUBMIT_COMMANDS:
+            self.receive_submission(connection, address)
+        elif command in VIEW_STATS_COMMANDS:
+            self.receive_submission(connection, address)
         connection.close()
 
     def register_client(self, connection, address):
         teamname = receive_data(connection)
         team_uuid = str(uuid.uuid4())
-        # TODO: browse database to prevent repeat names
-        if teamname in ['frankfurt', 'skungle dungus']:
+        if teamname in [x['teamname'] for x in self.database.dump()]:
             team_uuid = 'name already taken'
             self.log(f'Registration attempted for already taken teamname: {teamname}')
         else:
             self.log(f'Registering team: {teamname} with ID: {team_uuid}')
         send_data(connection, team_uuid)
+
+        # Register in database
+        if team_uuid == 'name already taken':
+            pass
+        else:
+            self.database.add_entry(teamname=teamname, tid=team_uuid)
+
+    def verify(self, connection, address):
+        tid = receive_data(connection)
+        for entry in self.database.dump():
+            if entry['tid'] == tid:
+                return tid
+
+        return 0
+
+    def receive_submission(self, connection, address):
+        # Receive client uuid for verification
+        tid = self.verify(connection, address)
+        if tid == 0:
+            return
+
+
+        # Check uuid exists in database
+        # Receive client file
+        # Save in correct location
+        # Add location to database
+        # Increment submissions number
+        # Wipe current stats
+        # Add to runner queue
+
+    def send_stats(self, connection, address):
+        tid = self.verify(connection, address)
+        if tid == 0:
+            return
+
+        # Receive client uuid for verfication
+        # Check uuid exists in database
+        # Send client stats back
 
     def await_input(self):
         print('Server is awaiting admin input.')
