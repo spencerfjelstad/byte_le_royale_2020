@@ -5,6 +5,8 @@ import json
 from tqdm import tqdm
 
 # Load these imports in so the clients can properly load them in later
+# Even though these are unused imports, leave them imported so they are able to properly resolve all dependent imports,
+# before clients get a chance to import the modules that these are calling, too.
 import game.client.user_client
 import game.common.enums
 
