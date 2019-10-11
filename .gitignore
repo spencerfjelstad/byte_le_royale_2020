@@ -2,6 +2,7 @@
 *.json
 *.pyz
 vID
+scrimmage/temp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
