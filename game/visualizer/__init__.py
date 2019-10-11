@@ -40,7 +40,6 @@ def start(gamma, fullscreen=False, endgame=True):
 
         first_scene = create_scene(turn_info)
         first_scene.add(clock)
-
         director.run(first_scene)
 
 
