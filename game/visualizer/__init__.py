@@ -68,12 +68,14 @@ def create_scene(info):
     location_layer = LocationLayer(size, 'plains')
     city_layer = CityLayer(size, info)
 
+    tornado_layer = TornadoLayer(size, info)
     hurricane_layer = HurricaneLayer(size, info)
 
     # Add layers to
     scene = cocos.scene.Scene()
     scene.add(location_layer, 0)
     scene.add(city_layer, 2)
+    scene.add(tornado_layer, 8)
     scene.add(hurricane_layer, 8)
     scene.add(health_layer, 10)
 
