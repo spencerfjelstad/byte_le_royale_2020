@@ -4,6 +4,10 @@ import importlib
 import json
 from tqdm import tqdm
 
+# Load these imports in so the clients can properly load them in later
+import game.client.user_client
+import game.common.enums
+
 from game.common.player import *
 from game.config import *
 
@@ -243,26 +247,41 @@ def shutdown():
 def secure_importer(name, globals=None, locals=None, fromlist=(), level=0):
     # Determine name of calling module
     frommodule = globals['__name__'] if globals else None
+    debug(f"{frommodule} attempting to import {name}")
 
+    if validate_import(name):
+        # Module is following restrictions. Continue normal functionality
+        return importlib.__import__(name, globals, locals, fromlist, level)
+    else:
+        # Module cannot be imported legally
+        raise ImportError("Attempted invalid import. Suspected the client imported something they shouldn't have.")
+
+
+# Applies validation to the import accessed by the client
+def validate_import(module_name):
+
+    if module_name in ALLOWED_MODULES:
+        # skip validation, since it is specifically allowed
+        return True
+    elif ALLOW_ONLY_MODE:
+        # If it's not in the allowed modules during allow_only_mode, then validation fails
+        return False
+
+    # Check against restricted modules
     # break apart module into module and all submodules
-    sections = name.split(".")
+    sections = module_name.split(".")
     accessed_modules = list()
+    # A module "game.common.client" will check "game", "game.common", and "game.common.client"
     for i in range(len(sections)):
         accessed_modules.append(".".join(sections[:i+1]))
 
     # check each submodule being imported
-    for module_name in accessed_modules:
-        # Prevent any undefined module in allow mode
-        if ALLOW_ONLY_MODE and module_name not in ALLOWED_MODULES:
-            raise ImportError(f"ALLOW_ONLY_MODE is activated. Only allowed modules are accessible, but "
-                              f"module {frommodule} attempted access to module '{module_name}'.")
+    for module in accessed_modules:
+        if module in RESTRICTED_MODULES:
+            return False
 
-        # Prevent any defined restricted modules
-        if module_name in RESTRICTED_MODULES:
-            raise ImportError(f"module '{module_name}' is restricted. Attempted access by module {frommodule}")
-
-    # Module is following restrictions. Continue normal functionality
-    return importlib.__import__(name, globals, locals, fromlist, level)
+    # all tests passed, successful validation
+    return True
 
 
 # Debug print statement

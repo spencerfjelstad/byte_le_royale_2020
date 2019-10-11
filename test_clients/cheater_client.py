@@ -1,7 +1,7 @@
 from game.client.user_client import UserClient
 from game.common.enums import *
 #import importlib
-import random
+
 
 class Client(UserClient):
     # Variables and info you want to save between turns go here
@@ -49,10 +49,19 @@ class Client(UserClient):
         ############################
         # Renaming the module name #
         ############################
-
         globals()["__name__"] = "not_cheater_client"
         try:
             import os
             self.print("I was able to import an illegal module! [INVESTIGATE IF OCCURS]")
         except ImportError:
             self.print("I got caught trying to import illegally by rewriting my module name")
+
+        ################################################
+        # Importing parent module of an allowed import #
+        ################################################
+        try:
+            import game.common
+            pl = game.common.player.Player()
+            self.print("I was able to import a non-allowed, non-restricted module! [INVESTIGATE IF ALLOW_ONLY_MODE]")
+        except ImportError:
+            self.print("I got caught importing a section of a legal module, when I should only import the full path")

@@ -17,8 +17,12 @@ CLIENT_KEYWORD = "client"                           # string required to be in t
 CLIENT_DIRECTORY = "./"                             # location where client code will be found
 
 ALLOW_ONLY_MODE = False                             # If True, only ALLOWED_MODULES can be imported by the client
-ALLOWED_MODULES = ["game.client.user_client", "game.common.enums"]  # modules that clients are specifically allowed to access
-RESTRICTED_MODULES = ['importlib', 'os', 'sys']     # modules that clients will be prevented from accessing
+ALLOWED_MODULES = ["game.client.user_client",       # modules that clients are specifically allowed to access
+                   "game.common.enums"]
+RESTRICTED_MODULES = ["game",                       # modules that clients will be prevented from accessing
+                      "importlib",
+                      "os",
+                      "sys"]
 
 # Game Rule settings ---------------------------------------------------------------------------------------------------
 MAX_ALLOCATIONS_ALLOWED_PER_TURN = 30               # max number of unique effort allocations clients are allowed
