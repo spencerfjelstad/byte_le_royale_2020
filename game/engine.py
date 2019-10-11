@@ -15,7 +15,8 @@ from game.config import *
 
 from game.controllers.master_controller import MasterController
 from game.utils.helpers import write
-from game.utils.thread import Thread
+from game.utils.secure_importer import secure_importer
+from game.utils.thread import Thread, client_thread
 
 clients = list()
 current_world = None
@@ -204,25 +205,6 @@ def post_tick(turn):
     turn_number += 1
 
 
-def client_thread(client, arguments):
-
-    # Apply import restrictions
-    __original_importer = __builtins__['__import__']
-    __builtins__['__import__'] = secure_importer
-
-    # Try to run client code
-    try:
-        client.code.take_turn(*arguments)
-    except ImportError as e:
-        debug(f"ignoring client {client}. Attempted to import restricted module.")
-        debug(e)
-    except Exception as e:
-        debug("client failed turn for unknown reason.")
-        debug(e)
-    finally:
-        # Restore original importer for server use
-        __builtins__['__import__'] = __original_importer
-
 # Game is over. Create the results file and end the game.
 def shutdown():
     global clients
@@ -243,47 +225,6 @@ def shutdown():
     # Exit game
     print("\nGame has successfully ended.")
     os._exit(0)
-
-
-# replaces builtin import function to prevent clients from importing modules they shouldn't
-def secure_importer(name, globals=None, locals=None, fromlist=(), level=0):
-    # Determine name of calling module
-    frommodule = globals['__name__'] if globals else None
-    debug(f"{frommodule} attempting to import {name}")
-
-    if validate_import(name):
-        # Module is following restrictions. Continue normal functionality
-        return importlib.__import__(name, globals, locals, fromlist, level)
-    else:
-        # Module cannot be imported legally
-        raise ImportError("Attempted invalid import. Suspected the client imported something they shouldn't have.")
-
-
-# Applies validation to the import accessed by the client
-def validate_import(module_name):
-
-    if module_name in ALLOWED_MODULES:
-        # skip validation, since it is specifically allowed
-        return True
-    elif ALLOW_ONLY_MODE:
-        # If it's not in the allowed modules during allow_only_mode, then validation fails
-        return False
-
-    # Check against restricted modules
-    # break apart module into module and all submodules
-    sections = module_name.split(".")
-    accessed_modules = list()
-    # A module "game.common.client" will check "game", "game.common", and "game.common.client"
-    for i in range(len(sections)):
-        accessed_modules.append(".".join(sections[:i+1]))
-
-    # check each submodule being imported
-    for module in accessed_modules:
-        if module in RESTRICTED_MODULES:
-            return False
-
-    # all tests passed, successful validation
-    return True
 
 
 # Debug print statement
