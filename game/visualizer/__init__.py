@@ -2,6 +2,7 @@ import cocos
 from cocos.director import director
 import pyglet
 
+
 from game.config import *
 from game.visualizer.game_log_parser import GameLogParser
 from game.visualizer.graphs import *
@@ -16,7 +17,7 @@ log_parser = None
 turn = 1
 
 
-def start(gamma, fullscreen=False):
+def start(gamma, fullscreen=False, endgame=True):
     global log_parser
     global turn
 
@@ -28,6 +29,7 @@ def start(gamma, fullscreen=False):
     # Get turn info from logs, if None go to end scene
     turn_info = log_parser.get_turn(turn)
     if turn_info is None:
+        print("start")
         end = EndLayer(size)
         end_scene = cocos.scene.Scene().add(end)
         director.replace(end_scene)
@@ -49,6 +51,7 @@ def timer(interval):
 
     turn_info=log_parser.get_turn(turn)
     if turn_info is None:
+        print("timer")
         end = EndLayer(size)
         end_scene = cocos.scene.Scene().add(end)
         director.replace(end_scene)
