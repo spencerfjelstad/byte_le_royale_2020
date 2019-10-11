@@ -68,7 +68,7 @@ class Client:
             vid = f.read()
 
         # Verify things were in the file
-        if vid is not None or vid is not '':
+        if vid is not None or vid is '':
             return False
 
         # Send vid over

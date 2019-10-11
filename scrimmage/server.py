@@ -89,6 +89,7 @@ class Server:
         tid = self.verify(connection, address)
         if tid == 0:
             send_data(connection, 'does not exist')
+            self.log(f'Failed to accept submission from {address}, id does not exist.')
             return
         else:
             send_data(connection, 'exists')
@@ -175,6 +176,7 @@ class Server:
 
     def runner_loop(self):
         while True:
+            continue
             while len(self.current_running) == 0:
                 pass
 
