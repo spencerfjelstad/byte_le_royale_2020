@@ -68,11 +68,15 @@ class Client:
             vid = f.read()
 
         # Verify things were in the file
-        if vid is not None or vid is '':
+        if vid is None or vid is '':
             return False
 
         # Send vid over
         send_data(connection, vid)
+        state = receive_data(connection)
+        if state == 'does not exist':
+            return False
+
         return True
 
     # Client side code submission
@@ -82,16 +86,9 @@ class Client:
             print('Could not verify client.')
             return
 
-        state = receive_data(connection)
-        if state == 'does not exist':
-            print('Could not find registered user.')
-            return
-
         # Client verifies file being sent
         file = None
         for filename in os.listdir(CLIENT_DIRECTORY):
-            filename = filename.replace('.py', '')
-
             if CLIENT_KEYWORD.upper() not in filename.upper():
                 # Filters out files that do not contain CLIENT_KEYWORD in their filename
                 continue
@@ -103,6 +100,7 @@ class Client:
             user_check = input(f'Submitting {filename}, is this ok? (y/n): ')
             if 'y' in user_check.lower():
                 file = filename
+                break
         else:
             file = input('Could not find file: please manually type file name: ')
 
@@ -110,6 +108,7 @@ class Client:
             print('File not found.')
             return
 
+        print('Submitting file.')
         # Client sends file
         f = open(file, 'rb')
         line = f.read(BUFFER_SIZE)
@@ -117,6 +116,7 @@ class Client:
             connection.send(line)
             line = f.read(BUFFER_SIZE)
         f.close()
+        print('File submitted.')
 
     # Client side stat viewing
     def view_stats(self, connection):

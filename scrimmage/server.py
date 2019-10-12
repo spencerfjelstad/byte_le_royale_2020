@@ -29,7 +29,6 @@ class Server:
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_socket.bind((IP, PORT))
         self.server_socket.listen(10)
-        print('❤❤❤Welcome to HeartDB!❤❤❤')
 
         server_input = Thread(self.await_input, ())
         server_input.start()
@@ -50,11 +49,14 @@ class Server:
     def handle_client(self, connection, address):
         command = receive_data(connection)
         if command in REGISTER_COMMANDS:
+            self.log(f'{address} is registering.')
             self.register_client(connection, address)
         elif command in SUBMIT_COMMANDS:
+            self.log(f'{address} is submitting.')
             self.receive_submission(connection, address)
         elif command in VIEW_STATS_COMMANDS:
-            self.receive_submission(connection, address)
+            self.log(f'{address} is viewing stats.')
+            self.send_stats(connection, address)
         connection.close()
 
     def register_client(self, connection, address):
@@ -78,21 +80,23 @@ class Server:
 
     def verify(self, connection, address):
         tid = receive_data(connection)
+        self.log(f'Verifying id: {tid}')
         for entry in self.database.dump():
             if entry['tid'] == tid:
+                send_data(connection, 'exists')
                 return tid
 
-        return 0
+        send_data(connection, 'does not exist')
+        self.log(f'Failed to verify {address}.')
+        return False
 
     def receive_submission(self, connection, address):
         # Receive client uuid for verification
         tid = self.verify(connection, address)
-        if tid == 0:
-            send_data(connection, 'does not exist')
-            self.log(f'Failed to accept submission from {address}, id does not exist.')
+        if not tid:
+            self.log(f'Failed to accept submission from {address}.')
             return
-        else:
-            send_data(connection, 'exists')
+        self.log('Verified.')
 
         # Receive client file
         client = None
@@ -100,6 +104,7 @@ class Server:
             if e['tid'] == tid:
                 client = e
                 break
+        self.log('Found client in list.')
 
         location = f'scrimmage/scrim_clients/{client["teamname"]}/client.py'
         submission = open(location, 'wb')
@@ -182,10 +187,10 @@ class Server:
 
             num = self.current_running.pop(0)
 
-            thr = Thread(self.internal, (None, num,))
+            thr = Thread(self.internal_runner, (None, num,))
             thr.start()
 
-    def internal(self, client, number):
+    def internal_runner(self, client, number):
         try:
             # Run game
             self.log(f'Running client: {1}')

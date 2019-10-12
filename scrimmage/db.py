@@ -8,6 +8,7 @@ from scrimmage.utilities import Thread
 
 class DB:
     def __init__(self):
+        print('❤❤❤Welcome to HeartDB!❤❤❤')
         self.data = None
         if not os.path.exists('scrimmage/db.json'):
             self.data = list()
@@ -45,7 +46,6 @@ class DB:
                 entry['code_file'] = location
                 entry['submissions'] += 1
                 break
-
 
     def delete_entry(self, tid=None, teamname=None):
         for entry in self.data:
