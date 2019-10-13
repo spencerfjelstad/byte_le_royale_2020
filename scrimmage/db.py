@@ -65,7 +65,7 @@ class DB:
         for entry in self.data:
             if tid is not None and entry['tid'] != str(tid):
                 continue
-            if teamname is not None and entry['teamname'] != teamname:
+            if teamname is not None and entry['teamname'].lower() != teamname.lower():
                 continue
 
             results.append(entry)

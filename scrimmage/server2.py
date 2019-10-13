@@ -77,6 +77,9 @@ class Server:
                 except Exception:
                     print('You did it wrong.')
 
+            elif 'queue' in com:
+                print(*self.runner_queue)
+
     async def handle_client(self, reader, writer):
         try:
             command = await reader.read(BUFFER_SIZE)
@@ -114,6 +117,9 @@ class Server:
         if invalid_chars.search(teamname):
             cont = 'False'
 
+        if teamname == '' or None:
+            cont = 'False'
+
         if len(self.database.query(teamname=teamname)) > 0:
             cont = 'False'
 
@@ -137,7 +143,12 @@ class Server:
     async def receive_submission(self, reader, writer):
         self.log(f'Attempting submission with {writer.get_extra_info("peername")}')
         # Receive uuid
+        tid = await reader.read()
+        tid = tid.decode()
+
         # Verify uuid from database
+
+
         # Inform client of state
         # Receive client file
         # Save client file

@@ -62,16 +62,30 @@ class Client:
         vID = await self.reader.read(BUFFER_SIZE)
         vID = vID.decode()
 
+        if vID == '':
+            print('Something broke.')
+            return
+
         # Put uuid into file for verification (vID)
         with open('vID', 'w+') as f:
             f.write(vID)
 
         print("Registration successful.")
         print("You have been given an ID file. Don't move or lose it!")
+        print("You can give it to your teammates so they can submit and view stats.")
 
     async def submit(self):
         # Check vID for uuid
+        if not os.path.isfile('vID'):
+            print("Cannot find vID, please register first.")
+
+        tid = ''
+        with open('vID', 'r') as f:
+            tid = f.read()
+
         # Send uuid
+        self.writer.write(tid.encode())
+
         # Receive state of server
         # Check and verify client file
         # Send client file
