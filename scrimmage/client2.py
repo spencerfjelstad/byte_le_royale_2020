@@ -22,32 +22,54 @@ class Client:
         command = input('Enter: ')
 
         if command not in REGISTER_COMMANDS + SUBMIT_COMMANDS + VIEW_STATS_COMMANDS:
-            print('Not a recognized command, closing.')
-            self.close()
+            print('Not a recognized command.')
+            return
 
         self.writer.write(command.encode())
         cont = await self.reader.read(BUFFER_SIZE)
         cont = cont.decode()
         if cont == 'False':
-            print('1: Server shut down connection.')
-            self.close()
+            print('Server caught an illegal command.')
+            return
 
         if command in REGISTER_COMMANDS:
-            self.register()
+            await self.register()
         elif command in SUBMIT_COMMANDS:
-            self.submit()
+            await self.submit()
         elif command in VIEW_STATS_COMMANDS:
-            self.get_stats()
+            await self.get_stats()
 
-    def register(self):
+    async def register(self):
+        # Check if vID already exists and cancel out
+        if os.path.isfile('vID'):
+            print('You have already registered.')
+            return
+
         # Ask for teamname
-        # Send teamname
-        # Receive state of server
-        # Receive uuid
-        # Put uuid into file for verification (vID)
-        pass
+        teamname = input("Enter your teamname: ")
 
-    def submit(self):
+        # Send teamname
+        self.writer.write(teamname.encode())
+
+        # Receive state of server
+        cont = await self.reader.read(BUFFER_SIZE)
+        cont = cont.decode()
+        if cont == 'False':
+            print('Teamname contains illegal characters or is already taken.')
+            return
+
+        # Receive uuid
+        vID = await self.reader.read(BUFFER_SIZE)
+        vID = vID.decode()
+
+        # Put uuid into file for verification (vID)
+        with open('vID', 'w+') as f:
+            f.write(vID)
+
+        print("Registration successful.")
+        print("You have been given an ID file. Don't move or lose it!")
+
+    async def submit(self):
         # Check vID for uuid
         # Send uuid
         # Receive state of server
@@ -55,15 +77,12 @@ class Client:
         # Send client file
         pass
 
-    def get_stats(self):
+    async def get_stats(self):
         # Check vID for uuid
         # Send uuid
         # Receive state of server
         # Receive stats
         pass
-
-    def close(self):
-        os._exit(0)
 
 
 if __name__ == '__main__':

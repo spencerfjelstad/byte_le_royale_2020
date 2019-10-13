@@ -1,6 +1,8 @@
 import asyncio
 import datetime
+import re
 import os
+import uuid
 
 from scrimmage.db import DB
 from scrimmage.utilities import *
@@ -76,35 +78,63 @@ class Server:
                     print('You did it wrong.')
 
     async def handle_client(self, reader, writer):
-        command = await reader.read(BUFFER_SIZE)
-        command = command.decode()
+        try:
+            command = await reader.read(BUFFER_SIZE)
+            command = command.decode()
 
-        cont = 'False'
-        if command in REGISTER_COMMANDS + SUBMIT_COMMANDS + VIEW_STATS_COMMANDS:
-            cont = 'True'
-        writer.write(cont.encode())
-        if cont == 'False':
-            self.log(f'{writer.get_extra_info("peername")} supplied a bad command.')
-            await self.close(writer)
+            cont = 'False'
+            if command in REGISTER_COMMANDS + SUBMIT_COMMANDS + VIEW_STATS_COMMANDS:
+                cont = 'True'
+            writer.write(cont.encode())
+            if cont == 'False':
+                self.log(f'{writer.get_extra_info("peername")} supplied a bad command.')
 
-        if command in REGISTER_COMMANDS:
-            self.register_client(reader, writer)
-        elif command in SUBMIT_COMMANDS:
-            self.receive_submission(reader, writer)
-        elif command in VIEW_STATS_COMMANDS:
-            self.send_stats(reader, writer)
+            else:
+                if command in REGISTER_COMMANDS:
+                    await self.register_client(reader, writer)
+                elif command in SUBMIT_COMMANDS:
+                    await self.receive_submission(reader, writer)
+                elif command in VIEW_STATS_COMMANDS:
+                    await self.send_stats(reader, writer)
 
-    def register_client(self, reader, writer):
+            await writer.drain()
+            writer.close()
+        except ConnectionResetError:
+            self.log("Connection has been lost")
+
+    async def register_client(self, reader, writer):
         self.log(f'Attempting registration with {writer.get_extra_info("peername")}')
         # Receive teamname
-        # Verify veracity of teamname
-        # Inform client of state
-        # Generate new uuid for client
-        # Send uuid to client for verification
-        # Register information in database
-        pass
+        teamname = await reader.read(BUFFER_SIZE)
+        teamname = teamname.decode()
 
-    def receive_submission(self, reader, writer):
+        # Verify veracity of teamname
+        cont = 'True'
+        invalid_chars = re.compile(r"[\\/:*?<>|]")
+        if invalid_chars.search(teamname):
+            cont = 'False'
+
+        if len(self.database.query(teamname=teamname)) > 0:
+            cont = 'False'
+
+        # Inform client of state
+        writer.write(cont.encode())
+        if cont == 'False':
+            self.log(f'{writer.get_extra_info("peername")} supplied bad or taken teamname.')
+            return
+
+        # Generate new uuid for client
+        vID = str(uuid.uuid4())
+
+        # Send uuid to client for verification
+        writer.write(vID.encode())
+
+        # Register information in database
+        self.database.add_entry(tid=vID, teamname=teamname)
+
+        self.log(f'{writer.get_extra_info("peername")} registered teamname: {teamname} with ID: {vID}')
+
+    async def receive_submission(self, reader, writer):
         self.log(f'Attempting submission with {writer.get_extra_info("peername")}')
         # Receive uuid
         # Verify uuid from database
@@ -118,7 +148,7 @@ class Server:
         # Add to the runner queue
         pass
 
-    def send_stats(self, reader, writer):
+    async def send_stats(self, reader, writer):
         self.log(f'Attempting stat sending with {writer.get_extra_info("peername")}')
         # Receive uuid
         # Verify uuid from database
@@ -130,10 +160,6 @@ class Server:
     def log(self, *args):
         for arg in args:
             self.logs.append(f'{datetime.datetime.now()}: {arg}')
-
-    async def close(self, writer):
-        await writer.drain()
-        writer.close()
 
 
 if __name__ == '__main__':
