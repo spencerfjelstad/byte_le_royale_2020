@@ -25,8 +25,6 @@ class DB:
         entry = {
             'tid': kwargs['tid'] if 'tid' in kwargs else None,
             'teamname': kwargs['teamname'] if 'teamname' in kwargs else None,
-            'vis_logs': kwargs['vis_logs'] if 'vis_logs' in kwargs else None,
-            'code_file': kwargs['code_file'] if 'code_file' in kwargs else None,
             'submissions': 0,
             'client_location': None,
             'logs_location': None,
@@ -43,8 +41,14 @@ class DB:
     def set_code_file(self, tid, location):
         for entry in self.data:
             if entry['tid'] == tid:
-                entry['code_file'] = location
+                entry['client_location'] = location
                 entry['submissions'] += 1
+                break
+
+    def set_stats_file(self, tid, location):
+        for entry in self.data:
+            if entry['tid'] == tid:
+                entry['stats_location'] = location
                 break
 
     def delete_entry(self, tid=None, teamname=None):

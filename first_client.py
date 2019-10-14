@@ -28,3 +28,14 @@ class Client(UserClient):
 
     def set_decree(self, my_decree):
         return "let them eat cake"
+
+poop
+poop
+poop
+poop
+poop
+poop
+poop
+poop
+poop
+poop

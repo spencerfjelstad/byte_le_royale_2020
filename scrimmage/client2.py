@@ -1,6 +1,7 @@
 import asyncio
 import os
 
+from game.config import CLIENT_DIRECTORY, CLIENT_KEYWORD
 from scrimmage.utilities import *
 
 
@@ -72,7 +73,7 @@ class Client:
 
         print("Registration successful.")
         print("You have been given an ID file. Don't move or lose it!")
-        print("You can give it to your teammates so they can submit and view stats.")
+        print("You can give a copy to your teammates so they can submit and view stats.")
 
     async def submit(self):
         # Check vID for uuid
@@ -87,9 +88,44 @@ class Client:
         self.writer.write(tid.encode())
 
         # Receive state of server
+        cont = await self.reader.read(BUFFER_SIZE)
+        cont = cont.decode()
+
+        if cont == 'False':
+            print('Cannot submit at this time.')
+
         # Check and verify client file
+        file = None
+        for filename in os.listdir(CLIENT_DIRECTORY):
+            if CLIENT_KEYWORD.upper() not in filename.upper():
+                # Filters out files that do not contain CLIENT_KEYWORD in their filename
+                continue
+
+            if os.path.isdir(os.path.join(CLIENT_DIRECTORY, filename)):
+                # Skips folders
+                continue
+
+            user_check = input(f'Submitting {filename}, is this ok? (y/n): ')
+            if 'y' in user_check.lower():
+                file = filename
+                break
+        else:
+            file = input('Could not find file: please manually type file name: ')
+
+        if not os.path.isfile(file):
+            print('File not found.')
+            return
+
         # Send client file
-        pass
+        print('Submitting file.')
+        f = open(file, 'rb')
+        line = f.read(BUFFER_SIZE)
+        while line:
+            self.writer.write(line)
+            line = f.read(BUFFER_SIZE)
+            await self.writer.drain()
+
+        print('File sent successfully.')
 
     async def get_stats(self):
         # Check vID for uuid

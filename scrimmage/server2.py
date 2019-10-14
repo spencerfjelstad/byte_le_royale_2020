@@ -133,6 +133,7 @@ class Server:
         vID = str(uuid.uuid4())
 
         # Send uuid to client for verification
+        await writer.drain()
         writer.write(vID.encode())
 
         # Register information in database
@@ -143,21 +144,54 @@ class Server:
     async def receive_submission(self, reader, writer):
         self.log(f'Attempting submission with {writer.get_extra_info("peername")}')
         # Receive uuid
-        tid = await reader.read()
+        tid = await reader.read(BUFFER_SIZE)
         tid = tid.decode()
 
         # Verify uuid from database
+        cont = 'True'
+        entry = self.database.query(tid=tid)
+        if len(entry) == 0:
+            self.log('Entry not found.')
+            cont = 'False'
+        elif len(entry) == 1:
+            self.log(f'Verified {writer.get_extra_info("peername")}')
+        else:
+            self.log('Something fucked up somewhere why are there repeat ids')
+            cont = 'False'
 
+        if tid in self.runner_queue:
+            self.log('Cannot accept new submission, previous still running.')
+            cont = 'False'
 
         # Inform client of state
+        writer.write(cont.encode())
+        if cont == 'False':
+            return
+
         # Receive client file
-        # Save client file
+        client = entry[0]
+        location = f'scrimmage/scrim_clients/{client["teamname"]}/{client["teamname"]}_client.py'
+        submission = open(location, 'wb+')
+        line = await reader.read(BUFFER_SIZE)
+        while line:
+            submission.write(line)
+            line = await reader.read(BUFFER_SIZE)
+        submission.close()
+
         # Update database with location of file
-        # Increment submissions count
+        self.database.set_code_file(client['tid'], location)
+
         # Create stats file if need be, wipe existing
+        stats_location = f'scrimmage/scrim_clients/{client["teamname"]}/stats.json'
+        with open(stats_location, 'w+') as f:
+            f.write('')
+
         # Set stats location in database if need be
+        self.database.set_stats_file(client['tid'], location)
+
         # Add to the runner queue
-        pass
+        for x in range(self.starting_runs):
+            self.runner_queue.append(client['tid'])
 
     async def send_stats(self, reader, writer):
         self.log(f'Attempting stat sending with {writer.get_extra_info("peername")}')

@@ -3,6 +3,7 @@
 *.pyz
 vID
 scrimmage/temp
+scrimmage/scrim_clients
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
