@@ -3,6 +3,8 @@ import datetime
 import json
 import re
 import os
+import shutil
+from subprocess import Popen
 import uuid
 
 from scrimmage.db import DB
@@ -12,8 +14,6 @@ from scrimmage.utilities import *
 class Server:
     def __init__(self):
         self.database = DB()
-
-        self.logs = list()
 
         self.logs = list()
 
@@ -27,7 +27,7 @@ class Server:
         self.server = self.loop.run_until_complete(self.coro)
 
         self.loop.run_in_executor(None, self.await_input)
-        # self.loop.run_in_executor(None, self.runner_loop)
+        self.loop.run_in_executor(None, self.runner_loop)
         # self.loop.run_in_executor(None, self.visualizer_loop)
 
         try:
@@ -226,6 +226,63 @@ class Server:
         # Send info to client
         await writer.drain()
         writer.write(stats.encode())
+
+    def runner_loop(self):
+        while True:
+            if len(self.runner_queue) == 0 or len(self.current_running) == 0:
+                continue
+
+            client = self.runner_queue.pop()
+            num = self.current_running.pop()
+
+            self.loop.run_in_executor(None, self.internal_runner, client, num)
+
+    def internal_runner(self, client, number):
+        # Run game
+        self.log(f'Running client: {client}')
+        if not os.path.exists(f'scrimmage/temp'):
+            os.mkdir(f'scrimmage/temp')
+        end_path = f'scrimmage/temp/{number}'
+        if not os.path.exists(end_path):
+            os.mkdir(end_path)
+
+        entry = self.database.query(tid=client)[0]
+        shutil.copy('launcher.pyz', end_path)
+        shutil.copy(entry['client_location'], end_path)
+        shutil.copy('scrimmage/runner.bat', end_path)
+
+        f = open(os.devnull, 'w')
+        p = Popen('runner.bat', stdout=f, cwd=end_path, shell=True)
+        stdout, stderr = p.communicate()
+
+        woop = {'Score': 0}
+        try:
+            with open(end_path + '/logs/results.json', 'r') as f:
+                woop = json.load(f)
+        except json.decoder.JSONDecodeError:
+            # File doesn't exist
+            pass
+
+        score = woop['Score']
+
+        orig = {'Max Score': 0}
+        try:
+            with open(entry['stats_location'], 'r') as f:
+                orig = json.load(f)
+        except json.decoder.JSONDecodeError:
+            # File doesn't exist
+            pass
+
+        if 'Max Score' in orig:
+            if orig['Max Score'] < score:
+                orig['Max Score'] = score
+
+        with open(entry['stats_location'], 'r+') as f:
+            json.dump(orig, f)
+
+        shutil.rmtree(end_path)
+
+        self.current_running.append(number)
 
     def log(self, *args):
         for arg in args:
