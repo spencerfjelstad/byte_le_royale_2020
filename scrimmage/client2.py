@@ -129,10 +129,27 @@ class Client:
 
     async def get_stats(self):
         # Check vID for uuid
+        if not os.path.isfile('vID'):
+            print("Cannot find vID, please register first.")
+
+        tid = ''
+        with open('vID', 'r') as f:
+            tid = f.read()
+
         # Send uuid
+        self.writer.write(tid.encode())
+
         # Receive state of server
+        cont = await self.reader.read(BUFFER_SIZE)
+        cont = cont.decode()
+
+        if cont == 'False':
+            print('Failure in sending ID.')
+
         # Receive stats
-        pass
+        stats = await self.reader.read(BUFFER_SIZE)
+        stats = stats.decode()
+        print(stats)
 
 
 if __name__ == '__main__':

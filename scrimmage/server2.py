@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+import json
 import re
 import os
 import uuid
@@ -187,7 +188,7 @@ class Server:
             f.write('')
 
         # Set stats location in database if need be
-        self.database.set_stats_file(client['tid'], location)
+        self.database.set_stats_file(client['tid'], stats_location)
 
         # Add to the runner queue
         for x in range(self.starting_runs):
@@ -196,11 +197,35 @@ class Server:
     async def send_stats(self, reader, writer):
         self.log(f'Attempting stat sending with {writer.get_extra_info("peername")}')
         # Receive uuid
+        tid = await reader.read(BUFFER_SIZE)
+        tid = tid.decode()
+
         # Verify uuid from database
+        cont = 'True'
+        entry = self.database.query(tid=tid)
+        if len(entry) == 0:
+            self.log('Entry not found.')
+            cont = 'False'
+        elif len(entry) == 1:
+            self.log(f'Verified {writer.get_extra_info("peername")}')
+        else:
+            self.log('Something fucked up somewhere why are there repeat ids')
+            cont = 'False'
+
         # Inform client of state
+        writer.write(cont.encode())
+        if cont == 'False':
+            return
+
         # Retrieve data from stats file
+        client = entry[0]
+        stats = ''
+        with open(client['stats_location'], 'r') as f:
+            stats += f.read()
+
         # Send info to client
-        pass
+        await writer.drain()
+        writer.write(stats.encode())
 
     def log(self, *args):
         for arg in args:
