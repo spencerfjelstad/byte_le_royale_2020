@@ -1,8 +1,9 @@
 import cocos
 
+from game.visualizer.graphs import *
 
 class EndLayer(cocos.layer.Layer):
-    def __init__(self,display_size):
+    def __init__(self,display_size,parser):
         self.display = display_size
         super().__init__()
         label = cocos.text.Label(
@@ -16,3 +17,6 @@ class EndLayer(cocos.layer.Layer):
         )
         label.position = self.display[0]/2, self.display[1]/2
         self.add(label)
+
+        #Line graph
+        self.add(LineGraph([6,48,367], 200,100, parser))

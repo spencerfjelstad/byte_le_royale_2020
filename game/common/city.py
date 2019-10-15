@@ -12,7 +12,7 @@ class City:
         self.population = GameStats.city_population
         self.gold = GameStats.city_gold
         self.resources = GameStats.resources
-        self.location = CityLocation.default
+        self.location = CityLocation.plains
         self.sensors = dict()
         for sens_type in enum_iter(SensorType):
             sens = Sensor()
