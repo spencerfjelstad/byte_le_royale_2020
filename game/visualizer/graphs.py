@@ -1,64 +1,75 @@
-import pygame
 import cocos
+from cocos.actions import *
 
 
-def lineGraph(population_list, final_width, final_height):
-    #For now, here's how to draw a basic graph with random points
-    #Game results, gotten from logs
-    max_population = max(population_list)
-    max_turns = len(population_list)
+class LineGraph(cocos.layer.Layer):
+    def __init__(self, population_list, final_width, final_height, parser):
+        super().__init__()
+        self.line_graph(parser)
 
-    #surface to be returned
-    data_surf = pygame.Surface((max_turns,max_population))
-    surf = pygame.Surface((final_width + 4, final_height + 4))
 
-    #Border
-    #Variables and rectangle specifications based on population and turns. To be scaled down to length and width
-    x_coord = 0
-    y_coord = 0
-    height = max_population + 5
-    width = max_turns
 
-    data_surf.fill(pygame.Color(0, 255, 255))
+    def line_graph(self, parser, length = 500, height = 300, x = 200, y = 100, color = (255,255,255,255)):
 
-    #Draw lines in graph
-    x_origin = x_coord
-    y_origin = y_coord + height
-    #Test values for y value
-    #values = [50,67,10,100,79,56,24,79,35,78,36,35,78,17,96,46,86,23,67,56]
-    for i in range(0,max_turns):
-        population = population_list.pop(0)
-        if(i != 0):
-            pygame.draw.line(data_surf, pygame.Color(0,0,0), (x_origin,y_origin),(x_coord + i, y_coord + height - population))
-        x_origin = x_coord + i
-        y_origin = y_coord + height - population
+        #Border
+        horizontal_line1 = cocos.draw.Line((x,y),(x+length+10, y),color, 5)
+        horizontal_line2 = cocos.draw.Line((x, y+height+10), (x + length+10, y+height+10), color, 5)
+        vertical_line1 = cocos.draw.Line((x,y), (x, y+height+10), color, 5)
+        vertical_line2 = cocos.draw.Line((x + length+10, y), (x + length+10, y + height+10), color, 5)
 
-    data_surf = pygame.transform.scale(data_surf,(final_width,final_height))
+        #Border
+        self.add(horizontal_line1)
+        self.add(horizontal_line2)
+        self.add(vertical_line1)
+        self.add(vertical_line2)
 
-    border_width = final_width + 4
-    border_height = final_height + 4
+        #Data
+        data_layer = Data(parser,x/2,y/2)
+        data_layer.transform_anchor_x = x/2
+        data_layer.transform_anchor_y = y/2
+        data_layer.scale_x = float(length/data_layer.length)
+        data_layer.scale_y = float(height/data_layer.height)
 
-    border = pygame.Rect(x_coord, y_coord, border_width, border_height)
-    #Inner border
-    #inner_border = pygame.Rect(x_coord + 2, y_coord + 2, width - 4, height - 4)
-    # Draw rectangles
-    pygame.draw.rect(surf, pygame.Color(0, 0, 0), border)
-    #Inner border
-    surf.blit(data_surf, (2,2))
-    #pygame.draw.rect(data_surf, pygame.Color(0, 255, 255), inner_border)
+        self.add(data_layer)
 
-    # Ticks
-    # Calculating values at each tick for x and y
-    # Note: Only works if length is divisible by max population
+        #Ticks
+        for i in range (0,9):
+            #x-axis ticks
+            x_tick = cocos.draw.Line((x + (length * (i+1) / 10), y),(x + (length * (i+1) / 10), y + 10),color, stroke_width = 2 )
+            self.add(x_tick)
 
-    # Num of ticks to be a constant 10, the turn and pop values divided to fit
-    for i in range(0, 9):
-        # x-axis ticks
-        pygame.draw.line(surf, pygame.Color(0, 0, 0), (x_coord + (border_width * (i + 1) / 10), y_coord + border_height),
-                         (x_coord + (border_width * (i + 1) / 10), y_coord + border_height - 4))
-        # y-axis ticks
-        pygame.draw.line(surf, pygame.Color(0, 0, 0), (x_coord, y_coord + (border_height * (i + 1) / 10)),
-                         (x_coord + 4, y_coord + (border_height * (i + 1) / 10)))
+            #y-axis ticks
+            y_tick = cocos.draw.Line((x, y + (height * (i + 1) / 10)), (x + 10 , y + (height * (i + 1) / 10)),color, stroke_width=2)
+            self.add(y_tick)
 
-    return surf
-    #surf.draw.rect
+
+class Data(cocos.layer.Layer):
+    def __init__(self, parser, x=0, y=0):
+        self.length = None
+        self.height = None
+        super().__init__()
+        self.x = x
+        self.y = y
+        self.parser = parser
+        population_list = []
+
+        # Data
+        for i in self.parser.turns:
+            population_list.append(i['player']['city']['population'])
+
+        self.length = len(population_list)*3
+        self.height = max(population_list)
+
+
+        # Draw lines in graph
+        x_origin = 0
+        y_origin = 0
+
+        for i in range(0, len(population_list)):
+            value = population_list[i]
+            if i != 0:
+                data_line = cocos.draw.Line((x_origin, y_origin), (x + 3*i, y + value), (255, 255, 255, 255), 1)
+                self.add(data_line)
+            x_origin = x + 3*i
+            y_origin = y + value
+
