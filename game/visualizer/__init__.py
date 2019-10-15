@@ -2,6 +2,7 @@ import cocos
 from cocos.director import director
 import pyglet
 
+
 from game.config import *
 from game.visualizer.game_log_parser import GameLogParser
 from game.visualizer.graphs import *
@@ -15,10 +16,15 @@ from game.visualizer.disaster_layer import *
 size = DISPLAY_SIZE
 log_parser = None
 turn = 1
+end = True
 
-def start(gamma, fullscreen=False):
+
+def start(gamma, fullscreen=False, endgame=True):
     global log_parser
     global turn
+    global end_boolean
+    end_boolean = endgame
+
 
     log_parser = GameLogParser("logs/")
 
@@ -43,14 +49,17 @@ def start(gamma, fullscreen=False):
 
 def timer(interval):
     global turn
+
     turn += 1
     director.scene_stack.clear()
 
     turn_info=log_parser.get_turn(turn)
     if turn_info is None:
-        end = EndLayer(size)
-        end_scene = cocos.scene.Scene().add(end)
+        end_layer = EndLayer(size,log_parser)
+        end_scene = cocos.scene.Scene().add(end_layer)
         director.replace(end_scene)
+        if not end_boolean:
+            end_scene.schedule_interval(exit, 4)
     else:
         # If a disaster happens, slow down the interval rate
         intval = 0.1
@@ -61,11 +70,11 @@ def timer(interval):
         clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=intval)
 
+
         current_scene = create_scene(turn_info)
         current_scene.add(clock, 100)
 
         director.replace(current_scene)
-
 
 def create_scene(info):
     # Generate layers
