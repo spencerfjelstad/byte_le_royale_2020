@@ -37,6 +37,7 @@ if __name__ == '__main__':
         # Additional args
         full = False
         gamma = game.config.GAMMA
+        endgame = True
         if '-fullscreen' in sys.argv:
             full = True
         if '-gamma' in sys.argv:
@@ -45,8 +46,11 @@ if __name__ == '__main__':
                 gamma = float(sys.argv[gamma_in])
             else:
                 print('Gamma input not found, using default value')
+        if '-skip' in sys.argv:
+            endgame = False
 
-        start(gamma, full)
+
+        start(gamma, full, endgame)
         
     # Boot up the scrimmage server client
     elif '-scrimmage' in sys.argv:

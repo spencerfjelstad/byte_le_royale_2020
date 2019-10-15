@@ -24,7 +24,7 @@ class TestSensors(unittest.TestCase):
             DisasterType.ufo: 0.0
         }
         turn_ranges = dict()
-        for turn in range(10000):
+        for turn in range(100):
             turn_ranges[turn] = calculate_sensor_ranges(test_odds)
 
         max_val = -0.01

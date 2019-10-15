@@ -4,6 +4,7 @@ from game.common.disasters import LastingDisaster
 from game.common.player import Player
 from game.common.sensor import Sensor
 from game.controllers.controller import Controller
+from game.controllers.event_controller import EventController
 from game.config import *
 from game.utils.helpers import enum_iter
 
@@ -13,13 +14,14 @@ import math
 class EffortController(Controller):
     def __init__(self):
         super().__init__()
+        self.event_controller = EventController.get_instance()
 
     def handle_actions(self, player):
         # handle advanced verification of allocation list
         player.city.remaining_man_power = player.city.population
         allocations = dict()  # condensed duplicate entries
 
-        for allocation in player.action._allocation_list:
+        for allocation in player.action.get_allocation_list():
             act, amount = allocation
 
             # Do any additional, server side action validation here
@@ -117,6 +119,12 @@ class EffortController(Controller):
             left_over = sensor.sensor_effort_remaining * -1  # reverse, because effort allocation must be positive
             sensor.sensor_effort_remaining = GameStats.sensor_effort[next_level]
             sensor.sensor_level = next_level
+
+            # log upgrade
+            self.event_controller.add_event({
+                "event_type": EventType.sensor_upgrade,
+                "sensor": sensor.to_json(),
+            })
 
             # with left over effort, attempt upgrade again
             # TODO: look at making this non-recursive

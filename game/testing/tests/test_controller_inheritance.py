@@ -4,6 +4,7 @@ import sys
 from game.controllers.controller import Controller
 from game.controllers.destruction_controller import DestructionController
 from game.controllers.disaster_controller import DisasterController
+from game.controllers.event_controller import EventController
 from game.controllers.master_controller import MasterController
 from game.common.enums import *
 
@@ -11,6 +12,7 @@ from game.common.enums import *
 class TestControllerInheritance(unittest.TestCase):
 
     def setUp(self):
+        EventController._instance = None
         self.test_destruction_controller = DestructionController()
         self.test_disaster_controller = DisasterController()
         self.test_master_controller = MasterController()

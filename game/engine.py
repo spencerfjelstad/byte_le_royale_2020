@@ -4,12 +4,19 @@ import importlib
 import json
 from tqdm import tqdm
 
+# Load these imports in so the clients can properly load them in later
+# Even though these are unused imports, leave them imported so they are able to properly resolve all dependent imports,
+# before clients get a chance to import the modules that these are calling, too.
+import game.client.user_client
+import game.common.enums
+
 from game.common.player import *
 from game.config import *
 
 from game.controllers.master_controller import MasterController
 from game.utils.helpers import write
-from game.utils.thread import Thread
+from game.utils.secure_importer import secure_importer
+from game.utils.thread import Thread, client_thread
 
 clients = list()
 current_world = None
@@ -43,6 +50,7 @@ def loop(quiet=False):
         post_tick(turn)
 
     print("Game reached max turns and is closing.")
+
     shutdown()
 
 
@@ -67,7 +75,19 @@ def boot():
             # Skips folders
             continue
 
-        im = importlib.import_module(f'{filename}', CLIENT_DIRECTORY)
+        try:
+            # Apply import restrictions
+            __original_importer = __builtins__['__import__']
+            __builtins__['__import__'] = secure_importer
+            im = importlib.import_module(f'{filename}', CLIENT_DIRECTORY)
+        except ImportError as e:
+            print("Client attempted invalid imports.")
+            print(e)
+            continue
+        finally:
+            # Restore original importer for server use
+            __builtins__['__import__'] = __original_importer
+
         obj = im.Client()
         player = Player(
            code=obj
@@ -135,9 +155,8 @@ def tick(turn):
     threads = list()
     for client in clients:
         arguments = master_controller.client_turn_arguments(client, current_world, turn_number)
-
         # Create the thread, args being the things the client will need
-        thr = Thread(func=client.code.take_turn, args=arguments)
+        thr = Thread(func=client_thread, args=(client, arguments))
         threads.append(thr)
 
     # Start all of the threads. This is where the client's code is actually be run.

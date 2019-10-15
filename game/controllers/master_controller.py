@@ -9,16 +9,21 @@ import game.config as config
 
 from game.controllers.controller import Controller
 from game.controllers.city_generator_controller import CityGeneratorController
+from game.controllers.decree_controller import DecreeController
 from game.controllers.destruction_controller import DestructionController
 from game.controllers.disaster_controller import DisasterController
 from game.controllers.effort_controller import EffortController
-
+from game.controllers.event_controller import EventController
 
 class MasterController(Controller):
     def __init__(self):
         super().__init__()
 
+        # Singletons first
+        self.event_controller = EventController()
+
         self.city_generator_controller = CityGeneratorController()
+        self.decree_controller = DecreeController()
         self.destruction_controller = DestructionController()
         self.disaster_controller = DisasterController()
         self.effort_controller = EffortController()
@@ -72,6 +77,15 @@ class MasterController(Controller):
 
             client.disasters.append(dis)
 
+            self.event_controller.add_event({
+                "event_type": EventType.disaster_spawned,
+                "turn": turn,
+                "disaster": dis.to_json()
+            })
+
+        # Run decrees immediately after disasters are generated (before player has a chance to set a new one)
+        self.decree_controller.execute_decree(client)
+
         # read the sensor results from the game map, converting strings to ints and/or floats
         world['sensors'] = {int(key): {int(key2): float(val2) for key2, val2 in val.items()} for key, val in world['sensors'].items()}
 
@@ -92,7 +106,10 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, client, world, turn):
+        self.event_controller.update(turn)
+
         self.effort_controller.handle_actions(client)
+        self.decree_controller.update_decree(client.action.get_decree())
         self.disaster_controller.handle_actions(client)
         self.destruction_controller.handle_actions(client)
 
@@ -108,6 +125,9 @@ class MasterController(Controller):
     def create_turn_log(self, client, world, turn):
         data = dict()
 
+        # Retrieve all events on this turn
+        data['events'] = [event for event in self.event_controller.get_events() if event.get('turn') == turn]
+
         data['rates'] = world['rates']
 
         data['player'] = client.to_json()
@@ -119,7 +139,8 @@ class MasterController(Controller):
         # data is the json information what will be written to the results file
         data = {
             "Team": client.team_name,  # TODO: Replace with an engine-safe ID of each team
-            "Score": turn
+            "Score": turn,
+            "Events": self.event_controller.get_events()
         }
         return data
 

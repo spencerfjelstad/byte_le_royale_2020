@@ -1,39 +1,41 @@
-import pygame
-from game.visualizer.sprite_sheet_functions import *
-from game.config import *
+import cocos
 
-class CitySprite(pygame.sprite.Sprite):
-    def __init__(self, sprite_dimensions, city_level):
+
+class CityLayer(cocos.layer.Layer):
+    def __init__(self, display_size, turn_info):
+        self.display = display_size
+        self.info = turn_info
         super().__init__()
+        images = [
+            "game/visualizer/assets/city_assets/city_level0.png",
+            "game/visualizer/assets/city_assets/city_level1.png",
+            "game/visualizer/assets/city_assets/city_level2.png",
+            "game/visualizer/assets/city_assets/city_level3.png"
+        ]
+        structure = 0
+        try:
+            structure = int(self.info['player'].get('city').get('structure'))
+        except:
+            print("Structure is NoneType")
 
-        #loads the image
-        sprite_sheet = SpriteSheet("game/visualizer/assets/city_assets/city_default.png")
-        self.image = sprite_sheet.get_image(sprite_dimensions[0], sprite_dimensions[1], sprite_dimensions[2], sprite_dimensions[3])
+        #Depending structure draw_correct sprite
+        if structure > 150:
+            self.city = cocos.sprite.Sprite(images[3])
+        elif structure > 100:
+            self.city = cocos.sprite.Sprite(images[2])
+        elif structure > 50:
+            self.city = cocos.sprite.Sprite(images[1])
+        else:
+            self.city = cocos.sprite.Sprite(images[0])
 
-        #image needs rect to work
-        self.rect = self.image.get_rect()
-#Initialize all the city sprite objects
-class CitySpriteLevel0(CitySprite):
-    def __init__(self, x, y, city_level):
-        CitySprite.__init__(self, [-x, -y, DISPLAY_SIZE[0], DISPLAY_SIZE[1]], city_level)
-class CitySpriteLevel1(CitySprite):
-    def __init__(self, x, y, city_level):
-        CitySprite.__init__(self, [-x, -y, DISPLAY_SIZE[0], DISPLAY_SIZE[1]], city_level)
-class CitySpriteLevel2(CitySprite):
-    def __init__(self, x, y, city_level):
-        CitySprite.__init__(self, [-x, -y, DISPLAY_SIZE[0], DISPLAY_SIZE[1]], city_level)
-class CitySpriteDestroyedLevel0(CitySprite):
-    def __init__(self, x, y, city_level):
-        CitySprite.__init__(self, [-x, -y, DISPLAY_SIZE[0], DISPLAY_SIZE[1]], city_level)
-class CitySpriteDestroyedLevel1(CitySprite):
-    def __init__(self, x, y, city_level):
-        CitySprite.__init__(self, [-x, -y, DISPLAY_SIZE[0], DISPLAY_SIZE[1]], city_level)
-class CitySpriteDestroyedLevel2(CitySprite):
-    def __init__(self, x, y, city_level):
-        CitySprite.__init__(self, [-x, -y, DISPLAY_SIZE[0], DISPLAY_SIZE[1]], city_level)
+        #Anchor Point of the sprite is at the center of the sprite
+        #This position the sprite to the right side of the screen
+        #and the sprite in the middle of the screen on the y axis
+        self.sprite_width = self.city.width
+        self.sprite_height = self.city.height
 
+        self.city_x = int(self.display[0]-self.sprite_width/2)
+        self.city_y = int(self.display[1]/2)
 
-
-
-
-
+        self.city.position = (self.city_x, self.city_y)
+        self.add(self.city)
