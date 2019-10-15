@@ -238,7 +238,10 @@ class Server:
             client = self.runner_queue.pop()
             num = self.current_running.pop()
 
-            self.loop.run_in_executor(None, self.internal_runner, client, num)
+            try:
+                self.loop.run_in_executor(None, self.internal_runner, client, num)
+            except PermissionError:
+                continue
 
     def internal_runner(self, client, number):
         # Run game
@@ -301,25 +304,31 @@ class Server:
             if client['logs_location'] is None:
                 continue
 
-            # Create custom running directory
-            loc = 'scrimmage/vis_temp'
+            self.log(f'Visualizing {client["teamname"]}')
 
-            # Take logs and copy into directory
-            shutil.copytree(client['logs_location'], f'{loc}/logs')
+            try:
+                # Create custom running directory
+                loc = 'scrimmage/vis_temp'
 
-            # Take launcher and copy into the directory
-            shutil.copy('launcher.pyz', loc)
+                # Take logs and copy into directory
+                shutil.copytree(client['logs_location'], f'{loc}/logs')
 
-            # Take batch file and copy into directory
-            shutil.copy('scrimmage/vis_runner.bat', loc)
+                # Take launcher and copy into the directory
+                shutil.copy('launcher.pyz', loc)
 
-            # Run batch file
-            f = open(os.devnull, 'w')
-            p = Popen('vis_runner.bat', stdout=f, cwd=loc, shell=True)
-            stdout, stderr = p.communicate()
+                # Take batch file and copy into directory
+                shutil.copy('scrimmage/vis_runner.bat', loc)
 
-            # Clean up the directory
-            shutil.rmtree(loc)
+                # Run batch file
+                f = open(os.devnull, 'w')
+                p = Popen('vis_runner.bat', stdout=f, cwd=loc, shell=True)
+                stdout, stderr = p.communicate()
+
+                # Clean up the directory
+                shutil.rmtree(loc)
+
+            except PermissionError:
+                continue
 
     def log(self, *args):
         for arg in args:

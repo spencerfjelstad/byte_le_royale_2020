@@ -1,2 +1,2 @@
 @echo off
-python .\launcher.pyz -visualizer
+python .\launcher.pyz -visualizer -skip
