@@ -107,4 +107,6 @@ def create_scene(info, parser):
     scene.add(ufo_layer, 8)
 
     scene.add(health_layer, 10)
+    scene.add(forecast_layer, 10)
+    scene.add(decree_layer, 10)
     return scene
