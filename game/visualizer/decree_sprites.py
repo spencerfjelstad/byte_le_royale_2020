@@ -6,6 +6,7 @@ class DecreeLayer(cocos.layer.Layer):
         self.display = display_size
         self.info = turn_info
         super().__init__()
+        # Dictionary of images for the different decrees
         images = {
             "0":"game/visualizer/assets/decree_assets/decree_0.png",
             "1":"game/visualizer/assets/decree_assets/decree_1.png",
@@ -15,6 +16,7 @@ class DecreeLayer(cocos.layer.Layer):
             "5":"game/visualizer/assets/decree_assets/decree_5.png"
         }
 
+        # Choose image for decree based on the turn info and add it to the layer
         image = str(self.info['player'].get('action').get('decree'))
         spr = cocos.sprite.Sprite(images[image])
         spr.position = 50, self.display[1]-50

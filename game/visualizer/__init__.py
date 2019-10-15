@@ -2,7 +2,6 @@ import cocos
 from cocos.director import director
 import pyglet
 
-
 from game.config import *
 from game.visualizer.game_log_parser import GameLogParser
 from game.visualizer.graphs import *
@@ -15,12 +14,13 @@ from game.visualizer.forecast_sprite import *
 from game.visualizer.decree_sprites import *
 from game.visualizer.disaster_layer import *
 
+# Global variables needed for scene creation and keeping track of turns
 size = DISPLAY_SIZE
 log_parser = None
 turn = 1
 end = True
 
-
+# Function called by main that displays first scene and initializes everything
 def start(gamma, fullscreen=False, endgame=True):
     global log_parser
     global turn
@@ -30,7 +30,7 @@ def start(gamma, fullscreen=False, endgame=True):
 
     log_parser = GameLogParser("logs/")
 
-    # initialize cocos
+    # Initialize cocos
     director.init(width=size[0], height=size[1], caption="Byte-le Royale: Disaster Dispatcher", fullscreen=fullscreen)
 
     # Get turn info from logs, if None go to end scene
@@ -70,15 +70,13 @@ def timer(interval):
 
         clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=intval)
-
-
         current_scene = create_scene(turn_info)
         current_scene.add(clock, 10)
 
         director.replace(current_scene)
         turn+=1
 
-
+# Function that generates base scene layer for the given turn
 def create_scene(info, parser):
     # Generate layers
     health_layer = HealthBar(size, info)

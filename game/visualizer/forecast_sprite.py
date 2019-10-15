@@ -8,6 +8,7 @@ class ForecastLayer(cocos.layer.Layer):
         self.display = display_size
         self.parser = log_parser
         super().__init__()
+        # Dictionary of images for the forecast feature
         images = {
             "0": "game/visualizer/assets/forecast_assets/tape_fire.png",
             "1": "game/visualizer/assets/forecast_assets/tape_tornado.png",
@@ -18,8 +19,10 @@ class ForecastLayer(cocos.layer.Layer):
             "6": "game/visualizer/assets/forecast_assets/tape_clear.png"
         }
 
+        # Generates list of future and past turns given the current turn and saves it as 'forecast'
         forecast = self.parser.turns[clamp(turn-3, 0, turn):clamp(turn+2, 0, len(self.parser.turns)):]
 
+        # For each item in forecast displays the correct image in the correct location
         for i in range(len(forecast)):
             spr = cocos.sprite.Sprite(images["6"])
             for key, item in forecast[i]['rates'].items():
