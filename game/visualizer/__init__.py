@@ -70,7 +70,7 @@ def timer(interval):
 
         clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=intval)
-        current_scene = create_scene(turn_info)
+        current_scene = create_scene(turn_info, log_parser)
         current_scene.add(clock, 10)
 
         director.replace(current_scene)
