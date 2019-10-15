@@ -4,7 +4,7 @@ import pyglet
 
 from game.config import *
 from game.visualizer.game_log_parser import GameLogParser
-# from game.visualizer.graphs import *
+from game.visualizer.graphs import *
 from game.visualizer.city_sprites import *
 from game.visualizer.location_sprites import *
 from game.visualizer.health_bar import *
@@ -69,8 +69,8 @@ def create_scene(info, parser):
     health_layer = HealthBar(size, info)
     location_layer = LocationLayer(size, 'plains')
     city_layer = CityLayer(size, info)
-    forecast_layer = ForecastLayer(turn, parser)
-    decree_layer = DecreeLayer(info)
+    forecast_layer = ForecastLayer(turn, size, parser)
+    decree_layer = DecreeLayer(info, size)
 
     # Add layers to
     scene = cocos.scene.Scene()

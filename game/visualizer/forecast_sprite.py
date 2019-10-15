@@ -3,8 +3,9 @@ from game.utils.helpers import *
 
 
 class ForecastLayer(cocos.layer.Layer):
-    def __init__(self, turn, log_parser):
+    def __init__(self, turn, display_size, log_parser):
         self.turn = turn
+        self.display = display_size
         self.parser = log_parser
         super().__init__()
         images = {
@@ -25,9 +26,9 @@ class ForecastLayer(cocos.layer.Layer):
                 if item == 0:
                     spr = cocos.sprite.Sprite(images[key])
             if self.turn < 2:
-                spr.position = (i+3)*64, 200
+                spr.position = self.display[0]/2+(i+3)*64-172, self.display[1]-50
             elif self.turn < 3:
-                spr.position = (i+2)*64, 200
+                spr.position = self.display[0]/2+(i+2)*64-172, self.display[1]-50
             else:
-                spr.position = (i+1)*64, 200
+                spr.position = self.display[0]/2+(i+1)*64-172, self.display[1]-50
             self.add(spr)
