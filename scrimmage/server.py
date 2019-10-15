@@ -1,11 +1,12 @@
-import os
-import socket
+import asyncio
 import datetime
-import uuid
-import time
-import shutil
 import json
+import random
+import re
+import os
+import shutil
 from subprocess import Popen
+import uuid
 
 from scrimmage.db import DB
 from scrimmage.utilities import *
@@ -13,10 +14,7 @@ from scrimmage.utilities import *
 
 class Server:
     def __init__(self):
-        self.connections = list()
         self.database = DB()
-
-        self.server_socket = None
 
         self.logs = list()
 
@@ -25,118 +23,20 @@ class Server:
         self.runner_queue = list()
         self.starting_runs = 20
 
-    def start(self):
-        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.bind((IP, PORT))
-        self.server_socket.listen(10)
+        self.loop = asyncio.get_event_loop()
+        self.coro = asyncio.start_server(self.handle_client, IP, PORT, loop=self.loop)
+        self.server = self.loop.run_until_complete(self.coro)
 
-        server_input = Thread(self.await_input, ())
-        server_input.start()
+        self.loop.run_in_executor(None, self.await_input)
+        self.loop.run_in_executor(None, self.runner_loop)
+        self.loop.run_in_executor(None, self.visualizer_loop)
 
-        game_runner = Thread(self.runner_loop, ())
-        game_runner.start()
-
-        visualizer_runner = Thread(self.visualizer_loop, ())
-        visualizer_runner.start()
-
-        while True:
-            connection, address = self.server_socket.accept()
-            self.log(f'Connection from {address}.')
-
-            client_thread = Thread(self.handle_client, (connection, address,))
-            client_thread.start()
-
-    def handle_client(self, connection, address):
-        command = receive_data(connection)
-        if command in REGISTER_COMMANDS:
-            self.log(f'{address} is registering.')
-            self.register_client(connection, address)
-        elif command in SUBMIT_COMMANDS:
-            self.log(f'{address} is submitting.')
-            self.receive_submission(connection, address)
-        elif command in VIEW_STATS_COMMANDS:
-            self.log(f'{address} is viewing stats.')
-            self.send_stats(connection, address)
-        connection.close()
-
-    def register_client(self, connection, address):
-        teamname = receive_data(connection)
-        team_uuid = str(uuid.uuid4())
-        if teamname in [x['teamname'] for x in self.database.dump()]:
-            team_uuid = 'name already taken'
-            self.log(f'Registration attempted for already taken teamname: {teamname}')
-        elif teamname == '':
-            self.log(f'Registration failed.')
-            return
-        else:
-            self.log(f'Registering team: {teamname} with ID: {team_uuid}')
-        send_data(connection, team_uuid)
-
-        # Register in database
-        if team_uuid == 'name already taken':
-            pass
-        else:
-            self.database.add_entry(teamname=teamname, tid=team_uuid)
-
-    def verify(self, connection, address):
-        tid = receive_data(connection)
-        self.log(f'Verifying id: {tid}')
-        for entry in self.database.dump():
-            if entry['tid'] == tid:
-                send_data(connection, 'exists')
-                return tid
-
-        send_data(connection, 'does not exist')
-        self.log(f'Failed to verify {address}.')
-        return False
-
-    def receive_submission(self, connection, address):
-        # Receive client uuid for verification
-        tid = self.verify(connection, address)
-        if not tid:
-            self.log(f'Failed to accept submission from {address}.')
-            return
-        self.log('Verified.')
-
-        # Receive client file
-        client = None
-        for e in self.database.dump():
-            if e['tid'] == tid:
-                client = e
-                break
-        self.log('Found client in list.')
-
-        location = f'scrimmage/scrim_clients/{client["teamname"]}/client.py'
-        submission = open(location, 'wb')
-        line = connection.recv(BUFFER_SIZE)
-        while line:
-            submission.write(line)
-            line = connection.recv(BUFFER_SIZE)
-        submission.close()
-
-        # Add location to database
-        self.database.set_code_file(tid, location)
-
-        # Wipe current stats
-        if client['stats_location'] is None:
-            with open(f'scrimmage/scrim_clients/{client["teamname"]}/stats.txt', 'w+') as f:
-                f.write('')
-        if os.path.isfile(client['stats_location']):
-            with open(client['stats_location'], 'w+') as f:
-                f.write('')
-
-        # Add to runner queue
-        for x in range(self.starting_runs):
-            self.runner_queue.append(client)
-
-    def send_stats(self, connection, address):
-        tid = self.verify(connection, address)
-        if tid == 0:
-            return
-
-        # Receive client uuid for verfication
-        # Check uuid exists in database
-        # Send client stats back
+        try:
+            self.loop.run_forever()
+        except KeyboardInterrupt:
+            self.server.close()
+            self.loop.run_until_complete(self.server.wait_closed())
+            self.loop.close()
 
     def await_input(self):
         print('Server is awaiting admin input.')
@@ -145,6 +45,8 @@ class Server:
             self.log(f'Server command: {com}')
             # Exit command for shutting down the server
             if com == 'exit':
+                shutil.rmtree('scrimmage/temp')
+                shutil.rmtree('scrimmage/vis_temp')
                 os._exit(0)
 
             # Echo back the given string to the user, mostly for testing
@@ -179,59 +81,250 @@ class Server:
                 except Exception:
                     print('You did it wrong.')
 
+            elif 'queue' in com:
+                print(*self.runner_queue)
+
+    async def handle_client(self, reader, writer):
+        try:
+            command = await reader.read(BUFFER_SIZE)
+            command = command.decode()
+
+            cont = 'False'
+            if command in REGISTER_COMMANDS + SUBMIT_COMMANDS + VIEW_STATS_COMMANDS:
+                cont = 'True'
+            writer.write(cont.encode())
+            if cont == 'False':
+                self.log(f'{writer.get_extra_info("peername")} supplied a bad command.')
+
+            else:
+                if command in REGISTER_COMMANDS:
+                    await self.register_client(reader, writer)
+                elif command in SUBMIT_COMMANDS:
+                    await self.receive_submission(reader, writer)
+                elif command in VIEW_STATS_COMMANDS:
+                    await self.send_stats(reader, writer)
+
+            await writer.drain()
+            writer.close()
+        except ConnectionResetError:
+            self.log("Connection has been lost")
+
+    async def register_client(self, reader, writer):
+        self.log(f'Attempting registration with {writer.get_extra_info("peername")}')
+        # Receive teamname
+        teamname = await reader.read(BUFFER_SIZE)
+        teamname = teamname.decode()
+
+        # Verify veracity of teamname
+        cont = 'True'
+        invalid_chars = re.compile(r"[\\/:*?<>|]")
+        if invalid_chars.search(teamname):
+            cont = 'False'
+
+        if teamname == '' or None:
+            cont = 'False'
+
+        if len(self.database.query(teamname=teamname)) > 0:
+            cont = 'False'
+
+        # Inform client of state
+        writer.write(cont.encode())
+        if cont == 'False':
+            self.log(f'{writer.get_extra_info("peername")} supplied bad or taken teamname.')
+            return
+
+        # Generate new uuid for client
+        vID = str(uuid.uuid4())
+
+        # Send uuid to client for verification
+        await writer.drain()
+        writer.write(vID.encode())
+
+        # Register information in database
+        self.database.add_entry(tid=vID, teamname=teamname)
+
+        self.log(f'{writer.get_extra_info("peername")} registered teamname: {teamname} with ID: {vID}')
+
+    async def receive_submission(self, reader, writer):
+        self.log(f'Attempting submission with {writer.get_extra_info("peername")}')
+        # Receive uuid
+        tid = await reader.read(BUFFER_SIZE)
+        tid = tid.decode()
+
+        # Verify uuid from database
+        cont = 'True'
+        entry = self.database.query(tid=tid)
+        if len(entry) == 0:
+            self.log('Entry not found.')
+            cont = 'False'
+        elif len(entry) == 1:
+            self.log(f'Verified {writer.get_extra_info("peername")}')
+        else:
+            self.log('Something fucked up somewhere why are there repeat ids')
+            cont = 'False'
+
+        if tid in self.runner_queue:
+            self.log('Cannot accept new submission, previous still running.')
+            cont = 'False'
+
+        # Inform client of state
+        writer.write(cont.encode())
+        if cont == 'False':
+            return
+
+        # Receive client file
+        client = entry[0]
+        location = f'scrimmage/scrim_clients/{client["teamname"]}/{client["teamname"]}_client.py'
+        submission = open(location, 'wb+')
+        line = await reader.read(BUFFER_SIZE)
+        while line:
+            submission.write(line)
+            line = await reader.read(BUFFER_SIZE)
+        submission.close()
+
+        # Update database with location of file
+        self.database.set_code_file(client['tid'], location)
+
+        # Create stats file if need be, wipe existing
+        stats_location = f'scrimmage/scrim_clients/{client["teamname"]}/stats.json'
+        with open(stats_location, 'w+') as f:
+            f.write('')
+
+        # Set stats location in database if need be
+        self.database.set_stats_file(client['tid'], stats_location)
+
+        # Add to the runner queue
+        for x in range(self.starting_runs):
+            self.runner_queue.append(client['tid'])
+
+    async def send_stats(self, reader, writer):
+        self.log(f'Attempting stat sending with {writer.get_extra_info("peername")}')
+        # Receive uuid
+        tid = await reader.read(BUFFER_SIZE)
+        tid = tid.decode()
+
+        # Verify uuid from database
+        cont = 'True'
+        entry = self.database.query(tid=tid)
+        if len(entry) == 0:
+            self.log('Entry not found.')
+            cont = 'False'
+        elif len(entry) == 1:
+            self.log(f'Verified {writer.get_extra_info("peername")}')
+        else:
+            self.log('Something fucked up somewhere why are there repeat ids')
+            cont = 'False'
+
+        # Inform client of state
+        writer.write(cont.encode())
+        if cont == 'False':
+            return
+
+        # Retrieve data from stats file
+        client = entry[0]
+        stats = ''
+        with open(client['stats_location'], 'r') as f:
+            stats += f.read()
+
+        # Send info to client
+        await writer.drain()
+        writer.write(stats.encode())
+
     def runner_loop(self):
         while True:
-            continue
-            while len(self.current_running) == 0:
-                pass
+            if len(self.runner_queue) == 0 or len(self.current_running) == 0:
+                continue
 
-            num = self.current_running.pop(0)
+            client = self.runner_queue.pop()
+            num = self.current_running.pop()
 
-            thr = Thread(self.internal_runner, (None, num,))
-            thr.start()
+            self.loop.run_in_executor(None, self.internal_runner, client, num)
 
     def internal_runner(self, client, number):
+        # Run game
+        self.log(f'Running client: {client}')
+        if not os.path.exists(f'scrimmage/temp'):
+            os.mkdir(f'scrimmage/temp')
+        end_path = f'scrimmage/temp/{number}'
+        if not os.path.exists(end_path):
+            os.mkdir(end_path)
+
+        entry = self.database.query(tid=client)[0]
+        shutil.copy('launcher.pyz', end_path)
+        shutil.copy(entry['client_location'], end_path)
+        shutil.copy('scrimmage/runner.bat', end_path)
+
+        f = open(os.devnull, 'w')
+        p = Popen('runner.bat', stdout=f, cwd=end_path, shell=True)
+        stdout, stderr = p.communicate()
+
+        woop = {'Score': 0}
         try:
-            # Run game
-            self.log(f'Running client: {1}')
-            if not os.path.exists(f'scrimmage/temp'):
-                os.mkdir(f'scrimmage/temp')
-            end_path = f'scrimmage/temp/{number}'
-            if not os.path.exists(end_path):
-                os.mkdir(end_path)
-
-            shutil.copy('launcher.pyz', end_path)
-            shutil.copy('first_client.py', end_path)
-            shutil.copy('scrimmage/runner.bat', end_path)
-
-            f = open(os.devnull, 'w')
-            p = Popen('runner.bat', stdout=f, cwd=end_path, shell=True)
-            stdout, stderr = p.communicate()
-
-            with open(end_path + '/logs/results.json') as f:
+            with open(end_path + '/logs/results.json', 'r') as f:
                 woop = json.load(f)
-
-            shutil.rmtree(end_path)
-            
-        except Exception:
+        except json.decoder.JSONDecodeError:
+            # File doesn't exist
             pass
+
+        score = woop['Score']
+
+        orig = {'Max Score': 0}
+        try:
+            with open(entry['stats_location'], 'r') as f:
+                orig = json.load(f)
+        except json.decoder.JSONDecodeError:
+            # File doesn't exist
+            pass
+
+        if 'Max Score' in orig:
+            if orig['Max Score'] < score:
+                orig['Max Score'] = score
+
+                # Add logs to location
+                client_log_location = self.database.change_logs(entry, end_path)
+
+                # Add logs location to database
+                self.database.set_logs_location(entry['tid'], client_log_location)
+
+        with open(entry['stats_location'], 'r+') as f:
+            json.dump(orig, f)
+
+        shutil.rmtree(end_path)
 
         self.current_running.append(number)
 
     def visualizer_loop(self):
         while True:
-            # Pick game to run
+            all_clients = self.database.dump()
+            client = random.choice(all_clients)
 
-            # Run game
-            self.log(f'Visualizing game from client: {1}')
-            time.sleep(30)
-            pass
+            if client['logs_location'] is None:
+                continue
+
+            # Create custom running directory
+            loc = 'scrimmage/vis_temp'
+
+            # Take logs and copy into directory
+            shutil.copytree(client['logs_location'], f'{loc}/logs')
+
+            # Take launcher and copy into the directory
+            shutil.copy('launcher.pyz', loc)
+
+            # Take batch file and copy into directory
+            shutil.copy('scrimmage/vis_runner.bat', loc)
+
+            # Run batch file
+            f = open(os.devnull, 'w')
+            p = Popen('vis_runner.bat', stdout=f, cwd=loc, shell=True)
+            stdout, stderr = p.communicate()
+
+            # Clean up the directory
+            shutil.rmtree(loc)
 
     def log(self, *args):
         for arg in args:
-            self.logs.append(f'❤❤❤{datetime.datetime.now()}: {arg}❤❤❤')
+            self.logs.append(f'{datetime.datetime.now()}: {arg}')
 
 
 if __name__ == '__main__':
     serv = Server()
-    serv.start()

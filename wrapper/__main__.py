@@ -51,7 +51,6 @@ if __name__ == '__main__':
     # Boot up the scrimmage server client
     elif '-scrimmage' in sys.argv:
         cl = Client()
-        cl.start()
         
     # Help
     elif '-help' in sys.argv:

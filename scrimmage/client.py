@@ -1,4 +1,4 @@
-import socket
+import asyncio
 import os
 
 from game.config import CLIENT_DIRECTORY, CLIENT_KEYWORD
@@ -7,86 +7,96 @@ from scrimmage.utilities import *
 
 class Client:
     def __init__(self):
-        pass
+        self.reader = None
+        self.writer = None
 
-    def start(self):
-        print('Welcome to Scrimmage Undertaking Client Communications (SUCC)')
+        self.loop = asyncio.get_event_loop()
+        self.loop.run_until_complete(self.handle_client())
+
+    # Determines what action the client wants to do
+    async def handle_client(self):
+        # Connect
+        self.reader, self.writer = await asyncio.open_connection(IP, PORT, loop=self.loop)
+        print('Connected successfully.')
+
         print('Select an action: register (-r), submit (-s), or view stats(-v).')
         command = input('Enter: ')
+
         if command not in REGISTER_COMMANDS + SUBMIT_COMMANDS + VIEW_STATS_COMMANDS:
-            print('Not a recognized command, closing.')
-            exit()
+            print('Not a recognized command.')
+            return
 
-        connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        connection.settimeout(2)
-
-        # connect to remote host
-        try:
-            connection.connect((IP, PORT))
-        except TimeoutError:
-            print('Could not connect. Try waiting and trying again.')
-            exit()
-
-        send_data(connection, command)
+        self.writer.write(command.encode())
+        cont = await self.reader.read(BUFFER_SIZE)
+        cont = cont.decode()
+        if cont == 'False':
+            print('Server caught an illegal command.')
+            return
 
         if command in REGISTER_COMMANDS:
-            self.register(connection)
+            await self.register()
         elif command in SUBMIT_COMMANDS:
-            self.submit(connection)
+            await self.submit()
         elif command in VIEW_STATS_COMMANDS:
-            self.view_stats(connection)
+            await self.get_stats()
 
-        connection.close()
-
-    # Client side team registration
-    def register(self, connection):
-        # Client provides team name to register if possible
+    async def register(self):
+        # Check if vID already exists and cancel out
         if os.path.isfile('vID'):
-            print('You have already registered!')
-            return
-        teamname = input('Enter team name: ')
-        send_data(connection, teamname)
-
-        # Client receives uuid for verification purposes later
-        uid = receive_data(connection)
-        if uid == 'name already taken':
-            print('Team name has already been taken')
+            print('You have already registered.')
             return
 
-        write_file(uid, 'vID')
-        print('Registration successful.')
+        # Ask for teamname
+        teamname = input("Enter your teamname: ")
 
-    # Client side vID verification
-    def verify(self, connection):
-        # Verify file exists
+        # Send teamname
+        self.writer.write(teamname.encode())
+
+        # Receive state of server
+        cont = await self.reader.read(BUFFER_SIZE)
+        cont = cont.decode()
+        if cont == 'False':
+            print('Teamname contains illegal characters or is already taken.')
+            return
+
+        # Receive uuid
+        vID = await self.reader.read(BUFFER_SIZE)
+        vID = vID.decode()
+
+        if vID == '':
+            print('Something broke.')
+            return
+
+        # Put uuid into file for verification (vID)
+        with open('vID', 'w+') as f:
+            f.write(vID)
+
+        print("Registration successful.")
+        print("You have been given an ID file. Don't move or lose it!")
+        print("You can give a copy to your teammates so they can submit and view stats.")
+
+    async def submit(self):
+        # Check vID for uuid
         if not os.path.isfile('vID'):
-            return False
-
-        # Grab vid from file
-        vid = None
-        with open('vID', 'r') as f:
-            vid = f.read()
-
-        # Verify things were in the file
-        if vid is None or vid is '':
-            return False
-
-        # Send vid over
-        send_data(connection, vid)
-        state = receive_data(connection)
-        if state == 'does not exist':
-            return False
-
-        return True
-
-    # Client side code submission
-    def submit(self, connection):
-        # Verify uuid exists
-        if not self.verify(connection):
-            print('Could not verify client.')
+            print("Cannot find vID, please register first.")
             return
 
-        # Client verifies file being sent
+        tid = ''
+        with open('vID', 'r') as f:
+            tid = f.read()
+
+        # Send uuid
+        self.writer.write(tid.encode())
+
+        # Receive state of server
+        cont = await self.reader.read(BUFFER_SIZE)
+        cont = cont.decode()
+
+        if cont == 'False':
+            print('Cannot submit at this time.')
+            return
+
+        # Check and verify client file
         file = None
         for filename in os.listdir(CLIENT_DIRECTORY):
             if CLIENT_KEYWORD.upper() not in filename.upper():
@@ -108,27 +118,42 @@ class Client:
             print('File not found.')
             return
 
+        # Send client file
         print('Submitting file.')
-        # Client sends file
         f = open(file, 'rb')
         line = f.read(BUFFER_SIZE)
         while line:
-            connection.send(line)
+            self.writer.write(line)
             line = f.read(BUFFER_SIZE)
-        f.close()
-        print('File submitted.')
+            await self.writer.drain()
 
-    # Client side stat viewing
-    def view_stats(self, connection):
-        # Verify uuid exists
-        if not self.verify(connection):
-            print('Could not verify client.')
+        print('File sent successfully.')
+
+    async def get_stats(self):
+        # Check vID for uuid
+        if not os.path.isfile('vID'):
+            print("Cannot find vID, please register first.")
             return
 
-        # Client receives list of current stats
-        pass
+        tid = ''
+        with open('vID', 'r') as f:
+            tid = f.read()
+
+        # Send uuid
+        self.writer.write(tid.encode())
+
+        # Receive state of server
+        cont = await self.reader.read(BUFFER_SIZE)
+        cont = cont.decode()
+
+        if cont == 'False':
+            print('Failure in sending ID.')
+
+        # Receive stats
+        stats = await self.reader.read(BUFFER_SIZE)
+        stats = stats.decode()
+        print(stats)
 
 
 if __name__ == '__main__':
     cli = Client()
-    cli.start()
