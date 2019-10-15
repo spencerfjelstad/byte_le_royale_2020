@@ -7,7 +7,7 @@ class ActionType:
 
 
 class CityLocation:
-    default = 0
+    plains = 0
     desert = 1
     mountains = 2
     coastal = 3
