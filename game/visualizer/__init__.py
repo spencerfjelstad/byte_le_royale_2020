@@ -11,6 +11,7 @@ from game.visualizer.location_sprites import *
 from game.visualizer.health_bar import *
 from game.visualizer.time_layer import *
 from game.visualizer.end_layer import *
+from game.visualizer.disaster_layer import *
 
 size = DISPLAY_SIZE
 log_parser = None
@@ -60,11 +61,18 @@ def timer(interval):
         if not end_boolean:
             end_scene.schedule_interval(exit, 4)
     else:
+        # If a disaster happens, slow down the interval rate
+        intval = 0.1
+        for key, item in (turn_info['rates'].items()):
+            if item == 0:
+                intval = 2
+
         clock = TimeLayer(size, turn_info, turn)
-        clock.schedule_interval(callback=timer, interval=0.01)
+        clock.schedule_interval(callback=timer, interval=intval)
+
 
         current_scene = create_scene(turn_info)
-        current_scene.add(clock)
+        current_scene.add(clock, 100)
 
         director.replace(current_scene)
 
@@ -74,10 +82,25 @@ def create_scene(info):
     location_layer = LocationLayer(size, 'plains')
     city_layer = CityLayer(size, info)
 
+    fire_layer = FireLayer(size, info)
+    tornado_layer = TornadoLayer(size, info)
+    hurricane_layer = HurricaneLayer(size, info)
+    earthquake_layer = EarthquakeLayer(size, info)
+    monster_layer = MonsterLayer(size, info)
+    ufo_layer = UFOLayer(size,info)
+
     # Add layers to
     scene = cocos.scene.Scene()
     scene.add(location_layer, 0)
-    scene.add(city_layer, 1)
-    scene.add(health_layer, 1)
+    scene.add(city_layer, 4)
+
+    scene.add(fire_layer, 8)
+    scene.add(tornado_layer, 8)
+    scene.add(hurricane_layer, 8)
+    scene.add(earthquake_layer, 2)
+    scene.add(monster_layer, 8)
+    scene.add(ufo_layer, 8)
+
+    scene.add(health_layer, 10)
 
     return scene
