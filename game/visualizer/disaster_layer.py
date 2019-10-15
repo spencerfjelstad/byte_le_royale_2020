@@ -48,7 +48,7 @@ class TornadoLayer(cocos.layer.Layer):
         # If the rate is 0, that means the tornado happened, so draw to screen
         if rates == 0:
             self.tornado = cocos.sprite.Sprite(image)
-            self.tornado_x = -self.tornado.width
+            self.tornado_x = 0
             self.tornado_y = int(self.display[1]/2)
 
             self.tornado.position = (self.tornado_x, self.tornado_y)
@@ -111,6 +111,34 @@ class EarthquakeLayer(cocos.layer.Layer):
             self.add(self.earthquake)
 
 
+class MonsterLayer(cocos.layer.Layer):
+    def __init__(self, display_size, turn_info):
+        super().__init__()
+        self.display = display_size
+        self.info = turn_info
+
+        # Loads the monster animation
+        image = "game/visualizer/assets/disaster_assets/monster.png"
+        rates = -1
+        # Check the rate
+        try:
+            for key, item in self.info['rates'].items():
+                if key is "4":
+                    rates = item
+        except:
+            print("YEET")
+
+        # If the rate is 0, that means the monster happened, so draw to screen
+        if rates == 0:
+            self.monster = cocos.sprite.Sprite(image)
+            self.monster_x = int(self.display[0]/2)
+            self.monster_y = int(self.display[1])
+
+            self.monster.position = (self.monster_x, self.monster_y)
+            self.monster.do(MoveBy((self.monster_x, -self.monster_y/2), 2))
+            self.add(self.monster)
+
+
 class UFOLayer(cocos.layer.Layer):
     def __init__(self, display_size, turn_info):
         super().__init__()
@@ -123,20 +151,21 @@ class UFOLayer(cocos.layer.Layer):
         # Check the rate
         try:
             for key, item in self.info['rates'].items():
-                if key is "4":
+                if key is "5":
                     rates = item
         except:
             print("YEET")
 
-        # If the rate is 0, that means the hurricane happened, so draw to screen
+        # If the rate is 0, that means the ufo happened, so draw to screen
         if rates == 0:
             self.ufo = cocos.sprite.Sprite(image)
-            self.ufo_x = -self.ufo.width
+            self.ufo_x = 0
             self.ufo_y = int(self.display[1]/2)
 
             self.ufo.position = (self.ufo_x, self.ufo_y)
             self.ufo.do(MoveBy((self.display[0], 0), 2))
             self.add(self.ufo)
+
 
 
 

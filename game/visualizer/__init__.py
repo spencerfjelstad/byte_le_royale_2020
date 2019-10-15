@@ -76,6 +76,7 @@ def create_scene(info):
     tornado_layer = TornadoLayer(size, info)
     hurricane_layer = HurricaneLayer(size, info)
     earthquake_layer = EarthquakeLayer(size, info)
+    monster_layer = MonsterLayer(size, info)
     ufo_layer = UFOLayer(size,info)
 
     # Add layers to
@@ -87,6 +88,7 @@ def create_scene(info):
     scene.add(tornado_layer, 8)
     scene.add(hurricane_layer, 8)
     scene.add(earthquake_layer, 2)
+    scene.add(monster_layer, 8)
     scene.add(ufo_layer, 8)
 
     scene.add(health_layer, 10)
