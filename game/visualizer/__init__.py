@@ -52,6 +52,7 @@ def timer(interval):
         end_scene = cocos.scene.Scene().add(end)
         director.replace(end_scene)
     else:
+        # If a disaster happens, slow down the interval rate
         intval = 0.1
         for key, item in (turn_info['rates'].items()):
             if item == 0:

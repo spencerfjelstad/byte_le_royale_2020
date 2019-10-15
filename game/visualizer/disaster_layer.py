@@ -19,7 +19,7 @@ class FireLayer(cocos.layer.Layer):
         except:
             print("YEET")
 
-        # If the rate is 0, that means the tornado happened, so draw to screen
+        # If the rate is 0, that means the Fire happened, so draw to screen
         if rates == 0:
             self.fire = cocos.sprite.Sprite(image)
             self.fire_x = int(self.display[0]-self.fire.width/2)
@@ -101,7 +101,7 @@ class EarthquakeLayer(cocos.layer.Layer):
         except:
             print("YEET")
 
-        # If the rate is 0, that means the hurricane happened, so draw to screen
+        # If the rate is 0, that means the earthquake happened, so draw to screen
         if rates == 0:
             self.earthquake = cocos.sprite.Sprite(image)
             self.earthquake_x = int(self.display[0]/2)
@@ -145,7 +145,7 @@ class UFOLayer(cocos.layer.Layer):
         self.display = display_size
         self.info = turn_info
 
-        # Loads the earthquake animation
+        # Loads the ufo animation
         image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/ufo.gif")
         rates = -1
         # Check the rate
