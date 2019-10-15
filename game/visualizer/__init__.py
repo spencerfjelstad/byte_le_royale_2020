@@ -15,11 +15,15 @@ from game.visualizer.end_layer import *
 size = DISPLAY_SIZE
 log_parser = None
 turn = 1
+end = True
 
 
 def start(gamma, fullscreen=False, endgame=True):
     global log_parser
     global turn
+    global end_boolean
+    end_boolean = endgame
+
 
     log_parser = GameLogParser("logs/")
 
@@ -29,7 +33,6 @@ def start(gamma, fullscreen=False, endgame=True):
     # Get turn info from logs, if None go to end scene
     turn_info = log_parser.get_turn(turn)
     if turn_info is None:
-        print("start")
         end = EndLayer(size)
         end_scene = cocos.scene.Scene().add(end)
         director.replace(end_scene)
@@ -45,24 +48,25 @@ def start(gamma, fullscreen=False, endgame=True):
 
 def timer(interval):
     global turn
+
     turn += 1
     director.scene_stack.clear()
 
     turn_info=log_parser.get_turn(turn)
     if turn_info is None:
-        print("timer")
-        end = EndLayer(size)
-        end_scene = cocos.scene.Scene().add(end)
+        end_layer = EndLayer(size,log_parser)
+        end_scene = cocos.scene.Scene().add(end_layer)
         director.replace(end_scene)
+        if not end_boolean:
+            end_scene.schedule_interval(exit, 4)
     else:
         clock = TimeLayer(size, turn_info, turn)
-        clock.schedule_interval(callback=timer, interval=0.1)
+        clock.schedule_interval(callback=timer, interval=0.01)
 
         current_scene = create_scene(turn_info)
         current_scene.add(clock)
 
         director.replace(current_scene)
-
 
 def create_scene(info):
     # Generate layers
