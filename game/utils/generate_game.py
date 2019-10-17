@@ -1,7 +1,5 @@
 from numpy import random as nprandom
 import math
-import os
-import sys
 
 from game.config import *
 from game.common.stats import GameStats
