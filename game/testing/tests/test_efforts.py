@@ -1,3 +1,4 @@
+import math
 import unittest
 from game.common.action import Action
 from game.common.city import City
@@ -21,6 +22,14 @@ class TestEfforts(unittest.TestCase):
         self.player.action = Action()
         self.player.city = City()
 
+    def test_city(self):
+        TEST_CITY_AMOUNT = 1
+        self.player.action.add_effort(self.player.city, TEST_CITY_AMOUNT)
+
+        self.test_effort_controller.handle_actions(self.player)
+        self.assertEqual(self.player.city.effort_until_upgrade,
+                         GameStats.city_upgrade_cost[CityLevel.level_one] - TEST_CITY_AMOUNT)
+
     def test_sensor(self):
         TEST_SENSOR_AMOUNT = 1
         for sensor_type in enum_iter(SensorType):
@@ -30,6 +39,24 @@ class TestEfforts(unittest.TestCase):
         for sensor in self.player.city.sensors.values():
             self.assertEqual(sensor.sensor_effort_remaining,
                              GameStats.sensor_effort[SensorLevel.level_one] - TEST_SENSOR_AMOUNT)
+
+    def test_population(self):
+        TEST_POPULATION_AMOUNT = 20
+        self.player.city.population = 100
+        self.player.action.add_effort(ActionType.regain_population, TEST_POPULATION_AMOUNT)
+
+        self.test_effort_controller.handle_actions(self.player)
+        self.assertEqual(self.player.city.population,
+                         math.floor(GameStats.effort_population_multiplier * TEST_POPULATION_AMOUNT) + 100)
+
+    def test_structure(self):
+        TEST_STRUCTURE_AMOUNT = 20
+        self.player.city.structure = 0
+        self.player.action.add_effort(ActionType.repair_structure, TEST_STRUCTURE_AMOUNT)
+
+        self.test_effort_controller.handle_actions(self.player)
+        self.assertEqual(self.player.city.structure,
+                         math.floor(GameStats.effort_structure_multiplier * TEST_STRUCTURE_AMOUNT))
 
     def test_disaster(self):
         TEST_DISASTER_AMOUNT = 1
