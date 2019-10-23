@@ -1,9 +1,9 @@
 class ActionType:
     none = 0
-    repair = 1
-    upgrade = 2
+    repair_structure = 1
+    regain_population = 2
     accumulate_wealth = 3
-    build = 4
+    upgrade_city = 4
 
 
 class CityLocation:
@@ -58,9 +58,10 @@ class DisasterType:
 
 
 class EventType:
-    sensor_upgrade = 0
-    disaster_spawned = 1
-    disaster_eliminated = 2
+    city_upgrade = 0
+    sensor_upgrade = 1
+    disaster_spawned = 2
+    disaster_eliminated = 3
 
 
 class ObjectType:

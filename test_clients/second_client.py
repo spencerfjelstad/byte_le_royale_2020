@@ -2,7 +2,6 @@ from game.client.user_client import UserClient
 from game.common.enums import *
 
 import random
-import sys
 
 
 class Client(UserClient):
@@ -31,7 +30,7 @@ class Client(UserClient):
 
     # This is where your AI will decide what to do
     def take_turn(self, actions, city, disasters):
-        actions.add_effort("Mandatory labor for everyone", sys.maxsize)
+        # actions.add_effort("Mandatory labor for everyone", 999999)
 
         glorious_fire_sensor = city.sensors[SensorType.fire_alarm]
         glorious_effort_allocation = ((2**11)-(23*89))  # complex algorithms
@@ -40,7 +39,8 @@ class Client(UserClient):
         for _ in range(5):
             actions.add_effort(glorious_fire_sensor, glorious_effort_allocation)
 
-        #actions.add_effort(ActionType.repair, 10**7)
+        unmotivated_comrade = 1
+        actions.add_effort(ActionType.none, unmotivated_comrade)
 
         for _ in range(5):
             actions.add_effort(glorious_fire_sensor, glorious_effort_allocation)

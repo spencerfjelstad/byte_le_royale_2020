@@ -7,6 +7,7 @@ from game.utils.helpers import enum_iter
 class City:
     def __init__(self):
         self.city_name = "City"
+        self.object_type = ObjectType.city
         self.structure = GameStats.city_structure
         self.max_structure = self.structure
         self.population = GameStats.city_population
@@ -21,11 +22,14 @@ class City:
             self.sensors[sens_type] = sens
 
         self.remaining_man_power = self.population
+        self.level = CityLevel.level_zero
+        self.effort_until_upgrade = GameStats.city_upgrade_cost[CityLevel.level_one]
 
     def to_json(self):
         data = dict()
 
         data['city_name'] = self.city_name
+        data['object_type'] = self.object_type
         data['structure'] = self.structure
         data['max_structure'] = self.max_structure
         data['population'] = self.population
@@ -34,11 +38,14 @@ class City:
         data['location'] = self.location
         data['sensors'] = {sensor_type: sensor.to_json() for sensor_type, sensor in self.sensors.items()}
         data['remaining_man_power'] = self.remaining_man_power
+        data['level'] = self.level
+        data['effort_until_upgrade'] = self.effort_until_upgrade
 
         return data
     
     def from_json(self, data):
         self.city_name = data['city_name']
+        self.object_type = data['object_type']
         self.structure = data['structure']
         self.max_structure = data['max_structure']
         self.population = data['population']
@@ -51,6 +58,8 @@ class City:
             sensor.from_json(sensor_data)
             self.sensors[sensor_type] = sensor
         self.remaining_man_power = data['remaining_man_power']
+        self.level = data['level']
+        self.effort_until_upgrade = data['effort_until_upgrade']
 
     def __str__(self):
         p = f"""City name: {self.city_name}
@@ -58,6 +67,7 @@ class City:
             Population: {self.population}
             Gold: {self.gold}
             Resources: {self.resources}
+            Level: {self.level}
             """
 
         return p

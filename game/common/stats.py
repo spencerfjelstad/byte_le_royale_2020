@@ -3,6 +3,13 @@ from game.common.enums import *
 
 class GameStats:
 
+    # Costs to go up to the next city level
+    city_upgrade_cost = {
+        CityLevel.level_zero: 0,
+        CityLevel.level_one: 100,
+        CityLevel.level_two: 300
+    }
+
     # Percentage of remaining strength of a disaster
     # (100 implies decree has no effect, 0 implies decree completely negates the disaster)
     decree_population_effect = 0
@@ -46,8 +53,11 @@ class GameStats:
         DisasterType.ufo: disaster_damage_scale[DamageScaling.extreme] * disaster_damage_instant_multiplier
     }
 
-    # units of man_power per 1k population
-    man_power = 5
+    # When converting effort to one of the below, multiply the effort amount by the multiplier
+    # Keep multiplier above 0 and close to 1
+    effort_gold_multiplier = 1
+    effort_population_multiplier = 1
+    effort_structure_multiplier = 1
 
     # population
     city_population = 100
@@ -83,4 +93,18 @@ class GameStats:
         SensorLevel.level_one: 15,
         SensorLevel.level_two: 8,
         SensorLevel.level_three: 2
+    }
+
+    action_sort_order = {
+        ActionType.none: 0,
+        ActionType.repair_structure: 2,
+        ActionType.regain_population: 3,
+        ActionType.accumulate_wealth: 4,
+        ActionType.upgrade_city: 1
+    }
+    object_sort_order = {
+        ObjectType.none: 5,
+        ObjectType.disaster: 6,
+        ObjectType.sensor: 7,
+        ObjectType.city: 8
     }
