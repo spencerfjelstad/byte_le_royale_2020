@@ -44,8 +44,11 @@ class EffortController(Controller):
                 allocations[act] = 0
             allocations[act] += amount
 
+        # Convert the allocations into a sortable list
+        allocations = sorted(allocations.items(), key=EffortController.__sort_allocations)
+
         # Handle control of efforts here
-        for act, amount in allocations.items():
+        for act, amount in allocations:
             if isinstance(act, City):
                 self.apply_city_upgrade(player, amount)
             elif isinstance(act, LastingDisaster):
@@ -237,3 +240,13 @@ class EffortController(Controller):
         player.city.gold += increase
 
         raise NotImplementedError
+
+    # Sorts the allocations in order they should be processed
+    # e.g. homes (structure) should be repaired before new people (population) are generated
+    @staticmethod
+    def __sort_allocations(allocation):
+        act, amount = allocation
+        if act in enum_iter(ActionType):
+            return GameStats.action_sort_order[act]
+        else:
+            return GameStats.object_sort_order[act.object_type]

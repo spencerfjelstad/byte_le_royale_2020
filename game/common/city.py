@@ -7,6 +7,7 @@ from game.utils.helpers import enum_iter
 class City:
     def __init__(self):
         self.city_name = "City"
+        self.object_type = ObjectType.city
         self.structure = GameStats.city_structure
         self.max_structure = self.structure
         self.population = GameStats.city_population
@@ -28,6 +29,7 @@ class City:
         data = dict()
 
         data['city_name'] = self.city_name
+        data['object_type'] = self.object_type
         data['structure'] = self.structure
         data['max_structure'] = self.max_structure
         data['population'] = self.population
@@ -43,6 +45,7 @@ class City:
     
     def from_json(self, data):
         self.city_name = data['city_name']
+        self.object_type = data['object_type']
         self.structure = data['structure']
         self.max_structure = data['max_structure']
         self.population = data['population']

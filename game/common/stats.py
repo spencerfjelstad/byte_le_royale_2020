@@ -94,3 +94,17 @@ class GameStats:
         SensorLevel.level_two: 8,
         SensorLevel.level_three: 2
     }
+
+    action_sort_order = {
+        ActionType.none: 0,
+        ActionType.repair_structure: 2,
+        ActionType.regain_population: 3,
+        ActionType.accumulate_wealth: 4,
+        ActionType.upgrade_city: 1
+    }
+    object_sort_order = {
+        ObjectType.none: 5,
+        ObjectType.disaster: 6,
+        ObjectType.sensor: 7,
+        ObjectType.city: 8
+    }
