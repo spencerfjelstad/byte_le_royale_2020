@@ -87,3 +87,21 @@ class Action:
                 self.__allocation_list.append([effort, number])
         self.__decree = data["decree"]
         self.object_type = data["object_type"]
+
+    def __str__(self):
+        __output_list = self.__allocation_list.copy()
+        output = ""
+        for i,j in __output_list:
+            output += str(i) + ", " + str(j) + "; "
+
+        #Cleaning up output end "; ", but needs to not be an empty string
+        if len(output) > 2:
+            output[-1] = ""
+            output[-1] = ""
+        else:
+            output = "No elements"
+
+        p = f"""Allocations: {output}
+            Decree: {str(self.__decree)}  
+            """
+        return p

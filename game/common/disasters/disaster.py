@@ -29,3 +29,14 @@ class Disaster:
         self.population_damage = data["population_damage"]
         self.structure_damage = data["structure_damage"]
         self.object_type = data["object_type"]
+
+    def __str__(self):
+        p = f"""Disaster Status: {self.status}
+            Disaster Type: {self.type}
+            Disaster Population Damage: {self.population_damage}
+            Disaster Structure Damage: {self.structure_damage}
+            Disaster Object Type: {self.object_type}
+            """
+        return p
+
+

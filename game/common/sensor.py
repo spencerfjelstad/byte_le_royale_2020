@@ -26,3 +26,11 @@ class Sensor:
         self.sensor_level = data['sensor_level']
         self.sensor_effort_remaining = data['sensor_effort_remaining']
         self.sensor_results = data['sensor_results']
+
+    def __str__(self):
+        p = f"""Sensor Type: {self.sensor_type}
+            Sensor Level: {self.sensor_level}
+            Sensor Effort Remaining: {self.sensor_effort_remaining}
+            Sensor Results: {self.sensor_results}
+            """
+        return p
