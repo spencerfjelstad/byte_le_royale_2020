@@ -9,7 +9,7 @@ class FireLayer(cocos.layer.Layer):
         self.display = display_size
         self.info = turn_info
         # Loads the Fire Animation
-        image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/fire.gif")
+        image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/fire.png")
         rates = -1
         # Check the rate
         try:
@@ -63,7 +63,7 @@ class HurricaneLayer(cocos.layer.Layer):
         self.info = turn_info
 
         # Loads the hurricane animation
-        image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/hurricane.gif")
+        image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/hurricane.png")
         rates = -1
         # Check the rate
         try:
@@ -91,7 +91,7 @@ class EarthquakeLayer(cocos.layer.Layer):
         self.info = turn_info
 
         # Loads the earthquake animation
-        image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/earthquake.gif")
+        image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/earthquake.png")
         rates = -1
         # Check the rate
         try:
@@ -146,7 +146,7 @@ class UFOLayer(cocos.layer.Layer):
         self.info = turn_info
 
         # Loads the ufo animation
-        image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/ufo.gif")
+        image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/ufo.png")
         rates = -1
         # Check the rate
         try:
