@@ -16,9 +16,18 @@ SET_NUMBER_OF_CLIENTS_START = 1                     # required number of clients
 CLIENT_KEYWORD = "client"                           # string required to be in the name of every client file, not found otherwise
 CLIENT_DIRECTORY = "./"                             # location where client code will be found
 
+
 MIN_CLIENTS_CONTINUE = None                         # minimum number of clients required to continue running the game; should be None when SET_NUMBER_OF_CLIENTS is used
 MAX_CLIENTS_CONTINUE = None                         # maximum number of clients required to continue running the game; should be None when SET_NUMBER_OF_CLIENTS is used
 SET_NUMBER_OF_CLIENTS_CONTINUE = 1                  # required number of clients to continue running the game; should be None when MIN_CLIENTS or MAX_CLIENTS are used
+
+ALLOW_ONLY_MODE = False                             # If True, only ALLOWED_MODULES can be imported by the client
+ALLOWED_MODULES = ["game.client.user_client",       # modules that clients are specifically allowed to access
+                   "game.common.enums"]
+RESTRICTED_MODULES = ["game",                       # modules that clients will be prevented from accessing
+                      "importlib",
+                      "os",
+                      "sys"]
 
 # Game Rule settings ---------------------------------------------------------------------------------------------------
 MAX_ALLOCATIONS_ALLOWED_PER_TURN = 30               # max number of unique effort allocations clients are allowed

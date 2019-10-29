@@ -15,7 +15,7 @@ class DisasterController(Controller):
 
         remaining_disasters = list()
         for dis in player.disasters:
-            if dis.status == DisasterStatus.dead:
+            if dis.status == DisasterStatus.dead or not isinstance(dis, LastingDisaster):
                 # Disaster is dead, remove from the list
                 self.event_controller.add_event({
                     "event_type": EventType.disaster_eliminated,
@@ -23,6 +23,7 @@ class DisasterController(Controller):
                 })
             else:
                 # Disaster is still alive
+                dis.newly_spawned = False
                 remaining_disasters.append(dis)
 
         player.disasters = remaining_disasters

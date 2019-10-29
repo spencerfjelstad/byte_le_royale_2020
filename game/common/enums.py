@@ -1,13 +1,13 @@
 class ActionType:
     none = 0
-    repair = 1
-    upgrade = 2
+    repair_structure = 1
+    regain_population = 2
     accumulate_wealth = 3
-    build = 4
+    upgrade_city = 4
 
 
 class CityLocation:
-    default = 0
+    plains = 0
     desert = 1
     mountains = 2
     coastal = 3
@@ -34,6 +34,15 @@ class DamageScaling:
     extreme = 3
 
 
+class DecreeType:
+    anti_fire_bears = 0
+    paperweights = 1
+    hound_news = 2
+    moon_shoes = 3
+    away_spray = 4
+    giant_fly_swatter = 5
+
+
 class DisasterStatus:
     live = 1
     dead = 0
@@ -49,9 +58,10 @@ class DisasterType:
 
 
 class EventType:
-    sensor_upgrade = 0
-    disaster_spawned = 1
-    disaster_eliminated = 2
+    city_upgrade = 0
+    sensor_upgrade = 1
+    disaster_spawned = 2
+    disaster_eliminated = 3
 
 
 class ObjectType:
@@ -61,15 +71,6 @@ class ObjectType:
     sensor = 3
     city = 4
     player = 5
-
-
-class PreemptiveType:
-    anti_fire_bears = 0
-    paperweights = 1
-    moon_shoes = 2
-    hound_news = 3
-    away_spray = 4
-    giant_fly_swatter = 5
 
 
 class ReactiveType:
