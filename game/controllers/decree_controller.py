@@ -17,6 +17,7 @@ class DecreeController(Controller):
     def __init__(self):
         super().__init__()
         self.client_decree = None
+        self.debug = False
 
     def update_decree(self, decree):
         self.client_decree = decree
