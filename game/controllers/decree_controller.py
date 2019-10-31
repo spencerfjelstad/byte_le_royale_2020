@@ -2,6 +2,7 @@ from game.controllers.controller import Controller
 from game.common.disasters.lasting_disaster import LastingDisaster
 from game.common.enums import *
 from game.common.stats import GameStats
+from game.utils.helpers import clamp
 
 
 class DecreeController(Controller):
@@ -17,7 +18,6 @@ class DecreeController(Controller):
     def __init__(self):
         super().__init__()
         self.client_decree = None
-        self.debug = False
 
     def update_decree(self, decree):
         self.client_decree = decree
@@ -39,14 +39,13 @@ class DecreeController(Controller):
                     booster = player.city.buildings[BuildingType.instant_decree_booster].booster
 
                 # Calculate decree effect, given default decree effect with the extra boost from the building booster
-                decree_pop_effect = min(0, GameStats.decree_population_effect - GameStats.decree_population_effect * booster)
-                decree_struct_effect = min(0, GameStats.decree_structure_effect - GameStats.decree_structure_effect * booster)
+                decree_pop_effect = clamp(GameStats.decree_population_effect * booster, min_value=0, max_value=1)
+                decree_struct_effect = clamp(GameStats.decree_structure_effect * booster, min_value=0, max_value=1)
 
                 self.print(f"reducing damage on disaster {disaster}...")
                 self.print(f"Before: pop = {disaster.population_damage}, struct = {disaster.structure_damage}")
-
                 # apply
-                disaster.population_damage = disaster.population_damage * decree_pop_effect
-                disaster.structure_damage = disaster.structure_damage * decree_struct_effect
+                disaster.population_damage = int(disaster.population_damage * (1 - decree_pop_effect))
+                disaster.structure_damage = int(disaster.structure_damage * (1 - decree_struct_effect))
 
                 self.print(f"After: pop = {disaster.population_damage}, struct = {disaster.structure_damage}")

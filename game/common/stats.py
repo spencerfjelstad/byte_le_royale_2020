@@ -18,17 +18,17 @@ class GameStats:
         CityLevel.level_two: 300
     }
 
-    # Percentage of remaining strength of a disaster
-    # (100 implies decree has no effect, 0 implies decree completely negates the disaster)
-    decree_population_effect = 0
-    decree_structure_effect = 0
+    # Decree effectiveness when applied against a disaster
+    # (0 implies decree has no effect, 1.0 implies decree completely negates the disaster)
+    decree_population_effect = 1.0
+    decree_structure_effect = 1.0
 
-    # Boost added onto a decree if you have a structure with the matching level
+    # Boost multiplied by the decree if you have a structure with the matching level
     decree_boost = {
-        BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 0.1,
-        BuildingLevel.level_two: 0.25,
-        BuildingLevel.level_three: 0.5
+        BuildingLevel.level_zero: 1,
+        BuildingLevel.level_one: 1.1,
+        BuildingLevel.level_two: 1.25,
+        BuildingLevel.level_three: 1.5
     }
 
     # multiplier done by instant disasters
