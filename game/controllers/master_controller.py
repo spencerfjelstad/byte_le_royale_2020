@@ -15,6 +15,7 @@ from game.controllers.disaster_controller import DisasterController
 from game.controllers.effort_controller import EffortController
 from game.controllers.event_controller import EventController
 
+
 class MasterController(Controller):
     def __init__(self):
         super().__init__()
