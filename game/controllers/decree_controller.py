@@ -32,8 +32,21 @@ class DecreeController(Controller):
                 continue
 
             if disaster.type == DecreeController.DECREE_DISASTER_MAPPINGS.get(self.client_decree):
+                # Retrieve booster from the city's decree booster building
+                if isinstance(disaster, LastingDisaster):
+                    booster = player.city.buildings[BuildingType.lasting_decree_booster].booster
+                else:
+                    booster = player.city.buildings[BuildingType.instant_decree_booster].booster
+
+                # Calculate decree effect, given default decree effect with the extra boost from the building booster
+                decree_pop_effect = min(0, GameStats.decree_population_effect - GameStats.decree_population_effect * booster)
+                decree_struct_effect = min(0, GameStats.decree_structure_effect - GameStats.decree_structure_effect * booster)
+
                 self.print(f"reducing damage on disaster {disaster}...")
                 self.print(f"Before: pop = {disaster.population_damage}, struct = {disaster.structure_damage}")
-                disaster.population_damage = disaster.population_damage * GameStats.decree_population_effect
-                disaster.structure_damage = disaster.structure_damage * GameStats.decree_structure_effect
+
+                # apply
+                disaster.population_damage = disaster.population_damage * decree_pop_effect
+                disaster.structure_damage = disaster.structure_damage * decree_struct_effect
+
                 self.print(f"After: pop = {disaster.population_damage}, struct = {disaster.structure_damage}")

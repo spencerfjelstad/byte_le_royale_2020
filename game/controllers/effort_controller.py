@@ -3,6 +3,7 @@ from game.common.city import City
 from game.common.disasters import LastingDisaster
 from game.common.player import Player
 from game.common.sensor import Sensor
+from game.common.buildings import Building
 from game.controllers.controller import Controller
 from game.controllers.event_controller import EventController
 from game.config import *
@@ -49,8 +50,10 @@ class EffortController(Controller):
 
         # Handle control of efforts here
         for act, amount in allocations:
-            if isinstance(act, City):
-                self.apply_city_upgrade(player, amount)
+            if isinstance(act, Building):
+                self.apply_building_effort(player, act, amount)
+            elif isinstance(act, City):
+                self.apply_city_effort(player, amount)
             elif isinstance(act, LastingDisaster):
                 self.apply_disaster_effort(player, act, amount)
             elif isinstance(act, Sensor):
@@ -65,7 +68,7 @@ class EffortController(Controller):
                 elif act == ActionType.accumulate_wealth:
                     self.apply_wealth_effort(player, amount)
                 elif act == ActionType.upgrade_city:
-                    self.apply_city_upgrade(player, amount)
+                    self.apply_city_effort(player, amount)
                 else:
                     raise NotImplementedError(f"Effort towards this ActionType ({act}) is not yet implemented. "
                                               f"Open an issue if this ActionType should have been implemented.")
@@ -73,8 +76,64 @@ class EffortController(Controller):
                 raise ValueError(f"Player {player} allocated amount {amount} towards illegal target {act}. "
                                  "Validation should have prevented this.")
 
+    # Puts work towards upgrading a building for various effects
+    def apply_building_effort(self, player, building, number):
+        # Validate input
+        if number < 0:
+            self.print("Negative effort not accepted.")
+            return
+        if not isinstance(player, Player):
+            self.print("The player argument is not a Player object.")
+            return
+        if not isinstance(building, Building):
+            self.print("The sensor argument is not a Sensor object.")
+            return
+        if building not in player.city.buildings.values():
+            self.print("Building is not a part of the city.")
+            self.print("Building: {}".format(building))
+            for building in player.city.buildings:
+                self.print("City buildings: {}".format(building))
+            return
+
+        while number > 0:
+            if building.building_level == BuildingLevel.level_three:
+                self.print("Building level is already maxed.")
+                return
+
+            current_level = building.building_level
+            if current_level == BuildingLevel.level_zero:
+                next_level = BuildingLevel.level_one
+            elif current_level == BuildingLevel.level_one:
+                next_level = BuildingLevel.level_two
+            elif current_level == BuildingLevel.level_two:
+                next_level = BuildingLevel.level_three
+            else:
+                self.print("building's building_level value is invalid.")
+                return
+
+            # Move all the effort from number to the building
+            building.effort_remaining -= number
+            number = 0  # For now, set number to 0. If there's left over allocation, we pull it back from the sensor
+
+            # if limit maxed, begin upgrade
+            if building.effort_remaining <= 0:
+                self.print(f"Building level {next_level} reached!")
+                # apply changes
+                left_over = building.effort_remaining * -1  # reverse, because effort allocation must be positive
+                building.effort_remaining = GameStats.building_effort[next_level]
+                building.building_level = next_level
+
+                # log upgrade
+                self.event_controller.add_event({
+                    "event_type": EventType.sensor_upgrade,
+                    "building": building.to_json(),
+                })
+
+                # with left over effort, attempt upgrade again
+                number = left_over
+
     # Puts work towards upgrading the city to increase max structure amount
-    def apply_city_upgrade(self, player, number):
+    def apply_city_effort(self, player, number):
         # Validate input
         if number < 0:
             self.print("Negative effort not accepted.")
@@ -246,7 +305,12 @@ class EffortController(Controller):
     @staticmethod
     def __sort_allocations(allocation):
         act, amount = allocation
-        if act in enum_iter(ActionType):
-            return GameStats.action_sort_order[act]
-        else:
-            return GameStats.object_sort_order[act.object_type]
+        try:
+            if act in enum_iter(ActionType):
+                return GameStats.action_sort_order[act]
+            else:
+                return GameStats.object_sort_order[act.object_type]
+        except KeyError as e:
+            print("SYSTEM EXCEPTION: Game object passed to the allocation list was not included in the sort order.")
+            print("If you are receiving this error, please let Wyly know.")
+            raise e
