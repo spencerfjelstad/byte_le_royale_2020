@@ -28,14 +28,19 @@ def main():
     loop()
 
 
-def loop():
+def loop(quiet=False):
     global clients
     global master_controller
+    
+    f = sys.stdout
+    if quiet:
+        f = open(os.devnull, 'w')
+        sys.stdout = f
 
     boot()
     world = load()
 
-    for turn in tqdm(master_controller.game_loop_logic(), bar_format=TQDM_BAR_FORMAT, unit=TQDM_UNITS):
+    for turn in tqdm(master_controller.game_loop_logic(), bar_format=TQDM_BAR_FORMAT, unit=TQDM_UNITS, file=f):
         if len(clients) <= 0:
             print("No clients found")
             os._exit(0)  # TODO: Consider alternative exit

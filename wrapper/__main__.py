@@ -1,7 +1,8 @@
 import sys
 
-from game.utils.generate_game import generate
 from game.engine import loop
+from game.utils.generate_game import generate
+from scrimmage.client import Client
 import game.config
 
 if __name__ == '__main__':
@@ -16,14 +17,17 @@ if __name__ == '__main__':
     # Run game options
     elif '-run' in sys.argv:
         # Additional args
+        quiet = False
         if '-debug' in sys.argv:
             debug_in = sys.argv.index('-debug') + 1
             if len(sys.argv) > debug_in:
                 game.config.Debug.level = int(sys.argv[debug_in])
             else:
                 print('Debug input not found, using default value')
+        if '-q' in sys.argv:
+            quiet = True
 
-        loop()
+        loop(quiet)
     
     # Visualizer options
     elif '-visualizer' in sys.argv:
@@ -47,6 +51,10 @@ if __name__ == '__main__':
 
 
         start(gamma, full, endgame)
+        
+    # Boot up the scrimmage server client
+    elif '-scrimmage' in sys.argv:
+        cl = Client()
         
     # Help
     elif '-help' in sys.argv:
