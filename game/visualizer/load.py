@@ -21,12 +21,12 @@ def load(temp):
         "3": city_3
     }
 
-    dis_fire = cocos.sprite.Sprite(pyglet.image.load_animation("game/visualizer/assets/disaster_assets/fire.png"))
+    dis_fire = cocos.sprite.Sprite("game/visualizer/assets/disaster_assets/fire.png")
     dis_tornado = cocos.sprite.Sprite("game/visualizer/assets/disaster_assets/tornado.png")
-    dis_hurricane = cocos.sprite.Sprite(pyglet.image.load_animation("game/visualizer/assets/disaster_assets/hurricane.png"))
-    dis_earthquake = cocos.sprite.Sprite(pyglet.image.load_animation("game/visualizer/assets/disaster_assets/earthquake.png"))
+    dis_hurricane = cocos.sprite.Sprite("game/visualizer/assets/disaster_assets/hurricane.png")
+    dis_earthquake = cocos.sprite.Sprite("game/visualizer/assets/disaster_assets/earthquake.png")
     dis_monster = cocos.sprite.Sprite("game/visualizer/assets/disaster_assets/monster.png")
-    dis_ufo = cocos.sprite.Sprite(pyglet.image.load_animation("game/visualizer/assets/disaster_assets/ufo.png"))
+    dis_ufo = cocos.sprite.Sprite("game/visualizer/assets/disaster_assets/ufo.png")
     assets['disaster'] = {
         "fire": dis_fire,
         "tornado": dis_tornado,
