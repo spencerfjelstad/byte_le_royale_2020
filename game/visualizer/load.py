@@ -76,7 +76,7 @@ def load(temp):
         "5": decree_5
     }
 
-    wrkr = pyglet.image.load("game/visualizer/assets/worker.png")
+    wrkr = pyglet.resource.image("game/visualizer/assets/worker.png")
     wrkr_grid = pyglet.image.ImageGrid(wrkr, 1, 48)
 
     assets['worker'] = {}
