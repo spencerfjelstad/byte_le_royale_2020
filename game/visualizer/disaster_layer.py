@@ -1,15 +1,15 @@
 import cocos
 import pyglet
-from cocos.actions import  *
+from cocos.actions import *
 
 
 class FireLayer(cocos.layer.Layer):
-    def __init__(self, display_size, turn_info):
+    def __init__(self, display_size, turn_info, assets):
         super().__init__()
         self.display = display_size
         self.info = turn_info
-        # Loads the Fire Animation
-        image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/fire.png")
+        self.images = assets
+
         rates = -1
         # Check the rate
         try:
@@ -21,7 +21,7 @@ class FireLayer(cocos.layer.Layer):
 
         # If the rate is 0, that means the Fire happened, so draw to screen
         if rates == 0:
-            self.fire = cocos.sprite.Sprite(image)
+            self.fire = self.images["fire"]
             self.fire_x = int(self.display[0]-self.fire.width/2)
             self.fire_y = int(self.display[1]/4)
 
@@ -30,12 +30,12 @@ class FireLayer(cocos.layer.Layer):
 
 
 class TornadoLayer(cocos.layer.Layer):
-    def __init__(self, display_size, turn_info):
+    def __init__(self, display_size, turn_info, assets):
         super().__init__()
         self.display = display_size
         self.info = turn_info
-        # Loads the Tornado Image
-        image = "game/visualizer/assets/disaster_assets/tornado.png"
+        self.images = assets
+
         rates = -1
         # Check the rate
         try:
@@ -47,7 +47,7 @@ class TornadoLayer(cocos.layer.Layer):
 
         # If the rate is 0, that means the tornado happened, so draw to screen
         if rates == 0:
-            self.tornado = cocos.sprite.Sprite(image)
+            self.tornado = self.images['tornado']
             self.tornado_x = 0
             self.tornado_y = int(self.display[1]/2)
 
@@ -57,13 +57,12 @@ class TornadoLayer(cocos.layer.Layer):
 
 
 class HurricaneLayer(cocos.layer.Layer):
-    def __init__(self, display_size, turn_info):
+    def __init__(self, display_size, turn_info, assets):
         super().__init__()
         self.display = display_size
         self.info = turn_info
+        self.images = assets
 
-        # Loads the hurricane animation
-        image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/hurricane.png")
         rates = -1
         # Check the rate
         try:
@@ -75,7 +74,7 @@ class HurricaneLayer(cocos.layer.Layer):
 
         # If the rate is 0, that means the hurricane happened, so draw to screen
         if rates == 0:
-            self.hurricane = cocos.sprite.Sprite(image)
+            self.hurricane = self.images['hurricane']
             self.hurricane.opacity = 155
             self.hurricane_x = int(self.display[0]/2)
             self.hurricane_y = int(self.display[1]/2)
@@ -85,13 +84,12 @@ class HurricaneLayer(cocos.layer.Layer):
 
 
 class EarthquakeLayer(cocos.layer.Layer):
-    def __init__(self, display_size, turn_info):
+    def __init__(self, display_size, turn_info, assets):
         super().__init__()
         self.display = display_size
         self.info = turn_info
+        self.images = assets
 
-        # Loads the earthquake animation
-        image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/earthquake.png")
         rates = -1
         # Check the rate
         try:
@@ -103,7 +101,7 @@ class EarthquakeLayer(cocos.layer.Layer):
 
         # If the rate is 0, that means the earthquake happened, so draw to screen
         if rates == 0:
-            self.earthquake = cocos.sprite.Sprite(image)
+            self.earthquake = self.images['earthquake']
             self.earthquake_x = int(self.display[0]/2)
             self.earthquake_y = int(self.display[1]/2)
 
@@ -112,13 +110,12 @@ class EarthquakeLayer(cocos.layer.Layer):
 
 
 class MonsterLayer(cocos.layer.Layer):
-    def __init__(self, display_size, turn_info):
+    def __init__(self, display_size, turn_info, assets):
         super().__init__()
         self.display = display_size
         self.info = turn_info
+        self.images = assets
 
-        # Loads the monster animation
-        image = "game/visualizer/assets/disaster_assets/monster.png"
         rates = -1
         # Check the rate
         try:
@@ -130,7 +127,7 @@ class MonsterLayer(cocos.layer.Layer):
 
         # If the rate is 0, that means the monster happened, so draw to screen
         if rates == 0:
-            self.monster = cocos.sprite.Sprite(image)
+            self.monster = self.images['monster']
             self.monster_x = int(self.display[0]/2)
             self.monster_y = int(self.display[1])
 
@@ -140,13 +137,12 @@ class MonsterLayer(cocos.layer.Layer):
 
 
 class UFOLayer(cocos.layer.Layer):
-    def __init__(self, display_size, turn_info):
+    def __init__(self, display_size, turn_info, assets):
         super().__init__()
         self.display = display_size
         self.info = turn_info
+        self.images = assets
 
-        # Loads the ufo animation
-        image = pyglet.image.load_animation("game/visualizer/assets/disaster_assets/ufo.png")
         rates = -1
         # Check the rate
         try:
@@ -158,7 +154,7 @@ class UFOLayer(cocos.layer.Layer):
 
         # If the rate is 0, that means the ufo happened, so draw to screen
         if rates == 0:
-            self.ufo = cocos.sprite.Sprite(image)
+            self.ufo = self.images['ufo']
             self.ufo_x = 0
             self.ufo_y = int(self.display[1]/2)
 
