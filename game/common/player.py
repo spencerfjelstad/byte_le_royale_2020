@@ -54,3 +54,13 @@ class Player:
             obj.from_json(dis)
             self.disasters.append(obj)
         self.object_type = data['object_type']
+
+
+    def __str__(self):
+        p = f"""ID: {self.id}
+            Team name: {self.team_name}
+            City: {self.city}
+            Action: {self.action}
+            Disasters: {self.disasters}
+            """
+        return p
