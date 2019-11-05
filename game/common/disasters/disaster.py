@@ -1,5 +1,5 @@
 from game.common.enums import *
-
+from game.utils.helpers import enum_to_string
 
 class Disaster:
     def __init__(self):
@@ -14,7 +14,6 @@ class Disaster:
 
     def to_json(self):
         data = dict()
-
         data["status"] = self.status
         data["disaster_type"] = self.type
         data["population_damage"] = self.population_damage
@@ -32,7 +31,7 @@ class Disaster:
 
     def __str__(self):
         p = f"""Disaster Status: {self.status}
-            Disaster Type: {self.type}
+            Disaster Type: {enum_to_string(DisasterType,self.type).replace("_", " ")}
             Disaster Population Damage: {self.population_damage}
             Disaster Structure Damage: {self.structure_damage}
             Disaster Object Type: {self.object_type}

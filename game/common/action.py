@@ -89,9 +89,8 @@ class Action:
         self.object_type = data["object_type"]
 
     def __str__(self):
-        __output_list = self.__allocation_list.copy()
         output = ""
-        for i,j in __output_list:
+        for i,j in self.__allocation_list:
             output += enum_to_string(ActionType, i).replace("_"," ") + ", " + str(j) + "; "
 
         #Cleaning up output end "; ", but needs to not be an empty string
