@@ -5,7 +5,7 @@ from game.common.enums import *
 from game.common.city import City
 from game.common.disasters import *
 from game.common.sensor import Sensor
-from game.utils.helpers import enum_iter
+from game.utils.helpers import enum_iter, enum_to_string
 
 
 class Action:
@@ -87,3 +87,19 @@ class Action:
                 self.__allocation_list.append([effort, number])
         self.__decree = data["decree"]
         self.object_type = data["object_type"]
+
+    def __str__(self):
+        output = ""
+        for i,j in self.__allocation_list:
+            output += enum_to_string(ActionType, i).replace("_"," ") + ", " + str(j) + "; "
+
+        #Cleaning up output end "; ", but needs to not be an empty string
+        if len(output) > 2:
+            output = output[:-2]
+        else:
+            output = "No elements"
+
+        p = f"""Allocations: {output}
+            Decree: {str(self.__decree)}  
+            """
+        return p
