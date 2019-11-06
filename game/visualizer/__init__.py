@@ -13,12 +13,16 @@ from game.visualizer.end_layer import *
 from game.visualizer.forecast_sprite import *
 from game.visualizer.decree_sprites import *
 from game.visualizer.disaster_layer import *
+from game.visualizer.worker_sprites import *
+from game.visualizer.load import *
 
 # Global variables needed for scene creation and keeping track of turns
 size = DISPLAY_SIZE
 log_parser = None
 turn = 1
-end = True
+end_boolean = True
+assets = {}
+
 
 # Function called by main that displays first scene and initializes everything
 def start(gamma, fullscreen=False, endgame=True):
@@ -33,12 +37,16 @@ def start(gamma, fullscreen=False, endgame=True):
     # Initialize cocos
     director.init(width=size[0], height=size[1], caption="Byte-le Royale: Disaster Dispatcher", fullscreen=fullscreen)
 
+    load(assets)
+
     # Get turn info from logs, if None go to end scene
     turn_info = log_parser.get_turn(turn)
     if turn_info is None:
-        end = EndLayer(size)
-        end_scene = cocos.scene.Scene().add(end)
+        end_layer = EndLayer(size, log_parser)
+        end_scene = cocos.scene.Scene().add(end_layer)
         director.replace(end_scene)
+        if not end_boolean:
+            end_scene.schedule_interval(exit, 4)
     else:
         # Initialize clock layer and add an interval
         clock = TimeLayer(size, turn_info, turn)
@@ -74,28 +82,31 @@ def timer(interval):
         current_scene.add(clock, 10)
 
         director.replace(current_scene)
-        turn+=1
+        turn += 1
+
 
 # Function that generates base scene layer for the given turn
 def create_scene(info, parser):
     # Generate layers
     health_layer = HealthBar(size, info)
-    location_layer = LocationLayer(size, 'plains')
-    city_layer = CityLayer(size, info)
-    forecast_layer = ForecastLayer(turn, size, parser)
-    decree_layer = DecreeLayer(info, size)
+    location_layer = LocationLayer(info, size, assets['location'])
+    city_layer = CityLayer(size, info, assets['city'])
+    forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
+    decree_layer = DecreeLayer(info, size, assets['decree'])
+    worker_layer = WorkerLayer(size, assets['worker'])
 
-    fire_layer = FireLayer(size, info)
-    tornado_layer = TornadoLayer(size, info)
-    hurricane_layer = HurricaneLayer(size, info)
-    earthquake_layer = EarthquakeLayer(size, info)
-    monster_layer = MonsterLayer(size, info)
-    ufo_layer = UFOLayer(size,info)
+    fire_layer = FireLayer(size, info, assets['disaster'])
+    tornado_layer = TornadoLayer(size, info, assets['disaster'])
+    hurricane_layer = HurricaneLayer(size, info, assets['disaster'])
+    earthquake_layer = EarthquakeLayer(size, info, assets['disaster'])
+    monster_layer = MonsterLayer(size, info, assets['disaster'])
+    ufo_layer = UFOLayer(size, info, assets['disaster'])
 
     # Add layers to
     scene = cocos.scene.Scene()
     scene.add(location_layer, 0)
     scene.add(city_layer, 4)
+    scene.add(worker_layer, 4)
 
     scene.add(fire_layer, 8)
     scene.add(tornado_layer, 8)

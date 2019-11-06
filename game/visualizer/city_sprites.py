@@ -2,35 +2,30 @@ import cocos
 
 
 class CityLayer(cocos.layer.Layer):
-    def __init__(self, display_size, turn_info):
+    def __init__(self, display_size, turn_info, assets):
         self.display = display_size
         self.info = turn_info
+        self.images = assets
         super().__init__()
-        images = [
-            "game/visualizer/assets/city_assets/city_level0.png",
-            "game/visualizer/assets/city_assets/city_level1.png",
-            "game/visualizer/assets/city_assets/city_level2.png",
-            "game/visualizer/assets/city_assets/city_level3.png"
-        ]
         structure = 0
         try:
             structure = int(self.info['player'].get('city').get('structure'))
         except:
             print("Structure is NoneType")
 
-        #Depending structure draw_correct sprite
+        # Depending structure draw_correct sprite
         if structure > 150:
-            self.city = cocos.sprite.Sprite(images[3])
+            self.city = self.images["3"]
         elif structure > 100:
-            self.city = cocos.sprite.Sprite(images[2])
+            self.city = self.images["2"]
         elif structure > 50:
-            self.city = cocos.sprite.Sprite(images[1])
+            self.city = self.images["1"]
         else:
-            self.city = cocos.sprite.Sprite(images[0])
+            self.city = self.images["0"]
 
-        #Anchor Point of the sprite is at the center of the sprite
-        #This position the sprite to the right side of the screen
-        #and the sprite in the middle of the screen on the y axis
+        # Anchor Point of the sprite is at the center of the sprite
+        # This position the sprite to the right side of the screen
+        # and the sprite in the middle of the screen on the y axis
         self.sprite_width = self.city.width
         self.sprite_height = self.city.height
 
