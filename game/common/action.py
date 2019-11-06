@@ -18,7 +18,7 @@ class Action:
 
     def __init__(self):
         self.__allocation_list = deque(maxlen=MAX_ALLOCATIONS_ALLOWED_PER_TURN)
-        self.__decree = None
+        self.__decree = DecreeType.none
         self.object_type = ObjectType.action
 
     def add_effort(self, action, amount):

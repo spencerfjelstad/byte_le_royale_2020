@@ -35,6 +35,7 @@ class DamageScaling:
 
 
 class DecreeType:
+    none = -1
     anti_fire_bears = 0
     paperweights = 1
     hound_news = 2

@@ -66,7 +66,9 @@ def load(temp):
     decree_3 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_3.png")
     decree_4 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_4.png")
     decree_5 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_5.png")
+    decree_default = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_default.png")
     assets['decree'] = {
+        "-1": decree_default,
         "0": decree_0,
         "1": decree_1,
         "2": decree_2,
