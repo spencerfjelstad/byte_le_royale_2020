@@ -30,8 +30,20 @@ class Action:
             return
         self.__allocation_list.append([action, int(amount)])
 
+    # Method so player can undo all actions
+    def clear_actions(self):
+        self.__allocation_list.clear()
+
+    # Method so player can delete a specific index action
+    def delete_index_actions(self, index):
+        del self.__allocation_list[index]
+
     def get_allocation_list(self):
         return self.__allocation_list.copy()
+
+
+
+
 
     def get_decree(self):
         return self.__decree
