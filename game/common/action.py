@@ -2,7 +2,7 @@ from collections import deque
 
 from game.config import *
 from game.common.enums import *
-from game.common.buildings import *
+from game.common.building import Building
 from game.common.city import City
 from game.common.disasters import *
 from game.common.sensor import Sensor
@@ -64,11 +64,7 @@ class Action:
                 object_type = effort["object_type"]
                 obj = None
                 if object_type == ObjectType.building:
-                    building_type = effort['type']
-                    if building_type == BuildingType.instant_decree_booster:
-                        obj = InstantDecreeBooster()
-                    elif building_type == BuildingType.lasting_decree_booster:
-                        obj = LastingDecreeBooster()
+                    obj = Building()
                 elif object_type == ObjectType.city:
                     obj = City()
                 elif object_type == ObjectType.disaster:

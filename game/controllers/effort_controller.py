@@ -1,9 +1,9 @@
 from game.common.stats import GameStats
+from game.common.building import Building
 from game.common.city import City
 from game.common.disasters import LastingDisaster
 from game.common.player import Player
 from game.common.sensor import Sensor
-from game.common.buildings import Building
 from game.controllers.controller import Controller
 from game.controllers.event_controller import EventController
 from game.config import *
@@ -122,10 +122,6 @@ class EffortController(Controller):
                 left_over = building.effort_remaining * -1  # reverse, because effort allocation must be positive
                 building.effort_remaining = GameStats.building_effort[next_level]
                 building.building_level = next_level
-
-                # update building booster on level up
-                if building.building_type in [BuildingType.instant_decree_booster, BuildingType.lasting_decree_booster]:
-                    building.booster = GameStats.decree_boost[building.building_level]
 
                 # log upgrade
                 self.event_controller.add_event({

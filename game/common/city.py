@@ -1,5 +1,5 @@
 from game.common.enums import *
-from game.common.buildings import *
+from game.common.building import Building
 from game.common.sensor import Sensor
 from game.common.stats import GameStats
 from game.utils.helpers import enum_iter
@@ -23,11 +23,8 @@ class City:
 
         self.buildings = dict()
         for building_type in enum_iter(BuildingType):
-            building = None
-            if building_type == BuildingType.instant_decree_booster:
-                building = InstantDecreeBooster()
-            elif building_type == BuildingType.lasting_decree_booster:
-                building = LastingDecreeBooster()
+            building = Building()
+            building.building_type = building_type
             self.buildings[building_type] = building
 
         self.remaining_man_power = self.population
@@ -71,11 +68,7 @@ class City:
         self.buildings = dict()
 
         for building_type, building_data in data['buildings'].items():
-            building = None
-            if building_type == BuildingType.instant_decree_booster:
-                building = InstantDecreeBooster()
-            elif building_type == BuildingType.lasting_decree_booster:
-                building = LastingDecreeBooster()
+            building = Building()
             building.from_json(building_data)
             self.buildings[building_type] = building
 
