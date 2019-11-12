@@ -3,7 +3,7 @@ import json
 import os
 import shutil
 
-from scrimmage.utilities import Thread
+from game.utils.thread import Thread
 
 
 class DB:

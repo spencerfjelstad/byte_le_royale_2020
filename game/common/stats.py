@@ -12,8 +12,8 @@ class GameStats:
 
     # Percentage of remaining strength of a disaster
     # (100 implies decree has no effect, 0 implies decree completely negates the disaster)
-    decree_population_effect = 0
-    decree_structure_effect = 0
+    decree_population_effect = 50
+    decree_structure_effect = 50
 
     # multiplier done by instant disasters
     disaster_damage_instant_multiplier = 5

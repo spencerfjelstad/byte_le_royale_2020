@@ -5,9 +5,11 @@ import random
 import re
 import os
 import shutil
-from subprocess import Popen
+import subprocess
+import platform
 import uuid
 
+from game.utils.thread import Thread
 from scrimmage.db import DB
 from scrimmage.utilities import *
 
@@ -255,11 +257,16 @@ class Server:
         entry = self.database.query(tid=client)[0]
         shutil.copy('launcher.pyz', end_path)
         shutil.copy(entry['client_location'], end_path)
-        shutil.copy('scrimmage/runner.bat', end_path)
 
-        f = open(os.devnull, 'w')
-        p = Popen('runner.bat', stdout=f, cwd=end_path, shell=True)
-        stdout, stderr = p.communicate()
+        # Copy and run proper file
+        if platform.system() == 'Linux':
+            shutil.copy('scrimmage/runner.sh')
+            subprocess.call(['bash', f'{end_path}/runner.sh'])
+        else:
+            shutil.copy('scrimmage/runner.bat', end_path)
+            f = open(os.devnull, 'w')
+            p = subprocess.Popen('runner.bat', stdout=f, cwd=end_path, shell=True)
+            stdout, stderr = p.communicate()
 
         woop = {'Score': 0}
         try:
@@ -297,32 +304,42 @@ class Server:
         self.current_running.append(number)
 
     def visualizer_loop(self):
+        if not os.path.exists(f'scrimmage/vis_temp'):
+            os.mkdir(f'scrimmage/vis_temp')
+
         while True:
             all_clients = self.database.dump()
+            if len(all_clients) <= 0:
+                continue
+
             client = random.choice(all_clients)
 
-            if client['logs_location'] is None:
+            if client['logs_location'] is None or client['tid'] in self.runner_queue:
                 continue
 
             self.log(f'Visualizing {client["teamname"]}')
 
             try:
                 # Create custom running directory
+                self.database.await_lock()
                 loc = 'scrimmage/vis_temp'
 
                 # Take logs and copy into directory
                 shutil.copytree(client['logs_location'], f'{loc}/logs')
+                self.database.lock = False
 
                 # Take launcher and copy into the directory
                 shutil.copy('launcher.pyz', loc)
 
-                # Take batch file and copy into directory
-                shutil.copy('scrimmage/vis_runner.bat', loc)
-
-                # Run batch file
-                f = open(os.devnull, 'w')
-                p = Popen('vis_runner.bat', stdout=f, cwd=loc, shell=True)
-                stdout, stderr = p.communicate()
+                # Take batch file and copy into directory, and run
+                if platform.system() == 'Linux':
+                    shutil.copy('scrimmage/vis_runner.sh', loc)
+                    subprocess.call(['bash', f'{loc}/vis_runner.sh'])
+                else:
+                    shutil.copy('scrimmage/vis_runner.bat', loc)
+                    f = open(os.devnull, 'w')
+                    p = subprocess.Popen('vis_runner.bat', stdout=f, cwd=loc, shell=True)
+                    stdout, stderr = p.communicate()
 
                 # Clean up the directory
                 shutil.rmtree(loc)
