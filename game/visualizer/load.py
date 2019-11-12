@@ -61,6 +61,31 @@ def load(temp):
         "C_4": fore_clear_4
     }
 
+    # Sensor Images and Dictionaries
+    fire_alarm_level_0 = cocos.sprite.Sprite("game/visualizer/assets/sensor_assets/fire_alarm.png")
+    fire_alarm_level_1 = cocos.sprite.Sprite("game/visualizer/assets/sensor_assets/fire_alarm.png")
+    fire_alarm_level_2 = cocos.sprite.Sprite("game/visualizer/assets/sensor_assets/fire_alarm.png")
+    fire_alarm_level_3 = cocos.sprite.Sprite("game/visualizer/assets/sensor_assets/fire_alarm.png")
+
+    sensor_1 = cocos.sprite.Sprite("game/visualizer/assets/sensor_assets/fire_alarm.png")
+    sensor_2 = cocos.sprite.Sprite("game/visualizer/assets/sensor_assets/fire_alarm.png")
+    sensor_3 = cocos.sprite.Sprite("game/visualizer/assets/sensor_assets/fire_alarm.png")
+    sensor_4 = cocos.sprite.Sprite("game/visualizer/assets/sensor_assets/fire_alarm.png")
+    sensor_5 = cocos.sprite.Sprite("game/visualizer/assets/sensor_assets/fire_alarm.png")
+    assets['sensor'] = {
+        "fire_alarm": {
+              "0": fire_alarm_level_0,
+              "1": fire_alarm_level_1,
+              "2": fire_alarm_level_2,
+              "3": fire_alarm_level_3,
+                },
+        "1": sensor_1,
+        "2": sensor_2,
+        "3": sensor_3,
+        "4": sensor_4,
+        "5": sensor_5,
+    }
+
     decree_0 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_0.png")
     decree_1 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_1.png")
     decree_2 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_2.png")

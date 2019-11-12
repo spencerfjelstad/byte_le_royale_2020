@@ -15,6 +15,7 @@ from game.visualizer.decree_sprites import *
 from game.visualizer.disaster_layer import *
 from game.visualizer.worker_sprites import *
 from game.visualizer.load import *
+from game.visualizer.sensor_sprites import *
 
 # Global variables needed for scene creation and keeping track of turns
 size = DISPLAY_SIZE
@@ -102,11 +103,15 @@ def create_scene(info, parser):
     monster_layer = MonsterLayer(size, info, assets['disaster'])
     ufo_layer = UFOLayer(size, info, assets['disaster'])
 
+    sensor_layer = SensorLayer(size, info, assets['sensor'])
+
     # Add layers to
     scene = cocos.scene.Scene()
     scene.add(location_layer, 0)
     scene.add(city_layer, 4)
     scene.add(worker_layer, 4)
+
+    scene.add(sensor_layer, 12)
 
     scene.add(fire_layer, 8)
     scene.add(tornado_layer, 8)
