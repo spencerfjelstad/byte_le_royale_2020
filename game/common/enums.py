@@ -35,12 +35,12 @@ class DamageScaling:
 
 
 class DecreeType:
-    anti_fire_bears = 0
+    anti_fire_dogs = 0
     paperweights = 1
-    hound_news = 2
-    moon_shoes = 3
-    away_spray = 4
-    giant_fly_swatter = 5
+    show_shovels = 2
+    rubber_boots = 3
+    fishing_hook = 4
+    cheese = 5
 
 
 class DisasterStatus:
@@ -51,7 +51,7 @@ class DisasterStatus:
 class DisasterType:
     fire = 0
     tornado = 1
-    hurricane = 2
+    blizzard = 2
     earthquake = 3
     monster = 4
     ufo = 5
