@@ -1,6 +1,7 @@
 import cocos
 from cocos.director import director
 import pyglet
+import sys
 
 from game.config import *
 from game.visualizer.game_log_parser import GameLogParser
@@ -30,7 +31,6 @@ def start(gamma, fullscreen=False, endgame=True):
     global turn
     global end_boolean
     end_boolean = endgame
-
 
     log_parser = GameLogParser("logs/")
 
@@ -119,3 +119,7 @@ def create_scene(info, parser):
     scene.add(forecast_layer, 10)
     scene.add(decree_layer, 10)
     return scene
+
+# Create exit method for use with schedule_interval() such that nothing will print when used together
+def exit(interval):
+    sys.exit()
