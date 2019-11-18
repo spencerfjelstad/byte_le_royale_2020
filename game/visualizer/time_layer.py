@@ -7,6 +7,15 @@ class TimeLayer(cocos.layer.Layer):
         self.display = display_size
         self.info = turn_info
         super().__init__()
+        team_name_label = cocos.text.Label(
+            self.info['player']['team_name'],
+            font_name="Comic Sans",
+            font_size=32,
+            anchor_x="center",
+            position=(self.display[0]/2, self.display[1]-100)
+        )
+        self.add(team_name_label)
+
         turn_label = cocos.text.Label(
             str(self.turn),
             font_name="Comic Sans",
@@ -19,7 +28,23 @@ class TimeLayer(cocos.layer.Layer):
         else:
             turn_label.position = self.display[0]-80, self.display[1] - 50
 
+        gold = self.info['player']['city']['gold']
+        gold_label = cocos.text.Label(
+            f"Gold: {gold}",
+            font_name="Comic Sans",
+            font_size=25,
+            color=(255,215,0,255),
+            anchor_x="center"
+        )
+        if gold<10:
+            gold_label.position = self.display[0]-32, self.display[1] - 100
+        elif gold<100:
+            gold_label.position = self.display[0] - 56, self.display[1] - 100
+        else:
+            gold_label.position = self.display[0] - 80, self.display[1] - 100
+
         self.add(turn_label)
+        self.add(gold_label)
 
         # # Display actual rates
         # n = 0
