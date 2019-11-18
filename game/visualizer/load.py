@@ -36,30 +36,29 @@ def load(temp):
         "ufo": dis_ufo
     }
 
-    fore_fire = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_fire.png")
-    fore_tornado = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_tornado.png")
-    fore_hurricane = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_hurricane.png")
-    fore_earthquake = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_earthquake.png")
-    fore_monster = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_monster.png")
-    fore_ufo = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_ufo.png")
-    fore_clear_0 = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_clear.png")
-    fore_clear_1 = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_clear.png")
-    fore_clear_2 = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_clear.png")
-    fore_clear_3 = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_clear.png")
-    fore_clear_4 = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_clear.png")
-    assets['forecast'] = {
-        "0": fore_fire,
-        "1": fore_tornado,
-        "2": fore_hurricane,
-        "3": fore_earthquake,
-        "4": fore_monster,
-        "5": fore_ufo,
-        "6": fore_clear_0,
-        "C_1": fore_clear_1,
-        "C_2": fore_clear_2,
-        "C_3": fore_clear_3,
-        "C_4": fore_clear_4
-    }
+    assets['forecast'] = {}
+    assets['forecast']['fire'] = list()
+    assets['forecast']['tornado'] = list()
+    assets['forecast']['hurricane'] = list()
+    assets['forecast']['earthquake'] = list()
+    assets['forecast']['monster'] = list()
+    assets['forecast']['ufo'] = list()
+    assets['forecast']['clear'] = list()
+    for i in range(5):
+        fore_fire = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_fire.png")
+        fore_tornado = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_tornado.png")
+        fore_hurricane = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_hurricane.png")
+        fore_earthquake = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_earthquake.png")
+        fore_monster = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_monster.png")
+        fore_ufo = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_ufo.png")
+        fore_clear = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_clear.png")
+        assets['forecast']['fire'].append(fore_fire)
+        assets['forecast']['tornado'].append(fore_tornado)
+        assets['forecast']['hurricane'].append(fore_hurricane)
+        assets['forecast']['earthquake'].append(fore_earthquake)
+        assets['forecast']['monster'].append(fore_monster)
+        assets['forecast']['ufo'].append(fore_ufo)
+        assets['forecast']['clear'].append(fore_clear)
 
     decree_0 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_0.png")
     decree_1 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_1.png")
