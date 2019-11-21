@@ -9,14 +9,17 @@ import subprocess
 import platform
 import uuid
 
-from game.utils.thread import Thread
-from scrimmage.db import DB
+import pymongo
+
 from scrimmage.utilities import *
 
 
 class Server:
     def __init__(self):
-        self.database = DB()
+        # Set up database connection
+        self.db_client = pymongo.MongoClient("mongodb://localhost:27017/")
+        self.db = self.db_client["royale"]
+        self.db_collection = self.db["teams"]
 
         self.logs = list()
 
@@ -30,15 +33,13 @@ class Server:
         self.server = self.loop.run_until_complete(self.coro)
 
         self.loop.run_in_executor(None, self.await_input)
-        self.loop.run_in_executor(None, self.runner_loop)
-        self.loop.run_in_executor(None, self.visualizer_loop)
+        #self.loop.run_in_executor(None, self.runner_loop)
+        #self.loop.run_in_executor(None, self.visualizer_loop)
 
         try:
             self.loop.run_forever()
         except KeyboardInterrupt:
-            self.server.close()
-            self.loop.run_until_complete(self.server.wait_closed())
-            self.loop.close()
+            self.close_server()
 
     def await_input(self):
         print('Server is awaiting admin input.')
@@ -47,9 +48,7 @@ class Server:
             self.log(f'Server command: {com}')
             # Exit command for shutting down the server
             if com == 'exit':
-                shutil.rmtree('scrimmage/temp')
-                shutil.rmtree('scrimmage/vis_temp')
-                os._exit(0)
+                self.close_server()
 
             # Echo back the given string to the user, mostly for testing
             elif 'echo ' in com:
@@ -62,19 +61,16 @@ class Server:
 
             # Create a query of all entries in the database
             elif 'query' in com:
-                tid = input('TID: ').strip()
                 teamname = input('Team name: ').strip()
 
-                if tid == '':
-                    tid = None
                 if teamname == '':
                     teamname = None
 
-                print(*[str(e) + '\n' for e in self.database.query(tid, teamname)])
+                [print(x) for x in self.db_collection.find({"teamname": teamname})]
 
             # Show all entries in the database, equivalent to query with no parameters
             elif 'dump' in com:
-                print(*[str(e) + '\n' for e in self.database.dump()])
+                [print(x) for x in self.db_collection.find()]
 
             # Write a python command that will get executed
             elif 'exec' in com:
@@ -121,29 +117,32 @@ class Server:
         cont = 'True'
         invalid_chars = re.compile(r"[\\/:*?<>|]")
         if invalid_chars.search(teamname):
+            self.log(f'{writer.get_extra_info("peername")} supplied name with illegal characters.')
             cont = 'False'
 
         if teamname == '' or None:
+            self.log(f'{writer.get_extra_info("peername")} supplied empty name.')
             cont = 'False'
 
-        if len(self.database.query(teamname=teamname)) > 0:
+        if len([x for x in self.db_collection.find({"teamname": teamname})]) > 0:
+            self.log(f'{writer.get_extra_info("peername")} supplied taken team name.')
             cont = 'False'
 
         # Inform client of state
         writer.write(cont.encode())
+        await writer.drain()
         if cont == 'False':
-            self.log(f'{writer.get_extra_info("peername")} supplied bad or taken teamname.')
             return
 
         # Generate new uuid for client
         vID = str(uuid.uuid4())
 
         # Send uuid to client for verification
-        await writer.drain()
         writer.write(vID.encode())
+        await writer.drain()
 
         # Register information in database
-        self.database.add_entry(tid=vID, teamname=teamname)
+        self.db_collection.insert_one({"_id": vID, "teamname": teamname})
 
         self.log(f'{writer.get_extra_info("peername")} registered teamname: {teamname} with ID: {vID}')
 
@@ -155,7 +154,7 @@ class Server:
 
         # Verify uuid from database
         cont = 'True'
-        entry = self.database.query(tid=tid)
+        entry = [x for x in self.db_collection.find({'_id': tid})]
         if len(entry) == 0:
             self.log('Entry not found.')
             cont = 'False'
@@ -185,7 +184,7 @@ class Server:
         submission.close()
 
         # Update database with location of file
-        self.database.set_code_file(client['tid'], location)
+        self.db_collection.update_one({'_id': tid}, {'code file': encoding_file_method(f'{client["teamname"]}_client.py')})
 
         # Create stats file if need be, wipe existing
         stats_location = f'scrimmage/scrim_clients/{client["teamname"]}/stats.json'
@@ -350,6 +349,16 @@ class Server:
     def log(self, *args):
         for arg in args:
             self.logs.append(f'{datetime.datetime.now()}: {arg}')
+
+    def close_server(self):
+        if os.path.exists('scrimmage/temp'):
+            shutil.rmtree('scrimmage/temp')
+        if os.path.exists('scrimmage/vis_temp'):
+            shutil.rmtree('scrimmage/vis_temp')
+
+        self.server.close()
+
+        os._exit(0)
 
 
 if __name__ == '__main__':

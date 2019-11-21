@@ -16,7 +16,11 @@ class Client:
     # Determines what action the client wants to do
     async def handle_client(self):
         # Connect
-        self.reader, self.writer = await asyncio.open_connection(IP, PORT, loop=self.loop)
+        try:
+            self.reader, self.writer = await asyncio.open_connection(IP, PORT, loop=self.loop)
+        except ConnectionRefusedError:
+            print('Could not connect to server. Server is either down or you are.')
+            return
         print('Connected successfully.')
 
         print('Select an action: register (-r), submit (-s), or view stats(-v).')
@@ -49,6 +53,10 @@ class Client:
         # Ask for teamname
         teamname = input("Enter your teamname: ")
 
+        if teamname == '':
+            print("Teamname can't be empty.")
+            return
+
         # Send teamname
         self.writer.write(teamname.encode())
 
@@ -61,6 +69,7 @@ class Client:
 
         # Receive uuid
         vID = await self.reader.read(BUFFER_SIZE)
+        print(vID)
         vID = vID.decode()
 
         if vID == '':
