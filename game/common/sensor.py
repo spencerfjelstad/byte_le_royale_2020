@@ -8,7 +8,7 @@ class Sensor:
         self.sensor_type = None
         self.object_type = ObjectType.sensor
         self.sensor_level = SensorLevel.level_zero
-        self.sensor_effort_remaining = 0
+        self.sensor_effort_remaining = GameStats.sensor_effort[SensorLevel.level_one]
         self.sensor_results = None
 
     def to_json(self):

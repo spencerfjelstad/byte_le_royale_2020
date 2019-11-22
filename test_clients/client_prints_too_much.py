@@ -2,7 +2,6 @@ from game.client.user_client import UserClient
 from game.common.enums import *
 
 import random
-import sys
 
 
 class Client(UserClient):
