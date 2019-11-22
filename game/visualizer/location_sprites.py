@@ -2,19 +2,13 @@ import cocos
 
 
 class LocationLayer(cocos.layer.Layer):
-    def __init__(self, display_size, image):
+    def __init__(self, turn_info, display_size, assets):
         self.display = display_size
-        self.image = image
+        self.info = turn_info
+        self.images = assets
         super().__init__()
-        locations = {
-            'plains': 'game/visualizer/assets/location_assets/location_plains.png',
-            '1': '',
-            '2': '',
-            '3': '',
-            '4': ''
-        }
 
-        location = cocos.sprite.Sprite(locations.get(image))
+        image = str(self.info['player'].get('city').get('location'))
+        location = self.images[image]
         location.position = self.display[0]/2, self.display[1]/2
-
         self.add(location)
