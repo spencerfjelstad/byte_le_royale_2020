@@ -92,7 +92,7 @@ class MasterController(Controller):
 
         # give client their corresponding sensor odds
         for sensor in client.city.sensors.values():
-            sensor.sensor_results = world['sensors'][sensor.sensor_type][sensor.sensor_level]
+            sensor.sensor_results = world['sensors'][sensor.sensor_type][sensor.level]
 
     # Receive a specific client and send them what they get per turn. Also obfuscates necessary objects.
     def client_turn_arguments(self, client, world, turn):
