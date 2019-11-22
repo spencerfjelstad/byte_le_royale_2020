@@ -1,4 +1,5 @@
 from game.common.enums import *
+from game.common.building import Building
 from game.common.sensor import Sensor
 from game.common.stats import GameStats
 from game.utils.helpers import enum_iter
@@ -18,8 +19,13 @@ class City:
         for sens_type in enum_iter(SensorType):
             sens = Sensor()
             sens.sensor_type = sens_type
-            sens.sensor_effort_remaining = GameStats.sensor_effort[SensorLevel.level_one]
             self.sensors[sens_type] = sens
+
+        self.buildings = dict()
+        for building_type in enum_iter(BuildingType):
+            building = Building()
+            building.building_type = building_type
+            self.buildings[building_type] = building
 
         self.remaining_man_power = self.population
         self.level = CityLevel.level_zero
@@ -37,6 +43,7 @@ class City:
         data['resources'] = self.resources
         data['location'] = self.location
         data['sensors'] = {sensor_type: sensor.to_json() for sensor_type, sensor in self.sensors.items()}
+        data['buildings'] = {building_type: building.to_json() for building_type, building in self.buildings.items()}
         data['remaining_man_power'] = self.remaining_man_power
         data['level'] = self.level
         data['effort_until_upgrade'] = self.effort_until_upgrade
@@ -52,11 +59,19 @@ class City:
         self.gold = data['gold']
         self.resources = data['resources']
         self.location = data['location']
+
         self.sensors = dict()
         for sensor_type, sensor_data in data['sensors'].items():
             sensor = Sensor()
             sensor.from_json(sensor_data)
             self.sensors[sensor_type] = sensor
+        self.buildings = dict()
+
+        for building_type, building_data in data['buildings'].items():
+            building = Building()
+            building.from_json(building_data)
+            self.buildings[building_type] = building
+
         self.remaining_man_power = data['remaining_man_power']
         self.level = data['level']
         self.effort_until_upgrade = data['effort_until_upgrade']

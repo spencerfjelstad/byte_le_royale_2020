@@ -16,6 +16,7 @@ from game.controllers.effort_controller import EffortController
 from game.controllers.event_controller import EventController
 from game.controllers.wealth_controller import WealthController
 
+
 class MasterController(Controller):
     def __init__(self):
         super().__init__()
