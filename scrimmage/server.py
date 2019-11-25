@@ -142,12 +142,69 @@ class Server:
         await writer.drain()
 
         # Register information in database
-        self.db_collection.insert_one({"_id": vID, "teamname": teamname})
+        self.db_collection.insert_one({'_id': vID,
+                                       'teamname': teamname,
+                                       'code_file': None,
+                                       'submissions': 0,
+                                       'average_run': 0,
+                                       'temp_total': 0})
 
         self.log(f'{writer.get_extra_info("peername")} registered teamname: {teamname} with ID: {vID}')
 
     async def receive_submission(self, reader, writer):
         self.log(f'Attempting submission with {writer.get_extra_info("peername")}')
+
+        # Verify client
+        entry, cont = await self.verify_client(reader, writer)
+
+        # Inform client of state
+        writer.write(cont.encode())
+        if cont == 'False':
+            return
+
+        # Receive client file
+        client = entry[0]
+        tid = client['_id']
+
+        submission = list()
+        line = await reader.read(BUFFER_SIZE)
+        while line:
+            submission.append(line)
+            line = await reader.read(BUFFER_SIZE)
+
+        # Update database with submission and stats
+        self.db_collection.update_one({'_id': tid}, {'$set': {'code file': {'name': f'{client["teamname"]}_client.py',
+                                                                            'contents': submission}}})
+        self.db_collection.update_one({'_id': tid}, {'$inc': {'submission': 1}})
+        self.db_collection.update_one({'_id': tid}, {'$set': {'average_run': 0}})
+        self.db_collection.update_one({'_id': tid}, {'$set': {'average_run': 0}})
+
+        # Add to the runner queue
+        for x in range(self.starting_runs):
+            self.runner_queue.append(tid)
+
+    async def send_stats(self, reader, writer):
+        self.log(f'Attempting stat sending with {writer.get_extra_info("peername")}')
+
+        # Verify client
+        entry, cont = await self.verify_client(reader, writer)
+
+        # Inform client of state
+        writer.write(cont.encode())
+        if cont == 'False':
+            return
+
+        # Retrieve data from stats file
+        client = entry[0]
+        stats = ''
+        with open(client['stats_location'], 'r') as f:
+            stats += f.read()
+
+        # Send info to client
+        await writer.drain()
+        writer.write(stats.encode())
+
+    async def verify_client(self, reader, writer):
         # Receive uuid
         tid = await reader.read(BUFFER_SIZE)
         tid = tid.decode()
@@ -164,72 +221,7 @@ class Server:
             self.log('Something fucked up somewhere why are there repeat ids')
             cont = 'False'
 
-        if tid in self.runner_queue:
-            self.log('Cannot accept new submission, previous still running.')
-            cont = 'False'
-
-        # Inform client of state
-        writer.write(cont.encode())
-        if cont == 'False':
-            return
-
-        # Receive client file
-        client = entry[0]
-        location = f'scrimmage/scrim_clients/{client["teamname"]}/{client["teamname"]}_client.py'
-        submission = open(location, 'wb+')
-        line = await reader.read(BUFFER_SIZE)
-        while line:
-            submission.write(line)
-            line = await reader.read(BUFFER_SIZE)
-        submission.close()
-
-        # Update database with location of file
-        self.db_collection.update_one({'_id': tid}, {'code file': encoding_file_method(f'{client["teamname"]}_client.py')})
-
-        # Create stats file if need be, wipe existing
-        stats_location = f'scrimmage/scrim_clients/{client["teamname"]}/stats.json'
-        with open(stats_location, 'w+') as f:
-            f.write('')
-
-        # Set stats location in database if need be
-        self.database.set_stats_file(client['tid'], stats_location)
-
-        # Add to the runner queue
-        for x in range(self.starting_runs):
-            self.runner_queue.append(client['tid'])
-
-    async def send_stats(self, reader, writer):
-        self.log(f'Attempting stat sending with {writer.get_extra_info("peername")}')
-        # Receive uuid
-        tid = await reader.read(BUFFER_SIZE)
-        tid = tid.decode()
-
-        # Verify uuid from database
-        cont = 'True'
-        entry = self.database.query(tid=tid)
-        if len(entry) == 0:
-            self.log('Entry not found.')
-            cont = 'False'
-        elif len(entry) == 1:
-            self.log(f'Verified {writer.get_extra_info("peername")}')
-        else:
-            self.log('Something fucked up somewhere why are there repeat ids')
-            cont = 'False'
-
-        # Inform client of state
-        writer.write(cont.encode())
-        if cont == 'False':
-            return
-
-        # Retrieve data from stats file
-        client = entry[0]
-        stats = ''
-        with open(client['stats_location'], 'r') as f:
-            stats += f.read()
-
-        # Send info to client
-        await writer.drain()
-        writer.write(stats.encode())
+        return entry, cont
 
     def runner_loop(self):
         while True:
