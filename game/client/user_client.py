@@ -24,5 +24,3 @@ class UserClient:
 
     def take_turn(self, actions, city, disasters):
         raise NotImplementedError("Implement this in subclass")
-
-    # TODO: Discuss full list of actions
