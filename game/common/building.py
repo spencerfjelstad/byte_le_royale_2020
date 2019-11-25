@@ -3,8 +3,8 @@ from game.common.enums import ObjectType, BuildingLevel
 
 # Side buildings that can be upgraded to provide various effects
 class Building:
-    def __init__(self):
-        self.building_type = None
+    def __init__(self, building_type=None):
+        self.building_type = building_type
         self.object_type = ObjectType.building
         self.building_level = BuildingLevel.level_zero
         self.effort_remaining = 0
