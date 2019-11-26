@@ -24,6 +24,8 @@ class Server:
 
         self.logs = list()
 
+        self.loop_continue = True
+
         self.max_simultaneous_runs = 4
         self.current_running = [x for x in range(self.max_simultaneous_runs)]
         self.runner_queue = list()
@@ -35,7 +37,7 @@ class Server:
 
         self.loop.run_in_executor(None, self.await_input)
         self.loop.run_in_executor(None, self.runner_loop)
-        #self.loop.run_in_executor(None, self.visualizer_loop)
+        self.loop.run_in_executor(None, self.visualizer_loop)
 
         try:
             self.loop.run_forever()
@@ -236,7 +238,7 @@ class Server:
         return entry, cont
 
     def runner_loop(self):
-        while True:
+        while self.loop_continue:
             if len(self.runner_queue) == 0 and len(self.current_running) == self.max_simultaneous_runs:
                 # Repopulate queue
                 for entry in self.db_collection.find({}):
@@ -246,11 +248,11 @@ class Server:
 
                 continue
 
-            if len(self.current_running) == 0:
+            if len(self.runner_queue) == 0 or len(self.current_running) == 0:
                 continue
 
-            client = self.runner_queue.pop(0)
-            num = self.current_running.pop(0)
+            client = self.runner_queue.pop()
+            num = self.current_running.pop()
 
             try:
                 self.loop.run_in_executor(None, self.internal_runner, client, num)
@@ -299,10 +301,10 @@ class Server:
             # Save log files
             with zipfile.ZipFile(f'{end_path}/logs_temp.zip', 'w') as z:
                 for filename in os.listdir(f'{end_path}/logs'):
-                    z.write(f'{end_path}/logs/{filename}')
+                    z.write(f'{end_path}/logs/{filename}', arcname=f'logs/{filename}')
 
             b = file_to_binary(f'{end_path}/logs_temp.zip')
-            self.db_collection.update_one({'_id': client}, {'$set': {'logs': {'name': 'logs', 'contents': b}}})
+            self.db_collection.update_one({'_id': client}, {'$set': {'logs': {'name': 'logs.zip', 'contents': [b]}}})
 
         # Update temp total
         self.db_collection.update_one({'_id': client}, {'$inc': {'temp_total': score}})
@@ -310,17 +312,19 @@ class Server:
         entry = [x for x in self.db_collection.find({'_id': client})][0]
 
         # Update average run amount
-        self.db_collection.update_one({'_id': client}, {'$set': {'average_run': entry['temp_total'] / entry['total_runs']}})
+        self.db_collection.update_one({'_id': client}, {'$set': {'average_run': entry['temp_total'] / max(1, entry['total_runs'])}})
 
         shutil.rmtree(end_path)
 
         self.current_running.append(number)
 
     def visualizer_loop(self):
-        if not os.path.exists(f'scrimmage/vis_temp'):
-            os.mkdir(f'scrimmage/vis_temp')
+        loc = 'scrimmage/vis_temp'
 
-        while True:
+        if not os.path.exists(loc):
+            os.mkdir(loc)
+
+        while self.loop_continue:
             all_clients = [x for x in self.db_collection.find({})]
             if len(all_clients) <= 0:
                 continue
@@ -333,11 +337,11 @@ class Server:
             self.log(f'Visualizing {client["teamname"]}')
 
             try:
-                # Create custom running directory
-                loc = 'scrimmage/vis_temp'
-
                 # Take logs and copy into directory
-                shutil.copytree(client['logs_location'], f'{loc}/logs')
+                zip_path = f'{loc}/{client["logs"]["name"]}'
+                binary_to_file(zip_path, client['logs']['contents'])
+                z = zipfile.ZipFile(zip_path, 'r')
+                z.extractall(path='scrimmage/vis_temp')
 
                 # Take launcher and copy into the directory
                 shutil.copy('launcher.pyz', loc)
@@ -363,10 +367,22 @@ class Server:
             self.logs.append(f'{datetime.datetime.now()}: {arg}')
 
     def close_server(self):
-        if os.path.exists('scrimmage/temp'):
-            shutil.rmtree('scrimmage/temp')
-        if os.path.exists('scrimmage/vis_temp'):
-            shutil.rmtree('scrimmage/vis_temp')
+        self.loop_continue = False
+
+        while True:
+            try:
+                if os.path.exists('scrimmage/temp'):
+                    shutil.rmtree('scrimmage/temp')
+                    break
+            except PermissionError:
+                continue
+        while True:
+            try:
+                if os.path.exists('scrimmage/vis_temp'):
+                    shutil.rmtree('scrimmage/vis_temp')
+                    break
+            except PermissionError:
+                continue
 
         self.server.close()
 
