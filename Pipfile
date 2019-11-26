@@ -9,6 +9,7 @@ verify_ssl = true
 tqdm = "*"
 numpy = "*"
 cocos2d = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"
