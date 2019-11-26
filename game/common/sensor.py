@@ -1,5 +1,6 @@
 from game.common.enums import *
 from game.common.stats import *
+from game.utils.helpers import enum_to_string
 
 
 class Sensor:
@@ -7,7 +8,7 @@ class Sensor:
         self.sensor_type = None
         self.object_type = ObjectType.sensor
         self.sensor_level = SensorLevel.level_zero
-        self.sensor_effort_remaining = 0
+        self.sensor_effort_remaining = GameStats.sensor_effort[SensorLevel.level_one]
         self.sensor_results = None
 
     def to_json(self):
@@ -26,3 +27,11 @@ class Sensor:
         self.sensor_level = data['sensor_level']
         self.sensor_effort_remaining = data['sensor_effort_remaining']
         self.sensor_results = data['sensor_results']
+
+    def __str__(self):
+        p = f"""Sensor Type: {enum_to_string(SensorType,self.sensor_type).replace("_", " ")}
+            Sensor Level: {self.sensor_level}
+            Sensor Effort Remaining: {self.sensor_effort_remaining}
+            Sensor Results: {self.sensor_results}
+            """
+        return p

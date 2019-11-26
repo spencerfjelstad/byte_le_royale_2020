@@ -14,6 +14,8 @@ from game.controllers.destruction_controller import DestructionController
 from game.controllers.disaster_controller import DisasterController
 from game.controllers.effort_controller import EffortController
 from game.controllers.event_controller import EventController
+from game.controllers.wealth_controller import WealthController
+
 
 class MasterController(Controller):
     def __init__(self):
@@ -22,6 +24,7 @@ class MasterController(Controller):
         # Singletons first
         self.event_controller = EventController()
 
+        self.wealth_controller = WealthController()
         self.city_generator_controller = CityGeneratorController()
         self.decree_controller = DecreeController()
         self.destruction_controller = DestructionController()
@@ -108,6 +111,7 @@ class MasterController(Controller):
     def turn_logic(self, client, world, turn):
         self.event_controller.update(turn)
 
+        self.wealth_controller.update(client)
         self.effort_controller.handle_actions(client)
         self.decree_controller.update_decree(client.action.get_decree())
         self.disaster_controller.handle_actions(client)

@@ -31,6 +31,14 @@ def enum_iter(enum_class):
     """
     return [enum_class.__dict__[key] for key in enum_class.__dict__ if not key.startswith("__")]
 
+def enum_to_string(enum, val):
+    """
+
+    :param enum:
+    :param val:
+    :return:
+    """
+    return [k for k, v in dict(enum.__dict__).items() if not k.startswith("__") and v == val][0]
 
 def write(data, file):
     """
