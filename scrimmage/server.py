@@ -91,6 +91,7 @@ class Server:
             if command in REGISTER_COMMANDS + SUBMIT_COMMANDS + VIEW_STATS_COMMANDS:
                 cont = 'True'
             writer.write(cont.encode())
+            await writer.drain()
             if cont == 'False':
                 self.log(f'{writer.get_extra_info("peername")} supplied a bad command.')
 
@@ -102,8 +103,8 @@ class Server:
                 elif command in VIEW_STATS_COMMANDS:
                     await self.send_stats(reader, writer)
 
-            await writer.drain()
             writer.close()
+            await writer.wait_closed()
         except ConnectionResetError:
             self.log("Connection has been lost")
 
@@ -131,11 +132,14 @@ class Server:
         # Inform client of state
         writer.write(cont.encode())
         await writer.drain()
+
         if cont == 'False':
             return
 
         # Generate new uuid for client
         vID = str(uuid.uuid4())
+
+        await asyncio.sleep(0.5)
 
         # Send uuid to client for verification
         writer.write(vID.encode())
@@ -147,6 +151,7 @@ class Server:
                                        'code_file': None,
                                        'submissions': 0,
                                        'average_run': 0,
+                                       'best_run': 0,
                                        'temp_total': 0})
 
         self.log(f'{writer.get_extra_info("peername")} registered teamname: {teamname} with ID: {vID}')
@@ -159,6 +164,7 @@ class Server:
 
         # Inform client of state
         writer.write(cont.encode())
+        await writer.drain()
         if cont == 'False':
             return
 
@@ -175,9 +181,10 @@ class Server:
         # Update database with submission and stats
         self.db_collection.update_one({'_id': tid}, {'$set': {'code file': {'name': f'{client["teamname"]}_client.py',
                                                                             'contents': submission}}})
-        self.db_collection.update_one({'_id': tid}, {'$inc': {'submission': 1}})
+        self.db_collection.update_one({'_id': tid}, {'$inc': {'submissions': 1}})
         self.db_collection.update_one({'_id': tid}, {'$set': {'average_run': 0}})
-        self.db_collection.update_one({'_id': tid}, {'$set': {'average_run': 0}})
+        self.db_collection.update_one({'_id': tid}, {'$set': {'best_run': 0}})
+        self.db_collection.update_one({'_id': tid}, {'$set': {'temp_total': 0}})
 
         # Add to the runner queue
         for x in range(self.starting_runs):
@@ -191,18 +198,22 @@ class Server:
 
         # Inform client of state
         writer.write(cont.encode())
+        await writer.drain()
         if cont == 'False':
             return
 
         # Retrieve data from stats file
         client = entry[0]
         stats = ''
-        with open(client['stats_location'], 'r') as f:
-            stats += f.read()
+        stats += f'Submission: {client["submissions"]}\n'
+        stats += f'Average Run: {client["average_run"]}\n'
+        stats += f'Best Run: {client["best_run"]}\n'
+
+        await asyncio.sleep(0.1)
 
         # Send info to client
-        await writer.drain()
         writer.write(stats.encode())
+        await writer.drain()
 
     async def verify_client(self, reader, writer):
         # Receive uuid

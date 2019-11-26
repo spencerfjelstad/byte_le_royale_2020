@@ -31,11 +31,15 @@ class Client:
             return
 
         self.writer.write(command.encode())
+        await self.writer.drain()
+
         cont = await self.reader.read(BUFFER_SIZE)
         cont = cont.decode()
         if cont == 'False':
             print('Server caught an illegal command.')
             return
+
+        await asyncio.sleep(0.1)
 
         if command in REGISTER_COMMANDS:
             await self.register()
@@ -59,6 +63,7 @@ class Client:
 
         # Send teamname
         self.writer.write(teamname.encode())
+        await self.writer.drain()
 
         # Receive state of server
         cont = await self.reader.read(BUFFER_SIZE)
@@ -69,7 +74,6 @@ class Client:
 
         # Receive uuid
         vID = await self.reader.read(BUFFER_SIZE)
-        print(vID)
         vID = vID.decode()
 
         if vID == '':
@@ -81,25 +85,11 @@ class Client:
             f.write(vID)
 
         print("Registration successful.")
-        print("You have been given an ID file. Don't move or lose it!")
+        print("You have been given an ID file in your Byte-le folder. Don't move or lose it!")
         print("You can give a copy to your teammates so they can submit and view stats.")
 
     async def submit(self):
-        # Check vID for uuid
-        if not os.path.isfile('vID'):
-            print("Cannot find vID, please register first.")
-            return
-
-        tid = ''
-        with open('vID', 'r') as f:
-            tid = f.read()
-
-        # Send uuid
-        self.writer.write(tid.encode())
-
-        # Receive state of server
-        cont = await self.reader.read(BUFFER_SIZE)
-        cont = cont.decode()
+        cont = await self.verify()
 
         if cont == 'False':
             print('Cannot submit at this time.')
@@ -139,6 +129,17 @@ class Client:
         print('File sent successfully.')
 
     async def get_stats(self):
+        cont = await self.verify()
+
+        if cont == 'False':
+            print('Failure in sending ID.')
+
+        # Receive stats
+        stats = await self.reader.read(BUFFER_SIZE)
+        stats = stats.decode()
+        print(stats)
+
+    async def verify(self):
         # Check vID for uuid
         if not os.path.isfile('vID'):
             print("Cannot find vID, please register first.")
@@ -150,18 +151,12 @@ class Client:
 
         # Send uuid
         self.writer.write(tid.encode())
+        await self.writer.drain()
 
         # Receive state of server
         cont = await self.reader.read(BUFFER_SIZE)
         cont = cont.decode()
-
-        if cont == 'False':
-            print('Failure in sending ID.')
-
-        # Receive stats
-        stats = await self.reader.read(BUFFER_SIZE)
-        stats = stats.decode()
-        print(stats)
+        return cont
 
 
 if __name__ == '__main__':
