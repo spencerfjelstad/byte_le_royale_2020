@@ -32,10 +32,10 @@ class GameStats:
     }
 
     wealth_boost = {
-        BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 1,
-        BuildingLevel.level_two: 2,
-        BuildingLevel.level_three: 3
+        BuildingLevel.level_zero: 1,
+        BuildingLevel.level_one: 2,
+        BuildingLevel.level_two: 3,
+        BuildingLevel.level_three: 4
     }
 
     population_boost = {
@@ -47,9 +47,9 @@ class GameStats:
 
     structure_boost = {
         BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 5,
-        BuildingLevel.level_two: 15,
-        BuildingLevel.level_three: 40
+        BuildingLevel.level_one: 1,
+        BuildingLevel.level_two: 2,
+        BuildingLevel.level_three: 3
     }
 
     # multiplier done by instant disasters
@@ -107,7 +107,6 @@ class GameStats:
 
     # gold
     city_gold = 100
-    city_gold_accumulative = 1
 
     # cost in gold to build a sensor
     sensor_costs = {

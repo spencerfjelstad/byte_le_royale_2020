@@ -15,10 +15,10 @@ class AccumulativeController(Controller):
         building_level = player.city.buildings[BuildingType.wealth_booster].building_level
         booster = GameStats.wealth_boost[building_level]
 
-        gold_added = GameStats.city_gold_accumulative + booster
+        gold_added = booster
         self.print(f"Gold to add: {gold_added}")
 
-        city += gold_added
+        city.gold += gold_added
 
         # Structure
         building_level = player.city.buildings[BuildingType.structure_booster].building_level
