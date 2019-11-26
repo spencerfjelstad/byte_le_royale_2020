@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import platform
 import uuid
+import zipfile
 
 import pymongo
 
@@ -33,7 +34,7 @@ class Server:
         self.server = self.loop.run_until_complete(self.coro)
 
         self.loop.run_in_executor(None, self.await_input)
-        #self.loop.run_in_executor(None, self.runner_loop)
+        self.loop.run_in_executor(None, self.runner_loop)
         #self.loop.run_in_executor(None, self.visualizer_loop)
 
         try:
@@ -152,7 +153,9 @@ class Server:
                                        'submissions': 0,
                                        'average_run': 0,
                                        'best_run': 0,
-                                       'temp_total': 0})
+                                       'temp_total': 0,
+                                       'total_runs': 0,
+                                       'logs': None})
 
         self.log(f'{writer.get_extra_info("peername")} registered teamname: {teamname} with ID: {vID}')
 
@@ -179,16 +182,13 @@ class Server:
             line = await reader.read(BUFFER_SIZE)
 
         # Update database with submission and stats
-        self.db_collection.update_one({'_id': tid}, {'$set': {'code file': {'name': f'{client["teamname"]}_client.py',
+        self.db_collection.update_one({'_id': tid}, {'$set': {'code_file': {'name': f'{client["teamname"]}_client.py',
                                                                             'contents': submission}}})
         self.db_collection.update_one({'_id': tid}, {'$inc': {'submissions': 1}})
         self.db_collection.update_one({'_id': tid}, {'$set': {'average_run': 0}})
         self.db_collection.update_one({'_id': tid}, {'$set': {'best_run': 0}})
         self.db_collection.update_one({'_id': tid}, {'$set': {'temp_total': 0}})
-
-        # Add to the runner queue
-        for x in range(self.starting_runs):
-            self.runner_queue.append(tid)
+        self.db_collection.update_one({'_id': tid}, {'$set': {'total_runs': 0}})
 
     async def send_stats(self, reader, writer):
         self.log(f'Attempting stat sending with {writer.get_extra_info("peername")}')
@@ -208,6 +208,7 @@ class Server:
         stats += f'Submission: {client["submissions"]}\n'
         stats += f'Average Run: {client["average_run"]}\n'
         stats += f'Best Run: {client["best_run"]}\n'
+        stats += f'Total Runs: {client["total_runs"]}\n'
 
         await asyncio.sleep(0.1)
 
@@ -236,11 +237,20 @@ class Server:
 
     def runner_loop(self):
         while True:
-            if len(self.runner_queue) == 0 or len(self.current_running) == 0:
+            if len(self.runner_queue) == 0 and len(self.current_running) == self.max_simultaneous_runs:
+                # Repopulate queue
+                for entry in self.db_collection.find({}):
+                    if entry['code_file'] is None or entry['total_runs'] >= 20:
+                        continue
+                    self.runner_queue.append(entry['_id'])
+
                 continue
 
-            client = self.runner_queue.pop()
-            num = self.current_running.pop()
+            if len(self.current_running) == 0:
+                continue
+
+            client = self.runner_queue.pop(0)
+            num = self.current_running.pop(0)
 
             try:
                 self.loop.run_in_executor(None, self.internal_runner, client, num)
@@ -256,13 +266,14 @@ class Server:
         if not os.path.exists(end_path):
             os.mkdir(end_path)
 
-        entry = self.database.query(tid=client)[0]
+        entry = [x for x in self.db_collection.find({'_id': client})][0]
         shutil.copy('launcher.pyz', end_path)
-        shutil.copy(entry['client_location'], end_path)
+        code = entry['code_file']
+        binary_to_file(f'{end_path}/{code["name"]}', code['contents'])
 
         # Copy and run proper file
         if platform.system() == 'Linux':
-            shutil.copy('scrimmage/runner.sh')
+            shutil.copy('scrimmage/runner.sh', end_path)
             subprocess.call(['bash', f'{end_path}/runner.sh'])
         else:
             shutil.copy('scrimmage/runner.bat', end_path)
@@ -270,36 +281,36 @@ class Server:
             p = subprocess.Popen('runner.bat', stdout=f, cwd=end_path, shell=True)
             stdout, stderr = p.communicate()
 
-        woop = {'Score': 0}
-        try:
-            with open(end_path + '/logs/results.json', 'r') as f:
-                woop = json.load(f)
-        except json.decoder.JSONDecodeError:
-            # File doesn't exist
-            pass
+        results = dict()
+        with open(end_path + '/logs/results.json', 'r') as f:
+            results = json.load(f)
 
-        score = woop['Score']
+        score = results['Score']
 
-        orig = {'Max Score': 0}
-        try:
-            with open(entry['stats_location'], 'r') as f:
-                orig = json.load(f)
-        except json.decoder.JSONDecodeError:
-            # File doesn't exist
-            pass
+        entry = [x for x in self.db_collection.find({'_id': client})][0]
 
-        if 'Max Score' in orig:
-            if orig['Max Score'] < score:
-                orig['Max Score'] = score
+        # Update total number of runs
+        self.db_collection.update_one({'_id': client}, {'$inc': {'total_runs': 1}})
 
-                # Add logs to location
-                client_log_location = self.database.change_logs(entry, end_path)
+        # Update best run
+        if score > entry['best_run']:
+            self.db_collection.update_one({'_id': client}, {'$set': {'best_run': score}})
 
-                # Add logs location to database
-                self.database.set_logs_location(entry['tid'], client_log_location)
+            # Save log files
+            with zipfile.ZipFile(f'{end_path}/logs_temp.zip', 'w') as z:
+                for filename in os.listdir(f'{end_path}/logs'):
+                    z.write(f'{end_path}/logs/{filename}')
 
-        with open(entry['stats_location'], 'r+') as f:
-            json.dump(orig, f)
+            b = file_to_binary(f'{end_path}/logs_temp.zip')
+            self.db_collection.update_one({'_id': client}, {'$set': {'logs': {'name': 'logs', 'contents': b}}})
+
+        # Update temp total
+        self.db_collection.update_one({'_id': client}, {'$inc': {'temp_total': score}})
+
+        entry = [x for x in self.db_collection.find({'_id': client})][0]
+
+        # Update average run amount
+        self.db_collection.update_one({'_id': client}, {'$set': {'average_run': entry['temp_total'] / entry['total_runs']}})
 
         shutil.rmtree(end_path)
 
@@ -310,25 +321,23 @@ class Server:
             os.mkdir(f'scrimmage/vis_temp')
 
         while True:
-            all_clients = self.database.dump()
+            all_clients = [x for x in self.db_collection.find({})]
             if len(all_clients) <= 0:
                 continue
 
             client = random.choice(all_clients)
 
-            if client['logs_location'] is None or client['tid'] in self.runner_queue:
+            if client['logs'] is None:
                 continue
 
             self.log(f'Visualizing {client["teamname"]}')
 
             try:
                 # Create custom running directory
-                self.database.await_lock()
                 loc = 'scrimmage/vis_temp'
 
                 # Take logs and copy into directory
                 shutil.copytree(client['logs_location'], f'{loc}/logs')
-                self.database.lock = False
 
                 # Take launcher and copy into the directory
                 shutil.copy('launcher.pyz', loc)

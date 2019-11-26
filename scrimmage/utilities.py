@@ -11,9 +11,9 @@ VIEW_STATS_COMMANDS = ['view stats', 'view', '-v']
 
 
 def file_to_binary(filename):
-    res = ''
+    res = None
     with open(filename, 'rb') as f:
-        res += f.read()
+        res = f.read()
 
     return res
 
