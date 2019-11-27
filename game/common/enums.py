@@ -113,3 +113,6 @@ class BuildingLevel:
 class BuildingType:
     instant_decree_booster = 0
     lasting_decree_booster = 1
+    wealth_booster = 2
+    population_booster = 3
+    structure_booster = 4
