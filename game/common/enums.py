@@ -6,18 +6,18 @@ class ActionType:
     upgrade_city = 4
 
 
+class CityLevel:
+    level_zero = 0
+    level_one = 1
+    level_two = 2
+
+
 class CityLocation:
     plains = 0
     desert = 1
     mountains = 2
     coastal = 3
     radioactive_wasteland = 4
-
-
-class CityLevel:
-    level_zero = 0
-    level_one = 1
-    level_two = 2
 
 
 class CityType:
@@ -32,6 +32,13 @@ class DamageScaling:
     medium = 1
     high = 2
     extreme = 3
+
+
+class DebugLevel:
+    none = 0
+    client = 1
+    controller = 2
+    engine = 3
 
 
 class DecreeType:
@@ -71,6 +78,7 @@ class ObjectType:
     sensor = 3
     city = 4
     player = 5
+    building = 6
 
 
 class ReactiveType:
@@ -95,8 +103,16 @@ class SensorType:
     satellite_dish = 5
 
 
-class DebugLevel:
-    none = 0
-    client = 1
-    controller = 2
-    engine = 3
+class BuildingLevel:
+    level_zero = 0
+    level_one = 1
+    level_two = 2
+    level_three = 3
+
+
+class BuildingType:
+    instant_decree_booster = 0
+    lasting_decree_booster = 1
+    wealth_booster = 2
+    population_booster = 3
+    structure_booster = 4

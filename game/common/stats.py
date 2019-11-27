@@ -3,6 +3,14 @@ from game.common.enums import *
 
 class GameStats:
 
+    # cost in man_power to upgrade a building
+    building_effort = {
+        BuildingLevel.level_zero: 0,
+        BuildingLevel.level_one: 50,
+        BuildingLevel.level_two: 100,
+        BuildingLevel.level_three: 500
+    }
+
     # Costs to go up to the next city level
     city_upgrade_cost = {
         CityLevel.level_zero: 0,
@@ -10,10 +18,39 @@ class GameStats:
         CityLevel.level_two: 300
     }
 
-    # Percentage of remaining strength of a disaster
-    # (100 implies decree has no effect, 0 implies decree completely negates the disaster)
-    decree_population_effect = 0
-    decree_structure_effect = 0
+    # Decree effectiveness when applied against a disaster
+    # (0 implies decree has no effect, 1.0 implies decree completely negates the disaster)
+    decree_population_effect = 1.0
+    decree_structure_effect = 1.0
+
+    # Boost multiplied by the decree if you have a structure with the matching level
+    decree_boost = {
+        BuildingLevel.level_zero: 1,
+        BuildingLevel.level_one: 1.1,
+        BuildingLevel.level_two: 1.25,
+        BuildingLevel.level_three: 1.5
+    }
+
+    wealth_boost = {
+        BuildingLevel.level_zero: 0,
+        BuildingLevel.level_one: 1,
+        BuildingLevel.level_two: 2,
+        BuildingLevel.level_three: 3
+    }
+
+    population_boost = {
+        BuildingLevel.level_zero: 0,
+        BuildingLevel.level_one: 1,
+        BuildingLevel.level_two: 2,
+        BuildingLevel.level_three: 3
+    }
+
+    structure_boost = {
+        BuildingLevel.level_zero: 0,
+        BuildingLevel.level_one: 1,
+        BuildingLevel.level_two: 2,
+        BuildingLevel.level_three: 3
+    }
 
     # multiplier done by instant disasters
     disaster_damage_instant_multiplier = 5
@@ -70,6 +107,7 @@ class GameStats:
 
     # gold
     city_gold = 100
+    city_gold_accumulative = 1
 
     # cost in gold to build a sensor
     sensor_costs = {
@@ -106,5 +144,6 @@ class GameStats:
         ObjectType.none: 5,
         ObjectType.disaster: 6,
         ObjectType.sensor: 7,
-        ObjectType.city: 8
+        ObjectType.city: 1.5,
+        ObjectType.building: 8,
     }
