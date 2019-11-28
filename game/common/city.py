@@ -23,8 +23,7 @@ class City:
 
         self.buildings = dict()
         for building_type in enum_iter(BuildingType):
-            building = Building()
-            building.building_type = building_type
+            building = Building(building_type)
             self.buildings[building_type] = building
 
         self.remaining_man_power = self.population
