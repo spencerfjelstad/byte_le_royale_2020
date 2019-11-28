@@ -40,6 +40,7 @@ def start(gamma, fullscreen=False, endgame=True):
     load(assets)
 
     # Get turn info from logs, if None go to end scene
+    # on the end scene the end_boolean is checked, and if False, the visualizer will close after 4 seconds
     turn_info = log_parser.get_turn(turn)
     if turn_info is None:
         end_layer = EndLayer(size, log_parser)
@@ -62,6 +63,8 @@ def timer(interval):
 
     director.scene_stack.clear()
 
+    # Get turn info from logs, if None go to end scene
+    # on the end scene the end_boolean is checked, and if False, the visualizer will close after 4 seconds
     turn_info=log_parser.get_turn(turn)
     if turn_info is None:
         end_layer = EndLayer(size,log_parser)

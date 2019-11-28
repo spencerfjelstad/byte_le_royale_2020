@@ -7,6 +7,8 @@ class TimeLayer(cocos.layer.Layer):
         self.display = display_size
         self.info = turn_info
         super().__init__()
+
+        # Display player's team name
         team_name_label = cocos.text.Label(
             self.info['player']['team_name'],
             font_name="Comic Sans",
@@ -16,6 +18,7 @@ class TimeLayer(cocos.layer.Layer):
         )
         self.add(team_name_label)
 
+        # Display current turn number
         turn_label = cocos.text.Label(
             str(self.turn),
             font_name="Comic Sans",
@@ -28,6 +31,7 @@ class TimeLayer(cocos.layer.Layer):
         else:
             turn_label.position = self.display[0]-80, self.display[1] - 50
 
+        # Display player's wealth/gold
         gold = self.info['player']['city']['gold']
         gold_label = cocos.text.Label(
             f"Gold: {gold}",
@@ -45,29 +49,3 @@ class TimeLayer(cocos.layer.Layer):
 
         self.add(turn_label)
         self.add(gold_label)
-
-        # # Display actual rates
-        # n = 0
-        # for key, item in self.info['rates'].items():
-        #     n+=1
-        #     text = f'{key}: {item}'
-        #     label = cocos.text.Label(
-        #         text,
-        #         font_name="Comic Sans",
-        #         font_size=15
-        #     )
-        #     label.position = 30, self.display[1]-50-30*n
-        #     self.add(label)
-        #
-        # # Display city sensor
-        # n = 0
-        # for sensor in self.info['player']['city']['sensors'].values():
-        #     n += 1
-        #     text = f'{sensor["sensor_type"]}: {sensor["sensor_results"]}'
-        #     label = cocos.text.Label(
-        #         text,
-        #         font_name="Comic Sans",
-        #         font_size=15
-        #     )
-        #     label.position = 500, self.display[1]-50-30 * n
-        #     self.add(label)

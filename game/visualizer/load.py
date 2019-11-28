@@ -6,7 +6,8 @@ from zipfile import ZipFile
 from PIL import Image
 from io import BytesIO
 
-
+# Extracts a png from a zipped file and returns it for use with cocos.
+# This function is necessary for the visualizer to work on Linux.
 def find_image(filename):
     archive = ZipFile("launcher.pyz", 'r')
     img = Image.open(BytesIO(archive.read(filename)))
@@ -18,6 +19,7 @@ def find_image(filename):
     shutil.rmtree('tempic')
     return pic
 
+# Populates a dictionary with all the sprites required for the visualizer
 def load(temp):
     assets = temp
     plains = cocos.sprite.Sprite(find_image("game/visualizer/assets/location_assets/location_plains.png"))
