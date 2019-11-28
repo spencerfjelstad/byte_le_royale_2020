@@ -30,8 +30,8 @@ class Sensor:
 
     def __str__(self):
         p = f"""Sensor Type: {enum_to_string(SensorType,self.sensor_type).replace("_", " ")}
-            Sensor Level: {self.sensor_level}
-            Sensor Effort Remaining: {self.sensor_effort_remaining}
+            Sensor Level: {self.level}
+            Sensor Effort Remaining: {self.effort_remaining}
             Sensor Results: {self.sensor_results}
             """
         return p
