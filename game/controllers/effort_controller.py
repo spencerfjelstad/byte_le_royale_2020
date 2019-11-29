@@ -16,6 +16,7 @@ class EffortController(Controller):
     def __init__(self):
         super().__init__()
         self.event_controller = EventController.get_instance()
+        self.debug = True
 
     def handle_actions(self, player):
         # handle advanced verification of allocation list
@@ -200,9 +201,14 @@ class EffortController(Controller):
                     self.print("sensor's sensor_level value is invalid.")
                     return
 
+            # Reduce the number down to what the city's wealth will permit (for building upgrades)
+            if isinstance(obj, Building):
+                number = clamp(number, min_value=0, max_value=player.city.gold)
+                player.city.gold -= number
+
             # Move all the effort from number to the upgradable object
-            # TODO: Ensure building upgrades have enough wealth to upgrade
             obj.effort_remaining -= number
+
             number = 0  # For now, set number to 0. If there's left over allocation, we pull it back from the object
 
             # if limit maxed, begin upgrade
@@ -224,7 +230,7 @@ class EffortController(Controller):
                 # log upgrade
                 self.event_controller.add_event({
                     "event_type": event_type,
-                    "building": obj.to_json(),
+                    "upgraded object": obj.to_json(),
                 })
 
                 # with left over effort, attempt upgrade again
