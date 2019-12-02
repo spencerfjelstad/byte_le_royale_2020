@@ -67,8 +67,10 @@ class DisasterType:
 class EventType:
     city_upgrade = 0
     sensor_upgrade = 1
-    disaster_spawned = 2
-    disaster_eliminated = 3
+    building_upgrade = 2
+
+    disaster_spawned = 3
+    disaster_eliminated = 4
 
 
 class ObjectType:

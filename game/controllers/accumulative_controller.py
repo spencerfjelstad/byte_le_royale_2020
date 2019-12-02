@@ -12,7 +12,7 @@ class AccumulativeController(Controller):
         city = player.city
 
         #Wealth
-        building_level = city.buildings[BuildingType.wealth_booster].building_level
+        building_level = city.buildings[BuildingType.wealth_booster].level
         booster = GameStats.wealth_boost[building_level]
 
         self.print(f"Gold to add: {booster}")
@@ -20,7 +20,7 @@ class AccumulativeController(Controller):
         city.gold += booster + GameStats.city_gold_accumulative
 
         # Structure
-        building_level = city.buildings[BuildingType.structure_booster].building_level
+        building_level = city.buildings[BuildingType.structure_booster].level
         structure_added = GameStats.structure_boost[building_level]
 
         self.print(f"Structure to add: {structure_added}")
@@ -31,7 +31,7 @@ class AccumulativeController(Controller):
         self.print(f"Final structure: {city.structure}")
 
         #Population
-        building_level = city.buildings[BuildingType.population_booster].building_level
+        building_level = city.buildings[BuildingType.population_booster].level
         population_added = GameStats.population_boost[building_level]
 
         self.print(f"Population to add: {population_added}")
