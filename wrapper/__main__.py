@@ -47,11 +47,11 @@ if __name__ == '__main__':
     action = par_args.command
 
     # Generate game options
-    if  action == 'generate' or action == 'g':
+    if  action in ['generate', 'g']:
         generate()
     
     # Run game options
-    elif action == 'run' or action == 'r':
+    elif action in ['run', 'r']:
         # Additional args
         quiet = False
 
@@ -67,7 +67,7 @@ if __name__ == '__main__':
         loop(quiet)
     
     # Visualizer options
-    elif action == 'visualizer' or action == 'v':
+    elif action in ['visualizer', 'v']:
         # importing in the middle of a file is not good practice but it's done here to quiet pygame for non-visualizer options
         from game.visualizer import start
         
@@ -92,7 +92,7 @@ if __name__ == '__main__':
         start(gamma, full, endgame)
         
     # Boot up the scrimmage server client
-    elif action == 'scrimmage' or action == 's':
+    elif action in ['scrimmage', 's']:
         cl = Client()
 
     # Print help if no arguments are passed
