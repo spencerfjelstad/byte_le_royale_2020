@@ -91,7 +91,7 @@ class Server:
             command = command.decode()
 
             cont = 'False'
-            if command in REGISTER_COMMANDS + SUBMIT_COMMANDS + VIEW_STATS_COMMANDS:
+            if command in REGISTER_COMMANDS + SUBMIT_COMMANDS + VIEW_STATS_COMMANDS + LEADERBOARD_COMMANDS:
                 cont = 'True'
             writer.write(cont.encode())
             await writer.drain()
@@ -105,6 +105,8 @@ class Server:
                     await self.receive_submission(reader, writer)
                 elif command in VIEW_STATS_COMMANDS:
                     await self.send_stats(reader, writer)
+                elif command in LEADERBOARD_COMMANDS:
+                    await self.send_leaderboard(reader, writer)
 
             writer.close()
             await writer.wait_closed()
@@ -217,6 +219,55 @@ class Server:
         # Send info to client
         writer.write(stats.encode())
         await writer.drain()
+
+    async def send_leaderboard(self, reader, writer):
+        self.log(f'Attempting leaderboard sending with {writer.get_extra_info("peername")}')
+
+        # Verify client
+        entry, cont = await self.verify_client(reader, writer)
+        client = entry[0]
+
+        # Inform client of state
+        writer.write(cont.encode())
+        await writer.drain()
+        if cont == 'False':
+            return
+
+        # Compile leaderboard
+        out_string = ''
+        all_teams = [x for x in self.db_collection.find({})]
+        sorted_teams = sorted(all_teams, key=lambda s: s['average_run'], reverse=True)
+        # Add first 3 entries
+        for place, team in zip(range(1, 4), sorted_teams[:min(3, len(all_teams))]):
+            out_string += f'{place}: {team["teamname"]} | Average: {team["average_run"]}\n'
+
+        out_string += '...\n'
+
+        # Add personal place to the list
+        your_place = sorted_teams.index(client) + 1
+        out_string += f'{your_place}: {client["teamname"]} | Average: {client["average_run"]}\n'
+
+        # Find best run ever
+        out_string += '\n'
+
+        best_run = 0
+        best_team = ''
+
+        for team in all_teams:
+            if team['best_run'] > best_run:
+                best_run = team['best_run']
+                best_team = team['teamname']
+
+        out_string += f'Best Run: {best_team}, {best_run}\n'
+
+        await asyncio.sleep(0.1)
+
+        # Send info to client
+        writer.write(out_string.encode())
+        await writer.drain()
+
+
+
 
     async def verify_client(self, reader, writer):
         # Receive uuid
@@ -373,14 +424,14 @@ class Server:
             try:
                 if os.path.exists('scrimmage/temp'):
                     shutil.rmtree('scrimmage/temp')
-                    break
+                break
             except PermissionError:
                 continue
         while True:
             try:
                 if os.path.exists('scrimmage/vis_temp'):
                     shutil.rmtree('scrimmage/vis_temp')
-                    break
+                break
             except PermissionError:
                 continue
 

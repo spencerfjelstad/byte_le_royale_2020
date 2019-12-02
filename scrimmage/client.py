@@ -23,10 +23,15 @@ class Client:
             return
         print('Connected successfully.')
 
-        print('Select an action: register (-r), submit (-s), or view stats(-v).')
+        out = f'Select an action:\n'
+        out += f'Register: {REGISTER_COMMANDS}\n'
+        out += f'Submit client: {SUBMIT_COMMANDS}\n'
+        out += f'View stats: {VIEW_STATS_COMMANDS}\n'
+        out += f'Check leaderboard: {LEADERBOARD_COMMANDS}\n'
+        print(out)
         command = input('Enter: ')
 
-        if command not in REGISTER_COMMANDS + SUBMIT_COMMANDS + VIEW_STATS_COMMANDS:
+        if command not in REGISTER_COMMANDS + SUBMIT_COMMANDS + VIEW_STATS_COMMANDS + LEADERBOARD_COMMANDS:
             print('Not a recognized command.')
             return
 
@@ -47,6 +52,8 @@ class Client:
             await self.submit()
         elif command in VIEW_STATS_COMMANDS:
             await self.get_stats()
+        elif command in LEADERBOARD_COMMANDS:
+            await self.get_leaderboard()
 
     async def register(self):
         # Check if vID already exists and cancel out
@@ -132,12 +139,23 @@ class Client:
         cont = await self.verify()
 
         if cont == 'False':
-            print('Failure in sending ID.')
+            print('Verification failure.')
 
         # Receive stats
         stats = await self.reader.read(BUFFER_SIZE)
         stats = stats.decode()
         print(stats)
+
+    async def get_leaderboard(self):
+        cont = await self.verify()
+
+        if cont == 'False':
+            print('Verification failure.')
+
+        # Receive leaderboard
+        lb = await self.reader.read(BUFFER_SIZE)
+        lb = lb.decode()
+        print(lb)
 
     async def verify(self):
         # Check vID for uuid
