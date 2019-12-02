@@ -1,6 +1,7 @@
 import cocos
 from cocos.director import director
 import pyglet
+import sys
 
 from game.config import *
 from game.visualizer.game_log_parser import GameLogParser
@@ -31,7 +32,6 @@ def start(gamma, fullscreen=False, endgame=True):
     global end_boolean
     end_boolean = endgame
 
-
     log_parser = GameLogParser("logs/")
 
     # Initialize cocos
@@ -40,6 +40,7 @@ def start(gamma, fullscreen=False, endgame=True):
     load(assets)
 
     # Get turn info from logs, if None go to end scene
+    # on the end scene the end_boolean is checked, and if False, the visualizer will close after 4 seconds
     turn_info = log_parser.get_turn(turn)
     if turn_info is None:
         end_layer = EndLayer(size, log_parser)
@@ -62,6 +63,8 @@ def timer(interval):
 
     director.scene_stack.clear()
 
+    # Get turn info from logs, if None go to end scene
+    # on the end scene the end_boolean is checked, and if False, the visualizer will close after 4 seconds
     turn_info=log_parser.get_turn(turn)
     if turn_info is None:
         end_layer = EndLayer(size,log_parser)
@@ -119,3 +122,7 @@ def create_scene(info, parser):
     scene.add(forecast_layer, 10)
     scene.add(decree_layer, 10)
     return scene
+
+# Create exit method for use with schedule_interval() such that nothing will print when used together
+def exit(interval):
+    sys.exit()
