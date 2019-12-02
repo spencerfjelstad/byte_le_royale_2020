@@ -42,6 +42,7 @@ class DebugLevel:
 
 
 class DecreeType:
+    none = -1
     anti_fire_dogs = 0
     paperweights = 1
     snow_shovels = 2
@@ -67,8 +68,10 @@ class DisasterType:
 class EventType:
     city_upgrade = 0
     sensor_upgrade = 1
-    disaster_spawned = 2
-    disaster_eliminated = 3
+    building_upgrade = 2
+
+    disaster_spawned = 3
+    disaster_eliminated = 4
 
 
 class ObjectType:
@@ -113,3 +116,6 @@ class BuildingLevel:
 class BuildingType:
     instant_decree_booster = 0
     lasting_decree_booster = 1
+    wealth_booster = 2
+    population_booster = 3
+    structure_booster = 4
