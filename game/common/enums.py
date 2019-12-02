@@ -44,7 +44,7 @@ class DebugLevel:
 class DecreeType:
     anti_fire_dogs = 0
     paperweights = 1
-    show_shovels = 2
+    snow_shovels = 2
     rubber_boots = 3
     fishing_hook = 4
     cheese = 5

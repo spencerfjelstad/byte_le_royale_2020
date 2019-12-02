@@ -9,7 +9,7 @@ class DecreeController(Controller):
     DECREE_DISASTER_MAPPINGS = {
         DecreeType.anti_fire_dogs: DisasterType.fire,
         DecreeType.paperweights: DisasterType.tornado,
-        DecreeType.show_shovels: DisasterType.blizzard,
+        DecreeType.snow_shovels: DisasterType.blizzard,
         DecreeType.rubber_boots: DisasterType.earthquake,
         DecreeType.fishing_hook: DisasterType.monster,
         DecreeType.cheese: DisasterType.ufo

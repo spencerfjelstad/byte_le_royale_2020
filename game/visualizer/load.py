@@ -74,6 +74,7 @@ def load(temp):
     sensor_3 = cocos.sprite.Sprite("game/visualizer/assets/sensor_assets/fire_alarm.png")
     sensor_4 = cocos.sprite.Sprite("game/visualizer/assets/sensor_assets/fire_alarm.png")
     sensor_5 = cocos.sprite.Sprite("game/visualizer/assets/sensor_assets/fire_alarm.png")
+
     assets['sensor'] = {
         "fire_alarm": {
               "0": fire_alarm_level_0,
