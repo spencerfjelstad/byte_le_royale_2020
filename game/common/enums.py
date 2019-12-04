@@ -42,6 +42,7 @@ class DebugLevel:
 
 
 class DecreeType:
+    none = -1
     anti_fire_bears = 0
     paperweights = 1
     hound_news = 2
@@ -115,6 +116,7 @@ class BuildingLevel:
 class BuildingType:
     instant_decree_booster = 0
     lasting_decree_booster = 1
-    wealth_booster = 2
-    population_booster = 3
-    structure_booster = 4
+    everything_booster = 2
+    wealth_booster = 3
+    population_booster = 4
+    structure_booster = 5

@@ -4,11 +4,13 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+cocos2d = "*"
 
 [packages]
 tqdm = "*"
 numpy = "*"
-cocos2d = "*"
+pillow = "*"
+pyglet = "*"
 
 [requires]
 python_version = "3.7"
