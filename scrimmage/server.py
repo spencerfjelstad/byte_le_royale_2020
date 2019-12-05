@@ -370,9 +370,6 @@ class Server:
     def visualizer_loop(self):
         loc = 'scrimmage/vis_temp'
 
-        if not os.path.exists(loc):
-            os.mkdir(loc)
-
         while self.loop_continue:
             all_clients = [x for x in self.db_collection.find({})]
             if len(all_clients) <= 0:
@@ -386,6 +383,9 @@ class Server:
             self.log(f'Visualizing {client["teamname"]}')
 
             try:
+                if not os.path.exists(loc):
+                    os.mkdir(loc)
+
                 # Take logs and copy into directory
                 zip_path = f'{loc}/{client["logs"]["name"]}'
                 binary_to_file(zip_path, client['logs']['contents'])
@@ -396,12 +396,13 @@ class Server:
                 shutil.copy('launcher.pyz', loc)
 
                 # Take batch file and copy into directory, and run
+                f = open(os.devnull, 'w')
                 if platform.system() == 'Linux':
                     shutil.copy('scrimmage/vis_runner.sh', loc)
-                    subprocess.call(['bash', f'{loc}/vis_runner.sh'])
+                    p = subprocess.Popen('bash vis_runner.sh', stdout=f, cwd=loc, shell=True)
+                    stdout, stderr = p.communicate()
                 else:
                     shutil.copy('scrimmage/vis_runner.bat', loc)
-                    f = open(os.devnull, 'w')
                     p = subprocess.Popen('vis_runner.bat', stdout=f, cwd=loc, shell=True)
                     stdout, stderr = p.communicate()
 
