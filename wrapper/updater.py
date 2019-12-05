@@ -34,15 +34,13 @@ def update():
     temp_current = current_version.split('.')
     temp_remote = remote_version.split('.')
     for curv, remv in zip(temp_current, temp_remote):
-        if 'v' in curv:
-            curv = curv.replace('v', '')
-        if 'v' in remv:
-            remv = remv.replace('v', '')
+        curv = int(curv.replace('v', ''))
+        remv = int(remv.replace('v', ''))
 
-        if int(curv) < int(remv):
+        if remv > curv:
             break
     else:
-        print("Launcher is up to date.")
+        print('You are already up to date!')
         exit()
 
     print("There is a new version available: v{0}. Downloading update!".format(remote_version))
@@ -50,7 +48,7 @@ def update():
     if not os.path.exists("br_updates"):
         os.makedirs("br_updates")
 
-    remote_url = "https://api.github.com/repos/topoftheyear/Build-Testing/releases/assets/{0}".format(asset_id)
+    remote_url = "https://api.github.com/repos/PixPanz/byte_le_royale_2020/releases/assets/{0}".format(asset_id)
     local_file = "br_updates/v{0}.pyz".format(remote_version)
 
     if not download_file(local_file, remote_url, auth):
