@@ -5,18 +5,26 @@ import random
 import re
 import os
 import shutil
-from subprocess import Popen
+import subprocess
+import platform
 import uuid
+import zipfile
 
-from scrimmage.db import DB
+import pymongo
+
 from scrimmage.utilities import *
 
 
 class Server:
     def __init__(self):
-        self.database = DB()
+        # Set up database connection
+        self.db_client = pymongo.MongoClient("mongodb://localhost:27017/")
+        self.db = self.db_client["royale"]
+        self.db_collection = self.db["teams"]
 
         self.logs = list()
+
+        self.loop_continue = True
 
         self.max_simultaneous_runs = 4
         self.current_running = [x for x in range(self.max_simultaneous_runs)]
@@ -34,9 +42,7 @@ class Server:
         try:
             self.loop.run_forever()
         except KeyboardInterrupt:
-            self.server.close()
-            self.loop.run_until_complete(self.server.wait_closed())
-            self.loop.close()
+            self.close_server()
 
     def await_input(self):
         print('Server is awaiting admin input.')
@@ -45,9 +51,7 @@ class Server:
             self.log(f'Server command: {com}')
             # Exit command for shutting down the server
             if com == 'exit':
-                shutil.rmtree('scrimmage/temp')
-                shutil.rmtree('scrimmage/vis_temp')
-                os._exit(0)
+                self.close_server()
 
             # Echo back the given string to the user, mostly for testing
             elif 'echo ' in com:
@@ -60,19 +64,16 @@ class Server:
 
             # Create a query of all entries in the database
             elif 'query' in com:
-                tid = input('TID: ').strip()
                 teamname = input('Team name: ').strip()
 
-                if tid == '':
-                    tid = None
                 if teamname == '':
                     teamname = None
 
-                print(*[str(e) + '\n' for e in self.database.query(tid, teamname)])
+                [print(x) for x in self.db_collection.find({"teamname": teamname})]
 
             # Show all entries in the database, equivalent to query with no parameters
             elif 'dump' in com:
-                print(*[str(e) + '\n' for e in self.database.dump()])
+                [print(x) for x in self.db_collection.find()]
 
             # Write a python command that will get executed
             elif 'exec' in com:
@@ -90,9 +91,10 @@ class Server:
             command = command.decode()
 
             cont = 'False'
-            if command in REGISTER_COMMANDS + SUBMIT_COMMANDS + VIEW_STATS_COMMANDS:
+            if command in REGISTER_COMMANDS + SUBMIT_COMMANDS + VIEW_STATS_COMMANDS + LEADERBOARD_COMMANDS:
                 cont = 'True'
             writer.write(cont.encode())
+            await writer.drain()
             if cont == 'False':
                 self.log(f'{writer.get_extra_info("peername")} supplied a bad command.')
 
@@ -103,9 +105,11 @@ class Server:
                     await self.receive_submission(reader, writer)
                 elif command in VIEW_STATS_COMMANDS:
                     await self.send_stats(reader, writer)
+                elif command in LEADERBOARD_COMMANDS:
+                    await self.send_leaderboard(reader, writer)
 
-            await writer.drain()
             writer.close()
+            await writer.wait_closed()
         except ConnectionResetError:
             self.log("Connection has been lost")
 
@@ -119,119 +123,179 @@ class Server:
         cont = 'True'
         invalid_chars = re.compile(r"[\\/:*?<>|]")
         if invalid_chars.search(teamname):
+            self.log(f'{writer.get_extra_info("peername")} supplied name with illegal characters.')
             cont = 'False'
 
         if teamname == '' or None:
+            self.log(f'{writer.get_extra_info("peername")} supplied empty name.')
             cont = 'False'
 
-        if len(self.database.query(teamname=teamname)) > 0:
+        if len([x for x in self.db_collection.find({"teamname": teamname})]) > 0:
+            self.log(f'{writer.get_extra_info("peername")} supplied taken team name.')
             cont = 'False'
 
         # Inform client of state
         writer.write(cont.encode())
+        await writer.drain()
+
         if cont == 'False':
-            self.log(f'{writer.get_extra_info("peername")} supplied bad or taken teamname.')
             return
 
         # Generate new uuid for client
         vID = str(uuid.uuid4())
 
+        await asyncio.sleep(0.5)
+
         # Send uuid to client for verification
-        await writer.drain()
         writer.write(vID.encode())
+        await writer.drain()
 
         # Register information in database
-        self.database.add_entry(tid=vID, teamname=teamname)
+        self.db_collection.insert_one({'_id': vID,
+                                       'teamname': teamname,
+                                       'code_file': None,
+                                       'submissions': 0,
+                                       'average_run': 0,
+                                       'best_run': 0,
+                                       'temp_total': 0,
+                                       'total_runs': 0,
+                                       'logs': None})
 
         self.log(f'{writer.get_extra_info("peername")} registered teamname: {teamname} with ID: {vID}')
 
     async def receive_submission(self, reader, writer):
         self.log(f'Attempting submission with {writer.get_extra_info("peername")}')
-        # Receive uuid
-        tid = await reader.read(BUFFER_SIZE)
-        tid = tid.decode()
 
-        # Verify uuid from database
-        cont = 'True'
-        entry = self.database.query(tid=tid)
-        if len(entry) == 0:
-            self.log('Entry not found.')
-            cont = 'False'
-        elif len(entry) == 1:
-            self.log(f'Verified {writer.get_extra_info("peername")}')
-        else:
-            self.log('Something fucked up somewhere why are there repeat ids')
-            cont = 'False'
-
-        if tid in self.runner_queue:
-            self.log('Cannot accept new submission, previous still running.')
-            cont = 'False'
+        # Verify client
+        entry, cont = await self.verify_client(reader, writer)
 
         # Inform client of state
         writer.write(cont.encode())
+        await writer.drain()
         if cont == 'False':
             return
 
         # Receive client file
         client = entry[0]
-        location = f'scrimmage/scrim_clients/{client["teamname"]}/{client["teamname"]}_client.py'
-        submission = open(location, 'wb+')
+        tid = client['_id']
+
+        submission = list()
         line = await reader.read(BUFFER_SIZE)
         while line:
-            submission.write(line)
+            submission.append(line)
             line = await reader.read(BUFFER_SIZE)
-        submission.close()
 
-        # Update database with location of file
-        self.database.set_code_file(client['tid'], location)
-
-        # Create stats file if need be, wipe existing
-        stats_location = f'scrimmage/scrim_clients/{client["teamname"]}/stats.json'
-        with open(stats_location, 'w+') as f:
-            f.write('')
-
-        # Set stats location in database if need be
-        self.database.set_stats_file(client['tid'], stats_location)
-
-        # Add to the runner queue
-        for x in range(self.starting_runs):
-            self.runner_queue.append(client['tid'])
+        # Update database with submission and stats
+        self.db_collection.update_one({'_id': tid}, {'$set': {'code_file': {'name': f'{client["teamname"]}_client.py',
+                                                                            'contents': submission}}})
+        self.db_collection.update_one({'_id': tid}, {'$inc': {'submissions': 1}})
+        self.db_collection.update_one({'_id': tid}, {'$set': {'average_run': 0}})
+        self.db_collection.update_one({'_id': tid}, {'$set': {'best_run': 0}})
+        self.db_collection.update_one({'_id': tid}, {'$set': {'temp_total': 0}})
+        self.db_collection.update_one({'_id': tid}, {'$set': {'total_runs': 0}})
 
     async def send_stats(self, reader, writer):
         self.log(f'Attempting stat sending with {writer.get_extra_info("peername")}')
-        # Receive uuid
-        tid = await reader.read(BUFFER_SIZE)
-        tid = tid.decode()
 
-        # Verify uuid from database
-        cont = 'True'
-        entry = self.database.query(tid=tid)
-        if len(entry) == 0:
-            self.log('Entry not found.')
-            cont = 'False'
-        elif len(entry) == 1:
-            self.log(f'Verified {writer.get_extra_info("peername")}')
-        else:
-            self.log('Something fucked up somewhere why are there repeat ids')
-            cont = 'False'
+        # Verify client
+        entry, cont = await self.verify_client(reader, writer)
 
         # Inform client of state
         writer.write(cont.encode())
+        await writer.drain()
         if cont == 'False':
             return
 
         # Retrieve data from stats file
         client = entry[0]
         stats = ''
-        with open(client['stats_location'], 'r') as f:
-            stats += f.read()
+        stats += f'Submission: {client["submissions"]}\n'
+        stats += f'Average Run: {client["average_run"]}\n'
+        stats += f'Best Run: {client["best_run"]}\n'
+        stats += f'Total Runs: {client["total_runs"]}\n'
+
+        await asyncio.sleep(0.1)
 
         # Send info to client
-        await writer.drain()
         writer.write(stats.encode())
+        await writer.drain()
+
+    async def send_leaderboard(self, reader, writer):
+        self.log(f'Attempting leaderboard sending with {writer.get_extra_info("peername")}')
+
+        # Verify client
+        entry, cont = await self.verify_client(reader, writer)
+        client = entry[0]
+
+        # Inform client of state
+        writer.write(cont.encode())
+        await writer.drain()
+        if cont == 'False':
+            return
+
+        # Compile leaderboard
+        out_string = ''
+        all_teams = [x for x in self.db_collection.find({})]
+        sorted_teams = sorted(all_teams, key=lambda s: s['average_run'], reverse=True)
+        # Add first 3 entries
+        for place, team in zip(range(1, 4), sorted_teams[:min(3, len(all_teams))]):
+            out_string += f'{place}: {team["teamname"]} | Average: {team["average_run"]}\n'
+
+        out_string += '...\n'
+
+        # Add personal place to the list
+        your_place = sorted_teams.index(client) + 1
+        out_string += f'{your_place}: {client["teamname"]} | Average: {client["average_run"]}\n'
+
+        # Find best run ever
+        out_string += '\n'
+
+        best_run = 0
+        best_team = ''
+
+        for team in all_teams:
+            if team['best_run'] > best_run:
+                best_run = team['best_run']
+                best_team = team['teamname']
+
+        out_string += f'Best Run: {best_team}, {best_run}\n'
+
+        await asyncio.sleep(0.1)
+
+        # Send info to client
+        writer.write(out_string.encode())
+        await writer.drain()
+
+    async def verify_client(self, reader, writer):
+        # Receive uuid
+        tid = await reader.read(BUFFER_SIZE)
+        tid = tid.decode()
+
+        # Verify uuid from database
+        cont = 'True'
+        entry = [x for x in self.db_collection.find({'_id': tid})]
+        if len(entry) == 0:
+            self.log('Entry not found.')
+            cont = 'False'
+        elif len(entry) == 1:
+            self.log(f'Verified {writer.get_extra_info("peername")}')
+        else:
+            self.log('Something fucked up somewhere why are there repeat ids')
+            cont = 'False'
+
+        return entry, cont
 
     def runner_loop(self):
-        while True:
+        while self.loop_continue:
+            if len(self.runner_queue) == 0 and len(self.current_running) == self.max_simultaneous_runs:
+                # Repopulate queue
+                for entry in self.db_collection.find({}):
+                    if entry['code_file'] is None or entry['total_runs'] >= 20:
+                        continue
+                    self.runner_queue.append(entry['_id'])
+
+                continue
+
             if len(self.runner_queue) == 0 or len(self.current_running) == 0:
                 continue
 
@@ -252,77 +316,95 @@ class Server:
         if not os.path.exists(end_path):
             os.mkdir(end_path)
 
-        entry = self.database.query(tid=client)[0]
+        entry = [x for x in self.db_collection.find({'_id': client})][0]
         shutil.copy('launcher.pyz', end_path)
-        shutil.copy(entry['client_location'], end_path)
-        shutil.copy('scrimmage/runner.bat', end_path)
+        code = entry['code_file']
+        binary_to_file(f'{end_path}/{code["name"]}', code['contents'])
 
+        # Copy and run proper file
         f = open(os.devnull, 'w')
-        p = Popen('runner.bat', stdout=f, cwd=end_path, shell=True)
-        stdout, stderr = p.communicate()
+        if platform.system() == 'Linux':
+            shutil.copy('scrimmage/runner.sh', end_path)
+            p = subprocess.Popen('bash runner.sh', stdout=f, cwd=end_path, shell=True)
+            stdout, stderr = p.communicate()
+        else:
+            shutil.copy('scrimmage/runner.bat', end_path)
+            p = subprocess.Popen('runner.bat', stdout=f, cwd=end_path, shell=True)
+            stdout, stderr = p.communicate()
 
-        woop = {'Score': 0}
-        try:
-            with open(end_path + '/logs/results.json', 'r') as f:
-                woop = json.load(f)
-        except json.decoder.JSONDecodeError:
-            # File doesn't exist
-            pass
+        results = dict()
+        with open(end_path + '/logs/results.json', 'r') as f:
+            results = json.load(f)
 
-        score = woop['Score']
+        score = results['Score']
 
-        orig = {'Max Score': 0}
-        try:
-            with open(entry['stats_location'], 'r') as f:
-                orig = json.load(f)
-        except json.decoder.JSONDecodeError:
-            # File doesn't exist
-            pass
+        entry = [x for x in self.db_collection.find({'_id': client})][0]
 
-        if 'Max Score' in orig:
-            if orig['Max Score'] < score:
-                orig['Max Score'] = score
+        # Update total number of runs
+        self.db_collection.update_one({'_id': client}, {'$inc': {'total_runs': 1}})
 
-                # Add logs to location
-                client_log_location = self.database.change_logs(entry, end_path)
+        # Update best run
+        if score > entry['best_run']:
+            self.db_collection.update_one({'_id': client}, {'$set': {'best_run': score}})
 
-                # Add logs location to database
-                self.database.set_logs_location(entry['tid'], client_log_location)
+            # Save log files
+            with zipfile.ZipFile(f'{end_path}/logs_temp.zip', 'w') as z:
+                for filename in os.listdir(f'{end_path}/logs'):
+                    z.write(f'{end_path}/logs/{filename}', arcname=f'logs/{filename}')
 
-        with open(entry['stats_location'], 'r+') as f:
-            json.dump(orig, f)
+            b = file_to_binary(f'{end_path}/logs_temp.zip')
+            self.db_collection.update_one({'_id': client}, {'$set': {'logs': {'name': 'logs.zip', 'contents': [b]}}})
+
+        # Update temp total
+        self.db_collection.update_one({'_id': client}, {'$inc': {'temp_total': score}})
+
+        entry = [x for x in self.db_collection.find({'_id': client})][0]
+
+        # Update average run amount
+        self.db_collection.update_one({'_id': client}, {'$set': {'average_run': entry['temp_total'] / max(1, entry['total_runs'])}})
 
         shutil.rmtree(end_path)
 
         self.current_running.append(number)
 
     def visualizer_loop(self):
-        while True:
-            all_clients = self.database.dump()
+        loc = 'scrimmage/vis_temp'
+
+        while self.loop_continue:
+            all_clients = [x for x in self.db_collection.find({})]
+            if len(all_clients) <= 0:
+                continue
+
             client = random.choice(all_clients)
 
-            if client['logs_location'] is None:
+            if client['logs'] is None:
                 continue
 
             self.log(f'Visualizing {client["teamname"]}')
 
             try:
-                # Create custom running directory
-                loc = 'scrimmage/vis_temp'
+                if not os.path.exists(loc):
+                    os.mkdir(loc)
 
                 # Take logs and copy into directory
-                shutil.copytree(client['logs_location'], f'{loc}/logs')
+                zip_path = f'{loc}/{client["logs"]["name"]}'
+                binary_to_file(zip_path, client['logs']['contents'])
+                z = zipfile.ZipFile(zip_path, 'r')
+                z.extractall(path='scrimmage/vis_temp')
 
                 # Take launcher and copy into the directory
                 shutil.copy('launcher.pyz', loc)
 
-                # Take batch file and copy into directory
-                shutil.copy('scrimmage/vis_runner.bat', loc)
-
-                # Run batch file
+                # Take batch file and copy into directory, and run
                 f = open(os.devnull, 'w')
-                p = Popen('vis_runner.bat', stdout=f, cwd=loc, shell=True)
-                stdout, stderr = p.communicate()
+                if platform.system() == 'Linux':
+                    shutil.copy('scrimmage/vis_runner.sh', loc)
+                    p = subprocess.Popen('bash vis_runner.sh', stdout=f, cwd=loc, shell=True)
+                    stdout, stderr = p.communicate()
+                else:
+                    shutil.copy('scrimmage/vis_runner.bat', loc)
+                    p = subprocess.Popen('vis_runner.bat', stdout=f, cwd=loc, shell=True)
+                    stdout, stderr = p.communicate()
 
                 # Clean up the directory
                 shutil.rmtree(loc)
@@ -333,6 +415,28 @@ class Server:
     def log(self, *args):
         for arg in args:
             self.logs.append(f'{datetime.datetime.now()}: {arg}')
+
+    def close_server(self):
+        self.loop_continue = False
+
+        while True:
+            try:
+                if os.path.exists('scrimmage/temp'):
+                    shutil.rmtree('scrimmage/temp')
+                break
+            except PermissionError:
+                continue
+        while True:
+            try:
+                if os.path.exists('scrimmage/vis_temp'):
+                    shutil.rmtree('scrimmage/vis_temp')
+                break
+            except PermissionError:
+                continue
+
+        self.server.close()
+
+        os._exit(0)
 
 
 if __name__ == '__main__':
