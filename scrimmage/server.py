@@ -266,9 +266,6 @@ class Server:
         writer.write(out_string.encode())
         await writer.drain()
 
-
-
-
     async def verify_client(self, reader, writer):
         # Receive uuid
         tid = await reader.read(BUFFER_SIZE)
@@ -325,12 +322,13 @@ class Server:
         binary_to_file(f'{end_path}/{code["name"]}', code['contents'])
 
         # Copy and run proper file
+        f = open(os.devnull, 'w')
         if platform.system() == 'Linux':
             shutil.copy('scrimmage/runner.sh', end_path)
-            subprocess.call(['bash', f'{end_path}/runner.sh'])
+            p = subprocess.Popen('bash runner.sh', stdout=f, cwd=end_path, shell=True)
+            stdout, stderr = p.communicate()
         else:
             shutil.copy('scrimmage/runner.bat', end_path)
-            f = open(os.devnull, 'w')
             p = subprocess.Popen('runner.bat', stdout=f, cwd=end_path, shell=True)
             stdout, stderr = p.communicate()
 
