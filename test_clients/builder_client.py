@@ -49,8 +49,22 @@ class Client(UserClient):
         corresponding_decree = self.SENSOR_DECREE_MAPPINGS[highest_sensor.sensor_type]
         actions.set_decree(corresponding_decree)
 
-        # work work
+        # planning phase
         building_types = enum_iter(BuildingType)
+        sensor_types = enum_iter(SensorType)
+
         num_of_buildings = len(building_types)
+        num_of_cities = 1
+        num_of_sensors = len(sensor_types)
+        total_construction_projects = num_of_buildings + num_of_cities + num_of_sensors
+
+        # work work
         for building_type in building_types:
-            actions.add_effort(city.buildings[building_type], city.population/num_of_buildings)
+            actions.add_effort(city.buildings[building_type], city.population/total_construction_projects)
+
+        actions.add_effort(city, city.population / total_construction_projects)
+
+        for sensor_type in sensor_types:
+            actions.add_effort(city.sensors[sensor_type], city.population / total_construction_projects)
+
+

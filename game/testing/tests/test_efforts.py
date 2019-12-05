@@ -27,7 +27,7 @@ class TestEfforts(unittest.TestCase):
         self.player.action.add_effort(self.player.city, TEST_CITY_AMOUNT)
 
         self.test_effort_controller.handle_actions(self.player)
-        self.assertEqual(self.player.city.effort_until_upgrade,
+        self.assertEqual(self.player.city.effort_remaining,
                          GameStats.city_upgrade_cost[CityLevel.level_one] - TEST_CITY_AMOUNT)
 
     def test_sensor(self):
@@ -37,7 +37,7 @@ class TestEfforts(unittest.TestCase):
 
         self.test_effort_controller.handle_actions(self.player)
         for sensor in self.player.city.sensors.values():
-            self.assertEqual(sensor.sensor_effort_remaining,
+            self.assertEqual(sensor.effort_remaining,
                              GameStats.sensor_effort[SensorLevel.level_one] - TEST_SENSOR_AMOUNT)
 
     def test_population(self):

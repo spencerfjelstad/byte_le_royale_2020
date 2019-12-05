@@ -28,7 +28,7 @@ class City:
 
         self.remaining_man_power = self.population
         self.level = CityLevel.level_zero
-        self.effort_until_upgrade = GameStats.city_upgrade_cost[CityLevel.level_one]
+        self.effort_remaining = GameStats.city_upgrade_cost[CityLevel.level_one]
 
     def to_json(self):
         data = dict()
@@ -45,7 +45,7 @@ class City:
         data['buildings'] = {building_type: building.to_json() for building_type, building in self.buildings.items()}
         data['remaining_man_power'] = self.remaining_man_power
         data['level'] = self.level
-        data['effort_until_upgrade'] = self.effort_until_upgrade
+        data['effort_remaining'] = self.effort_remaining
 
         return data
     
@@ -73,7 +73,7 @@ class City:
 
         self.remaining_man_power = data['remaining_man_power']
         self.level = data['level']
-        self.effort_until_upgrade = data['effort_until_upgrade']
+        self.effort_remaining = data['effort_remaining']
 
     def __str__(self):
         p = f"""City name: {self.city_name}

@@ -31,6 +31,27 @@ class GameStats:
         BuildingLevel.level_three: 1.5
     }
 
+    everything_boost = {
+        'wealth': {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 1,
+            BuildingLevel.level_two: 2,
+            BuildingLevel.level_three: 3
+        },
+        'population': {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 1,
+            BuildingLevel.level_two: 2,
+            BuildingLevel.level_three: 3
+        },
+        'structure': {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 1,
+            BuildingLevel.level_two: 2,
+            BuildingLevel.level_three: 3
+        }
+    }
+
     wealth_boost = {
         BuildingLevel.level_zero: 0,
         BuildingLevel.level_one: 1,
