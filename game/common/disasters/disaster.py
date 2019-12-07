@@ -1,8 +1,11 @@
+import uuid
+
 from game.common.enums import *
 from game.utils.helpers import enum_to_string
 
 class Disaster:
     def __init__(self):
+        self.id = str(uuid.uuid4())
         self.status = DisasterStatus.dead
         self.type = None
         self.population_damage = None
@@ -14,6 +17,7 @@ class Disaster:
 
     def to_json(self):
         data = dict()
+        data["id"] = self.id
         data["status"] = self.status
         data["disaster_type"] = self.type
         data["population_damage"] = self.population_damage
@@ -23,6 +27,7 @@ class Disaster:
         return data
 
     def from_json(self, data):
+        self.id = data["id"]
         self.status = data["status"]
         self.type = data["disaster_type"]
         self.population_damage = data["population_damage"]

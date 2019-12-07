@@ -9,6 +9,7 @@ from game.controllers.event_controller import EventController
 from game.config import *
 from game.utils.helpers import clamp, enum_iter
 
+from collections import deque
 import math
 
 
@@ -23,7 +24,8 @@ class EffortController(Controller):
         player.city.remaining_man_power = player.city.population
         allocations = dict()  # condensed duplicate entries
 
-        for allocation in player.action.get_allocation_list():
+        player_actions = self.__reverse_obfuscation(player)
+        for allocation in player_actions:
             act, amount = allocation
 
             # Do any additional, server side action validation here
@@ -250,6 +252,24 @@ class EffortController(Controller):
         player.city.gold += increase
 
         raise NotImplementedError
+
+    def __reverse_obfuscation(self, player):
+        new_actions = list()
+        for allocation in player.action.get_allocation_list():
+            act, amount = allocation
+            if isinstance(act, Building):
+                server_obj = [bldg for bldg in player.city.buildings.values() if bldg.building_type == act.building_type][0]
+            elif isinstance(act, City):
+                server_obj = player.city
+            elif isinstance(act, LastingDisaster):
+                server_obj = [dis for dis in player.disasters if dis.id == act.id][0]
+            elif isinstance(act, Sensor):
+                server_obj = [sens for sens in player.city.sensors.values() if sens.sensor_type == act.sensor_type][0]
+            else:
+                # object doesn't need reversing
+                server_obj = act
+            new_actions.append([server_obj, amount])
+        return new_actions
 
     # Sorts the allocations in order they should be processed
     # e.g. homes (structure) should be repaired before new people (population) are generated
