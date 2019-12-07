@@ -101,8 +101,8 @@ class MasterController(Controller):
         actions = Action()
         client.action = actions
 
-        obfuscated_city = client.city
-        obfuscated_disasters = client.disasters
+        obfuscated_city = deepcopy(client.city)
+        obfuscated_disasters = deepcopy(client.disasters)
 
         args = (actions, obfuscated_city, obfuscated_disasters,)
         return args
