@@ -1,9 +1,10 @@
+from game.common.game_object import GameObject
 from game.common.enums import *
 from game.common.stats import *
 from game.utils.helpers import enum_to_string
 
 
-class Sensor:
+class Sensor(GameObject):
     def __init__(self):
         self.sensor_type = None
         self.object_type = ObjectType.sensor

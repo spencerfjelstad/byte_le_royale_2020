@@ -102,7 +102,15 @@ class MasterController(Controller):
         client.action = actions
 
         obfuscated_city = deepcopy(client.city)
+        obfuscated_city.obfuscate()
+        for building in obfuscated_city.buildings.values():
+            building.obfuscate()
+        for sensor in obfuscated_city.sensors.values():
+            sensor.obfuscate()
+
         obfuscated_disasters = deepcopy(client.disasters)
+        for disaster in obfuscated_disasters:
+            disaster.obfuscate()
 
         args = (actions, obfuscated_city, obfuscated_disasters,)
         return args

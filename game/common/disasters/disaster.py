@@ -1,9 +1,11 @@
 import uuid
 
+from game.common.game_object import GameObject
 from game.common.enums import *
 from game.utils.helpers import enum_to_string
 
-class Disaster:
+
+class Disaster(GameObject):
     def __init__(self):
         self.id = str(uuid.uuid4())
         self.status = DisasterStatus.dead

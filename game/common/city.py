@@ -1,3 +1,4 @@
+from game.common.game_object import GameObject
 from game.common.enums import *
 from game.common.building import Building
 from game.common.sensor import Sensor
@@ -5,7 +6,7 @@ from game.common.stats import GameStats
 from game.utils.helpers import enum_iter
 
 
-class City:
+class City(GameObject):
     def __init__(self):
         self.city_name = "City"
         self.object_type = ObjectType.city
@@ -82,6 +83,7 @@ class City:
             Gold: {self.gold}
             Resources: {self.resources}
             Level: {self.level}
+            Object Type: {self.object_type}
             """
 
         return p
