@@ -1,3 +1,3 @@
 @echo off
-python .\launcher.pyz -generate
-python .\launcher.pyz -run -q
+python .\launcher.pyz generate
+python .\launcher.pyz run -q
