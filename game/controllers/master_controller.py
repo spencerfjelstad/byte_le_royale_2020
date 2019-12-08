@@ -66,7 +66,7 @@ class MasterController(Controller):
                 dis = Earthquake()
             elif disaster is DisasterType.fire:
                 dis = Fire()
-            elif disaster is DisasterType.hurricane:
+            elif disaster is DisasterType.blizzard:
                 dis = Hurricane()
             elif disaster is DisasterType.monster:
                 dis = Monster()

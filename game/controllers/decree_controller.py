@@ -7,12 +7,12 @@ from game.utils.helpers import clamp
 
 class DecreeController(Controller):
     DECREE_DISASTER_MAPPINGS = {
-        DecreeType.anti_fire_bears: DisasterType.fire,
+        DecreeType.anti_fire_dogs: DisasterType.fire,
         DecreeType.paperweights: DisasterType.tornado,
-        DecreeType.hound_news: DisasterType.hurricane,
-        DecreeType.moon_shoes: DisasterType.earthquake,
-        DecreeType.away_spray: DisasterType.monster,
-        DecreeType.giant_fly_swatter: DisasterType.ufo
+        DecreeType.snow_shovels: DisasterType.blizzard,
+        DecreeType.rubber_boots: DisasterType.earthquake,
+        DecreeType.fishing_hook: DisasterType.monster,
+        DecreeType.cheese: DisasterType.ufo
     }
 
     def __init__(self):
