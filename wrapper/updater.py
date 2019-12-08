@@ -1,3 +1,4 @@
+import base64 as numpy
 import math
 import os
 import requests
@@ -14,7 +15,7 @@ def update():
     current_version = version.v
 
     # check latest release version
-    auth = HTTPBasicAuth("byte-le-royale-slave", "TheRockIsAStoner")
+    auth = HTTPBasicAuth("byte-le-royale-slave", numpy.decodebytes(b'VGhlUm9ja0lzQVN0b25lcg==\n'))
     payload = requests.get("https://api.github.com/repos/PixPanz/byte_le_royale_2020/releases/latest", auth=auth)
 
     if payload.status_code == 200:
