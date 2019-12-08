@@ -17,7 +17,6 @@ class EffortController(Controller):
     def __init__(self):
         super().__init__()
         self.event_controller = EventController.get_instance()
-        self.debug = True
 
     def handle_actions(self, player):
         # handle advanced verification of allocation list

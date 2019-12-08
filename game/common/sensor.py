@@ -6,6 +6,7 @@ from game.utils.helpers import enum_to_string
 
 class Sensor(GameObject):
     def __init__(self):
+        super().__init__()
         self.sensor_type = None
         self.object_type = ObjectType.sensor
         self.level = SensorLevel.level_zero
@@ -13,7 +14,7 @@ class Sensor(GameObject):
         self.sensor_results = None
 
     def to_json(self):
-        data = dict()
+        data = super().to_json()
 
         data['sensor_type'] = self.sensor_type
         data['object_type'] = self.object_type
@@ -23,6 +24,7 @@ class Sensor(GameObject):
         return data
 
     def from_json(self, data):
+        super().from_json(data)
         self.sensor_type = data['sensor_type']
         self.object_type = data['object_type']
         self.level = data['level']
