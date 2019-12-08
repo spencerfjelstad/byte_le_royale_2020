@@ -71,6 +71,9 @@ def boot():
             # Skips folders
             continue
 
+        player = Player()
+        clients.append(player)
+
         try:
             # Apply import restrictions
             __original_importer = __builtins__['__import__']
@@ -80,15 +83,25 @@ def boot():
             print("Client attempted invalid imports.")
             print(e)
             continue
+        except Exception:
+            message = f'Client {filename} is having problems.'
+            player.functional = False
+            print(message)
+            shutdown(message, source='Client_error')
         finally:
             # Restore original importer for server use
             __builtins__['__import__'] = __original_importer
 
-        obj = im.Client()
-        player = Player(
-            code=obj
-        )
-        clients.append(player)
+        obj = None
+        try:
+            obj = im.Client()
+        except Exception:
+            message = f'Client {filename} is not functional.'
+            player.functional = False
+            print(message)
+            shutdown(message, source='Client_error')
+
+        player.code = obj
 
     debug(f'Clients found: {len(clients)}')
     # Verify correct number of clients
@@ -208,7 +221,7 @@ def post_tick(turn):
 
 
 # Game is over. Create the results file and end the game.
-def shutdown(reason=""):
+def shutdown(reason="", source='Engine_error'):
     global clients
     global current_world
     global master_controller
@@ -222,14 +235,14 @@ def shutdown(reason=""):
         results_information = master_controller.return_final_results(clients, current_world, turn_number)
 
     if reason:
-        results_information['Engine_error'] = reason
+        results_information[source] = reason
 
     # Write results file
     write(results_information, RESULTS_FILE)
 
     # Exit game
     if reason:
-        print("\nGame has ended due to engine error. See results.json.")
+        print(f"\nGame has ended due to {source}. See results.json.")
         os._exit(1)
     else:
         print("\nGame has successfully ended.")
