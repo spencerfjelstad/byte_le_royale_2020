@@ -101,7 +101,7 @@ def create_scene(info, parser):
 
     fire_layer = FireLayer(size, info, assets['disaster'])
     tornado_layer = TornadoLayer(size, info, assets['disaster'])
-    hurricane_layer = HurricaneLayer(size, info, assets['disaster'])
+    blizzard_layer = BlizzardLayer(size, info, assets['disaster'])
     earthquake_layer = EarthquakeLayer(size, info, assets['disaster'])
     monster_layer = MonsterLayer(size, info, assets['disaster'])
     ufo_layer = UFOLayer(size, info, assets['disaster'])
@@ -118,7 +118,7 @@ def create_scene(info, parser):
 
     scene.add(fire_layer, 8)
     scene.add(tornado_layer, 8)
-    scene.add(hurricane_layer, 8)
+    scene.add(blizzard_layer, 8)
     scene.add(earthquake_layer, 2)
     scene.add(monster_layer, 8)
     scene.add(ufo_layer, 8)

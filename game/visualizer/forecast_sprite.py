@@ -21,7 +21,7 @@ class ForecastLayer(cocos.layer.Layer):
                 if item == 0 and key is "1":
                     spr = self.images['tornado'][i]
                 if item == 0 and key is "2":
-                    spr = self.images['hurricane'][i]
+                    spr = self.images['blizzard'][i]
                 if item == 0 and key is "3":
                     spr = self.images['earthquake'][i]
                 if item == 0 and key is "4":

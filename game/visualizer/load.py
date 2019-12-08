@@ -40,14 +40,14 @@ def load(temp):
 
     dis_fire = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/fire.png"))
     dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
-    dis_hurricane = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/hurricane.png"))
+    dis_blizzard = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/blizzard.png"))
     dis_earthquake = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/earthquake.png"))
     dis_monster = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/monster.png"))
     dis_ufo = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/ufo.png"))
     assets['disaster'] = {
         "fire": dis_fire,
         "tornado": dis_tornado,
-        "hurricane": dis_hurricane,
+        "blizzard": dis_blizzard,
         "earthquake": dis_earthquake,
         "monster": dis_monster,
         "ufo": dis_ufo
@@ -56,7 +56,7 @@ def load(temp):
     assets['forecast'] = {}
     assets['forecast']['fire'] = list()
     assets['forecast']['tornado'] = list()
-    assets['forecast']['hurricane'] = list()
+    assets['forecast']['blizzard'] = list()
     assets['forecast']['earthquake'] = list()
     assets['forecast']['monster'] = list()
     assets['forecast']['ufo'] = list()
@@ -64,14 +64,14 @@ def load(temp):
     for i in range(5):
         fore_fire = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_fire.png"))
         fore_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_tornado.png"))
-        fore_hurricane = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_hurricane.png"))
+        fore_blizzard = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_blizzard.png"))
         fore_earthquake = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_earthquake.png"))
         fore_monster = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_monster.png"))
         fore_ufo = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_ufo.png"))
         fore_clear = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_clear.png"))
         assets['forecast']['fire'].append(fore_fire)
         assets['forecast']['tornado'].append(fore_tornado)
-        assets['forecast']['hurricane'].append(fore_hurricane)
+        assets['forecast']['blizzard'].append(fore_blizzard)
         assets['forecast']['earthquake'].append(fore_earthquake)
         assets['forecast']['monster'].append(fore_monster)
         assets['forecast']['ufo'].append(fore_ufo)

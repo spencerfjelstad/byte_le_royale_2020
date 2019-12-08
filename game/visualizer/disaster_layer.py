@@ -56,7 +56,7 @@ class TornadoLayer(cocos.layer.Layer):
             self.add(self.tornado)
 
 
-class HurricaneLayer(cocos.layer.Layer):
+class BlizzardLayer(cocos.layer.Layer):
     def __init__(self, display_size, turn_info, assets):
         super().__init__()
         self.display = display_size
@@ -72,15 +72,15 @@ class HurricaneLayer(cocos.layer.Layer):
         except:
             print("YEET")
 
-        # If the rate is 0, that means the hurricane happened, so draw to screen
+        # If the rate is 0, that means the blizzard happened, so draw to screen
         if rates == 0:
-            self.hurricane = self.images['hurricane']
-            self.hurricane.opacity = 155
-            self.hurricane_x = int(self.display[0] / 2)
-            self.hurricane_y = int(self.display[1] / 2)
+            self.blizzard = self.images['blizzard']
+            self.blizzard.opacity = 155
+            self.blizzard_x = int(self.display[0] / 2)
+            self.blizzard_y = int(self.display[1] / 2)
 
-            self.hurricane.position = (self.hurricane_x, self.hurricane_y)
-            self.add(self.hurricane)
+            self.blizzard.position = (self.blizzard_x, self.blizzard_y)
+            self.add(self.blizzard)
 
 
 class EarthquakeLayer(cocos.layer.Layer):

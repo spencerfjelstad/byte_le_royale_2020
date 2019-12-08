@@ -3,7 +3,7 @@ import unittest
 from game.common.action import Action
 from game.common.city import City
 from game.common.disasters.fire import Fire
-from game.common.disasters.hurricane import Hurricane
+from game.common.disasters.blizzard import Blizzard
 from game.common.disasters.monster import Monster
 from game.common.enums import *
 from game.common.player import Player
@@ -25,14 +25,14 @@ class TestDisasters(unittest.TestCase):
     def test_reduce(self):
         # Create disasters
         test_disaster_list = list()
-        for dis in {Fire(), Hurricane(), Monster()}:
+        for dis in {Fire(), Blizzard(), Monster()}:
             test_disaster_list.append(dis)
             self.player.disasters.append(dis)
 
         # Cheat the population to be higher than intended
         pop = 0
         pop += GameStats.disaster_initial_efforts[DisasterType.fire]
-        pop += GameStats.disaster_initial_efforts[DisasterType.hurricane]
+        pop += GameStats.disaster_initial_efforts[DisasterType.blizzard]
         pop += GameStats.disaster_initial_efforts[DisasterType.monster]
         self.player.city.population = pop
 
@@ -40,8 +40,8 @@ class TestDisasters(unittest.TestCase):
         for dis in self.player.disasters:
             if isinstance(dis, Fire):
                 self.player.action.add_effort(dis, GameStats.disaster_initial_efforts[DisasterType.fire])
-            if isinstance(dis, Hurricane):
-                self.player.action.add_effort(dis, GameStats.disaster_initial_efforts[DisasterType.hurricane])
+            if isinstance(dis, Blizzard):
+                self.player.action.add_effort(dis, GameStats.disaster_initial_efforts[DisasterType.blizzard])
             if isinstance(dis, Monster):
                 self.player.action.add_effort(dis, GameStats.disaster_initial_efforts[DisasterType.monster])
 

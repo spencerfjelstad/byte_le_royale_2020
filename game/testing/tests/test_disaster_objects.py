@@ -24,13 +24,13 @@ class TestDisasterObjects(unittest.TestCase):
         self.assertIsInstance(my_fire, LastingDisaster)
         self.assertIsInstance(my_fire, Disaster)
 
-    # Hurricane Object Testing
+    # Blizzard Object Testing
 
-    def test_init_hurricane(self):
-        my_hurricane = Hurricane()
-        self.assertIsInstance(my_hurricane, Hurricane)
-        self.assertIsInstance(my_hurricane, LastingDisaster)
-        self.assertIsInstance(my_hurricane, Disaster)
+    def test_init_blizzard(self):
+        my_blizzard = Blizzard()
+        self.assertIsInstance(my_blizzard, Blizzard)
+        self.assertIsInstance(my_blizzard, LastingDisaster)
+        self.assertIsInstance(my_blizzard, Disaster)
 
     # Monster Object Testing
 

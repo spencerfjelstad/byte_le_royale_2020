@@ -67,7 +67,7 @@ class MasterController(Controller):
             elif disaster is DisasterType.fire:
                 dis = Fire()
             elif disaster is DisasterType.blizzard:
-                dis = Hurricane()
+                dis = Blizzard()
             elif disaster is DisasterType.monster:
                 dis = Monster()
             elif disaster is DisasterType.tornado:
