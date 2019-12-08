@@ -8,19 +8,19 @@ class SensorLayer(cocos.layer.Layer):
         self.images = assets
         super().__init__()
 
-        # Some python magic happens here
-        fire_level = self.images["fire_alarm"][str(self.info['player'].get('city').get('sensors').get("0").get("level"))]
-
-        self.fire_alarm = fire_level
-        self.fire_alarm.x = 500
-        self.fire_alarm.y = 300
-
-        self.fire_alarm.position = (self.fire_alarm.x, self.fire_alarm.y)
-        self.add(self.fire_alarm)
-
-
-
-
-
-
-
+        for key, value in self.info["player"]["city"]["sensors"].items():
+            sensor = self.images[key][str(value["level"])]
+            key = int(key)
+            if key == 0:
+                sensor.position = 100*(int(key)+1), self.display[1] / 2
+            elif key == 1:
+                sensor.position = 100 * (int(key) + 1), self.display[1] / 3
+            elif key == 2:
+                sensor.position = 100 * (int(key) + 1), self.display[1] / 4
+            elif key == 3:
+                sensor.position = 100 * (int(key) + 1), self.display[1] / 5
+            elif key == 4:
+                sensor.position = 100 * (int(key) + 1), self.display[1] / 6
+            elif key == 5:
+                sensor.position = 100 * (int(key) + 1), self.display[1] / 7
+            self.add(sensor)
