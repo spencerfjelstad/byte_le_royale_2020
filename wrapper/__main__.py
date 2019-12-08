@@ -3,6 +3,8 @@ import sys
 from game.engine import loop
 from game.utils.generate_game import generate
 from scrimmage.client import Client
+import version
+import updater
 import game.config
 import argparse
 
@@ -39,6 +41,12 @@ if __name__ == '__main__':
 
     vis_subpar.add_argument('-skip', '-s', action='store_true', default=False,
     dest='skip_bool', help="Skips the visualizer's end screen")
+
+    # Versioning Subparser
+    ver_subpar = spar.add_parser('version', aliases=['e'], help='Displays your current working version of the game')
+
+    # Updating Subparser
+    upd_subpar = spar.add_parser('update', aliases=['u'], help='Updates your game to match the newest version if possible')
 
     # Parse Command Line
     par_args = par.parse_args()
@@ -94,6 +102,14 @@ if __name__ == '__main__':
     # Boot up the scrimmage server client
     elif action in ['scrimmage', 's']:
         cl = Client()
+
+    # Version check
+    elif action in ['version', 'e']:
+        print(version.v)
+
+    # Attempt to update the game
+    elif action in ['update', 'u']:
+        updater.update()
 
     # Print help if no arguments are passed
     if len(sys.argv) == 1:
