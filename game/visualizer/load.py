@@ -107,12 +107,12 @@ def load(temp):
         "5": sensor_5,
     }
 
-    decree_0 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_0.png"))
-    decree_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_1.png"))
-    decree_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_2.png"))
-    decree_3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_3.png"))
-    decree_4 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_4.png"))
-    decree_5 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_5.png"))
+    decree_0 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/anti_fire_dogs.png"))
+    decree_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/paperweights.png"))
+    decree_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/snow_shovels.png"))
+    decree_3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/rubber_boots.png"))
+    decree_4 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/fishing_hook.png"))
+    decree_5 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/cheese.png"))
     decree_default = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_default.png"))
     assets['decree'] = {
         "-1": decree_default,
