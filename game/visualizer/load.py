@@ -27,6 +27,7 @@ def load(temp):
         "0": plains
     }
 
+    # City assets
     city_0 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level0.png"))
     city_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level1.png"))
     city_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level2.png"))
@@ -38,6 +39,7 @@ def load(temp):
         "3": city_3
     }
 
+    # Disaster assets
     dis_fire = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/fire.png"))
     dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
     dis_blizzard = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/blizzard.png"))
@@ -53,6 +55,7 @@ def load(temp):
         "ufo": dis_ufo
     }
 
+    # Forecast assets
     assets['forecast'] = {}
     assets['forecast']['fire'] = list()
     assets['forecast']['tornado'] = list()
@@ -78,35 +81,89 @@ def load(temp):
         assets['forecast']['clear'].append(fore_clear)
 
 
-    # Sensor Images and Dictionaries
+    # Sensor assets
     fire_alarm = find_image("game/visualizer/assets/sensor_assets/fire_alarm.png")
     fire_alarm_grid = pyglet.image.ImageGrid(fire_alarm, 1, 2)
-
     fire_alarm_level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
     fire_alarm_level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
     fire_alarm_level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
     fire_alarm_level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
 
     sensor_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
+    sensor_1_grid = pyglet.image.ImageGrid(fire_alarm, 1, 2)
+    sensor_1_level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_1_level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_1_level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_1_level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+
     sensor_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
+    sensor_2_grid = pyglet.image.ImageGrid(fire_alarm, 1, 2)
+    sensor_2_level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_2_level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_2_level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_2_level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+
     sensor_3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
+    sensor_3_grid = pyglet.image.ImageGrid(fire_alarm, 1, 2)
+    sensor_3_level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_3_level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_3_level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_3_level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+
     sensor_4 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
+    sensor_4_grid = pyglet.image.ImageGrid(fire_alarm, 1, 2)
+    sensor_4_level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_4_level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_4_level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_4_level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+
     sensor_5 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
+    sensor_5_grid = pyglet.image.ImageGrid(fire_alarm, 1, 2)
+    sensor_5_level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_5_level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_5_level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    sensor_5_level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
 
     assets['sensor'] = {
-        "fire_alarm": {
-              "0": fire_alarm_level_0,
-              "1": fire_alarm_level_1,
-              "2": fire_alarm_level_2,
-              "3": fire_alarm_level_3,
-                },
-        "1": sensor_1,
-        "2": sensor_2,
-        "3": sensor_3,
-        "4": sensor_4,
-        "5": sensor_5,
+        "0": {
+            "0": fire_alarm_level_0,
+            "1": fire_alarm_level_1,
+            "2": fire_alarm_level_2,
+            "3": fire_alarm_level_3,
+        },
+        "1": {
+            "0": sensor_1_level_0,
+            "1": sensor_1_level_1,
+            "2": sensor_1_level_2,
+            "3": sensor_1_level_3,
+        },
+        "2":{
+            "0": sensor_2_level_0,
+            "1": sensor_2_level_1,
+            "2": sensor_2_level_2,
+            "3": sensor_2_level_3,
+        },
+        "3": {
+            "0": sensor_3_level_0,
+            "1": sensor_3_level_1,
+            "2": sensor_3_level_2,
+            "3": sensor_3_level_3,
+        },
+        "4": {
+            "0": sensor_4_level_0,
+            "1": sensor_4_level_1,
+            "2": sensor_4_level_2,
+            "3": sensor_4_level_3,
+        },
+        "5": {
+            "0": sensor_5_level_0,
+            "1": sensor_5_level_1,
+            "2": sensor_5_level_2,
+            "3": sensor_5_level_3,
+        },
     }
 
+    # Decree assets
     decree_0 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/anti_fire_dogs.png"))
     decree_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/paperweights.png"))
     decree_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/snow_shovels.png"))
@@ -124,6 +181,7 @@ def load(temp):
         "5": decree_5
     }
 
+    # Worker assets
     wrkr = find_image("game/visualizer/assets/worker.png")
     wrkr_grid = pyglet.image.ImageGrid(wrkr, 1, 48)
 
