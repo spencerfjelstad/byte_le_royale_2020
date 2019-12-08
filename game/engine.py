@@ -151,6 +151,8 @@ def tick(turn):
     # Create list of threads that run the client's code
     threads = list()
     for client in clients:
+        if not client.functional:
+            continue
         arguments = master_controller.client_turn_arguments(client, current_world, turn_number)
         # Create the thread, args being the things the client will need
         thr = Thread(func=client_thread, args=(client, arguments))
@@ -168,11 +170,11 @@ def tick(turn):
     # Go through all the threads and see which ones are still running.
     for client, thr in zip(clients, threads):
         if thr.is_alive():
-            clients.remove(client)
+            client.functional = False
             print(f'{client.id} failed to reply in time and has been dropped')
 
     # End if there are no remaining clients
-    check_game_continue(len(clients))
+    check_game_continue(len([client for client in clients if client.functional]))
 
     # Apply bulk of game logic
     if SET_NUMBER_OF_CLIENTS_START == 1:
@@ -237,11 +239,11 @@ def shutdown(reason=""):
 def check_game_continue(num_clients):
     error = ""
     if SET_NUMBER_OF_CLIENTS_CONTINUE is not None and num_clients != SET_NUMBER_OF_CLIENTS_CONTINUE:
-        error = "Number of clients (", num_clients, ") is not SET number (", SET_NUMBER_OF_CLIENTS_CONTINUE, "). Ending game."
+        error = f"Number of clients ({num_clients}) is not SET number ({SET_NUMBER_OF_CLIENTS_CONTINUE}). Ending game."
     elif MIN_CLIENTS_CONTINUE is not None and num_clients < MIN_CLIENTS_CONTINUE:
-        error = "Number of clients (", num_clients, ") is less than MIN number (", MIN_CLIENTS_CONTINUE, "). Ending game."
+        error = f"Number of clients ({num_clients}) is less than MIN number ({MIN_CLIENTS_CONTINUE}). Ending game."
     elif MAX_CLIENTS_CONTINUE is not None and num_clients > MAX_CLIENTS_CONTINUE:
-        error = "Number of clients (", num_clients, ") is greater than MAX number (", MAX_CLIENTS_CONTINUE, "). Ending game."
+        error = f"Number of clients ({num_clients}) is greater than MAX number ({MAX_CLIENTS_CONTINUE}). Ending game."
     else:
         return True
     shutdown(error)
