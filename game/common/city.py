@@ -1,3 +1,4 @@
+from game.common.game_object import GameObject
 from game.common.enums import *
 from game.common.building import Building
 from game.common.sensor import Sensor
@@ -5,8 +6,9 @@ from game.common.stats import GameStats
 from game.utils.helpers import enum_iter
 
 
-class City:
+class City(GameObject):
     def __init__(self):
+        super().__init__()
         self.city_name = "City"
         self.object_type = ObjectType.city
         self.structure = GameStats.city_structure
@@ -31,7 +33,7 @@ class City:
         self.effort_remaining = GameStats.city_upgrade_cost[CityLevel.level_one]
 
     def to_json(self):
-        data = dict()
+        data = super().to_json()
 
         data['city_name'] = self.city_name
         data['object_type'] = self.object_type
@@ -50,6 +52,7 @@ class City:
         return data
     
     def from_json(self, data):
+        super().from_json(data)
         self.city_name = data['city_name']
         self.object_type = data['object_type']
         self.structure = data['structure']
@@ -82,6 +85,7 @@ class City:
             Gold: {self.gold}
             Resources: {self.resources}
             Level: {self.level}
+            Object Type: {self.object_type}
             """
 
         return p
