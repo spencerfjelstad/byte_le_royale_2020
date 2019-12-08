@@ -1,19 +1,36 @@
 import cocos
 import pyglet
+import os
+import shutil
+from zipfile import ZipFile
+from PIL import Image
+from io import BytesIO
 
+# Extracts a png from a zipped file and returns it for use with cocos.
+# This function is necessary for the visualizer to work on Linux.
+def find_image(filename):
+    archive = ZipFile("launcher.pyz", 'r')
+    img = Image.open(BytesIO(archive.read(filename)))
 
+    if not os.path.exists('tempic'):
+        os.mkdir('tempic')
+    img.save('tempic/tempimg.png')
+    pic = pyglet.image.load('tempic/tempimg.png')
+    shutil.rmtree('tempic')
+    return pic
+
+# Populates a dictionary with all the sprites required for the visualizer
 def load(temp):
     assets = temp
-
-    plains = cocos.sprite.Sprite("game/visualizer/assets/location_assets/location_plains.png")
+    plains = cocos.sprite.Sprite(find_image("game/visualizer/assets/location_assets/location_plains.png"))
     assets['location'] = {
         "0": plains
     }
 
-    city_0 = cocos.sprite.Sprite("game/visualizer/assets/city_assets/city_level0.png")
-    city_1 = cocos.sprite.Sprite("game/visualizer/assets/city_assets/city_level1.png")
-    city_2 = cocos.sprite.Sprite("game/visualizer/assets/city_assets/city_level2.png")
-    city_3 = cocos.sprite.Sprite("game/visualizer/assets/city_assets/city_level3.png")
+    city_0 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level0.png"))
+    city_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level1.png"))
+    city_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level2.png"))
+    city_3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level3.png"))
     assets['city'] = {
         "0": city_0,
         "1": city_1,
@@ -21,12 +38,12 @@ def load(temp):
         "3": city_3
     }
 
-    dis_fire = cocos.sprite.Sprite("game/visualizer/assets/disaster_assets/fire.png")
-    dis_tornado = cocos.sprite.Sprite("game/visualizer/assets/disaster_assets/tornado.png")
-    dis_hurricane = cocos.sprite.Sprite("game/visualizer/assets/disaster_assets/hurricane.png")
-    dis_earthquake = cocos.sprite.Sprite("game/visualizer/assets/disaster_assets/earthquake.png")
-    dis_monster = cocos.sprite.Sprite("game/visualizer/assets/disaster_assets/monster.png")
-    dis_ufo = cocos.sprite.Sprite("game/visualizer/assets/disaster_assets/ufo.png")
+    dis_fire = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/fire.png"))
+    dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
+    dis_hurricane = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/hurricane.png"))
+    dis_earthquake = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/earthquake.png"))
+    dis_monster = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/monster.png"))
+    dis_ufo = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/ufo.png"))
     assets['disaster'] = {
         "fire": dis_fire,
         "tornado": dis_tornado,
@@ -36,38 +53,39 @@ def load(temp):
         "ufo": dis_ufo
     }
 
-    fore_fire = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_fire.png")
-    fore_tornado = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_tornado.png")
-    fore_hurricane = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_hurricane.png")
-    fore_earthquake = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_earthquake.png")
-    fore_monster = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_monster.png")
-    fore_ufo = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_ufo.png")
-    fore_clear_0 = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_clear.png")
-    fore_clear_1 = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_clear.png")
-    fore_clear_2 = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_clear.png")
-    fore_clear_3 = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_clear.png")
-    fore_clear_4 = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/tape_clear.png")
-    assets['forecast'] = {
-        "0": fore_fire,
-        "1": fore_tornado,
-        "2": fore_hurricane,
-        "3": fore_earthquake,
-        "4": fore_monster,
-        "5": fore_ufo,
-        "6": fore_clear_0,
-        "C_1": fore_clear_1,
-        "C_2": fore_clear_2,
-        "C_3": fore_clear_3,
-        "C_4": fore_clear_4
-    }
+    assets['forecast'] = {}
+    assets['forecast']['fire'] = list()
+    assets['forecast']['tornado'] = list()
+    assets['forecast']['hurricane'] = list()
+    assets['forecast']['earthquake'] = list()
+    assets['forecast']['monster'] = list()
+    assets['forecast']['ufo'] = list()
+    assets['forecast']['clear'] = list()
+    for i in range(5):
+        fore_fire = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_fire.png"))
+        fore_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_tornado.png"))
+        fore_hurricane = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_hurricane.png"))
+        fore_earthquake = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_earthquake.png"))
+        fore_monster = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_monster.png"))
+        fore_ufo = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_ufo.png"))
+        fore_clear = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_clear.png"))
+        assets['forecast']['fire'].append(fore_fire)
+        assets['forecast']['tornado'].append(fore_tornado)
+        assets['forecast']['hurricane'].append(fore_hurricane)
+        assets['forecast']['earthquake'].append(fore_earthquake)
+        assets['forecast']['monster'].append(fore_monster)
+        assets['forecast']['ufo'].append(fore_ufo)
+        assets['forecast']['clear'].append(fore_clear)
 
-    decree_0 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_0.png")
-    decree_1 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_1.png")
-    decree_2 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_2.png")
-    decree_3 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_3.png")
-    decree_4 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_4.png")
-    decree_5 = cocos.sprite.Sprite("game/visualizer/assets/decree_assets/decree_5.png")
+    decree_0 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_0.png"))
+    decree_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_1.png"))
+    decree_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_2.png"))
+    decree_3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_3.png"))
+    decree_4 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_4.png"))
+    decree_5 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_5.png"))
+    decree_default = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_default.png"))
     assets['decree'] = {
+        "-1": decree_default,
         "0": decree_0,
         "1": decree_1,
         "2": decree_2,
@@ -76,7 +94,7 @@ def load(temp):
         "5": decree_5
     }
 
-    wrkr = pyglet.resource.image("game/visualizer/assets/worker.png")
+    wrkr = find_image("game/visualizer/assets/worker.png")
     wrkr_grid = pyglet.image.ImageGrid(wrkr, 1, 48)
 
     assets['worker'] = {}

@@ -2,6 +2,7 @@ from collections import deque
 
 from game.config import *
 from game.common.enums import *
+from game.common.building import Building
 from game.common.city import City
 from game.common.disasters import *
 from game.common.sensor import Sensor
@@ -11,14 +12,15 @@ from game.utils.helpers import enum_iter, enum_to_string
 class Action:
     # These acceptable actions must be objects that can be converted to and from json.
     ACCEPTABLE_ACTION_OBJECTS = (
+        Building,
         City,
-        Disaster,
+        LastingDisaster,
         Sensor,
     )
 
     def __init__(self):
         self.__allocation_list = deque(maxlen=MAX_ALLOCATIONS_ALLOWED_PER_TURN)
-        self.__decree = None
+        self.__decree = DecreeType.none
         self.object_type = ObjectType.action
 
     def add_effort(self, action, amount):
@@ -30,8 +32,20 @@ class Action:
             return
         self.__allocation_list.append([action, int(amount)])
 
+    # Method so player can undo all actions
+    def clear_actions(self):
+        self.__allocation_list.clear()
+
+    # Method so player can delete a specific index action
+    def delete_index_actions(self, index):
+        del self.__allocation_list[index]
+
     def get_allocation_list(self):
         return self.__allocation_list.copy()
+
+
+
+
 
     def get_decree(self):
         return self.__decree
@@ -61,9 +75,10 @@ class Action:
             if isinstance(effort, dict) and "object_type" in effort:
                 object_type = effort["object_type"]
                 obj = None
-                if object_type == ObjectType.city:
+                if object_type == ObjectType.building:
+                    obj = Building()
+                elif object_type == ObjectType.city:
                     obj = City()
-                    obj.from_json(effort)
                 elif object_type == ObjectType.disaster:
                     dis_type = effort['type']
                     if dis_type == DisasterType.earthquake:
@@ -78,10 +93,9 @@ class Action:
                         obj = Tornado()
                     elif dis_type == DisasterType.ufo:
                         obj = Ufo()
-                    obj.from_json(effort)
                 elif object_type == ObjectType.sensor:
                     obj = Sensor()
-                    obj.from_json(effort)
+                obj.from_json(effort)
                 self.__allocation_list.append([obj, number])
             else:
                 self.__allocation_list.append([effort, number])
