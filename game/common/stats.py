@@ -87,7 +87,7 @@ class GameStats:
     # required effort to stop lasting disasters
     disaster_initial_efforts = {
         DisasterType.fire: 100,
-        DisasterType.hurricane: 200,
+        DisasterType.blizzard: 200,
         DisasterType.monster: 300
     }
 
@@ -95,7 +95,7 @@ class GameStats:
     disaster_structure_damages = {
         DisasterType.fire: disaster_damage_scale[DamageScaling.low],
         DisasterType.tornado: disaster_damage_scale[DamageScaling.medium] * disaster_damage_instant_multiplier,
-        DisasterType.hurricane: disaster_damage_scale[DamageScaling.medium],
+        DisasterType.blizzard: disaster_damage_scale[DamageScaling.medium],
         DisasterType.earthquake: disaster_damage_scale[DamageScaling.high] * disaster_damage_instant_multiplier,
         DisasterType.monster: disaster_damage_scale[DamageScaling.extreme],
         DisasterType.ufo: disaster_damage_scale[DamageScaling.medium] * disaster_damage_instant_multiplier
@@ -105,7 +105,7 @@ class GameStats:
     disaster_population_damages = {
         DisasterType.fire: disaster_damage_scale[DamageScaling.medium],
         DisasterType.tornado: disaster_damage_scale[DamageScaling.low] * disaster_damage_instant_multiplier,
-        DisasterType.hurricane: disaster_damage_scale[DamageScaling.high],
+        DisasterType.blizzard: disaster_damage_scale[DamageScaling.high],
         DisasterType.earthquake: disaster_damage_scale[DamageScaling.medium] * disaster_damage_instant_multiplier,
         DisasterType.monster: disaster_damage_scale[DamageScaling.medium],
         DisasterType.ufo: disaster_damage_scale[DamageScaling.extreme] * disaster_damage_instant_multiplier

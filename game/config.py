@@ -42,7 +42,7 @@ BIAS_MARGIN_OF_ERROR = 0.1          # range around DISASTER_BIAS where the biasi
 DISASTER_WEIGHTS = {
     DisasterType.fire: 0.2,
     DisasterType.tornado: 0.2,
-    DisasterType.hurricane: 0.15,
+    DisasterType.blizzard: 0.15,
     DisasterType.earthquake: 0.15,
     DisasterType.monster: 0.15,
     DisasterType.ufo: 0.15,

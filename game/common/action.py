@@ -85,7 +85,7 @@ class Action:
                         obj = Earthquake()
                     elif dis_type == DisasterType.fire:
                         obj = Fire()
-                    elif dis_type == DisasterType.hurricane:
+                    elif dis_type == DisasterType.blizzard:
                         obj = Hurricane()
                     elif dis_type == DisasterType.monster:
                         obj = Monster()

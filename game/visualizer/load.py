@@ -77,12 +77,42 @@ def load(temp):
         assets['forecast']['ufo'].append(fore_ufo)
         assets['forecast']['clear'].append(fore_clear)
 
-    decree_0 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_0.png"))
-    decree_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_1.png"))
-    decree_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_2.png"))
-    decree_3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_3.png"))
-    decree_4 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_4.png"))
-    decree_5 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_5.png"))
+
+    # Sensor Images and Dictionaries
+    fire_alarm = find_image("game/visualizer/assets/sensor_assets/fire_alarm.png")
+    fire_alarm_grid = pyglet.image.ImageGrid(fire_alarm, 1, 2)
+
+    fire_alarm_level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    fire_alarm_level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    fire_alarm_level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+    fire_alarm_level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
+
+    sensor_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
+    sensor_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
+    sensor_3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
+    sensor_4 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
+    sensor_5 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
+
+    assets['sensor'] = {
+        "fire_alarm": {
+              "0": fire_alarm_level_0,
+              "1": fire_alarm_level_1,
+              "2": fire_alarm_level_2,
+              "3": fire_alarm_level_3,
+                },
+        "1": sensor_1,
+        "2": sensor_2,
+        "3": sensor_3,
+        "4": sensor_4,
+        "5": sensor_5,
+    }
+
+    decree_0 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/anti_fire_dogs.png"))
+    decree_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/paperweights.png"))
+    decree_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/snow_shovels.png"))
+    decree_3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/rubber_boots.png"))
+    decree_4 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/fishing_hook.png"))
+    decree_5 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/cheese.png"))
     decree_default = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_default.png"))
     assets['decree'] = {
         "-1": decree_default,
