@@ -3,7 +3,7 @@ import unittest
 from game.common.action import Action
 from game.common.city import City
 from game.common.disasters.fire import Fire
-from game.common.disasters.hurricane import Hurricane
+from game.common.disasters.blizzard import Blizzard
 from game.common.disasters.monster import Monster
 from game.common.player import Player
 from game.common.enums import *
@@ -61,7 +61,7 @@ class TestEfforts(unittest.TestCase):
     def test_disaster(self):
         TEST_DISASTER_AMOUNT = 1
         test_disaster_list = list()
-        for dis in {Fire(), Hurricane(), Monster()}:
+        for dis in {Fire(), Blizzard(), Monster()}:
             test_disaster_list.append(dis)
             self.player.disasters.append(dis)
 

@@ -60,8 +60,8 @@ class GameLogParser:
                     obj = Earthquake()
                 elif dis_type == DisasterType.fire:
                     obj = Fire()
-                elif dis_type == DisasterType.hurricane:
-                    obj = Hurricane()
+                elif dis_type == DisasterType.blizzard:
+                    obj = Blizzard()
                 elif dis_type == DisasterType.monster:
                     obj = Monster()
                 elif dis_type == DisasterType.tornado:

@@ -9,7 +9,7 @@ class SensorLayer(cocos.layer.Layer):
         super().__init__()
 
         # Some python magic happens here
-        fire_level = self.images["fire_alarm"][str(self.info['player'].get('city').get('sensors').get("0").get("sensor_level"))]
+        fire_level = self.images["fire_alarm"][str(self.info['player'].get('city').get('sensors').get("0").get("level"))]
 
         self.fire_alarm = fire_level
         self.fire_alarm.x = 500

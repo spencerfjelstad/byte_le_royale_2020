@@ -18,7 +18,7 @@ class TestSensors(unittest.TestCase):
         test_odds = {
             DisasterType.fire: 0.0,
             DisasterType.tornado: 0.5,
-            DisasterType.hurricane: 0.99,
+            DisasterType.blizzard: 0.99,
             DisasterType.earthquake: 1.00,
             DisasterType.monster: 1.00,
             DisasterType.ufo: 0.0

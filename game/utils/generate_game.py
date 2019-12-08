@@ -27,7 +27,7 @@ def generate():
 
     # Generate straight list of disaster order
     disaster_count = sum(skeleton_list)
-    disaster_order = nprandom.choice([DisasterType.fire, DisasterType.tornado, DisasterType.hurricane,
+    disaster_order = nprandom.choice([DisasterType.fire, DisasterType.tornado, DisasterType.blizzard,
                                       DisasterType.earthquake, DisasterType.monster, DisasterType.ufo],
                                      disaster_count,
                                      DISASTER_WEIGHTS)
@@ -46,7 +46,7 @@ def generate():
             'rates': {
                 DisasterType.fire: 0,
                 DisasterType.tornado: 0,
-                DisasterType.hurricane: 0,
+                DisasterType.blizzard: 0,
                 DisasterType.earthquake: 0,
                 DisasterType.monster: 0,
                 DisasterType.ufo: 0,
