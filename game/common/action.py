@@ -103,17 +103,17 @@ class Action:
         self.object_type = data["object_type"]
 
     def __str__(self):
-        output = ""
-        for i,j in self.__allocation_list:
-            output += enum_to_string(ActionType, i).replace("_"," ") + ", " + str(j) + "; "
-
-        #Cleaning up output end "; ", but needs to not be an empty string
-        if len(output) > 2:
-            output = output[:-2]
-        else:
-            output = "No elements"
-
-        p = f"""Allocations: {output}
-            Decree: {str(self.__decree)}  
-            """
-        return p
+        #        output = ""
+        #        for i,j in self.__allocation_list:
+        #            output += enum_to_string(ActionType, i).replace("_"," ") + ", " + str(j) + "; "
+        #
+        #        #Cleaning up output end "; ", but needs to not be an empty string
+        #        if len(output) > 2:
+        #            output = output[:-2]
+        #        else:
+        #            output = "No elements"
+        #
+        #        p = f"""Allocations: {output}
+        #            Decree: {str(self.__decree)}
+        #            """
+        return "Decree: {str(self.__decree)}}"
