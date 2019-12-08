@@ -20,8 +20,8 @@ class GameStats:
 
     # Decree effectiveness when applied against a disaster
     # (0 implies decree has no effect, 1.0 implies decree completely negates the disaster)
-    decree_population_effect = 1.0
-    decree_structure_effect = 1.0
+    decree_population_effect = 0.5
+    decree_structure_effect = 0.5
 
     # Boost multiplied by the decree if you have a structure with the matching level
     decree_boost = {
@@ -29,6 +29,27 @@ class GameStats:
         BuildingLevel.level_one: 1.1,
         BuildingLevel.level_two: 1.25,
         BuildingLevel.level_three: 1.5
+    }
+
+    everything_boost = {
+        'wealth': {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 1,
+            BuildingLevel.level_two: 2,
+            BuildingLevel.level_three: 3
+        },
+        'population': {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 1,
+            BuildingLevel.level_two: 2,
+            BuildingLevel.level_three: 3
+        },
+        'structure': {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 1,
+            BuildingLevel.level_two: 2,
+            BuildingLevel.level_three: 3
+        }
     }
 
     wealth_boost = {

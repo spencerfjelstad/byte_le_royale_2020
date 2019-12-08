@@ -11,6 +11,7 @@ tqdm = "*"
 numpy = "*"
 pillow = "*"
 pyglet = "*"
+requests = "*"
 
 [requires]
 python_version = "3.7"
