@@ -41,8 +41,6 @@ def loop(quiet=False):
     world = load()
 
     for turn in tqdm(master_controller.game_loop_logic(), bar_format=TQDM_BAR_FORMAT, unit=TQDM_UNITS, file=f):
-        check_game_continue(len(clients))
-
         pre_tick(turn, world)
         tick(turn)
         post_tick(turn)
@@ -208,7 +206,7 @@ def post_tick(turn):
 
 
 # Game is over. Create the results file and end the game.
-def shutdown():
+def shutdown(reason=""):
     global clients
     global current_world
     global master_controller
@@ -221,12 +219,19 @@ def shutdown():
     else:
         results_information = master_controller.return_final_results(clients, current_world, turn_number)
 
+    if reason:
+        results_information['Engine_error'] = reason
+
     # Write results file
     write(results_information, RESULTS_FILE)
 
     # Exit game
-    print("\nGame has successfully ended.")
-    os._exit(0)
+    if reason:
+        print("\nGame has ended due to engine error. See results.json.")
+        os._exit(1)
+    else:
+        print("\nGame has successfully ended.")
+        os._exit(0)
 
 
 def check_game_continue(num_clients):
@@ -239,8 +244,8 @@ def check_game_continue(num_clients):
         error = "Number of clients (", num_clients, ") is greater than MAX number (", MAX_CLIENTS_CONTINUE, "). Ending game."
     else:
         return True
-    write(error, RESULTS_FILE)
-    shutdown()
+    shutdown(error)
+    return False
 
 
 # Debug print statement
