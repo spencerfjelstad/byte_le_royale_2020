@@ -369,6 +369,7 @@ class Server:
 
     def visualizer_loop(self):
         loc = 'scrimmage/vis_temp'
+        previous_team = None
 
         while self.loop_continue:
             all_clients = [x for x in self.db_collection.find({})]
@@ -377,10 +378,11 @@ class Server:
 
             client = random.choice(all_clients)
 
-            if client['logs'] is None:
+            if client['logs'] is None or client['_id'] == previous_team:
                 continue
 
             self.log(f'Visualizing {client["teamname"]}')
+            previous_team = client['_id']
 
             try:
                 if not os.path.exists(loc):
