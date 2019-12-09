@@ -1,6 +1,7 @@
 from game.common.game_object import GameObject
 from game.common.enums import ObjectType, BuildingLevel, BuildingType
 from game.utils.helpers import enum_to_string
+from game.common.stats import GameStats
 
 
 # Side buildings that can be upgraded to provide various effects
@@ -10,7 +11,7 @@ class Building(GameObject):
         self.building_type = building_type
         self.object_type = ObjectType.building
         self.level = BuildingLevel.level_zero
-        self.effort_remaining = 0
+        self.effort_remaining = GameStats.building_upgrade_cost[BuildingLevel.level_one]
 
     def to_json(self):
         data = super().to_json()

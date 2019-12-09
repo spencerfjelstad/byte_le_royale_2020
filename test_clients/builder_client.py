@@ -18,13 +18,14 @@ class Client(UserClient):
     def __init__(self):
         super().__init__()
         self.SENSOR_DECREE_MAPPINGS = {
-            SensorType.fire_alarm: DecreeType.anti_fire_bears,
+            SensorType.fire_alarm: DecreeType.anti_fire_dogs,
             SensorType.rock_on_a_rope: DecreeType.paperweights,
-            SensorType.coast_guard: DecreeType.hound_news,
-            SensorType.seismograph: DecreeType.moon_shoes,
-            SensorType.scp_foundation: DecreeType.away_spray,
-            SensorType.satellite_dish: DecreeType.giant_fly_swatter
+            SensorType.coast_guard: DecreeType.snow_shovels,
+            SensorType.seismograph: DecreeType.rubber_boots,
+            SensorType.scp_foundation: DecreeType.fishing_hook,
+            SensorType.satellite_dish: DecreeType.cheese
         }
+        self.turn = 0
 
     def team_name(self):
         return "Bobs the Builders"
@@ -37,6 +38,9 @@ class Client(UserClient):
 
     # This is where your AI will decide what to do
     def take_turn(self, actions, city, disasters):
+        self.turn += 1
+        if self.turn > 1700:
+            raise Exception("bail bail bail")
 
         # Set decree
         highest = -1
@@ -50,21 +54,39 @@ class Client(UserClient):
         actions.set_decree(corresponding_decree)
 
         # planning phase
-        building_types = enum_iter(BuildingType)
-        sensor_types = enum_iter(SensorType)
+        total_construction_projects = 0
+        for building in city.buildings.values():
+            if building.level != BuildingLevel.level_three:
+                total_construction_projects += 1
 
-        num_of_buildings = len(building_types)
-        num_of_cities = 1
-        num_of_sensors = len(sensor_types)
-        total_construction_projects = num_of_buildings + num_of_cities + num_of_sensors
+        for sensor in city.sensors.values():
+            if sensor.level != SensorLevel.level_three:
+                total_construction_projects += 1
 
-        # work work
-        for building_type in building_types:
-            actions.add_effort(city.buildings[building_type], city.population/total_construction_projects)
+        if city.level != CityLevel.level_two:
+            total_construction_projects += 1
 
-        actions.add_effort(city, city.population / total_construction_projects)
+        # Actions
+        if total_construction_projects > 0:
+            for building in city.buildings.values():
+                if building.level != BuildingLevel.level_three:
+                    actions.add_effort(building, city.population / total_construction_projects)
 
-        for sensor_type in sensor_types:
-            actions.add_effort(city.sensors[sensor_type], city.population / total_construction_projects)
+            for sensor in city.sensors.values():
+                if sensor.level != SensorLevel.level_three:
+                    actions.add_effort(sensor, city.population / total_construction_projects)
+
+            if city.level != CityLevel.level_two:
+                actions.add_effort(city, city.population / total_construction_projects)
+        elif city.structure < (city.max_structure / 2):
+            actions.add_effort(ActionType.repair_structure, city.population)
+        elif city.population < (city.structure / 2):
+            actions.add_effort(ActionType.regain_population, city.population)
+        elif disasters:
+            for disaster in disasters:
+                actions.add_effort(disaster, city.population / len(disasters))
+        else:
+            actions.add_effort(ActionType.repair_structure, city.population / 2)
+            actions.add_effort(ActionType.regain_population, city.population / 2)
 
 

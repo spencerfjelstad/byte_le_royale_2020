@@ -159,15 +159,19 @@ class EffortController(Controller):
         while number > 0:
             current_level = obj.level
             next_level = None
+            level_after = None
 
             # Find the next level requirement (based on current level and object type)
             if isinstance(obj, Building):
                 if current_level == BuildingLevel.level_zero:
                     next_level = BuildingLevel.level_one
+                    level_after = BuildingLevel.level_two
                 elif current_level == BuildingLevel.level_one:
                     next_level = BuildingLevel.level_two
+                    level_after = BuildingLevel.level_three
                 elif current_level == BuildingLevel.level_two:
                     next_level = BuildingLevel.level_three
+                    level_after = None
                 elif current_level == BuildingLevel.level_three:
                     self.print("Building level is already maxed.")
                     obj.effort_remaining = 0
@@ -178,9 +182,14 @@ class EffortController(Controller):
             elif isinstance(obj, City):
                 if current_level == CityLevel.level_zero:
                     next_level = CityLevel.level_one
+                    level_after = CityLevel.level_two
                 elif current_level == CityLevel.level_one:
                     next_level = CityLevel.level_two
+                    level_after = CityLevel.level_three
                 elif current_level == CityLevel.level_two:
+                    next_level = CityLevel.level_three
+                    level_after = None
+                elif current_level == CityLevel.level_three:
                     self.print("City level is already maxed.")
                     obj.effort_remaining = 0
                     return
@@ -190,10 +199,13 @@ class EffortController(Controller):
             elif isinstance(obj, Sensor):
                 if current_level == SensorLevel.level_zero:
                     next_level = SensorLevel.level_one
+                    level_after = SensorLevel.level_two
                 elif current_level == SensorLevel.level_one:
                     next_level = SensorLevel.level_two
+                    level_after = SensorLevel.level_three
                 elif current_level == SensorLevel.level_two:
                     next_level = SensorLevel.level_three
+                    level_after = None
                 elif current_level == SensorLevel.level_three:
                     self.print("Sensor level is already maxed.")
                     obj.effort_remaining = 0
@@ -218,15 +230,28 @@ class EffortController(Controller):
 
                 # apply changes
                 left_over = obj.effort_remaining * -1  # reverse, because effort allocation must be positive
-                obj.effort_remaining = GameStats.building_effort[next_level]
-                obj.level = next_level
+
                 event_type = None
                 if isinstance(obj, Building):
+                    if level_after is not None:
+                        obj.effort_remaining = GameStats.building_upgrade_cost[level_after]
+                    else:
+                        obj.effort_remaining = 0
                     event_type = EventType.building_upgrade
                 elif isinstance(obj, City):
+                    obj.max_structure = GameStats.city_max_structure[next_level]
+                    if level_after is not None:
+                        obj.effort_remaining = GameStats.city_upgrade_cost[level_after]
+                    else:
+                        obj.effort_remaining = 0
                     event_type = EventType.city_upgrade
                 elif isinstance(obj, Sensor):
+                    if level_after is not None:
+                        obj.effort_remaining = GameStats.sensor_upgrade_cost[level_after]
+                    else:
+                        obj.effort_remaining = 0
                     event_type = EventType.sensor_upgrade
+                obj.level = next_level
 
                 # log upgrade
                 self.event_controller.add_event({
