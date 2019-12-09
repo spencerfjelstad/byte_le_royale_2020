@@ -4,7 +4,7 @@ from game.common.enums import *
 class GameStats:
 
     # cost in man_power to upgrade a building
-    building_effort = {
+    building_upgrade_cost = {
         BuildingLevel.level_zero: 0,
         BuildingLevel.level_one: 50,
         BuildingLevel.level_two: 100,
@@ -15,7 +15,16 @@ class GameStats:
     city_upgrade_cost = {
         CityLevel.level_zero: 0,
         CityLevel.level_one: 100,
-        CityLevel.level_two: 300
+        CityLevel.level_two: 300,
+        CityLevel.level_three: 500
+    }
+
+    # cost in man_power to build a sensor
+    sensor_upgrade_cost = {
+        SensorLevel.level_zero: 0,
+        SensorLevel.level_one: 50,
+        SensorLevel.level_two: 100,
+        SensorLevel.level_three: 500
     }
 
     # Decree effectiveness when applied against a disaster
@@ -114,36 +123,25 @@ class GameStats:
     # When converting effort to one of the below, multiply the effort amount by the multiplier
     # Keep multiplier above 0 and close to 1
     effort_gold_multiplier = 1
-    effort_population_multiplier = 1
+    effort_population_multiplier = 0.5
     effort_structure_multiplier = 1
 
-    # population
-    city_population = 100
+    # starting city population
+    city_population = 40
 
-    # health
-    city_structure = 200
-
-    # resources
-    resources = 100
+    # starting city health
+    city_structure = 100
 
     # gold
-    city_gold = 100
+    city_gold = 0
     city_gold_accumulative = 1
 
-    # cost in gold to build a sensor
-    sensor_costs = {
-        SensorLevel.level_zero: 0,
-        SensorLevel.level_one: 100,
-        SensorLevel.level_two: 500,
-        SensorLevel.level_three: 1000
-    }
-
-    # cost in man_power to build a sensor
-    sensor_effort = {
-        SensorLevel.level_zero: 0,
-        SensorLevel.level_one: 50,
-        SensorLevel.level_two: 100,
-        SensorLevel.level_three: 500
+    # Max structure based on city level
+    city_max_structure = {
+        CityLevel.level_zero: 200,
+        CityLevel.level_one: 225,
+        CityLevel.level_two: 275,
+        CityLevel.level_three: 350
     }
 
     # error range provided by each sensor

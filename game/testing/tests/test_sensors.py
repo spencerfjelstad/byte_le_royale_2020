@@ -44,10 +44,10 @@ class TestSensors(unittest.TestCase):
         player = Player()
         player.action = Action()
         player.city = City()
+        player.city.population = 1000
         fire_sensor = player.city.sensors[SensorType.fire_alarm]
 
         self.assertEqual(fire_sensor.level, SensorLevel.level_zero)
-
         player.action.add_effort(fire_sensor, 50)
         self.test_effort_controller.handle_actions(player)
         self.assertEqual(fire_sensor.level, SensorLevel.level_one)

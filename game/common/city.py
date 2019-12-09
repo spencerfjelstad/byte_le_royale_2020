@@ -12,11 +12,9 @@ class City(GameObject):
         self.city_name = "City"
         self.object_type = ObjectType.city
         self.structure = GameStats.city_structure
-        self.max_structure = self.structure
+        self.max_structure = GameStats.city_max_structure[CityLevel.level_zero]
         self.population = GameStats.city_population
         self.gold = GameStats.city_gold
-        self.resources = GameStats.resources
-        self.location = CityLocation.plains
         self.sensors = dict()
         for sens_type in enum_iter(SensorType):
             sens = Sensor()
@@ -41,8 +39,6 @@ class City(GameObject):
         data['max_structure'] = self.max_structure
         data['population'] = self.population
         data['gold'] = self.gold
-        data['resources'] = self.resources
-        data['location'] = self.location
         data['sensors'] = {sensor_type: sensor.to_json() for sensor_type, sensor in self.sensors.items()}
         data['buildings'] = {building_type: building.to_json() for building_type, building in self.buildings.items()}
         data['remaining_man_power'] = self.remaining_man_power
@@ -59,8 +55,6 @@ class City(GameObject):
         self.max_structure = data['max_structure']
         self.population = data['population']
         self.gold = data['gold']
-        self.resources = data['resources']
-        self.location = data['location']
 
         self.sensors = dict()
         for sensor_type, sensor_data in data['sensors'].items():
@@ -83,7 +77,6 @@ class City(GameObject):
             Structure: {self.structure}
             Population: {self.population}
             Gold: {self.gold}
-            Resources: {self.resources}
             Level: {self.level}
             Object Type: {self.object_type}
             """
