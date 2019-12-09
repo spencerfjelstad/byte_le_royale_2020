@@ -96,7 +96,7 @@ def create_scene(info, parser):
     location_layer = LocationLayer(info, size, assets['location'])
     city_layer = CityLayer(size, info, assets['city'])
     forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
-    decree_layer = DecreeLayer(info, size, assets['decree'])
+    decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
     worker_layer = WorkerLayer(size, assets['worker'])
 
     fire_layer = FireLayer(size, info, assets['disaster'])
