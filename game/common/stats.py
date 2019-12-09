@@ -124,7 +124,7 @@ class GameStats:
     # Keep multiplier above 0 and close to 1
     effort_gold_multiplier = 1
     effort_population_multiplier = 0.5
-    effort_structure_multiplier = 1
+    effort_structure_multiplier = 0.5
 
     # starting city population
     city_population = 40

@@ -39,8 +39,6 @@ class Client(UserClient):
     # This is where your AI will decide what to do
     def take_turn(self, actions, city, disasters):
         self.turn += 1
-        if self.turn > 1700:
-            raise Exception("bail bail bail")
 
         # Set decree
         highest = -1
@@ -67,7 +65,14 @@ class Client(UserClient):
             total_construction_projects += 1
 
         # Actions
-        if total_construction_projects > 0:
+        if disasters:
+            for disaster in disasters:
+                actions.add_effort(disaster, city.population / len(disasters))
+        elif city.structure < (city.max_structure / 2):
+            actions.add_effort(ActionType.repair_structure, city.population)
+        elif city.population < (city.structure / 2):
+            actions.add_effort(ActionType.regain_population, city.population)
+        elif total_construction_projects > 0:
             for building in city.buildings.values():
                 if building.level != BuildingLevel.level_three:
                     actions.add_effort(building, city.population / total_construction_projects)
@@ -78,13 +83,6 @@ class Client(UserClient):
 
             if city.level != CityLevel.level_two:
                 actions.add_effort(city, city.population / total_construction_projects)
-        elif city.structure < (city.max_structure / 2):
-            actions.add_effort(ActionType.repair_structure, city.population)
-        elif city.population < (city.structure / 2):
-            actions.add_effort(ActionType.regain_population, city.population)
-        elif disasters:
-            for disaster in disasters:
-                actions.add_effort(disaster, city.population / len(disasters))
         else:
             actions.add_effort(ActionType.repair_structure, city.population / 2)
             actions.add_effort(ActionType.regain_population, city.population / 2)
