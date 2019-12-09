@@ -72,8 +72,8 @@ class Server:
                 [print(x) for x in self.db_collection.find({"teamname": teamname})]
 
             # Show all entries in the database, equivalent to query with no parameters
-            elif 'dump' in com:
-                [print(x) for x in self.db_collection.find()]
+            elif 'teams' in com:
+                [print(x['teamname']) for x in self.db_collection.find()]
 
             # Write a python command that will get executed
             elif 'exec' in com:
@@ -82,8 +82,20 @@ class Server:
                 except Exception:
                     print('You did it wrong.')
 
+            # Shows the current queue for running clients
             elif 'queue' in com:
                 print(*self.runner_queue)
+
+            # Wipes running data for all teams so they will rerun
+            elif 'rerun' in com:
+                for team in self.db_collection.find():
+                    id = team['_id']
+                    self.db_collection.update_one({'_id': id}, {'$set': {'average_run': 0}})
+                    self.db_collection.update_one({'_id': id}, {'$set': {'best_run': 0}})
+                    self.db_collection.update_one({'_id': id}, {'$set': {'temp_total': 0}})
+                    self.db_collection.update_one({'_id': id}, {'$set': {'total_runs': 0}})
+                    self.db_collection.update_one({'_id': id}, {'$set': {'logs': None}})
+
 
     async def handle_client(self, reader, writer):
         try:
