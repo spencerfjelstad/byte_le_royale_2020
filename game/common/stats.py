@@ -74,14 +74,14 @@ class GameStats:
     }
 
     # multiplier done by instant disasters
-    disaster_damage_instant_multiplier = 5
+    disaster_damage_instant_multiplier = 2
 
     # damage done at each damage level
     disaster_damage_scale = {
-        DamageScaling.low: 1,
-        DamageScaling.medium: 2,
-        DamageScaling.high: 3,
-        DamageScaling.extreme: 4
+        DamageScaling.low: 4,
+        DamageScaling.medium: 16,
+        DamageScaling.high: 32,
+        DamageScaling.extreme: 52
     }
 
     # required effort to stop lasting disasters
