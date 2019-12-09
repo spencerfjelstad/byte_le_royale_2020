@@ -245,7 +245,7 @@ class Server:
 
         # Add personal place to the list
         your_place = sorted_teams.index(client) + 1
-        out_string += f'{your_place}: {client["teamname"]} | Average: {client["average_run"]}\n'
+        out_string += f'{your_place}/{len(all_teams)}: {client["teamname"]} | Average: {client["average_run"]}\n'
 
         # Find best run ever
         out_string += '\n'
