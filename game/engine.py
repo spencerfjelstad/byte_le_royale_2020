@@ -2,6 +2,8 @@ import os
 import sys
 import importlib
 import json
+import traceback
+
 from tqdm import tqdm
 
 # Load these imports in so the clients can properly load them in later
@@ -12,7 +14,6 @@ import game.common.enums
 
 from game.common.player import *
 from game.config import *
-
 from game.controllers.master_controller import MasterController
 from game.utils.helpers import write
 from game.utils.secure_importer import secure_importer
@@ -86,7 +87,8 @@ def boot():
         except Exception:
             message = f'Client {filename} is having problems.'
             player.functional = False
-            print(message)
+            player.error = traceback.format_exc()
+            print(player.error)
             shutdown(message, source='Client_error')
         finally:
             # Restore original importer for server use
@@ -98,7 +100,8 @@ def boot():
         except Exception:
             message = f'Client {filename} is not functional.'
             player.functional = False
-            print(message)
+            player.error = traceback.format_exc()
+            print(player.error)
             shutdown(message, source='Client_error')
 
         player.code = obj
@@ -185,6 +188,10 @@ def tick(turn):
         if thr.is_alive():
             client.functional = False
             print(f'{client.id} failed to reply in time and has been dropped')
+        if thr.error is not None:
+            client.functional = False
+            client.error = thr.error
+            print(thr.error)
 
     # End if there are no remaining clients
     check_game_continue(len([client for client in clients if client.functional]))
@@ -242,7 +249,7 @@ def shutdown(reason="", source='Engine_error'):
 
     # Exit game
     if reason:
-        print(f"\nGame has ended due to {source}. See results.json.")
+        print(f"\nGame has ended due to {source}.")
         os._exit(1)
     else:
         print("\nGame has successfully ended.")

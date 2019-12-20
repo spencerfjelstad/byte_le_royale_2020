@@ -10,6 +10,7 @@ class Player:
     def __init__(self, code=None, team_name=None, city=None, action=None, disasters=[]):
         self.id = str(uuid.uuid4())
         self.functional = True
+        self.error = None
         self.team_name = team_name
         self.code = code
         self.city = city
@@ -22,6 +23,7 @@ class Player:
 
         data['id'] = self.id
         data['functional'] = self.functional
+        data['error'] = self.error
         data['team_name'] = self.team_name
         data['city'] = self.city.to_json()
         data['action'] = self.action.to_json()
@@ -33,6 +35,7 @@ class Player:
     def from_json(self, data):
         self.id = data['id']
         self.functional = data['functional']
+        self.error = data['error']
         self.team_name = data['team_name']
         cit = City()
         self.city = cit.from_json(data['city'])
@@ -57,7 +60,6 @@ class Player:
             obj.from_json(dis)
             self.disasters.append(obj)
         self.object_type = data['object_type']
-
 
     def __str__(self):
         p = f"""ID: {self.id}
