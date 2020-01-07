@@ -22,14 +22,10 @@ class TimeLayer(cocos.layer.Layer):
         turn_label = cocos.text.Label(
             str(self.turn),
             font_name="Comic Sans",
-            font_size=32
+            font_size=32,
+            anchor_x="right"
         )
-        if self.turn < 10:
-            turn_label.position = self.display[0]-32, self.display[1] - 50
-        elif self.turn < 100:
-            turn_label.position = self.display[0]-56, self.display[1] - 50
-        else:
-            turn_label.position = self.display[0]-80, self.display[1] - 50
+        turn_label.position = self.display[0], self.display[1] - 50
 
         # Display player's wealth/gold
         gold = self.info['player']['city']['gold']
@@ -38,14 +34,9 @@ class TimeLayer(cocos.layer.Layer):
             font_name="Comic Sans",
             font_size=25,
             color=(255,215,0,255),
-            anchor_x="center"
+            anchor_x="right"
         )
-        if gold<10:
-            gold_label.position = self.display[0]-32, self.display[1] - 100
-        elif gold<100:
-            gold_label.position = self.display[0] - 56, self.display[1] - 100
-        else:
-            gold_label.position = self.display[0] - 80, self.display[1] - 100
+        gold_label.position = self.display[0], self.display[1] - 100
 
         self.add(turn_label)
         self.add(gold_label)

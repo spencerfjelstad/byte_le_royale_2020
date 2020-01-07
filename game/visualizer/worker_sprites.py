@@ -7,11 +7,10 @@ class WorkerLayer(cocos.layer.Layer):
         self.size = display_size
         self.images = assets
         super().__init__()
-
         batch = cocos.batch.BatchNode()
         self.add(batch)
 
-        for n in range(random.randint(0, 49)):
+        for n in range(random.randint(0, 19)):
             x = random.randint(0, self.size[0])
             y = 100
             x = x - (x % 4)
@@ -20,7 +19,7 @@ class WorkerLayer(cocos.layer.Layer):
             temp.position = (x, y)
             batch.add(temp)
 
-        for n in range(random.randint(0, 49)):
+        for n in range(random.randint(0, 19)):
             x = random.randint(0, self.size[0])
             y = 100
             x = x - (x % 4)
@@ -29,7 +28,7 @@ class WorkerLayer(cocos.layer.Layer):
             temp.position = (x, y)
             batch.add(temp)
 
-        for n in range(random.randint(0, 49)):
+        for n in range(random.randint(0, 19)):
             x = random.randint(0, self.size[0])
             y = 100
             x = x - (x % 4)
@@ -38,7 +37,7 @@ class WorkerLayer(cocos.layer.Layer):
             temp.position = (x, y)
             batch.add(temp)
 
-        for n in range(random.randint(0, 49)):
+        for n in range(random.randint(0, 19)):
             x = random.randint(0, self.size[0])
             y = 100
             x = x - (x % 4)
@@ -47,7 +46,7 @@ class WorkerLayer(cocos.layer.Layer):
             temp.position = (x, y)
             batch.add(temp)
 
-        for n in range(random.randint(0, 49)):
+        for n in range(random.randint(0, 19)):
             x = random.randint(0, self.size[0])
             y = 100
             x = x - (x % 4)
