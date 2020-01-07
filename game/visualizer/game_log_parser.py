@@ -21,7 +21,7 @@ class GameLogParser:
 
     # Load all turns into memory
     def load_turns(self):
-        files = os.listdir(self.log_dir)
+        files = sorted(os.listdir(self.log_dir))
 
         for file in files:
             # skip "other" log files

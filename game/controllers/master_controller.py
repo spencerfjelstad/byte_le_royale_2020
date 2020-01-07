@@ -122,8 +122,9 @@ class MasterController(Controller):
         self.accumulative_controller.update(client)
         self.effort_controller.handle_actions(client)
         self.decree_controller.update_decree(client.action.get_decree())
-        self.disaster_controller.handle_actions(client)
         self.destruction_controller.handle_actions(client)
+        self.disaster_controller.handle_actions(client)
+
 
         if client.city.structure <= 0:
             self.print("Game is ending because city has been destroyed.")

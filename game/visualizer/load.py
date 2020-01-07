@@ -5,19 +5,47 @@ import shutil
 from zipfile import ZipFile
 from PIL import Image
 from io import BytesIO
+import numpy as np
+import random
+from game.visualizer.colors import *
+
 
 # Extracts a png from a zipped file and returns it for use with cocos.
 # This function is necessary for the visualizer to work on Linux.
+# Call it on each individual image before passing it to cocos.sprite.Sprite
 def find_image(filename):
-    archive = ZipFile("launcher.pyz", 'r')
+    archive = ZipFile("launcher.pyz",'r')
     img = Image.open(BytesIO(archive.read(filename)))
+    file = filename.split('/')[-1]
+    if not os.path.exists('.temp'):
+        os.mkdir('.temp')
+    img.save(f'.temp/{file}')
+    pic = pyglet.image.load(f'.temp/{file}')
+    return pic
 
+
+# Deletes any temporary folders and other clean-up, called at end of load function
+def clean_up():
+    shutil.rmtree('.temp')
+
+
+# Color replacer
+def replace_colors(filename, start_colors, end_colors):
+    im = Image.open(filename)
+    data = np.array(im)
+    for i in range(len(start_colors)):
+        r1,g1,b1 = start_colors[i]
+        red, green, blue = data[:,:,0], data[:,:,1], data[:,:,2]
+        mask = (red == r1) & (green == g1) & (blue == b1)
+        data[:,:,:3][mask] = end_colors[i]
+    img = Image.fromarray(data)
     if not os.path.exists('tempic'):
         os.mkdir('tempic')
-    img.save('tempic/tempimg.png')
-    pic = pyglet.image.load('tempic/tempimg.png')
-    shutil.rmtree('tempic')
+    img.save("tempic/tempimage.png")
+    pic = pyglet.image.load("tempic/tempimage.png")
+    shutil.rmtree("tempic")
     return pic
+
 
 # Populates a dictionary with all the sprites required for the visualizer
 def load(temp):
@@ -27,6 +55,7 @@ def load(temp):
         "0": plains
     }
 
+    # City assets
     city_0 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level0.png"))
     city_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level1.png"))
     city_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level2.png"))
@@ -38,6 +67,7 @@ def load(temp):
         "3": city_3
     }
 
+    # Disaster assets
     dis_fire = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/fire.png"))
     dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
     dis_blizzard = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/blizzard.png"))
@@ -53,6 +83,7 @@ def load(temp):
         "ufo": dis_ufo
     }
 
+    # Forecast assets
     assets['forecast'] = {}
     assets['forecast']['fire'] = list()
     assets['forecast']['tornado'] = list()
@@ -77,36 +108,37 @@ def load(temp):
         assets['forecast']['ufo'].append(fore_ufo)
         assets['forecast']['clear'].append(fore_clear)
 
-
-    # Sensor Images and Dictionaries
-    fire_alarm = find_image("game/visualizer/assets/sensor_assets/fire_alarm.png")
-    fire_alarm_grid = pyglet.image.ImageGrid(fire_alarm, 1, 2)
-
-    fire_alarm_level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
-    fire_alarm_level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
-    fire_alarm_level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
-    fire_alarm_level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fire_alarm_grid[0::], 0.1))
-
-    sensor_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
-    sensor_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
-    sensor_3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
-    sensor_4 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
-    sensor_5 = cocos.sprite.Sprite(find_image("game/visualizer/assets/sensor_assets/fire_alarm.png"))
-
+    # Sensor assets
     assets['sensor'] = {
-        "fire_alarm": {
-              "0": fire_alarm_level_0,
-              "1": fire_alarm_level_1,
-              "2": fire_alarm_level_2,
-              "3": fire_alarm_level_3,
-                },
-        "1": sensor_1,
-        "2": sensor_2,
-        "3": sensor_3,
-        "4": sensor_4,
-        "5": sensor_5,
+        "0":{},
+        "1":{},
+        "2":{},
+        "3":{},
+        "4":{},
+        "5":{},
     }
+    sensor_colors = {
+        0 : COLOR.red,
+        1 : COLOR.black,
+        2 : COLOR.blue,
+        3 : COLOR.brown,
+        4 : COLOR.green,
+        5 : COLOR.gray,
+    }
+    find_image("game/visualizer/assets/sensor_assets/fire_alarm.png")
+    for i in range(6):
+        sensor = replace_colors(".temp/fire_alarm.png",[COLOR.red],[sensor_colors[i]])
+        sensor_grid = pyglet.image.ImageGrid(sensor, 1, 2)
+        level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0.1))
+        level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0.1))
+        level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0.1))
+        level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0.1))
+        assets['sensor'][str(i)].update({"0": level_0})
+        assets['sensor'][str(i)].update({"1": level_1})
+        assets['sensor'][str(i)].update({"2": level_2})
+        assets['sensor'][str(i)].update({"3": level_3})
 
+    # Decree assets
     decree_0 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/anti_fire_dogs.png"))
     decree_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/paperweights.png"))
     decree_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/snow_shovels.png"))
@@ -124,48 +156,48 @@ def load(temp):
         "5": decree_5
     }
 
-    wrkr = find_image("game/visualizer/assets/worker.png")
-    wrkr_grid = pyglet.image.ImageGrid(wrkr, 1, 48)
+    # Worker assets
+    wrkr_colors = [[255, 255, 255], [169, 169, 169], [120, 120, 120], [67, 67, 67], [88, 88, 88]]
+    skin_colors = [COLOR.russet,COLOR.peru,COLOR.fawn,COLOR.apricot,COLOR.white]
+    shirt_1_colors = [COLOR.red,COLOR.magenta,COLOR.blue,COLOR.cyan,COLOR.lime,COLOR.yellow,COLOR.silver]
+    shirt_2_colors = [COLOR.maroon,COLOR.olive,COLOR.green,COLOR.purple,COLOR.teal,COLOR.navy]
+    pants_colors = [COLOR.khaki,COLOR.denim,COLOR.denim2,COLOR.gray]
+    shoe_colors = [COLOR.brown,COLOR.cocoa,COLOR.black]
 
     assets['worker'] = {}
-
     assets['worker']['normal'] = list()
-    wrkr_normal = pyglet.image.Animation.from_image_sequence(wrkr_grid[0:15:], 0.1)
-    for x in range(50):
-        sprite = cocos.sprite.Sprite(
-            wrkr_normal,
-        )
-        assets['worker']['normal'].append(sprite)
-
     assets['worker']['hammer'] = list()
-    wrkr_hammer = pyglet.image.Animation.from_image_sequence(wrkr_grid[16:23:], 0.1)
-    for x in range(50):
-        sprite = cocos.sprite.Sprite(
-            wrkr_hammer,
-        )
-        assets['worker']['hammer'].append(sprite)
-
     assets['worker']['money'] = list()
-    wrkr_money = pyglet.image.Animation.from_image_sequence(wrkr_grid[24:31:], 0.1)
-    for x in range(50):
-        sprite = cocos.sprite.Sprite(
-            wrkr_money,
-        )
-        assets['worker']['money'].append(sprite)
-
     assets['worker']['pick'] = list()
-    wrkr_pick = pyglet.image.Animation.from_image_sequence(wrkr_grid[32:39:], 0.1)
-    for x in range(50):
-        sprite = cocos.sprite.Sprite(
-            wrkr_pick,
-        )
-        assets['worker']['pick'].append(sprite)
-
     assets['worker']['phone'] = list()
-    wrkr_phone = pyglet.image.Animation.from_image_sequence(wrkr_grid[40:47:], 0.1)
-    for x in range(50):
-        sprite = cocos.sprite.Sprite(
-            wrkr_phone,
-        )
-        assets['worker']['phone'].append(sprite)
+    wrkr_total = 100
+    find_image("game/visualizer/assets/worker.png")
+    for i in range(wrkr_total):
+        wrkr = replace_colors(".temp/worker.png",wrkr_colors,[random.choice(skin_colors),
+                                                                               random.choice(shirt_1_colors),
+                                                                               random.choice(shirt_2_colors),
+                                                                               random.choice(pants_colors),
+                                                                               random.choice(shoe_colors)])
+        wrkr_grid = pyglet.image.ImageGrid(wrkr, 1, 48)
+        if i < wrkr_total/5:
+            wrkr_normal = pyglet.image.Animation.from_image_sequence(wrkr_grid[0:15:], 0.1, loop=True)
+            sprite = cocos.sprite.Sprite(wrkr_normal)
+            assets['worker']['normal'].append(sprite)
+        elif i < wrkr_total*2/5:
+            wrkr_hammer = pyglet.image.Animation.from_image_sequence(wrkr_grid[16:23:], 0.1, loop=True)
+            sprite = cocos.sprite.Sprite(wrkr_hammer)
+            assets['worker']['hammer'].append(sprite)
+        elif i < wrkr_total*3/5:
+            wrkr_money = pyglet.image.Animation.from_image_sequence(wrkr_grid[24:31:], 0.1, loop=True)
+            sprite = cocos.sprite.Sprite(wrkr_money)
+            assets['worker']['money'].append(sprite)
+        elif i < wrkr_total*4/5:
+            wrkr_pick = pyglet.image.Animation.from_image_sequence(wrkr_grid[32:39:], 0.1, loop=True)
+            sprite = cocos.sprite.Sprite(wrkr_pick)
+            assets['worker']['pick'].append(sprite)
+        else:
+            wrkr_phone = pyglet.image.Animation.from_image_sequence(wrkr_grid[40:47:], 0.1, loop=True)
+            sprite = cocos.sprite.Sprite(wrkr_phone)
+            assets['worker']['phone'].append(sprite)
+    clean_up()
     return assets

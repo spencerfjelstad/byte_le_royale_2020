@@ -10,14 +10,7 @@ class CityLevel:
     level_zero = 0
     level_one = 1
     level_two = 2
-
-
-class CityLocation:
-    plains = 0
-    desert = 1
-    mountains = 2
-    coastal = 3
-    radioactive_wasteland = 4
+    level_three = 3
 
 
 class CityType:
@@ -25,6 +18,9 @@ class CityType:
     healthy = 1
     sturdy = 2
     invested = 3
+    pyrophobic = 4
+    popular = 5
+    modern = 6
 
 
 class DamageScaling:

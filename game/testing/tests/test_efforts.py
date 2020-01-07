@@ -38,16 +38,16 @@ class TestEfforts(unittest.TestCase):
         self.test_effort_controller.handle_actions(self.player)
         for sensor in self.player.city.sensors.values():
             self.assertEqual(sensor.effort_remaining,
-                             GameStats.sensor_effort[SensorLevel.level_one] - TEST_SENSOR_AMOUNT)
+                             GameStats.sensor_upgrade_cost[SensorLevel.level_one] - TEST_SENSOR_AMOUNT)
 
     def test_population(self):
         TEST_POPULATION_AMOUNT = 20
-        self.player.city.population = 100
+        self.player.city.population = 50
         self.player.action.add_effort(ActionType.regain_population, TEST_POPULATION_AMOUNT)
 
         self.test_effort_controller.handle_actions(self.player)
         self.assertEqual(self.player.city.population,
-                         math.floor(GameStats.effort_population_multiplier * TEST_POPULATION_AMOUNT) + 100)
+                         math.floor(GameStats.effort_population_multiplier * TEST_POPULATION_AMOUNT) + 50)
 
     def test_structure(self):
         TEST_STRUCTURE_AMOUNT = 20
