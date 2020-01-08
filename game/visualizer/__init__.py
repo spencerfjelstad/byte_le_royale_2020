@@ -94,7 +94,9 @@ def create_scene(info, parser):
     # Generate layers
     health_layer = HealthBar(size, info)
     location_layer = LocationLayer(info, size, assets['location'])
+    city_road_layer = RoadLayer(size, info, assets['city'])
     city_layer = CityLayer(size, info, assets['city'])
+    city_back_layer = CityBackLayer(size, info, assets['city'])
     forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
     decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
     worker_layer = WorkerLayer(size, assets['worker'])
@@ -112,6 +114,8 @@ def create_scene(info, parser):
     scene = cocos.scene.Scene()
     scene.add(location_layer, 0)
     scene.add(city_layer, 4)
+    scene.add(city_back_layer, 3)
+    scene.add(city_road_layer, 2)
     scene.add(worker_layer, 4)
 
     scene.add(sensor_layer, 12)
@@ -119,7 +123,7 @@ def create_scene(info, parser):
     scene.add(fire_layer, 8)
     scene.add(tornado_layer, 8)
     scene.add(blizzard_layer, 8)
-    scene.add(earthquake_layer, 2)
+    scene.add(earthquake_layer, 8)
     scene.add(monster_layer, 8)
     scene.add(ufo_layer, 8)
 

@@ -56,15 +56,13 @@ def load(temp):
     }
 
     # City assets
-    city_0 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level0.png"))
-    city_1 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level1.png"))
-    city_2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level2.png"))
-    city_3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_level3.png"))
+    city_road = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_road.png"))
+    city_front = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_front.png"))
+    city_back = cocos.sprite.Sprite(find_image("game/visualizer/assets/city_assets/city_back.png"))
     assets['city'] = {
-        "0": city_0,
-        "1": city_1,
-        "2": city_2,
-        "3": city_3
+        "0": city_road,
+        "1": city_front,
+        "2": city_back
     }
 
     # Disaster assets
@@ -92,7 +90,10 @@ def load(temp):
     assets['forecast']['monster'] = list()
     assets['forecast']['ufo'] = list()
     assets['forecast']['clear'] = list()
-    for i in range(5):
+    assets['forecast']['clear2'] = list()
+    assets['forecast']['clear3'] = list()
+
+    for i in range(7):
         fore_fire = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_fire.png"))
         fore_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_tornado.png"))
         fore_blizzard = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_blizzard.png"))
@@ -100,6 +101,8 @@ def load(temp):
         fore_monster = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_monster.png"))
         fore_ufo = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_ufo.png"))
         fore_clear = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_clear.png"))
+        fore_clear2 = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_clear2.png"))
+        fore_clear3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_clear3.png"))
         assets['forecast']['fire'].append(fore_fire)
         assets['forecast']['tornado'].append(fore_tornado)
         assets['forecast']['blizzard'].append(fore_blizzard)
@@ -107,6 +110,8 @@ def load(temp):
         assets['forecast']['monster'].append(fore_monster)
         assets['forecast']['ufo'].append(fore_ufo)
         assets['forecast']['clear'].append(fore_clear)
+        assets['forecast']['clear2'].append(fore_clear2)
+        assets['forecast']['clear3'].append(fore_clear3)
 
     # Sensor assets
     assets['sensor'] = {
