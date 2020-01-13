@@ -78,7 +78,7 @@ def timer(interval):
         intval = 0.1
         for key, item in (turn_info['rates'].items()):
             if item == 0:
-                intval = 2
+                intval = 3
 
         clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=intval)
@@ -113,23 +113,23 @@ def create_scene(info, parser):
     # Add layers to
     scene = cocos.scene.Scene()
     scene.add(location_layer, 0)
-    scene.add(city_layer, 4)
-    scene.add(city_back_layer, 3)
-    scene.add(city_road_layer, 2)
-    scene.add(worker_layer, 4)
+    scene.add(city_layer, 18)
+    scene.add(city_back_layer, 15)
+    scene.add(city_road_layer, 10)
+    scene.add(worker_layer, 26)
 
-    scene.add(sensor_layer, 12)
+    scene.add(sensor_layer, 25)
 
-    scene.add(fire_layer, 8)
-    scene.add(tornado_layer, 8)
-    scene.add(blizzard_layer, 8)
-    scene.add(earthquake_layer, 8)
-    scene.add(monster_layer, 8)
-    scene.add(ufo_layer, 8)
+    scene.add(fire_layer, 20)
+    scene.add(tornado_layer, 20)
+    scene.add(blizzard_layer, 20)
+    scene.add(earthquake_layer, 20)
+    scene.add(monster_layer, 16)
+    scene.add(ufo_layer, 20)
 
-    scene.add(health_layer, 10)
-    scene.add(forecast_layer, 10)
-    scene.add(decree_layer, 10)
+    scene.add(health_layer, 100)
+    scene.add(forecast_layer, 100)
+    scene.add(decree_layer, 100)
     return scene
 
 # Create exit method for use with schedule_interval() such that nothing will print when used together
