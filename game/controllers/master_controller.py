@@ -125,7 +125,6 @@ class MasterController(Controller):
         self.destruction_controller.handle_actions(client)
         self.disaster_controller.handle_actions(client)
 
-
         if client.city.structure <= 0:
             self.print("Game is ending because city has been destroyed.")
             self.game_over = True
@@ -153,7 +152,8 @@ class MasterController(Controller):
         data = {
             "Team": client.team_name,  # TODO: Replace with an engine-safe ID of each team
             "Score": turn,
-            "Events": self.event_controller.get_events()
+            "Events": self.event_controller.get_events(),
+            "Error": client.error,
         }
         return data
 

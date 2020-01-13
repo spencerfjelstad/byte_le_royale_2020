@@ -42,5 +42,3 @@ class Client(UserClient):
 
         corresponding_decree = self.SENSOR_DECREE_MAPPINGS[highest_sensor.sensor_type]
         actions.set_decree(corresponding_decree)
-
-        self.print(city.gold, city.resources)
