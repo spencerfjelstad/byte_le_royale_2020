@@ -95,6 +95,7 @@ class Server:
                     self.db_collection.update_one({'_id': id}, {'$set': {'temp_total': 0}})
                     self.db_collection.update_one({'_id': id}, {'$set': {'total_runs': 0}})
                     self.db_collection.update_one({'_id': id}, {'$set': {'logs': None}})
+                    self.db_collection.update_one({'_id': id}, {'$set': {'error': None}})
 
 
     async def handle_client(self, reader, writer):
@@ -171,7 +172,8 @@ class Server:
                                        'best_run': 0,
                                        'temp_total': 0,
                                        'total_runs': 0,
-                                       'logs': None})
+                                       'logs': None,
+                                       'error': None})
 
         self.log(f'{writer.get_extra_info("peername")} registered teamname: {teamname} with ID: {vID}')
 
@@ -205,6 +207,8 @@ class Server:
         self.db_collection.update_one({'_id': tid}, {'$set': {'best_run': 0}})
         self.db_collection.update_one({'_id': tid}, {'$set': {'temp_total': 0}})
         self.db_collection.update_one({'_id': tid}, {'$set': {'total_runs': 0}})
+        self.db_collection.update_one({'_id': tid}, {'$set': {'logs': None}})
+        self.db_collection.update_one({'_id': tid}, {'$set': {'error': None}})
 
     async def send_stats(self, reader, writer):
         self.log(f'Attempting stat sending with {writer.get_extra_info("peername")}')
@@ -225,6 +229,9 @@ class Server:
         stats += f'Average Run: {client["average_run"]}\n'
         stats += f'Best Run: {client["best_run"]}\n'
         stats += f'Total Runs: {client["total_runs"]}\n'
+
+        if client['error'] is not None:
+            stats += f'\nSubmitted client has an error:\n{client["error"]}\n'
 
         await asyncio.sleep(0.1)
 
@@ -374,6 +381,9 @@ class Server:
 
         # Update average run amount
         self.db_collection.update_one({'_id': client}, {'$set': {'average_run': entry['temp_total'] / max(1, entry['total_runs'])}})
+
+        if 'Error' in results and results['Error'] is not None:
+            self.db_collection.update_one({'_id': client}, {'$set': {'error': results['Error']}})
 
         shutil.rmtree(end_path)
 
