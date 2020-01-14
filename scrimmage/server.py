@@ -27,9 +27,14 @@ class Server:
         self.loop_continue = True
 
         self.max_simultaneous_runs = 4
+        self.max_runs = 20
         self.current_running = [x for x in range(self.max_simultaneous_runs)]
         self.runner_queue = list()
         self.starting_runs = 20
+
+        # Flags
+        self.disable_leaderboard = False
+        self.disable_visualizer = False
 
         self.loop = asyncio.get_event_loop()
         self.coro = asyncio.start_server(self.handle_client, IP, PORT, loop=self.loop)
@@ -97,6 +102,19 @@ class Server:
                     self.db_collection.update_one({'_id': id}, {'$set': {'logs': None}})
                     self.db_collection.update_one({'_id': id}, {'$set': {'error': None}})
 
+            # Leaderboard enabling / disabling
+            elif 'enable_leaderboard' in com:
+                self.disable_leaderboard = False
+
+            elif 'disable_leaderboard' in com:
+                self.disable_leaderboard = True
+
+            # Visualizer enabling / disabling
+            elif 'enable_visualizer' in com:
+                self.disable_visualizer = False
+
+            elif 'disable_visualizer' in com:
+                self.disable_visualizer = True
 
     async def handle_client(self, reader, writer):
         try:
@@ -228,7 +246,7 @@ class Server:
         stats += f'Submission: {client["submissions"]}\n'
         stats += f'Average Run: {client["average_run"]}\n'
         stats += f'Best Run: {client["best_run"]}\n'
-        stats += f'Total Runs: {client["total_runs"]}\n'
+        stats += f'Total Runs: {client["total_runs"]}/{self.max_runs}\n'
 
         if client['error'] is not None:
             stats += f'\nSubmitted client has an error:\n{client["error"]}\n'
@@ -279,6 +297,9 @@ class Server:
 
         out_string += f'Best Run: {best_team}, {best_run}\n'
 
+        if self.disable_leaderboard:
+            out_string = 'Leaderboard has been disabled at this time.'
+
         await asyncio.sleep(0.1)
 
         # Send info to client
@@ -309,7 +330,7 @@ class Server:
             if len(self.runner_queue) == 0 and len(self.current_running) == self.max_simultaneous_runs:
                 # Repopulate queue
                 for entry in self.db_collection.find({}):
-                    if entry['code_file'] is None or entry['total_runs'] >= 20:
+                    if entry['code_file'] is None or entry['total_runs'] >= self.max_runs:
                         continue
                     self.runner_queue.append(entry['_id'])
 
@@ -394,6 +415,10 @@ class Server:
         previous_team = None
 
         while self.loop_continue:
+            # Quick stop loop is visualizer is disabled
+            if self.disable_visualizer:
+                continue
+
             all_clients = [x for x in self.db_collection.find({})]
             if len(all_clients) <= 0:
                 continue
