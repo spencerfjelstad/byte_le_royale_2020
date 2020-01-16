@@ -40,6 +40,8 @@ def main():
     results = dict()
     # For each client in the list, run them through each match
     for entry in db_collection.find({}):
+        print(f'Working on team {entry["teamname"]}')
+        
         internal_results = list()
 
         # Put the client in the folder
@@ -80,8 +82,10 @@ def main():
                 best_run = res['Score']
                 best_log = res['Logs']
 
-        average_score = statistics.mean([x['Score'] for x in internal_results])
-        median_score = statistics.median([x['Score'] for x in internal_results])
+        
+        score_count = len([x['Score'] for x in internal_results])
+        average_score = statistics.mean([x['Score'] for x in internal_results]) if score_count > 0 else 0
+        median_score = statistics.median([x['Score'] for x in internal_results]) if score_count > 0 else 0
 
         results[entry['teamname']] = {'Best Score': best_run,
                                       'Average Score': average_score,
@@ -102,8 +106,10 @@ def main():
         # Get code file
         cf = [x for x in db_collection.find({'teamname': team})][0]['code_file']
 
-        binary_to_file(f'{results_path}/{team}/{cf["name"]}', cf['contents'])
-        binary_to_file(f'{results_path}/{team}/logs.zip', [res['Best log']])
+        if cf is not None:
+            binary_to_file(f'{results_path}/{team}/{cf["name"]}', cf['contents'])
+        if res is not None and res['Best log'] is not None:
+            binary_to_file(f'{results_path}/{team}/logs.zip', [res['Best log']])
 
         res.pop('Best log', None)
 
