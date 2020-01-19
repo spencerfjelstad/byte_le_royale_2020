@@ -17,6 +17,7 @@ from game.visualizer.disaster_layer import *
 from game.visualizer.worker_sprites import *
 from game.visualizer.load import *
 from game.visualizer.sensor_sprites import *
+from game.visualizer.structure_assets import *
 
 # Global variables needed for scene creation and keeping track of turns
 size = DISPLAY_SIZE
@@ -101,6 +102,15 @@ def create_scene(info, parser):
     decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
     worker_layer = WorkerLayer(size, assets['worker'])
 
+    # Side structures
+    print_layer = PrintLayer(size, info, assets['struct'])
+    bigcanoe_layer = BigCanoeLayer(size, info, assets['struct'])
+    billboard_layer = BillBoardLayer(size, info, assets['struct'])
+    gelato_layer = GelatoLayer(size, info, assets['struct'])
+    mint_layer = MintLayer(size, info, assets['struct'])
+    police_layer = PoliceLayer(size, info, assets['struct'])
+
+    # Disasters
     fire_layer = FireLayer(size, info, assets['disaster'])
     tornado_layer = TornadoLayer(size, info, assets['disaster'])
     blizzard_layer = BlizzardLayer(size, info, assets['disaster'])
@@ -118,8 +128,17 @@ def create_scene(info, parser):
     scene.add(city_road_layer, 10)
     scene.add(worker_layer, 26)
 
-    scene.add(sensor_layer, 25)
+    # scene.add(sensor_layer, 25)
 
+    # Side Structures
+    scene.add(print_layer, 19)
+    scene.add(bigcanoe_layer, 19)
+    scene.add(billboard_layer, 19)
+    scene.add(gelato_layer, 19)
+    scene.add(mint_layer, 19)
+    scene.add(police_layer, 19)
+
+    # Disasters
     scene.add(fire_layer, 20)
     scene.add(tornado_layer, 20)
     scene.add(blizzard_layer, 20)

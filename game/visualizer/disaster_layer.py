@@ -22,8 +22,8 @@ class FireLayer(cocos.layer.Layer):
         # If the rate is 0, that means the Fire happened, so draw to screen
         if rates == 0:
             self.fire = self.images["fire"]
-            self.fire_x = int(self.display[0] - self.fire.width / 2)
-            self.fire_y = int(self.display[1] / 4)
+            self.fire_x = int(self.display[0] / 2)
+            self.fire_y = int(self.display[1] / 2)
 
             self.fire.position = (self.fire_x, self.fire_y)
             self.add(self.fire)

@@ -65,8 +65,38 @@ def load(temp):
         "2": city_back
     }
 
+    # Side Structures
+    struct_3dprint_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/3dprint_sheet.png"), 1, 2)
+    struct_3dprint = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_3dprint_grid[0::], 0))
+
+    struct_bigcanoe_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/bigcanoe_sheet.png"), 1, 2)
+    struct_bigcanoe = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_bigcanoe_grid[0::], 0))
+
+    struct_billboard_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/billboard_sheet.png"), 1, 2)
+    struct_billboard = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_billboard_grid[0::], 0))
+
+    struct_gelato_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/gelato_sheet.png"), 1, 2)
+    struct_gelato = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_gelato_grid[0::], 0))
+
+    struct_mint_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/mint_sheet.png"), 1, 2)
+    struct_mint = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_mint_grid[0::], 0))
+
+    struct_police_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/police_sheet.png"), 1, 2)
+    struct_police = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_police_grid[0::], 0))
+
+    assets['struct'] = {
+        "3dprint": struct_3dprint,
+        "bigcanoe": struct_bigcanoe,
+        "billboard": struct_billboard,
+        "gelato": struct_gelato,
+        "mint": struct_mint,
+        "police": struct_police
+    }
+
     # Disaster assets
-    dis_fire = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/fire.png"))
+    dis_fire_gird = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/fire_sheet.png"), 1, 5)
+    dis_fire = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_fire_gird[0::], 0.1))
+
     dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
     dis_blizzard = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/blizzard.png"))
     dis_earthquake = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/earthquake.png"))
