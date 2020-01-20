@@ -59,7 +59,7 @@ def start(gamma, fullscreen=False, endgame=True):
         clock.schedule_interval(callback=timer, interval=0)
 
         first_scene = create_scene(turn_info, log_parser)
-        first_scene.add(clock)
+        first_scene.add(clock,100)
         director.run(first_scene)
 
 
@@ -87,7 +87,7 @@ def timer(interval):
         clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=intval)
         current_scene = create_scene(turn_info, log_parser)
-        current_scene.add(clock, 10)
+        current_scene.add(clock, 100)
 
         director.replace(current_scene)
         turn += 1
