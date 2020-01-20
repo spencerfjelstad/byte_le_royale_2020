@@ -34,6 +34,9 @@ def start(gamma, fullscreen=False, endgame=True):
     end_boolean = endgame
 
     log_parser = GameLogParser("logs/")
+    if log_parser.turns < 1:
+        print("Your code is broken and no turns were processed. Try again later.")
+        sys.exit()
 
     # Initialize cocos
     director.init(width=size[0], height=size[1], caption="Byte-le Royale: Disaster Dispatcher", fullscreen=fullscreen)
