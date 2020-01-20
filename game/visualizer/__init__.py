@@ -143,7 +143,7 @@ def create_scene(info, parser):
 
     # Disasters
     scene.add(fire_layer, 20)
-    scene.add(tornado_layer, 20)
+    scene.add(tornado_layer, 27)
     scene.add(blizzard_layer, 20)
     scene.add(earthquake_layer, 20)
     scene.add(monster_layer, 16)
