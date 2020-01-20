@@ -22,8 +22,8 @@ class FireLayer(cocos.layer.Layer):
         # If the rate is 0, that means the Fire happened, so draw to screen
         if rates == 0:
             self.fire = self.images["fire"]
-            self.fire_x = int(self.display[0] - self.fire.width / 2)
-            self.fire_y = int(self.display[1] / 4)
+            self.fire_x = int(self.display[0] / 2)
+            self.fire_y = int(self.display[1] / 2)
 
             self.fire.position = (self.fire_x, self.fire_y)
             self.add(self.fire)
@@ -128,11 +128,11 @@ class MonsterLayer(cocos.layer.Layer):
         # If the rate is 0, that means the monster happened, so draw to screen
         if rates == 0:
             self.monster = self.images['monster']
-            self.monster_x = int(self.display[0] / 2)
+            self.monster_x = int(self.display[0] / 4)
             self.monster_y = int(self.display[1])
 
             self.monster.position = (self.monster_x, self.monster_y)
-            self.monster.do(MoveBy((self.monster_x, -self.monster_y / 2), 2))
+            self.monster.do(MoveBy((self.monster_x, -400), 3))
             self.add(self.monster)
 
 

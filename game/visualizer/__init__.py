@@ -17,6 +17,7 @@ from game.visualizer.disaster_layer import *
 from game.visualizer.worker_sprites import *
 from game.visualizer.load import *
 from game.visualizer.sensor_sprites import *
+from game.visualizer.structure_assets import *
 
 # Global variables needed for scene creation and keeping track of turns
 size = DISPLAY_SIZE
@@ -78,7 +79,7 @@ def timer(interval):
         intval = 0.1
         for key, item in (turn_info['rates'].items()):
             if item == 0:
-                intval = 2
+                intval = 3
 
         clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=intval)
@@ -94,11 +95,22 @@ def create_scene(info, parser):
     # Generate layers
     health_layer = HealthBar(size, info)
     location_layer = LocationLayer(info, size, assets['location'])
+    city_road_layer = RoadLayer(size, info, assets['city'])
     city_layer = CityLayer(size, info, assets['city'])
+    city_back_layer = CityBackLayer(size, info, assets['city'])
     forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
     decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
     worker_layer = WorkerLayer(size, assets['worker'])
 
+    # Side structures
+    print_layer = PrintLayer(size, info, assets['struct'])
+    bigcanoe_layer = BigCanoeLayer(size, info, assets['struct'])
+    billboard_layer = BillBoardLayer(size, info, assets['struct'])
+    gelato_layer = GelatoLayer(size, info, assets['struct'])
+    mint_layer = MintLayer(size, info, assets['struct'])
+    police_layer = PoliceLayer(size, info, assets['struct'])
+
+    # Disasters
     fire_layer = FireLayer(size, info, assets['disaster'])
     tornado_layer = TornadoLayer(size, info, assets['disaster'])
     blizzard_layer = BlizzardLayer(size, info, assets['disaster'])
@@ -111,21 +123,32 @@ def create_scene(info, parser):
     # Add layers to
     scene = cocos.scene.Scene()
     scene.add(location_layer, 0)
-    scene.add(city_layer, 4)
-    scene.add(worker_layer, 4)
+    scene.add(city_layer, 18)
+    scene.add(city_back_layer, 15)
+    scene.add(city_road_layer, 10)
+    scene.add(worker_layer, 26)
 
-    scene.add(sensor_layer, 12)
+    # scene.add(sensor_layer, 25)
 
-    scene.add(fire_layer, 8)
-    scene.add(tornado_layer, 8)
-    scene.add(blizzard_layer, 8)
-    scene.add(earthquake_layer, 2)
-    scene.add(monster_layer, 8)
-    scene.add(ufo_layer, 8)
+    # Side Structures
+    scene.add(print_layer, 19)
+    scene.add(bigcanoe_layer, 19)
+    scene.add(billboard_layer, 19)
+    scene.add(gelato_layer, 19)
+    scene.add(mint_layer, 19)
+    scene.add(police_layer, 19)
 
-    scene.add(health_layer, 10)
-    scene.add(forecast_layer, 10)
-    scene.add(decree_layer, 10)
+    # Disasters
+    scene.add(fire_layer, 20)
+    scene.add(tornado_layer, 20)
+    scene.add(blizzard_layer, 20)
+    scene.add(earthquake_layer, 20)
+    scene.add(monster_layer, 16)
+    scene.add(ufo_layer, 20)
+
+    scene.add(health_layer, 100)
+    scene.add(forecast_layer, 100)
+    scene.add(decree_layer, 100)
     return scene
 
 # Create exit method for use with schedule_interval() such that nothing will print when used together
