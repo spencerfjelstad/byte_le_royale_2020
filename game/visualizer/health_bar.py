@@ -7,17 +7,17 @@ class HealthBar(cocos.layer.Layer):
         self.info = turn_info
         super().__init__()
         x= 200
-        p_y= 100
-        s_y= 70
+        p_y= 47
+        s_y= 18
 
         population = int(self.info['player'].get('city').get('population'))
         structure = int(self.info['player'].get('city').get('structure'))
 
-        pop_label = cocos.text.Label('Population: ', font_name='Comic Sans', font_size=25,
+        pop_label = cocos.text.Label('Population: ', font_name='Comic Sans', font_size=15,
                                      anchor_x='right', anchor_y='center')
         pop_label.position = x, p_y
 
-        struct_label = cocos.text.Label('Structure: ', font_name='Comic Sans', font_size=25,
+        struct_label = cocos.text.Label('Structure: ', font_name='Comic Sans', font_size=15,
                                         anchor_x='right', anchor_y='center')
         struct_label.position = x, s_y
 
@@ -29,8 +29,8 @@ class HealthBar(cocos.layer.Layer):
         self.add(pop_label)
         self.add(struct_label)
 
-        pop_bar = cocos.draw.Line(p_start, p_end, color=(0,0,255,255), stroke_width=25)
-        struct_bar = cocos.draw.Line(s_start, s_end, color=(255,0,0,255), stroke_width=25)
+        pop_bar = cocos.draw.Line(p_start, p_end, color=(0,0,255,255), stroke_width=15)
+        struct_bar = cocos.draw.Line(s_start, s_end, color=(255,0,0,255), stroke_width=15)
 
         self.add(struct_bar)
         self.add(pop_bar)
