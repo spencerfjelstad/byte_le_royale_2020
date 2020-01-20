@@ -7,11 +7,6 @@ class RoadLayer(cocos.layer.Layer):
         self.info = turn_info
         self.images = assets
         super().__init__()
-        structure = 0
-        try:
-            structure = int(self.info['player'].get('city').get('structure'))
-        except:
-            print("Structure is NoneType")
 
         # Depending structure draw_correct sprite
         self.city = self.images["0"]
@@ -35,13 +30,7 @@ class CityLayer(cocos.layer.Layer):
         self.info = turn_info
         self.images = assets
         super().__init__()
-        structure = 0
-        try:
-            structure = int(self.info['player'].get('city').get('structure'))
-        except:
-            print("Structure is NoneType")
 
-        # Depending structure draw_correct sprite
         self.city = self.images["1"]
 
         # Anchor Point of the sprite is at the center of the sprite
@@ -63,11 +52,6 @@ class CityBackLayer(cocos.layer.Layer):
         self.info = turn_info
         self.images = assets
         super().__init__()
-        structure = 0
-        try:
-            structure = int(self.info['player'].get('city').get('structure'))
-        except:
-            print("Structure is NoneType")
 
         # Depending structure draw_correct sprite
         self.city = self.images["2"]
