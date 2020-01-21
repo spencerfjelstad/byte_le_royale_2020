@@ -44,3 +44,13 @@ class ForecastLayer(cocos.layer.Layer):
             else:
                 spr.position = self.display[0]/2+(i+1)*64-172, self.display[1]-50
             self.add(spr)
+
+
+class ForecastHolderLayer(cocos.layer.Layer):
+    def __init__(self, assets):
+        self.images = assets
+        super().__init__()
+
+        spr = self.images['forecast_hold']
+        spr.position = 660, 662
+        self.add(spr)

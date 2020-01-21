@@ -14,7 +14,7 @@ class TimeLayer(cocos.layer.Layer):
             font_name="Comic Sans",
             font_size=20,
             anchor_x="center",
-            position=(self.display[0]/2, self.display[1]-116)
+            position=(self.display[0]/2, self.display[1]-126)
         )
         self.add(team_name_label)
 

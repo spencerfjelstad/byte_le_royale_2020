@@ -102,6 +102,7 @@ def create_scene(info, parser):
     city_layer = CityLayer(size, info, assets['city'])
     city_back_layer = CityBackLayer(size, info, assets['city'])
     forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
+    forecast_hold_layer = ForecastHolderLayer(assets['forecast_holder'])
     decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
     decree_hold_layer = DecreeHolderLayer(assets['decree'])
     worker_layer = WorkerLayer(size, assets['worker'])
@@ -152,6 +153,7 @@ def create_scene(info, parser):
 
     scene.add(health_layer, 100)
     scene.add(forecast_layer, 100)
+    scene.add(forecast_hold_layer, 99)
     scene.add(decree_layer, 100)
     scene.add(decree_hold_layer,99)
     return scene

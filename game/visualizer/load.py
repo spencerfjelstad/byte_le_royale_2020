@@ -159,6 +159,12 @@ def load(temp):
         assets['forecast']['clear2'].append(fore_clear2)
         assets['forecast']['clear3'].append(fore_clear3)
 
+        fore_holder_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/forecast_assets/forecast_hold.png"), 1, 2)
+        fore_holder = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fore_holder_grid[0::], 0.1))
+        assets["forecast_holder"] = {
+            "forecast_hold" : fore_holder
+        }
+
     # Sensor assets
     assets['sensor'] = {
         "0":{},
