@@ -39,19 +39,19 @@ class Debug:
 
 
 # Game Generation ------------------------------------------------------------------------------------------------------
-APPROXIMATE_DISASTER_COUNT = 150    # approximate number of disasters to be spawned over the course of time
-DISASTER_BIAS = 0.3                 # percent of how many disasters will be located in the first half of the game, float less than 1 and greater than 0
+APPROXIMATE_DISASTER_COUNT = 250    # approximate number of disasters to be spawned over the course of time
+DISASTER_BIAS = 0.35                # percent of how many disasters will be located in the first half of the game, float less than 1 and greater than 0
 BIASING_DEPTH = 16                  # how deep the recursive biasing strategy will go, higher is more accurate
 BIAS_MARGIN_OF_ERROR = 0.8          # range around DISASTER_BIAS where the biasing will be accepted, float less than 1 and greater than 0
 
 # Breakdown percentages of approximately how many disasters of each type will spawn (must total to 1)
 DISASTER_WEIGHTS = {
-    DisasterType.fire: 0.25,
-    DisasterType.tornado: 0.25,
+    DisasterType.fire: 0.30,
+    DisasterType.tornado: 0.30,
     DisasterType.blizzard: 0.15,
     DisasterType.earthquake: 0.15,
-    DisasterType.monster: 0.10,
-    DisasterType.ufo: 0.10,
+    DisasterType.monster: 0.05,
+    DisasterType.ufo: 0.05,
 }
 
 STARTING_FREE_TURNS = 10            # how many turns at the beginning will be guaranteed free of disasters
