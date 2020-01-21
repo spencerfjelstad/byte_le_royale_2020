@@ -83,11 +83,11 @@ def generate():
     for turn, info in disaster_rates.items():
         for disaster in info['disasters']:
             level = DisasterLevel.level_zero
-            if turn >= 1500:
+            if turn >= GameStats.disaster_level_markers[disaster][DisasterLevel.level_three]:
                 level = DisasterLevel.level_three
-            elif turn >= 1000:
+            elif turn >= GameStats.disaster_level_markers[disaster][DisasterLevel.level_two]:
                 level = DisasterLevel.level_two
-            elif turn >= 500:
+            elif turn >= GameStats.disaster_level_markers[disaster][DisasterLevel.level_one]:
                 level = DisasterLevel.level_one
 
             info['disasters'] = [{'disaster': disaster, 'level': level}]

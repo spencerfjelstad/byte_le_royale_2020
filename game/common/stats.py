@@ -184,6 +184,46 @@ class GameStats:
         },
     }
 
+    # Dictionary of when the disasters will start to be the given level
+    disaster_level_markers = {
+        DisasterType.fire: {
+            DisasterLevel.level_zero: 0,
+            DisasterLevel.level_one: 250,
+            DisasterLevel.level_two: 500,
+            DisasterLevel.level_three: 750
+        },
+        DisasterType.tornado: {
+            DisasterLevel.level_zero: 0,
+            DisasterLevel.level_one: 300,
+            DisasterLevel.level_two: 600,
+            DisasterLevel.level_three: 900
+        },
+        DisasterType.blizzard: {
+            DisasterLevel.level_zero: 0,
+            DisasterLevel.level_one: 500,
+            DisasterLevel.level_two: 750,
+            DisasterLevel.level_three: 1000
+        },
+        DisasterType.earthquake: {
+            DisasterLevel.level_zero: 0,
+            DisasterLevel.level_one: 550,
+            DisasterLevel.level_two: 850,
+            DisasterLevel.level_three: 1150
+        },
+        DisasterType.monster: {
+            DisasterLevel.level_zero: 0,
+            DisasterLevel.level_one: 750,
+            DisasterLevel.level_two: 1000,
+            DisasterLevel.level_three: 1250
+        },
+        DisasterType.ufo: {
+            DisasterLevel.level_zero: 0,
+            DisasterLevel.level_one: 800,
+            DisasterLevel.level_two: 1100,
+            DisasterLevel.level_three: 1400
+        },
+    }
+
     # When converting effort to one of the below, multiply the effort amount by the multiplier
     # Keep multiplier above 0 and close to 1
     effort_gold_multiplier = 1
