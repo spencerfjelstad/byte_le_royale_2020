@@ -65,7 +65,6 @@ class EventType:
     city_upgrade = 0
     sensor_upgrade = 1
     building_upgrade = 2
-
     disaster_spawned = 3
     disaster_eliminated = 4
 
