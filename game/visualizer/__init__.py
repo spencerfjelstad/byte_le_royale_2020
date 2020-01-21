@@ -35,6 +35,9 @@ def start(gamma, fullscreen=False, endgame=True):
     end_boolean = endgame
 
     log_parser = GameLogParser("logs/")
+    if len(log_parser.turns) < 1:
+        print("Your code is broken and no turns were processed. Try again later.")
+        sys.exit()
 
     # Initialize cocos
     director.init(width=size[0], height=size[1], caption="Byte-le Royale: Disaster Dispatcher", fullscreen=fullscreen)
@@ -56,7 +59,7 @@ def start(gamma, fullscreen=False, endgame=True):
         clock.schedule_interval(callback=timer, interval=0)
 
         first_scene = create_scene(turn_info, log_parser)
-        first_scene.add(clock)
+        first_scene.add(clock,100)
         director.run(first_scene)
 
 
@@ -84,7 +87,7 @@ def timer(interval):
         clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=intval)
         current_scene = create_scene(turn_info, log_parser)
-        current_scene.add(clock, 10)
+        current_scene.add(clock, 100)
 
         director.replace(current_scene)
         turn += 1
@@ -100,6 +103,7 @@ def create_scene(info, parser):
     city_back_layer = CityBackLayer(size, info, assets['city'])
     forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
     decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
+    decree_hold_layer = DecreeHolderLayer(assets['decree'])
     worker_layer = WorkerLayer(size, assets['worker'])
 
     # Side structures
@@ -140,7 +144,7 @@ def create_scene(info, parser):
 
     # Disasters
     scene.add(fire_layer, 20)
-    scene.add(tornado_layer, 20)
+    scene.add(tornado_layer, 27)
     scene.add(blizzard_layer, 20)
     scene.add(earthquake_layer, 20)
     scene.add(monster_layer, 16)
@@ -149,6 +153,7 @@ def create_scene(info, parser):
     scene.add(health_layer, 100)
     scene.add(forecast_layer, 100)
     scene.add(decree_layer, 100)
+    scene.add(decree_hold_layer,99)
     return scene
 
 # Create exit method for use with schedule_interval() such that nothing will print when used together

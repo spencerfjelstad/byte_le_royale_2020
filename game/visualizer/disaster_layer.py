@@ -103,7 +103,7 @@ class EarthquakeLayer(cocos.layer.Layer):
         if rates == 0:
             self.earthquake = self.images['earthquake']
             self.earthquake_x = int(self.display[0] / 2)
-            self.earthquake_y = int(self.display[1] / 2)
+            self.earthquake_y = 104
 
             self.earthquake.position = (self.earthquake_x, self.earthquake_y)
             self.add(self.earthquake)
