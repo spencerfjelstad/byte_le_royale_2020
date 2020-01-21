@@ -1,5 +1,5 @@
 import cocos
-
+from game.common.enums import *
 
 class DecreeLayer(cocos.layer.Layer):
     def __init__(self, turn, display_size, log_parser, assets):
@@ -25,6 +25,7 @@ class DecreeLayer(cocos.layer.Layer):
         success_label = cocos.text.Label("Protected!",font_name='Comic Sans',font_size=16,anchor_x='center',position=(50,self.display[1]-100))
 
         if len(current_turn['events']) > 0:
-            disaster = current_turn['events'][0].get('disaster').get('disaster_type')
+            if current_turn['events'][0].get('event_type') == EventType.disaster_spawned:
+                disaster = current_turn['events'][0].get('disaster').get('disaster_type')
         if int(decree) == disaster:
             self.add(success_label)
