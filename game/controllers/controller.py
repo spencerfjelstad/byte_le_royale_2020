@@ -6,7 +6,7 @@ class Controller:
 
     def __init__(self):
         self.debug_level = DebugLevel.controller
-        self.debug = True
+        self.debug = False
 
     def print(self, *args):
         if self.debug and Debug.level >= self.debug_level:
