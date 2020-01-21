@@ -15,8 +15,9 @@ class EndLayer(cocos.layer.Layer):
             anchor_y='center'
 
         )
-        label.position = self.display[0]/2, self.display[1]/2+100
+        label.position = self.display[0]/2, self.display[1]/2+300
         self.add(label)
 
         # Line graph
-        self.add(LineGraph([6,48,367], 200,100, parser))
+        # self.add(LineGraph([6,48,367], 200,100, parser))
+        self.add(LineGraph(parser,self.display[0]-100,self.display[1]-100-100,50,50))
