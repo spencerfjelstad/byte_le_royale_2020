@@ -252,7 +252,7 @@ def shutdown(reason="", source='Engine_error'):
         print(f"\nGame has ended due to {source}.")
         os._exit(1)
     else:
-        print("\nGame has successfully ended.")
+        print(f"\nGame has successfully ended. The city lasted {turn_number} turns.")
         os._exit(0)
 
 

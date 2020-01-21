@@ -30,7 +30,7 @@ def generate():
     disaster_order = nprandom.choice([DisasterType.fire, DisasterType.tornado, DisasterType.blizzard,
                                       DisasterType.earthquake, DisasterType.monster, DisasterType.ufo],
                                      disaster_count,
-                                     DISASTER_WEIGHTS)
+                                     p=list(DISASTER_WEIGHTS.values()))
     disaster_order = [int(x) for x in disaster_order]
 
     # Insert disasters into the disaster slots

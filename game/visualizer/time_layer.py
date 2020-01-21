@@ -12,9 +12,9 @@ class TimeLayer(cocos.layer.Layer):
         team_name_label = cocos.text.Label(
             self.info['player']['team_name'],
             font_name="Comic Sans",
-            font_size=32,
+            font_size=20,
             anchor_x="center",
-            position=(self.display[0]/2, self.display[1]-100)
+            position=(self.display[0]/2, self.display[1]-116)
         )
         self.add(team_name_label)
 
@@ -32,11 +32,11 @@ class TimeLayer(cocos.layer.Layer):
         gold_label = cocos.text.Label(
             f"Gold: {gold}",
             font_name="Comic Sans",
-            font_size=25,
+            font_size=15,
             color=(255,215,0,255),
             anchor_x="right"
         )
-        gold_label.position = self.display[0], self.display[1] - 100
+        gold_label.position = self.display[0]-8, 32
 
         self.add(turn_label)
         self.add(gold_label)
