@@ -61,19 +61,21 @@ class MasterController(Controller):
     def interpret_current_turn_data(self, client, world, turn):
         # Turn disaster occurrence into a real disaster
         for disaster in world['disasters']:
+            d = disaster['disaster']
+            l = disaster['level']
             dis = None
-            if disaster is DisasterType.earthquake:
-                dis = Earthquake()
-            elif disaster is DisasterType.fire:
-                dis = Fire()
-            elif disaster is DisasterType.blizzard:
-                dis = Blizzard()
-            elif disaster is DisasterType.monster:
-                dis = Monster()
-            elif disaster is DisasterType.tornado:
-                dis = Tornado()
-            elif disaster is DisasterType.ufo:
-                dis = Ufo()
+            if d is DisasterType.earthquake:
+                dis = Earthquake(l)
+            elif d is DisasterType.fire:
+                dis = Fire(l)
+            elif d is DisasterType.blizzard:
+                dis = Blizzard(l)
+            elif d is DisasterType.monster:
+                dis = Monster(l)
+            elif d is DisasterType.tornado:
+                dis = Tornado(l)
+            elif d is DisasterType.ufo:
+                dis = Ufo(l)
 
             if dis is None:
                 raise TypeError(f'Attempt to create disaster failed because given type: {disaster}, does not exist.')

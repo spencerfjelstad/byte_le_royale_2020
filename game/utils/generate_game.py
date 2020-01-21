@@ -79,6 +79,19 @@ def generate():
                     rate += disaster_rates[key - 1]['rates'][disaster_type]
                 disaster_rates[key]['rates'][disaster_type] = min(rate, 0.999)
 
+    # Assign a level to each disaster
+    for turn, info in disaster_rates.items():
+        for disaster in info['disasters']:
+            level = DisasterLevel.level_zero
+            if turn >= 1500:
+                level = DisasterLevel.level_three
+            elif turn >= 1000:
+                level = DisasterLevel.level_two
+            elif turn >= 500:
+                level = DisasterLevel.level_one
+
+            info['disasters'] = [{'disaster': disaster, 'level': level}]
+
     # Calculate the sensor readings for each turn
     for key, value in disaster_rates.items():
         disaster_rates[key]['sensors'] = calculate_sensor_ranges(value['rates'])
