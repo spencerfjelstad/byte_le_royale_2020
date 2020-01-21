@@ -155,9 +155,9 @@ class UFOLayer(cocos.layer.Layer):
         # If the rate is 0, that means the ufo happened, so draw to screen
         if rates == 0:
             self.ufo = self.images['ufo']
-            self.ufo_x = 0
-            self.ufo_y = int(self.display[1] / 2)
+            self.ufo_x = -100
+            self.ufo_y = 400
 
             self.ufo.position = (self.ufo_x, self.ufo_y)
-            self.ufo.do(MoveBy((self.display[0], 0), 2))
+            self.ufo.do(MoveBy((self.display[0] + 100, 0), 3))
             self.add(self.ufo)

@@ -51,8 +51,17 @@ def replace_colors(filename, start_colors, end_colors):
 def load(temp):
     assets = temp
     plains = cocos.sprite.Sprite(find_image("game/visualizer/assets/location_assets/location_plains.png"))
+    mountains = cocos.sprite.Sprite(find_image("game/visualizer/assets/location_assets/location_mountain.png"))
+
+    # Get random location
+    num = random.randint(0,1)
+    if num == 0:
+        location = mountains
+    else:
+        location = plains
+
     assets['location'] = {
-        "0": plains
+        "0": location,
     }
 
     # City assets
@@ -106,7 +115,9 @@ def load(temp):
     dis_monster_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/monster_sheet.png"), 1, 5)
     dis_monster = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_monster_grid[0::], 0.1))
 
-    dis_ufo = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/ufo.png"))
+    dis_ufo_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/ufo_sheet.png"), 1, 10)
+    dis_ufo = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_ufo_grid[0::], 0.05))
+
     assets['disaster'] = {
         "fire": dis_fire,
         "tornado": dis_tornado,

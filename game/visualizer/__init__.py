@@ -148,7 +148,7 @@ def create_scene(info, parser):
     scene.add(blizzard_layer, 20)
     scene.add(earthquake_layer, 20)
     scene.add(monster_layer, 16)
-    scene.add(ufo_layer, 20)
+    scene.add(ufo_layer, 16)
 
     scene.add(health_layer, 100)
     scene.add(forecast_layer, 100)
