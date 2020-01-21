@@ -31,10 +31,7 @@ class DecreeLayer(cocos.layer.Layer):
 
 
 class DecreeHolderLayer(cocos.layer.Layer):
-    def __init__(self, turn, display_size, log_parser, assets):
-        self.turn = turn
-        self.display = display_size
-        self.parser = log_parser
+    def __init__(self, assets):
         self.images = assets
         super().__init__()
 

@@ -103,7 +103,7 @@ def create_scene(info, parser):
     city_back_layer = CityBackLayer(size, info, assets['city'])
     forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
     decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
-    decree_hold_layer = DecreeHolderLayer(turn, size, parser, assets['decree'])
+    decree_hold_layer = DecreeHolderLayer(assets['decree'])
     worker_layer = WorkerLayer(size, assets['worker'])
 
     # Side structures
