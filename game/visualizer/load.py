@@ -185,6 +185,7 @@ def load(temp):
     decree_3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/rubber_boots.png"))
     decree_4 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/fishing_hook.png"))
     decree_5 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/cheese.png"))
+    decree_holder = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_holder.png"))
     decree_default = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_default.png"))
     assets['decree'] = {
         "-1": decree_default,
@@ -193,7 +194,8 @@ def load(temp):
         "2": decree_2,
         "3": decree_3,
         "4": decree_4,
-        "5": decree_5
+        "5": decree_5,
+        "6": decree_holder
     }
 
     # Worker assets
