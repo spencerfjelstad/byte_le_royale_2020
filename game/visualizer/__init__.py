@@ -103,6 +103,7 @@ def create_scene(info, parser):
     city_back_layer = CityBackLayer(size, info, assets['city'])
     forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
     decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
+    decree_hold_layer = DecreeHolderLayer(assets['decree'])
     worker_layer = WorkerLayer(size, assets['worker'])
 
     # Side structures
@@ -152,6 +153,7 @@ def create_scene(info, parser):
     scene.add(health_layer, 100)
     scene.add(forecast_layer, 100)
     scene.add(decree_layer, 100)
+    scene.add(decree_hold_layer,99)
     return scene
 
 # Create exit method for use with schedule_interval() such that nothing will print when used together

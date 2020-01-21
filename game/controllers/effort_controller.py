@@ -22,7 +22,6 @@ class EffortController(Controller):
         # handle advanced verification of allocation list
         player.city.remaining_man_power = player.city.population
         allocations = dict()  # condensed duplicate entries
-
         player_actions = self.__reverse_obfuscation(player)
         for allocation in player_actions:
             act, amount = allocation
@@ -274,8 +273,6 @@ class EffortController(Controller):
         increase = math.floor(number * GameStats.effort_gold_multiplier)
 
         player.city.gold += increase
-
-        raise NotImplementedError
 
     def __reverse_obfuscation(self, player):
         new_actions = list()

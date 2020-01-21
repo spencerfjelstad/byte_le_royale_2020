@@ -99,7 +99,9 @@ def load(temp):
 
     dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
     dis_blizzard = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/blizzard.png"))
-    dis_earthquake = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/earthquake.png"))
+
+    dis_earthquake_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/earthquake_sheet.png"), 1, 19)
+    dis_earthquake = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_earthquake_grid[0::], 0.1))
 
     dis_monster_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/monster_sheet.png"), 1, 5)
     dis_monster = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_monster_grid[0::], 0.1))
@@ -183,6 +185,7 @@ def load(temp):
     decree_3 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/rubber_boots.png"))
     decree_4 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/fishing_hook.png"))
     decree_5 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/cheese.png"))
+    decree_holder = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_holder.png"))
     decree_default = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/decree_default.png"))
     assets['decree'] = {
         "-1": decree_default,
@@ -191,7 +194,8 @@ def load(temp):
         "2": decree_2,
         "3": decree_3,
         "4": decree_4,
-        "5": decree_5
+        "5": decree_5,
+        "6": decree_holder
     }
 
     # Worker assets

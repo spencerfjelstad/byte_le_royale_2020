@@ -6,7 +6,7 @@ class HealthBar(cocos.layer.Layer):
         self.display = display_size
         self.info = turn_info
         super().__init__()
-        x= 200
+        x= 116
         p_y= 47
         s_y= 18
 

@@ -77,7 +77,7 @@ class Client(UserClient):
                         most_damaging = disaster
                         effort_remaining = disaster.effort_remaining
             self.print(f"Attempting to allocate effort to {most_damaging}")
-            effort_added = self.clamp(remaining_effort-20, 0, disaster.effort_remaining)
+            effort_added = self.clamp(remaining_effort-20, 0, most_damaging.effort_remaining)
             actions.add_effort(most_damaging, effort_added)
             remaining_effort -= effort_added
             disasters.remove(most_damaging)
