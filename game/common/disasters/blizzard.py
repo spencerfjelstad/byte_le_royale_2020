@@ -6,7 +6,7 @@ from game.common.stats import GameStats
 class Blizzard(LastingDisaster):
     def __init__(self, level=DisasterLevel.level_zero):
         super().__init__(level)
-        self.initial_effort = GameStats.disaster_initial_efforts[DisasterType.blizzard]
+        self.initial_effort = GameStats.disaster_initial_efforts[DisasterType.blizzard][self.level]
         self.effort_remaining = self.initial_effort
         self.status = DisasterStatus.live
         self.type = DisasterType.blizzard
