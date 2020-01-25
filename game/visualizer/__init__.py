@@ -79,10 +79,10 @@ def timer(interval):
             end_scene.schedule_interval(exit, 4)
     else:
         # If a disaster happens, slow down the interval rate
-        intval = 0.1
+        intval = 0.05
         for key, item in (turn_info['rates'].items()):
             if item == 0:
-                intval = 3
+                intval = 1
 
         clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=intval)

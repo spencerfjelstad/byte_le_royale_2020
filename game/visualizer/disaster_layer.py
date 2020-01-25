@@ -52,7 +52,7 @@ class TornadoLayer(cocos.layer.Layer):
             self.tornado_y = int(self.display[1] / 2)
 
             self.tornado.position = (self.tornado_x, self.tornado_y)
-            self.tornado.do(MoveBy((self.display[0], 0), 2))
+            self.tornado.do(MoveBy((self.display[0], 0), 1))
             self.add(self.tornado)
 
 
@@ -132,7 +132,7 @@ class MonsterLayer(cocos.layer.Layer):
             self.monster_y = int(self.display[1])
 
             self.monster.position = (self.monster_x, self.monster_y)
-            self.monster.do(MoveBy((self.monster_x, -400), 3))
+            self.monster.do(MoveBy((self.monster_x, -400), 1))
             self.add(self.monster)
 
 
@@ -155,9 +155,9 @@ class UFOLayer(cocos.layer.Layer):
         # If the rate is 0, that means the ufo happened, so draw to screen
         if rates == 0:
             self.ufo = self.images['ufo']
-            self.ufo_x = -100
+            self.ufo_x = self.display[0]/2
             self.ufo_y = 400
 
             self.ufo.position = (self.ufo_x, self.ufo_y)
-            self.ufo.do(MoveBy((self.display[0] + 100, 0), 3))
+            # self.ufo.do(MoveBy((0, self.display[1]/2), 3))
             self.add(self.ufo)
