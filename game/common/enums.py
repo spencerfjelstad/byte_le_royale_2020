@@ -61,6 +61,13 @@ class DisasterType:
     ufo = 5
 
 
+class DisasterLevel:
+    level_zero = 0
+    level_one = 1
+    level_two = 2
+    level_three = 3
+
+
 class EventType:
     city_upgrade = 0
     sensor_upgrade = 1

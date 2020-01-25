@@ -82,42 +82,146 @@ class GameStats:
         BuildingLevel.level_three: 3
     }
 
-    # multiplier done by instant disasters
-    disaster_damage_instant_multiplier = 2
-
-    # damage done at each damage level
-    disaster_damage_scale = {
-        DamageScaling.low: 4,
-        DamageScaling.medium: 16,
-        DamageScaling.high: 32,
-        DamageScaling.extreme: 52
-    }
-
     # required effort to stop lasting disasters
     disaster_initial_efforts = {
-        DisasterType.fire: 100,
-        DisasterType.blizzard: 200,
-        DisasterType.monster: 300
+        DisasterType.fire: {
+            DisasterLevel.level_zero: 400,
+            DisasterLevel.level_one: 800,
+            DisasterLevel.level_two: 1350,
+            DisasterLevel.level_three: 2200
+        },
+        DisasterType.blizzard: {
+            DisasterLevel.level_zero: 600,
+            DisasterLevel.level_one: 1350,
+            DisasterLevel.level_two: 2025,
+            DisasterLevel.level_three: 3300
+        },
+        DisasterType.monster: {
+            DisasterLevel.level_zero: 800,
+            DisasterLevel.level_one: 1800,
+            DisasterLevel.level_two: 3300,
+            DisasterLevel.level_three: 5600
+        },
     }
 
     # structural damage caused by a disaster
     disaster_structure_damages = {
-        DisasterType.fire: disaster_damage_scale[DamageScaling.low],
-        DisasterType.tornado: disaster_damage_scale[DamageScaling.medium] * disaster_damage_instant_multiplier,
-        DisasterType.blizzard: disaster_damage_scale[DamageScaling.medium],
-        DisasterType.earthquake: disaster_damage_scale[DamageScaling.high] * disaster_damage_instant_multiplier,
-        DisasterType.monster: disaster_damage_scale[DamageScaling.extreme],
-        DisasterType.ufo: disaster_damage_scale[DamageScaling.medium] * disaster_damage_instant_multiplier
+        DisasterType.fire: {
+            DisasterLevel.level_zero: 1,
+            DisasterLevel.level_one: 1,
+            DisasterLevel.level_two: 1,
+            DisasterLevel.level_three: 1
+        },
+        DisasterType.tornado: {
+            DisasterLevel.level_zero: 25,
+            DisasterLevel.level_one: 50,
+            DisasterLevel.level_two: 75,
+            DisasterLevel.level_three: 100
+        },
+        DisasterType.blizzard: {
+            DisasterLevel.level_zero: 3,
+            DisasterLevel.level_one: 3,
+            DisasterLevel.level_two: 3,
+            DisasterLevel.level_three: 3
+        },
+        DisasterType.earthquake: {
+            DisasterLevel.level_zero: 50,
+            DisasterLevel.level_one: 100,
+            DisasterLevel.level_two: 200,
+            DisasterLevel.level_three: 300
+        },
+        DisasterType.monster: {
+            DisasterLevel.level_zero: 10,
+            DisasterLevel.level_one: 10,
+            DisasterLevel.level_two: 10,
+            DisasterLevel.level_three: 10
+        },
+        DisasterType.ufo: {
+            DisasterLevel.level_zero: 50,
+            DisasterLevel.level_one: 100,
+            DisasterLevel.level_two: 200,
+            DisasterLevel.level_three: 400
+        },
     }
 
     # population damage caused by a disaster
     disaster_population_damages = {
-        DisasterType.fire: disaster_damage_scale[DamageScaling.medium],
-        DisasterType.tornado: disaster_damage_scale[DamageScaling.low] * disaster_damage_instant_multiplier,
-        DisasterType.blizzard: disaster_damage_scale[DamageScaling.high],
-        DisasterType.earthquake: disaster_damage_scale[DamageScaling.medium] * disaster_damage_instant_multiplier,
-        DisasterType.monster: disaster_damage_scale[DamageScaling.medium],
-        DisasterType.ufo: disaster_damage_scale[DamageScaling.extreme] * disaster_damage_instant_multiplier
+        DisasterType.fire: {
+            DisasterLevel.level_zero: 2,
+            DisasterLevel.level_one: 2,
+            DisasterLevel.level_two: 2,
+            DisasterLevel.level_three: 2
+        },
+        DisasterType.tornado: {
+            DisasterLevel.level_zero: 12,
+            DisasterLevel.level_one: 25,
+            DisasterLevel.level_two: 37,
+            DisasterLevel.level_three: 50
+        },
+        DisasterType.blizzard: {
+            DisasterLevel.level_zero: 6,
+            DisasterLevel.level_one: 6,
+            DisasterLevel.level_two: 6,
+            DisasterLevel.level_three: 6
+        },
+        DisasterType.earthquake: {
+            DisasterLevel.level_zero: 25,
+            DisasterLevel.level_one: 50,
+            DisasterLevel.level_two: 100,
+            DisasterLevel.level_three: 150
+        },
+        DisasterType.monster: {
+            DisasterLevel.level_zero: 5,
+            DisasterLevel.level_one: 5,
+            DisasterLevel.level_two: 5,
+            DisasterLevel.level_three: 5
+        },
+        DisasterType.ufo: {
+            DisasterLevel.level_zero: 100,
+            DisasterLevel.level_one: 200,
+            DisasterLevel.level_two: 400,
+            DisasterLevel.level_three: 800
+        },
+    }
+
+    # Dictionary of when the disasters will start to be the given level
+    disaster_level_markers = {
+        DisasterType.fire: {
+            DisasterLevel.level_zero: 0,
+            DisasterLevel.level_one: 250,
+            DisasterLevel.level_two: 500,
+            DisasterLevel.level_three: 750
+        },
+        DisasterType.tornado: {
+            DisasterLevel.level_zero: 0,
+            DisasterLevel.level_one: 300,
+            DisasterLevel.level_two: 600,
+            DisasterLevel.level_three: 900
+        },
+        DisasterType.blizzard: {
+            DisasterLevel.level_zero: 0,
+            DisasterLevel.level_one: 500,
+            DisasterLevel.level_two: 750,
+            DisasterLevel.level_three: 1000
+        },
+        DisasterType.earthquake: {
+            DisasterLevel.level_zero: 0,
+            DisasterLevel.level_one: 550,
+            DisasterLevel.level_two: 850,
+            DisasterLevel.level_three: 1150
+        },
+        DisasterType.monster: {
+            DisasterLevel.level_zero: 0,
+            DisasterLevel.level_one: 750,
+            DisasterLevel.level_two: 1000,
+            DisasterLevel.level_three: 1250
+        },
+        DisasterType.ufo: {
+            DisasterLevel.level_zero: 0,
+            DisasterLevel.level_one: 800,
+            DisasterLevel.level_two: 1100,
+            DisasterLevel.level_three: 1400
+        },
     }
 
     # When converting effort to one of the below, multiply the effort amount by the multiplier
