@@ -61,6 +61,13 @@ class DisasterType:
     ufo = 5
 
 
+class DisasterLevel:
+    level_zero = 0
+    level_one = 1
+    level_two = 2
+    level_three = 3
+
+
 class EventType:
     city_upgrade = 0
     sensor_upgrade = 1
@@ -109,9 +116,9 @@ class BuildingLevel:
 
 
 class BuildingType:
-    instant_decree_booster = 0
-    lasting_decree_booster = 1
-    everything_booster = 2
-    wealth_booster = 3
-    population_booster = 4
-    structure_booster = 5
+    instant_decree_booster = 0 # police
+    lasting_decree_booster = 1 # gelato
+    everything_booster = 2 # big canoe
+    wealth_booster = 3 # mint
+    population_booster = 4 # billboard
+    structure_booster = 5 # 3d printing

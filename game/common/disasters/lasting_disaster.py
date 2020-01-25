@@ -3,8 +3,8 @@ from game.common.enums import *
 
 
 class LastingDisaster(Disaster):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, level=DisasterLevel.level_zero):
+        super().__init__(level)
         self.newly_spawned = True
         self.initial_effort = None
         self.effort_remaining = None

@@ -4,13 +4,14 @@ from game.utils.helpers import enum_to_string
 
 
 class Disaster(GameObject):
-    def __init__(self):
+    def __init__(self, level=DisasterLevel.level_zero):
         super().__init__()
         self.status = DisasterStatus.dead
         self.type = None
         self.population_damage = None
         self.structure_damage = None
         self.object_type = ObjectType.disaster
+        self.level = level
 
     def destroy(self):
         self.status = DisasterStatus.dead
@@ -23,6 +24,7 @@ class Disaster(GameObject):
         data["population_damage"] = self.population_damage
         data["structure_damage"] = self.structure_damage
         data["object_type"] = self.object_type
+        data["level"] = self.level
 
         return data
 
@@ -33,10 +35,12 @@ class Disaster(GameObject):
         self.population_damage = data["population_damage"]
         self.structure_damage = data["structure_damage"]
         self.object_type = data["object_type"]
+        self.level = data["level"]
 
     def __str__(self):
         p = f"""Disaster Status: {self.status}
             Disaster Type: {enum_to_string(DisasterType,self.type).replace("_", " ")}
+            Disaster Level: {self.level}
             Disaster Population Damage: {self.population_damage}
             Disaster Structure Damage: {self.structure_damage}
             Disaster Object Type: {self.object_type}

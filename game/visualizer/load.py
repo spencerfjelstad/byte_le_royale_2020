@@ -68,29 +68,41 @@ def load(temp):
     # Side Structures
     struct_3dprint_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/3dprint_sheet.png"), 1, 2)
     struct_3dprint = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_3dprint_grid[0::], 0))
+    struct_3dprint_complete = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_3dprint_grid[1::], 0))
 
     struct_bigcanoe_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/bigcanoe_sheet.png"), 1, 2)
     struct_bigcanoe = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_bigcanoe_grid[0::], 0))
+    struct_bigcanoe_complete = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_bigcanoe_grid[1::], 0))
 
     struct_billboard_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/billboard_sheet.png"), 1, 2)
     struct_billboard = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_billboard_grid[0::], 0))
+    struct_billboard_complete = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_billboard_grid[1::], 0))
 
     struct_gelato_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/gelato_sheet.png"), 1, 2)
     struct_gelato = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_gelato_grid[0::], 0))
+    struct_gelato_complete = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_gelato_grid[1::], 0))
 
     struct_mint_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/mint_sheet.png"), 1, 2)
     struct_mint = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_mint_grid[0::], 0))
+    struct_mint_complete = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_mint_grid[1::], 0))
 
     struct_police_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/police_sheet.png"), 1, 2)
     struct_police = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_police_grid[0::], 0))
+    struct_police_complete = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_police_grid[1 ::], 0))
 
     assets['struct'] = {
         "3dprint": struct_3dprint,
+        "3dprint_complete": struct_3dprint_complete,
         "bigcanoe": struct_bigcanoe,
+        "bigcanoe_complete": struct_bigcanoe_complete,
         "billboard": struct_billboard,
+        "billboard_complete": struct_billboard_complete,
         "gelato": struct_gelato,
+        "gelato_complete": struct_gelato_complete,
         "mint": struct_mint,
-        "police": struct_police
+        "mint_complete": struct_mint_complete,
+        "police": struct_police,
+        "police_complete": struct_police_complete
     }
 
     # Disaster assets
