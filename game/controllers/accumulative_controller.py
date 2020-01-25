@@ -22,7 +22,7 @@ class AccumulativeController(Controller):
         self.print(f"Everything: Structure to add: {booster}")
         city.structure += booster
         # Clamped to max_structure
-        city.structure = clamp(city.structure, max_value=city.max_structure)
+        city.structure = clamp(city.structure, min_value=0, max_value=city.max_structure)
 
         # Everything boosted - Population
         booster = GameStats.everything_boost['population'][building_level]
@@ -30,7 +30,7 @@ class AccumulativeController(Controller):
         city.population += booster
 
         # Clamped to structure
-        city.population = clamp(city.population, max_value=city.structure)
+        city.population = clamp(city.population, min_value=0, max_value=city.structure)
 
         # Wealth boosted
         building_level = city.buildings[BuildingType.wealth_booster].level
@@ -48,7 +48,7 @@ class AccumulativeController(Controller):
 
         city.structure += structure_added
         # Clamped to max_structure
-        city.structure = clamp(city.structure, max_value=city.max_structure)
+        city.structure = clamp(city.structure, min_value=0, max_value=city.max_structure)
         self.print(f"Final structure: {city.structure}")
 
         # Population boosted
@@ -59,7 +59,7 @@ class AccumulativeController(Controller):
 
         city.population += population_added
         # Clamped to structure
-        city.population = clamp(city.population, max_value=city.structure)
+        city.population = clamp(city.population, min_value=0, max_value=city.structure)
         self.print(f"Final population: {city.population}")
 
         # Normal accumulation of gold
