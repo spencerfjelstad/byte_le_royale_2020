@@ -17,9 +17,15 @@
 
 # -- Project information -----------------------------------------------------
 
+from recommonmark.parser import CommonMarkParser
+
+source_parsers = {'.md': CommonMarkParser}
+
+source_suffix = ['.md']
+
 project = 'Byte-le Royale'
 copyright = '2019, 2020'
-author = 'Spencer Fjelstad, Eric Myers, Nick Pfeifer, Wyly Andrews, Sander Eggum, Riley Conlin'
+author = 'Spencer Fjelstad, Eric Myers, Nick Pfeifer, Wyly Andrews, Sander Eggum, Riley Conlin, Sophie Noel'
 
 # The full version, including alpha/beta/rc tags
 release = '0.0.1'
@@ -30,8 +36,7 @@ release = '0.0.1'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-]
+extensions = ['recommonmark']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
