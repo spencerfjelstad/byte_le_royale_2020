@@ -47,7 +47,7 @@ class DecreeController(Controller):
                 self.print(f"reducing damage on disaster {disaster}...")
                 self.print(f"Before: pop = {disaster.population_damage}, struct = {disaster.structure_damage}")
                 # apply
-                disaster.population_damage = int(disaster.population_damage * (1 - decree_pop_effect))
-                disaster.structure_damage = int(disaster.structure_damage * (1 - decree_struct_effect))
+                disaster.population_damage = clamp(int(disaster.population_damage*(1-decree_pop_effect)), min_value=1)
+                disaster.structure_damage = clamp(int(disaster.structure_damage*(1-decree_struct_effect)), min_value=1)
 
                 self.print(f"After: pop = {disaster.population_damage}, struct = {disaster.structure_damage}")

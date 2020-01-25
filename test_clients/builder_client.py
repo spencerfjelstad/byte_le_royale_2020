@@ -52,6 +52,8 @@ class Client(UserClient):
         actions.set_decree(corresponding_decree)
 
         # planning phase
+
+        lasting_disasters = [disaster for disaster in disasters if disaster.type in [DisasterType.fire, DisasterType.monster, DisasterType.blizzard]]
         total_construction_projects = 0
         for building in city.buildings.values():
             if building.level != BuildingLevel.level_three:
@@ -65,24 +67,31 @@ class Client(UserClient):
             total_construction_projects += 1
 
         # Actions
-        if disasters:
-            for disaster in disasters:
-                actions.add_effort(disaster, city.population / len(disasters))
+        if self.turn < 5:
+            actions.add_effort(ActionType.repair_structure, city.population)
+        elif self.turn < 10:
+            actions.add_effort(ActionType.regain_population, city.population)
         elif city.structure < (city.max_structure / 2):
             actions.add_effort(ActionType.repair_structure, city.population)
         elif city.population < (city.structure / 2):
             actions.add_effort(ActionType.regain_population, city.population)
+        elif lasting_disasters:
+            for disaster in lasting_disasters:
+                actions.add_effort(disaster, city.population / len(lasting_disasters))
         elif total_construction_projects > 0:
+            get_gold = (city.gold < city.population)
+            if get_gold:
+                actions.add_effort(ActionType.accumulate_wealth, city.population / 2)
             for building in city.buildings.values():
                 if building.level != BuildingLevel.level_three:
-                    actions.add_effort(building, city.population / total_construction_projects)
+                    actions.add_effort(building, city.population / ((2 if get_gold else 1) * total_construction_projects))
 
             for sensor in city.sensors.values():
                 if sensor.level != SensorLevel.level_three:
-                    actions.add_effort(sensor, city.population / total_construction_projects)
+                    actions.add_effort(sensor, city.population / ((2 if get_gold else 1) * total_construction_projects))
 
             if city.level != CityLevel.level_two:
-                actions.add_effort(city, city.population / total_construction_projects)
+                actions.add_effort(city, city.population / ((2 if get_gold else 1) * total_construction_projects))
         else:
             actions.add_effort(ActionType.repair_structure, city.population / 2)
             actions.add_effort(ActionType.regain_population, city.population / 2)
