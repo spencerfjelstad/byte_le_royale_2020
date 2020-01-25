@@ -14,9 +14,9 @@ class GameStats:
     # Costs to go up to the next city level
     city_upgrade_cost = {
         CityLevel.level_zero: 0,
-        CityLevel.level_one: 100,
-        CityLevel.level_two: 300,
-        CityLevel.level_three: 500
+        CityLevel.level_one: 20000,
+        CityLevel.level_two: 22500,
+        CityLevel.level_three: 27500
     }
 
     # cost in man_power to build a sensor
