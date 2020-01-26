@@ -233,7 +233,7 @@ class EffortController(Controller):
                 event_type = None
                 if isinstance(obj, Building):
                     if level_after is not None:
-                        obj.effort_remaining = GameStats.building_upgrade_cost[level_after]
+                        obj.effort_remaining = GameStats.building_upgrade_cost[obj.building_type][level_after]
                     else:
                         obj.effort_remaining = 0
                     event_type = EventType.building_upgrade

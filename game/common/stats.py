@@ -5,10 +5,42 @@ class GameStats:
 
     # cost in man_power to upgrade a building
     building_upgrade_cost = {
-        BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 50,
-        BuildingLevel.level_two: 100,
-        BuildingLevel.level_three: 500
+        BuildingType.instant_decree_booster: {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 12000,
+            BuildingLevel.level_two: 15750,
+            BuildingLevel.level_three: 22000
+        },
+        BuildingType.lasting_decree_booster: {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 12000,
+            BuildingLevel.level_two: 15750,
+            BuildingLevel.level_three: 22000
+        },
+        BuildingType.everything_booster: {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 24000,
+            BuildingLevel.level_two: 31500,
+            BuildingLevel.level_three: 44000
+        },
+        BuildingType.wealth_booster: {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 12000,
+            BuildingLevel.level_two: 15750,
+            BuildingLevel.level_three: 22000
+        },
+        BuildingType.population_booster: {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 12000,
+            BuildingLevel.level_two: 15750,
+            BuildingLevel.level_three: 22000
+        },
+        BuildingType.structure_booster: {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 12000,
+            BuildingLevel.level_two: 15750,
+            BuildingLevel.level_three: 22000
+        }
     }
 
     # Costs to go up to the next city level
@@ -22,9 +54,9 @@ class GameStats:
     # cost in man_power to build a sensor
     sensor_upgrade_cost = {
         SensorLevel.level_zero: 0,
-        SensorLevel.level_one: 50,
-        SensorLevel.level_two: 100,
-        SensorLevel.level_three: 500
+        SensorLevel.level_one: 12000,
+        SensorLevel.level_two: 15750,
+        SensorLevel.level_three: 22000
     }
 
     # Decree effectiveness when applied against a disaster
