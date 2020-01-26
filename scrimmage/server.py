@@ -58,6 +58,13 @@ class Server:
             if com == 'exit':
                 self.close_server()
 
+            # Clear console
+            elif com == 'cls' or com == 'clear':
+                if os.name == 'nt':
+                    os.system('cls')
+                else:
+                    os.system('clear')
+
             # Echo back the given string to the user, mostly for testing
             elif 'echo ' in com:
                 print(com.replace('echo ', ''))
