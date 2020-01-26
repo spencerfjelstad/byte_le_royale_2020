@@ -17,9 +17,16 @@
 
 # -- Project information -----------------------------------------------------
 
+from recommonmark.parser import CommonMarkParser
+import sphinx_rtd_theme
+
+#source_parsers = {'.md': 'recommonmark.parser.CommonMarkParser'}
+
+source_suffix = ['.md','.rst']
+
 project = 'Byte-le Royale'
 copyright = '2019, 2020'
-author = 'Spencer Fjelstad, Eric Myers, Nick Pfeifer, Wyly Andrews, Sander Eggum, Riley Conlin'
+author = 'Spencer Fjelstad, Eric Myers, Nick Pfeifer, Wyly Andrews, Sander Eggum, Riley Conlin, Sophie Noel'
 
 # The full version, including alpha/beta/rc tags
 release = '0.0.1'
@@ -30,8 +37,7 @@ release = '0.0.1'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-]
+extensions = ['recommonmark']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -47,7 +53,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+#html_theme = 'alabaster'
+html_theme = "sphinx_rtd_theme"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

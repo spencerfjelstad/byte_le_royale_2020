@@ -3,13 +3,14 @@ from cocos.actions import *
 
 
 class LineGraph(cocos.layer.Layer):
-    def __init__(self, population_list, final_width, final_height, parser):
+    # def __init__(self, population_list, final_width, final_height, parser):
+    def __init__(self, parser, length = 500, height = 300, x = 200, y = 100, color = (255,255,255,255)):
         super().__init__()
-        self.line_graph(parser)
+        self.line_graph(parser, length, height, x, y, color)
 
 
 
-    def line_graph(self, parser, length = 500, height = 300, x = 200, y = 100, color = (255,255,255,255)):
+    def line_graph(self, parser, length, height, x, y, color):
 
         #Border
         horizontal_line1 = cocos.draw.Line((x,y),(x+length+10, y),color, 5)
