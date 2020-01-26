@@ -54,8 +54,8 @@ class GameStats:
     # cost in man_power to build a sensor
     sensor_upgrade_cost = {
         SensorLevel.level_zero: 0,
-        SensorLevel.level_one: 12000,
-        SensorLevel.level_two: 15750,
+        SensorLevel.level_one: 8000,
+        SensorLevel.level_two: 13500,
         SensorLevel.level_three: 22000
     }
 
@@ -75,43 +75,43 @@ class GameStats:
     everything_boost = {
         'wealth': {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 1,
-            BuildingLevel.level_two: 2,
-            BuildingLevel.level_three: 3
+            BuildingLevel.level_one: 40,
+            BuildingLevel.level_two: 120,
+            BuildingLevel.level_three: 200
         },
         'population': {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 1,
-            BuildingLevel.level_two: 2,
-            BuildingLevel.level_three: 3
+            BuildingLevel.level_one: 20,
+            BuildingLevel.level_two: 60,
+            BuildingLevel.level_three: 100
         },
         'structure': {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 1,
-            BuildingLevel.level_two: 2,
-            BuildingLevel.level_three: 3
+            BuildingLevel.level_one: 20,
+            BuildingLevel.level_two: 60,
+            BuildingLevel.level_three: 100
         }
     }
 
     wealth_boost = {
         BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 1,
-        BuildingLevel.level_two: 2,
-        BuildingLevel.level_three: 3
+        BuildingLevel.level_one: 40,
+        BuildingLevel.level_two: 120,
+        BuildingLevel.level_three: 200
     }
 
     population_boost = {
         BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 1,
-        BuildingLevel.level_two: 2,
-        BuildingLevel.level_three: 3
+        BuildingLevel.level_one: 20,
+        BuildingLevel.level_two: 60,
+        BuildingLevel.level_three: 100
     }
 
     structure_boost = {
         BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 1,
-        BuildingLevel.level_two: 2,
-        BuildingLevel.level_three: 3
+        BuildingLevel.level_one: 20,
+        BuildingLevel.level_two: 60,
+        BuildingLevel.level_three: 100
     }
 
     # required effort to stop lasting disasters
@@ -282,10 +282,10 @@ class GameStats:
 
     # error range provided by each sensor
     sensor_ranges = {
-        SensorLevel.level_zero: 30,
-        SensorLevel.level_one: 15,
-        SensorLevel.level_two: 8,
-        SensorLevel.level_three: 2
+        SensorLevel.level_zero: 60,
+        SensorLevel.level_one: 30,
+        SensorLevel.level_two: 15,
+        SensorLevel.level_three: 5
     }
 
     action_sort_order = {
