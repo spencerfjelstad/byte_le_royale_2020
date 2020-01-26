@@ -46,6 +46,20 @@ class ForecastLayer(cocos.layer.Layer):
             self.add(spr)
 
 
+class DisasterLevelLayer(cocos.layer.Layer):
+    def __init__(self, turn, display_size, log_parser, assets):
+        self.turn = turn
+        self.images = assets
+        self.parser = log_parser
+        super().__init__()
+        forecast = self.parser.turns[clamp(turn - 3, 0, turn):clamp(turn + 2, 0, len(self.parser.turns)):]
+        for i in range(len(forecast)):
+            for key, item in forecast[i]['player']['city'].items():
+                spr = self.images['bronze']
+            spr.position = 682 + (i+1) * 64, 648
+            self.add(spr)
+
+
 class ForecastHolderLayer(cocos.layer.Layer):
     def __init__(self, assets):
         self.images = assets

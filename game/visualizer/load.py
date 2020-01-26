@@ -177,6 +177,18 @@ def load(temp):
             "forecast_hold" : fore_holder
         }
 
+        # Disaster Level Assets
+        bronze = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/bronze.png")
+        silver = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/silver.png")
+        gold = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/gold.png")
+        uranium = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/uranium.png")
+        assets["disaster_levels"] = {
+            "bronze": bronze,
+            "silver": silver,
+            "gold": gold,
+            "uranium": uranium
+        }
+
     # Sensor assets
     assets['sensor'] = {
         "0":{},

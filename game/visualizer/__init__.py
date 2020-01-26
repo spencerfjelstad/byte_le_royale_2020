@@ -101,8 +101,11 @@ def create_scene(info, parser):
     city_road_layer = RoadLayer(size, info, assets['city'])
     city_layer = CityLayer(size, info, assets['city'])
     city_back_layer = CityBackLayer(size, info, assets['city'])
+
     forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
     forecast_hold_layer = ForecastHolderLayer(assets['forecast_holder'])
+    disaster_level_layer = DisasterLevelLayer(turn, size, parser, assets['disaster_levels'])
+
     decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
     decree_hold_layer = DecreeHolderLayer(assets['decree'])
     worker_layer = WorkerLayer(size, assets['worker'])
@@ -151,9 +154,13 @@ def create_scene(info, parser):
     scene.add(monster_layer, 16)
     scene.add(ufo_layer, 16)
 
+    # UI
     scene.add(health_layer, 100)
+
     scene.add(forecast_layer, 100)
     scene.add(forecast_hold_layer, 99)
+    scene.add(disaster_level_layer, 101)
+
     scene.add(decree_layer, 100)
     scene.add(decree_hold_layer,99)
     return scene
