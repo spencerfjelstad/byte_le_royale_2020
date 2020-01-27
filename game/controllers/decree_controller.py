@@ -1,4 +1,5 @@
 from game.controllers.controller import Controller
+from game.controllers.fun_stat_controller import FunStatController
 from game.common.disasters.lasting_disaster import LastingDisaster
 from game.common.enums import *
 from game.common.stats import GameStats
@@ -19,6 +20,8 @@ class DecreeController(Controller):
         super().__init__()
         self.client_decree = None
 
+        self.fun_stat_controller = FunStatController.get_instance()
+
     def update_decree(self, decree):
         self.client_decree = decree
 
@@ -32,6 +35,8 @@ class DecreeController(Controller):
                 continue
 
             if disaster.type == DecreeController.DECREE_DISASTER_MAPPINGS.get(self.client_decree):
+                self.fun_stat_controller.disasters_correctly_protected += 1
+
                 # Retrieve booster from the city's decree booster building
                 if isinstance(disaster, LastingDisaster):
                     building_level = player.city.buildings[BuildingType.lasting_decree_booster].level

@@ -15,6 +15,7 @@ from game.controllers.disaster_controller import DisasterController
 from game.controllers.effort_controller import EffortController
 from game.controllers.event_controller import EventController
 from game.controllers.accumulative_controller import AccumulativeController
+from game.controllers.fun_stat_controller import FunStatController
 
 
 class MasterController(Controller):
@@ -23,6 +24,7 @@ class MasterController(Controller):
 
         # Singletons first
         self.event_controller = EventController()
+        self.fun_stat_controller = FunStatController()
 
         self.accumulative_controller = AccumulativeController()
         self.city_generator_controller = CityGeneratorController()
@@ -82,6 +84,7 @@ class MasterController(Controller):
 
             client.disasters.append(dis)
 
+            self.fun_stat_controller.total_disasters += 1
             self.event_controller.add_event({
                 "event_type": EventType.disaster_spawned,
                 "turn": turn,
@@ -127,6 +130,10 @@ class MasterController(Controller):
         self.destruction_controller.handle_actions(client)
         self.disaster_controller.handle_actions(client)
 
+        # Fun stat controller interjection
+        self.fun_stat_controller.total_population_ever += client.city.population
+        self.fun_stat_controller.total_structure_ever += client.city.structure
+
         if client.city.structure <= 0:
             self.print("Game is ending because city has been destroyed.")
             self.game_over = True
@@ -156,6 +163,7 @@ class MasterController(Controller):
             "Score": turn,
             "Events": self.event_controller.get_events(),
             "Error": client.error,
+            "Statistics": self.fun_stat_controller.export()
         }
         return data
 
