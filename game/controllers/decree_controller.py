@@ -36,18 +36,27 @@ class DecreeController(Controller):
                 if isinstance(disaster, LastingDisaster):
                     building_level = player.city.buildings[BuildingType.lasting_decree_booster].level
                     booster = GameStats.decree_boost[building_level]
+
+                    decree_effort_effect = clamp(GameStats.decree_population_effect * booster, min_value=0, max_value=1)
+
+                    self.print(f"Reducing effort required on disaster {disaster}...")
+                    self.print(f"Before: {disaster.effort_remaining}")
+
+                    disaster.effort_remaining = clamp(int(disaster.effort_remaining * (1 - decree_effort_effect)), min_value=1)
+
+                    self.print(f"After: {disaster.effort_remaining}")
                 else:
                     building_level = player.city.buildings[BuildingType.instant_decree_booster].level
                     booster = GameStats.decree_boost[building_level]
 
-                # Calculate decree effect, given default decree effect with the extra boost from the building booster
-                decree_pop_effect = clamp(GameStats.decree_population_effect * booster, min_value=0, max_value=1)
-                decree_struct_effect = clamp(GameStats.decree_structure_effect * booster, min_value=0, max_value=1)
+                    # Calculate decree effect, given default decree effect with the extra boost from the building booster
+                    decree_pop_effect = clamp(GameStats.decree_population_effect * booster, min_value=0, max_value=1)
+                    decree_struct_effect = clamp(GameStats.decree_structure_effect * booster, min_value=0, max_value=1)
 
-                self.print(f"reducing damage on disaster {disaster}...")
-                self.print(f"Before: pop = {disaster.population_damage}, struct = {disaster.structure_damage}")
-                # apply
-                disaster.population_damage = clamp(int(disaster.population_damage*(1-decree_pop_effect)), min_value=1)
-                disaster.structure_damage = clamp(int(disaster.structure_damage*(1-decree_struct_effect)), min_value=1)
+                    self.print(f"reducing damage on disaster {disaster}...")
+                    self.print(f"Before: pop = {disaster.population_damage}, struct = {disaster.structure_damage}")
+                    # apply
+                    disaster.population_damage = clamp(int(disaster.population_damage*(1-decree_pop_effect)), min_value=1)
+                    disaster.structure_damage = clamp(int(disaster.structure_damage*(1-decree_struct_effect)), min_value=1)
 
-                self.print(f"After: pop = {disaster.population_damage}, struct = {disaster.structure_damage}")
+                    self.print(f"After: pop = {disaster.population_damage}, struct = {disaster.structure_damage}")
