@@ -4,6 +4,7 @@
 vID
 scrimmage/temp
 scrimmage/scrim_clients
+sphinx/_build
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

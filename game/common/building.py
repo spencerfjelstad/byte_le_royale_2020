@@ -11,7 +11,7 @@ class Building(GameObject):
         self.building_type = building_type
         self.object_type = ObjectType.building
         self.level = BuildingLevel.level_zero
-        self.effort_remaining = GameStats.building_upgrade_cost[BuildingLevel.level_one]
+        self.effort_remaining = GameStats.building_upgrade_cost[self.building_type][BuildingLevel.level_one]
 
     def to_json(self):
         data = super().to_json()

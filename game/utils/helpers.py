@@ -3,7 +3,7 @@ import os
 import random
 
 
-def clamp(value, min_value=0, max_value=100):
+def clamp(value, min_value=None, max_value=None):
     """
     Restricts a given value from going outside the range, default of 0 and 100
     :param value: given value to be clamped
@@ -11,6 +11,10 @@ def clamp(value, min_value=0, max_value=100):
     :param max_value: maximum value of the clamping range
     :return: the value given but restricted to max or min if it goes outside the range
     """
+    if min_value is None:
+        min_value = value
+    if max_value is None:
+        max_value = value
     return min(max_value, max(value, min_value))
 
 
@@ -31,6 +35,7 @@ def enum_iter(enum_class):
     """
     return [enum_class.__dict__[key] for key in enum_class.__dict__ if not key.startswith("__")]
 
+
 def enum_to_string(enum, val):
     """
 
@@ -39,6 +44,7 @@ def enum_to_string(enum, val):
     :return:
     """
     return [k for k, v in dict(enum.__dict__).items() if not k.startswith("__") and v == val][0]
+
 
 def write(data, file):
     """
