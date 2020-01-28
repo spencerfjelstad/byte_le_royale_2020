@@ -19,7 +19,7 @@ class CityGeneratorController(Controller):
             player.city.structure = player.city.max_structure
         elif city_type is CityType.invested:
             # Start with boosted gold
-            player.city.gold += 200
+            player.city.gold += GameStats.city_type_invested_bonus
         elif city_type is CityType.pyrophobic:
             # Upgrade the fire sensors to level one
             fire_alarm = player.city.sensors[SensorType.fire_alarm]
