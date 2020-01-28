@@ -98,6 +98,9 @@ class MasterController(Controller):
         for sensor in client.city.sensors.values():
             sensor.sensor_results = world['sensors'][sensor.sensor_type][sensor.level]
 
+        # Accumulations should occur before the player takes their turn
+        self.accumulative_controller.update(client)
+
     # Receive a specific client and send them what they get per turn. Also obfuscates necessary objects.
     def client_turn_arguments(self, client, world, turn):
         actions = Action()
@@ -121,7 +124,6 @@ class MasterController(Controller):
     def turn_logic(self, client, world, turn):
         self.event_controller.update(turn)
 
-        self.accumulative_controller.update(client)
         self.effort_controller.handle_actions(client)
         self.decree_controller.update_decree(client.action.get_decree())
         self.destruction_controller.handle_actions(client)
