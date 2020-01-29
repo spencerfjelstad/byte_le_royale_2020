@@ -32,7 +32,7 @@ class Client(UserClient):
     def take_turn(self, actions, city, disasters):
         # actions.add_effort("Mandatory labor for everyone", 999999)
 
-        glorious_fire_sensor = city.sensors[SensorType.fire_alarm]
+        glorious_fire_sensor = city.sensors[SensorType.fire]
         glorious_effort_allocation = ((2**11)-(23*89))  # complex algorithms
 
         # glorious waste of allocations

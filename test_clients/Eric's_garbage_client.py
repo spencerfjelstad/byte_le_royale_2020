@@ -11,14 +11,14 @@ class Client(UserClient):
             DisasterType.blizzard, 
             DisasterType.monster
         ]
-        
+
         self.SENSOR_DECREE_MAPPINGS = {
-            SensorType.fire_alarm: DecreeType.anti_fire_dogs,
-            SensorType.rock_on_a_rope: DecreeType.paperweights,
-            SensorType.coast_guard: DecreeType.snow_shovels,
-            SensorType.seismograph: DecreeType.rubber_boots,
-            SensorType.scp_foundation: DecreeType.fishing_hook,
-            SensorType.satellite_dish: DecreeType.cheese
+            SensorType.fire: DecreeType.anti_fire_dogs,
+            SensorType.tornado: DecreeType.paperweights,
+            SensorType.blizzard: DecreeType.snow_shovels,
+            SensorType.earthquake: DecreeType.rubber_boots,
+            SensorType.monster: DecreeType.fishing_hook,
+            SensorType.ufo: DecreeType.cheese
         }
 
         self.turn = 0
