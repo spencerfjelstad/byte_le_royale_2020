@@ -170,25 +170,33 @@ def load(temp):
         "5":{},
     }
     sensor_colors = {
-        0 : COLOR.red,
-        1 : COLOR.black,
-        2 : COLOR.blue,
-        3 : COLOR.brown,
-        4 : COLOR.green,
-        5 : COLOR.gray,
+        0 : COLOR.bright_red,
+        1 : COLOR.yellow,
+        2 : COLOR.brown,
+        3 : COLOR.ice_blue,
+        4 : COLOR.orange,
+        5 : COLOR.green,
     }
-    find_image("game/visualizer/assets/sensor_assets/fire_alarm.png")
+    find_image("game/visualizer/assets/sensor_assets/base_sensor.png")
+    threat = find_image("game/visualizer/assets/sensor_assets/threat-sheet.png")
+    threat_grid = pyglet.image.ImageGrid(threat, 1, 17)
     for i in range(6):
-        sensor = replace_colors(".temp/fire_alarm.png",[COLOR.red],[sensor_colors[i]])
-        sensor_grid = pyglet.image.ImageGrid(sensor, 1, 2)
-        level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0.1))
-        level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0.1))
-        level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0.1))
-        level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0.1))
+        sensor = replace_colors(".temp/base_sensor.png",[COLOR.bright_red],[sensor_colors[i]])
+        sensor_grid = pyglet.image.ImageGrid(sensor, 1, 4)
+        level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0))
+        level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[1::], 0))
+        level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[2::], 0))
+        level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[3::], 0))
+        threat_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(threat_grid[0:4:], .1))
+        threat_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(threat_grid[4:9:], .1))
+        threat_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(threat_grid[9:16:], .1))
         assets['sensor'][str(i)].update({"0": level_0})
         assets['sensor'][str(i)].update({"1": level_1})
         assets['sensor'][str(i)].update({"2": level_2})
         assets['sensor'][str(i)].update({"3": level_3})
+        assets['sensor'][str(i)].update({"threat_1": threat_1})
+        assets['sensor'][str(i)].update({"threat_2": threat_2})
+        assets['sensor'][str(i)].update({"threat_3": threat_3})
 
     # Decree assets
     decree_0 = cocos.sprite.Sprite(find_image("game/visualizer/assets/decree_assets/anti_fire_dogs.png"))

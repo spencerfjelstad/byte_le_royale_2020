@@ -131,8 +131,7 @@ def create_scene(info, parser):
     scene.add(city_back_layer, 15)
     scene.add(city_road_layer, 10)
     scene.add(worker_layer, 26)
-
-    # scene.add(sensor_layer, 25)
+    scene.add(sensor_layer, 25)
 
     # Side Structures
     scene.add(print_layer, 19)
