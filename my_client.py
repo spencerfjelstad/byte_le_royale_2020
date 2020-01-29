@@ -29,7 +29,7 @@ class Client(UserClient):
         return CityType.popular
 
     # This is where your AI will decide what to do
-    def take_turn(self, actions, city, disasters):
+    def take_turn(self, turn, actions, city, disasters):
         # If there is a lasting disaster, take care of it
         for disaster in disasters:
             if disaster.type in self.lasting_disasters:

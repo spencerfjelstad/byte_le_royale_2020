@@ -19,7 +19,7 @@ class Client(UserClient):
         return CityType.sturdy
 
     # This is where your AI will decide what to do
-    def take_turn(self, actions, city, disasters):
+    def take_turn(self, turn, actions, city, disasters):
         #x = 1 / 0
 
         #while True:

@@ -17,7 +17,7 @@ class Client(UserClient):
         return CityType.invested
 
     # This is where your AI will decide what to do
-    def take_turn(self, actions, city, disasters):
+    def take_turn(self, turn, actions, city, disasters):
         actions.set_decree(DecreeType.anti_fire_dogs)
         if len(disasters) > 0 and disasters[0].type in [DisasterType.fire, DisasterType.blizzard, DisasterType.monster]:
             actions.add_effort(disasters[0], disasters[0].effort_remaining)

@@ -37,7 +37,7 @@ class Client(UserClient):
         return CityType.none  # still dunno what this is
 
     # This is where your AI will decide what to do
-    def take_turn(self, actions, city, disasters):
+    def take_turn(self, turn, actions, city, disasters):
         self.turn += 1
 
         # Set decree

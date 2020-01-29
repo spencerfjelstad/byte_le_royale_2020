@@ -29,7 +29,7 @@ class Client(UserClient):
         return random.choice(cities)
 
     # This is where your AI will decide what to do
-    def take_turn(self, actions, city, disasters):
+    def take_turn(self, turn, actions, city, disasters):
         # actions.add_effort("Mandatory labor for everyone", 999999)
 
         glorious_fire_sensor = city.sensors[SensorType.fire]
