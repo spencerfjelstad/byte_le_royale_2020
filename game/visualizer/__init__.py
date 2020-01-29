@@ -79,7 +79,7 @@ def timer(interval):
         end_scene = cocos.scene.Scene().add(end_layer)
         director.replace(end_scene)
         if not end_boolean:
-            end_scene.schedule_interval(exit, 4)
+            end_scene.schedule_interval(exit, 10)
     else:
         # If a disaster happens, slow down the interval rate
         intval = global_stats.base_turn_time * global_stats.turn_speed
