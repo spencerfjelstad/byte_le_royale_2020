@@ -8,7 +8,9 @@ from game.visualizer.game_log_parser import GameLogParser
 from game.visualizer.graphs import *
 from game.visualizer.city_sprites import *
 from game.visualizer.location_sprites import *
+from game.visualizer.global_stats import GlobalStats
 from game.visualizer.health_bar import *
+from game.visualizer.input_layer import *
 from game.visualizer.time_layer import *
 from game.visualizer.end_layer import *
 from game.visualizer.forecast_sprite import *
@@ -25,6 +27,7 @@ log_parser = None
 turn = 1
 end_boolean = True
 assets = {}
+global_stats = GlobalStats()
 
 
 # Function called by main that displays first scene and initializes everything
@@ -79,10 +82,10 @@ def timer(interval):
             end_scene.schedule_interval(exit, 10)
     else:
         # If a disaster happens, slow down the interval rate
-        intval = 0.1
+        intval = global_stats.base_turn_time * global_stats.turn_speed
         for key, item in (turn_info['rates'].items()):
             if item == 0:
-                intval = 1
+                intval = global_stats.disaster_turn_time * global_stats.turn_speed
 
         clock = TimeLayer(size, turn_info, turn)
         clock.schedule_interval(callback=timer, interval=intval)
@@ -105,6 +108,7 @@ def create_scene(info, parser):
     decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
     decree_hold_layer = DecreeHolderLayer(assets['decree'])
     worker_layer = WorkerLayer(size, assets['worker'])
+    input_layer = InputLayer()
 
     # Side structures
     print_layer = PrintLayer(size, info, assets['struct'])
@@ -153,8 +157,11 @@ def create_scene(info, parser):
     scene.add(health_layer, 100)
     scene.add(forecast_layer, 100)
     scene.add(decree_layer, 100)
-    scene.add(decree_hold_layer,99)
+    scene.add(decree_hold_layer, 99)
+    scene.add(input_layer, 100)
+
     return scene
+
 
 # Create exit method for use with schedule_interval() such that nothing will print when used together
 def exit(interval):
