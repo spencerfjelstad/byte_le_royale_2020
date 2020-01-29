@@ -20,10 +20,10 @@ class Client(UserClient):
         }
 
     def team_name(self):
-        return "Team Name"
+        return 'Team Name'
 
     def city_name(self):
-        return "City Name"
+        return 'City Name'
 
     def city_type(self):
         return CityType.popular
@@ -35,17 +35,21 @@ class Client(UserClient):
             if disaster.type in self.lasting_disasters:
                 # Allocate 1/4 of our current population to putting it out
                 actions.add_effort(disaster, city.population / 4)
+                self.print(f'Uh oh, better fix the disaster: {disaster.type}!')
 
             self.previous_disaster = disaster
 
         # Fix up our city
         if city.structure != city.max_structure:
+            # No object represents structure, so we use the ActionType enum here
             actions.add_effort(ActionType.repair_structure, 40)
         if city.population != city.structure:
+            # Same thing with regaining population
             actions.add_effort(ActionType.regain_population, 40)
 
         # Upgrade the best sensor
         if city.sensors[SensorType.tornado].level != SensorLevel.level_three:
+            # Retrieve tornado sensor and put effort towards upgrading it
             actions.add_effort(city.sensors[SensorType.tornado], 120)
 
         # Set the decree
