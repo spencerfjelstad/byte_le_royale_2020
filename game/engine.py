@@ -128,17 +128,17 @@ def boot():
 
 # Loads all of the results of the generate() functionality into memory
 def load():
-    if not os.path.exists('logs/'):
+    if not os.path.exists(LOGS_DIR):
         raise FileNotFoundError('Log directory not found.')
 
-    if not os.path.exists('logs/game_map.json'):
+    if not os.path.exists(GAME_MAP_FILE):
         raise FileNotFoundError('Game map not found.')
 
     # Delete previous logs
-    [os.remove(f'logs/{path}') for path in os.listdir('logs/') if 'turn' in path]
+    [os.remove(os.path.join(LOGS_DIR, path)) for path in os.listdir(LOGS_DIR) if 'turn' in path]
 
     world = None
-    with open('logs/game_map.json') as json_file:
+    with open(GAME_MAP_FILE) as json_file:
         world = json.load(json_file)
     return world
 
@@ -217,7 +217,7 @@ def post_tick(turn):
     else:
         data = master_controller.create_turn_log(clients, current_world, turn_number)
 
-    with open(f"logs/turn_{turn_number:04d}.json", 'w+') as f:
+    with open(os.path.join(LOGS_DIR ,f"turn_{turn_number:04d}.json"), 'w+') as f:
         json.dump(data, f)
 
     # Check if game has ended
