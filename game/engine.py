@@ -217,7 +217,7 @@ def post_tick(turn):
     else:
         data = master_controller.create_turn_log(clients, current_world, turn_number)
 
-    with open(os.path.join(LOGS_DIR ,f"turn_{turn_number:04d}.json"), 'w+') as f:
+    with open(os.path.join(LOGS_DIR, f"turn_{turn_number:04d}.json"), 'w+') as f:
         json.dump(data, f)
 
     # Check if game has ended
