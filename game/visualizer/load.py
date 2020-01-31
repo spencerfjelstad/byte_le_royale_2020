@@ -1,4 +1,5 @@
 import cocos
+from cocos.actions import *
 import pyglet
 import os
 import shutil
@@ -7,8 +8,12 @@ from PIL import Image
 from io import BytesIO
 import numpy as np
 import random
-from game.visualizer.colors import *
 
+from game.visualizer.colors import *
+from game.visualizer.global_stats import GlobalStats
+
+
+global_stats = GlobalStats()
 
 # Extracts a png from a zipped file and returns it for use with cocos.
 # This function is necessary for the visualizer to work on Linux.
@@ -117,7 +122,8 @@ def load(temp):
     # Disaster assets
 
     dis_fire_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/fire_sheet.png"), 1, 5)
-    dis_fire = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_fire_grid[0::], 0.1))
+    dis_fire = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_fire_grid[0::], global_stats.base_turn_time))
+    dis_fire.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
 
     dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
 
@@ -125,10 +131,12 @@ def load(temp):
     dis_blizzard = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_blizzard_grid[0::], 0.1))
 
     dis_earthquake_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/earthquake_sheet.png"), 1, 19)
-    dis_earthquake = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_earthquake_grid[0::], 0.1))
+    dis_earthquake = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_earthquake_grid[0::], global_stats.base_turn_time))
+    dis_earthquake.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
 
     dis_monster_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/monster_sheet.png"), 1, 5)
-    dis_monster = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_monster_grid[0::], 0.1))
+    dis_monster = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_monster_grid[0::], global_stats.base_turn_time))
+    dis_monster.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
 
     dis_ufo_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/ufo_sheet.png"), 1, 19)
     dis_ufo = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_ufo_grid[0::], 0.03))
@@ -220,10 +228,10 @@ def load(temp):
     for i in range(6):
         sensor = replace_colors(".temp/fire_alarm.png",[COLOR.red],[sensor_colors[i]])
         sensor_grid = pyglet.image.ImageGrid(sensor, 1, 2)
-        level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0.1))
-        level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0.1))
-        level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0.1))
-        level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0.1))
+        level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], global_stats.base_turn_time))
+        level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], global_stats.base_turn_time))
+        level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], global_stats.base_turn_time))
+        level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], global_stats.base_turn_time))
         assets['sensor'][str(i)].update({"0": level_0})
         assets['sensor'][str(i)].update({"1": level_1})
         assets['sensor'][str(i)].update({"2": level_2})
@@ -273,24 +281,36 @@ def load(temp):
                                                                                random.choice(shoe_colors)])
         wrkr_grid = pyglet.image.ImageGrid(wrkr, 1, 48)
         if i < wrkr_total/5:
-            wrkr_normal = pyglet.image.Animation.from_image_sequence(wrkr_grid[0:15:], 0.1, loop=True)
+            wrkr_normal = pyglet.image.Animation.from_image_sequence(wrkr_grid[0:15:], global_stats.base_turn_time, loop=True)
             sprite = cocos.sprite.Sprite(wrkr_normal)
+            sprite.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
             assets['worker']['normal'].append(sprite)
         elif i < wrkr_total*2/5:
-            wrkr_hammer = pyglet.image.Animation.from_image_sequence(wrkr_grid[16:23:], 0.1, loop=True)
+            wrkr_hammer = pyglet.image.Animation.from_image_sequence(wrkr_grid[16:23:], global_stats.base_turn_time, loop=True)
             sprite = cocos.sprite.Sprite(wrkr_hammer)
+            sprite.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
             assets['worker']['hammer'].append(sprite)
         elif i < wrkr_total*3/5:
-            wrkr_money = pyglet.image.Animation.from_image_sequence(wrkr_grid[24:31:], 0.1, loop=True)
+            wrkr_money = pyglet.image.Animation.from_image_sequence(wrkr_grid[24:31:], global_stats.base_turn_time, loop=True)
             sprite = cocos.sprite.Sprite(wrkr_money)
+            sprite.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
             assets['worker']['money'].append(sprite)
         elif i < wrkr_total*4/5:
-            wrkr_pick = pyglet.image.Animation.from_image_sequence(wrkr_grid[32:39:], 0.1, loop=True)
+            wrkr_pick = pyglet.image.Animation.from_image_sequence(wrkr_grid[32:39:], global_stats.base_turn_time, loop=True)
             sprite = cocos.sprite.Sprite(wrkr_pick)
+            sprite.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
             assets['worker']['pick'].append(sprite)
         else:
-            wrkr_phone = pyglet.image.Animation.from_image_sequence(wrkr_grid[40:47:], 0.1, loop=True)
+            wrkr_phone = pyglet.image.Animation.from_image_sequence(wrkr_grid[40:47:], global_stats.base_turn_time, loop=True)
             sprite = cocos.sprite.Sprite(wrkr_phone)
+            sprite.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
             assets['worker']['phone'].append(sprite)
     clean_up()
     return assets
+
+
+# Animations need to repeat this action in order for their frame speed to match the current speed
+def match_speed(target, base_speed):
+    # From the target's animation, get the current active frame and set its duration
+    target._animation.frames[target._frame_index].duration = base_speed * global_stats.turn_speed
+

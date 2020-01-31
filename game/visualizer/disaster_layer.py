@@ -2,6 +2,8 @@ import cocos
 import pyglet
 from cocos.actions import *
 
+from game.visualizer.global_stats import GlobalStats
+
 
 class FireLayer(cocos.layer.Layer):
     def __init__(self, display_size, turn_info, assets):
@@ -9,6 +11,8 @@ class FireLayer(cocos.layer.Layer):
         self.display = display_size
         self.info = turn_info
         self.images = assets
+
+        global_stats = GlobalStats()
 
         rates = -1
         # Check the rate
@@ -36,6 +40,8 @@ class TornadoLayer(cocos.layer.Layer):
         self.info = turn_info
         self.images = assets
 
+        global_stats = GlobalStats()
+
         rates = -1
         # Check the rate
         try:
@@ -52,7 +58,7 @@ class TornadoLayer(cocos.layer.Layer):
             self.tornado_y = int(self.display[1] / 2)
 
             self.tornado.position = (self.tornado_x, self.tornado_y)
-            self.tornado.do(MoveBy((self.display[0], 0), 1))
+            self.tornado.do(MoveBy((self.display[0], 0), global_stats.disaster_turn_time * global_stats.turn_speed))
             self.add(self.tornado)
 
 
@@ -116,6 +122,8 @@ class MonsterLayer(cocos.layer.Layer):
         self.info = turn_info
         self.images = assets
 
+        global_stats = GlobalStats()
+
         rates = -1
         # Check the rate
         try:
@@ -132,7 +140,8 @@ class MonsterLayer(cocos.layer.Layer):
             self.monster_y = int(self.display[1])
 
             self.monster.position = (self.monster_x, self.monster_y)
-            self.monster.do(MoveBy((self.monster_x, -400), 1))
+            self.monster.do(MoveBy((self.monster_x, -400), global_stats.disaster_turn_time * global_stats.turn_speed))
+
             self.add(self.monster)
 
 
@@ -142,6 +151,8 @@ class UFOLayer(cocos.layer.Layer):
         self.display = display_size
         self.info = turn_info
         self.images = assets
+
+        global_stats = GlobalStats()
 
         rates = -1
         # Check the rate
@@ -159,5 +170,6 @@ class UFOLayer(cocos.layer.Layer):
             self.ufo_y = 400
 
             self.ufo.position = (self.ufo_x, self.ufo_y)
-            # self.ufo.do(MoveBy((0, self.display[1]/2), 3))
+            self.ufo.do(MoveBy((self.display[0], 0), global_stats.disaster_turn_time * global_stats.turn_speed))
+
             self.add(self.ufo)
