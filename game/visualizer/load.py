@@ -115,11 +115,14 @@ def load(temp):
     }
 
     # Disaster assets
+
     dis_fire_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/fire_sheet.png"), 1, 5)
     dis_fire = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_fire_grid[0::], 0.1))
 
     dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
-    dis_blizzard = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/blizzard.png"))
+
+    dis_blizzard_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/blizzard_sheet.png"), 1, 16)
+    dis_blizzard = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_blizzard_grid[0::], 0.1))
 
     dis_earthquake_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/earthquake_sheet.png"), 1, 19)
     dis_earthquake = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_earthquake_grid[0::], 0.1))
@@ -176,18 +179,25 @@ def load(temp):
         assets["forecast_holder"] = {
             "forecast_hold" : fore_holder
         }
+    #Disaster Level Assets
+    assets['disaster_level'] = {}
+    assets['disaster_level']['bronze'] = list()
+    assets['disaster_level']['silver'] = list()
+    assets['disaster_level']['gold'] = list()
+    assets['disaster_level']['uranium'] = list()
 
+    for i in range(5):
         # Disaster Level Assets
-        bronze = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/bronze.png")
-        silver = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/silver.png")
-        gold = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/gold.png")
-        uranium = cocos.sprite.Sprite("game/visualizer/assets/forecast_assets/uranium.png")
-        assets["disaster_levels"] = {
-            "bronze": bronze,
-            "silver": silver,
-            "gold": gold,
-            "uranium": uranium
-        }
+        bronze = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/bronze.png"))
+        silver = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/silver.png"))
+        gold = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/gold.png"))
+        uranium = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/uranium.png"))
+        assets['disaster_level']['bronze'].append(bronze)
+        assets['disaster_level']['silver'].append(silver)
+        assets['disaster_level']['gold'].append(gold)
+        assets['disaster_level']['uranium'].append(uranium)
+
+
 
     # Sensor assets
     assets['sensor'] = {

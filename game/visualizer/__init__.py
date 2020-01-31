@@ -79,7 +79,7 @@ def timer(interval):
             end_scene.schedule_interval(exit, 4)
     else:
         # If a disaster happens, slow down the interval rate
-        intval = 0.05
+        intval = 0.1
         for key, item in (turn_info['rates'].items()):
             if item == 0:
                 intval = 1
@@ -104,7 +104,7 @@ def create_scene(info, parser):
 
     forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
     forecast_hold_layer = ForecastHolderLayer(assets['forecast_holder'])
-    disaster_level_layer = DisasterLevelLayer(turn, size, parser, assets['disaster_levels'])
+    disaster_level_layer = DisasterLevelLayer(turn, size, parser, assets['disaster_level'])
 
     decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
     decree_hold_layer = DecreeHolderLayer(assets['decree'])
