@@ -121,13 +121,11 @@ def load(temp):
 
     # Disaster assets
 
-    dis_fire_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/fire_sheet.png"), 1, 5)
-    dis_fire = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_fire_grid[0::], global_stats.base_turn_time))
-    dis_fire.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
+
 
     dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
 
-    dis_blizzard_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/blizzard_sheet.png"), 1, 16)
+    dis_blizzard_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/blizzard_sheet.png"), 1, 4)
     dis_blizzard = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_blizzard_grid[0::], 0.1))
 
     dis_earthquake_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/earthquake_sheet.png"), 1, 19)
@@ -141,18 +139,25 @@ def load(temp):
     dis_ufo_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/ufo_sheet.png"), 1, 19)
     dis_ufo = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_ufo_grid[0::], 0.03))
 
-    assets['disaster'] = {
-        "fire": dis_fire,
-        "tornado": dis_tornado,
-        "blizzard": dis_blizzard,
-        "earthquake": dis_earthquake,
-        "monster": dis_monster,
-        "ufo": dis_ufo
-    }
+    assets['disaster'] = {}
+    assets['disaster']['fire'] = list()
+    assets['disaster']['tornado'] = dis_tornado
+    assets['disaster']['blizzard'] = dis_blizzard
+    assets['disaster']['earthquake'] = dis_earthquake
+    assets['disaster']['monster'] = dis_monster
+    assets['disaster']['ufo'] = dis_ufo
+
+    for i in range(10):
+        dis_fire_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/fire_sheet.png"), 1, 5)
+        dis_fire = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_fire_grid[0::], global_stats.base_turn_time))
+        dis_fire.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
+
+        assets['disaster']['fire'].append(dis_fire)
 
     # Forecast assets
     assets['forecast'] = {}
     assets['forecast']['fire'] = list()
+    assets['forecast']['tornado'] = list()
     assets['forecast']['tornado'] = list()
     assets['forecast']['blizzard'] = list()
     assets['forecast']['earthquake'] = list()
@@ -187,7 +192,7 @@ def load(temp):
         assets["forecast_holder"] = {
             "forecast_hold" : fore_holder
         }
-    #Disaster Level Assets
+    # Disaster Level Assets
     assets['disaster_level'] = {}
     assets['disaster_level']['bronze'] = list()
     assets['disaster_level']['silver'] = list()

@@ -1,3 +1,5 @@
+import random
+
 import cocos
 import pyglet
 from cocos.actions import *
@@ -25,12 +27,12 @@ class FireLayer(cocos.layer.Layer):
 
         # If the rate is 0, that means the Fire happened, so draw to screen
         if rates == 0:
-            self.fire = self.images["fire"]
-            self.fire_x = int(self.display[0] / 2)
-            self.fire_y = int(self.display[1] / 2)
-
-            self.fire.position = (self.fire_x, self.fire_y)
-            self.add(self.fire)
+            for n in range(random.randint(0,9)):
+                self.fire = self.images["fire"][n]
+                self.fire_x = int(random.randint(self.display[0] / 2 - 300, self.display[0]/2 + 300))
+                self.fire_y = int(random.randint(self.display[1] / 2 - 100, self.display[1] / 2 + 100 ))
+                self.fire.position = (self.fire_x, self.fire_y)
+                self.add(self.fire)
 
 
 class TornadoLayer(cocos.layer.Layer):
@@ -81,9 +83,8 @@ class BlizzardLayer(cocos.layer.Layer):
         # If the rate is 0, that means the blizzard happened, so draw to screen
         if rates == 0:
             self.blizzard = self.images['blizzard']
-            self.blizzard.opacity = 155
             self.blizzard_x = int(self.display[0] / 2)
-            self.blizzard_y = int(self.display[1] / 2)
+            self.blizzard_y = int((self.display[1] / 2) + 64)
 
             self.blizzard.position = (self.blizzard_x, self.blizzard_y)
             self.add(self.blizzard)
@@ -168,8 +169,7 @@ class UFOLayer(cocos.layer.Layer):
             self.ufo = self.images['ufo']
             self.ufo_x = self.display[0]/2
             self.ufo_y = 400
-
             self.ufo.position = (self.ufo_x, self.ufo_y)
-            self.ufo.do(MoveBy((self.display[0], 0), global_stats.disaster_turn_time * global_stats.turn_speed))
+            # self.ufo.do(MoveBy((self.display[0], 0), global_stats.disaster_turn_time * global_stats.turn_speed))
 
             self.add(self.ufo)
