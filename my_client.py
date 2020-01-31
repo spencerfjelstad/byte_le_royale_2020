@@ -47,7 +47,7 @@ class Client(UserClient):
             # Same thing with regaining population
             actions.add_effort(ActionType.regain_population, 40)
 
-        # Upgrade the best sensor
+        # Upgrade my favorite sensor <3
         if city.sensors[SensorType.tornado].level != SensorLevel.level_three:
             # Retrieve tornado sensor and put effort towards upgrading it
             actions.add_effort(city.sensors[SensorType.tornado], 120)
