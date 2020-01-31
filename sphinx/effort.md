@@ -31,7 +31,7 @@ Some disasters are long lasting annoyances to your city, that will deal constant
 For example, imagine a fire needs 100 more effort to put out, and deals 100 population damage a turn (numbers may not be accurate to the current build of the game). If you decide to allocate 99 effort towards this disaster, then the fire will need 1 more effort to put it out (to be done on a later turn) but will still deal 100 population damage. The next turn, if you allocate 1 more effort towards the same fire, then the fire will disappear and will deal 0 more damage.
 The list of current disasters is provided by the take_turn disasters array argument. Note that this includes instant disasters as well as lasting, so be sure to only apply effort to lasting disasters.
 
-###How to allocate effort
+### How to allocate effort
 To add effort, use `actions.add_effort()`, then specify either an ActionType or an object like city or an element in the disasters array, and the amount of effort to allocate.
 
 For example, if we wanted to generate population,
