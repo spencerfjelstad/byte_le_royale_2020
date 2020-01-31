@@ -1,3 +1,1 @@
-# Welcome to Byte-le Royale 2020!
-
-* [Effort](effort.html)
+# Welcome to Byte-le Royale 2020!* [Introduction](intro.html)* [Decrees](decrees.html) <--- please make?* [Disasters](disaster.html) <--- please make* [Effort](effort.html)* [Turn](turn.html) <--- please make (example on GitHub wiki)
