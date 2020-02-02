@@ -147,7 +147,7 @@ def load(temp):
     assets['disaster']['monster'] = dis_monster
     assets['disaster']['ufo'] = dis_ufo
 
-    for i in range(10):
+    for i in range(20):
         dis_fire_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/fire_sheet.png"), 1, 5)
         dis_fire = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_fire_grid[0::], global_stats.base_turn_time))
         dis_fire.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
