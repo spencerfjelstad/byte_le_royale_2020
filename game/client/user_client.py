@@ -22,5 +22,5 @@ class UserClient:
     def city_type(self):
         return CityType.none
 
-    def take_turn(self, actions, city, disasters):
+    def take_turn(self, turn, actions, city, disasters):
         raise NotImplementedError("Implement this in subclass")

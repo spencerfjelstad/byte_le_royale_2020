@@ -100,12 +100,12 @@ class SensorLevel:
 
 
 class SensorType:
-    fire_alarm = 0
-    rock_on_a_rope = 1
-    coast_guard = 2
-    seismograph = 3
-    scp_foundation = 4  # placeholder?
-    satellite_dish = 5
+    fire = 0
+    tornado = 1
+    blizzard = 2
+    earthquake = 3
+    monster = 4
+    ufo = 5
 
 
 class BuildingLevel:
