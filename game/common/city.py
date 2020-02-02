@@ -10,6 +10,7 @@ class City(GameObject):
     def __init__(self):
         super().__init__()
         self.city_name = "City"
+        self.city_type = CityType.none
         self.object_type = ObjectType.city
         self.structure = GameStats.city_structure
         self.max_structure = GameStats.city_max_structure[CityLevel.level_zero]
@@ -26,7 +27,6 @@ class City(GameObject):
             building = Building(building_type)
             self.buildings[building_type] = building
 
-        self.remaining_man_power = self.population
         self.level = CityLevel.level_zero
         self.effort_remaining = GameStats.city_upgrade_cost[CityLevel.level_one]
 
@@ -34,6 +34,7 @@ class City(GameObject):
         data = super().to_json()
 
         data['city_name'] = self.city_name
+        data['city_type'] = self.city_type
         data['object_type'] = self.object_type
         data['structure'] = self.structure
         data['max_structure'] = self.max_structure
@@ -41,7 +42,6 @@ class City(GameObject):
         data['gold'] = self.gold
         data['sensors'] = {sensor_type: sensor.to_json() for sensor_type, sensor in self.sensors.items()}
         data['buildings'] = {building_type: building.to_json() for building_type, building in self.buildings.items()}
-        data['remaining_man_power'] = self.remaining_man_power
         data['level'] = self.level
         data['effort_remaining'] = self.effort_remaining
 
@@ -50,6 +50,7 @@ class City(GameObject):
     def from_json(self, data):
         super().from_json(data)
         self.city_name = data['city_name']
+        self.city_type = data['city_type']
         self.object_type = data['object_type']
         self.structure = data['structure']
         self.max_structure = data['max_structure']
@@ -68,7 +69,6 @@ class City(GameObject):
             building.from_json(building_data)
             self.buildings[building_type] = building
 
-        self.remaining_man_power = data['remaining_man_power']
         self.level = data['level']
         self.effort_remaining = data['effort_remaining']
 
