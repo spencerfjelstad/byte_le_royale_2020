@@ -18,13 +18,14 @@ class TimeLayer(cocos.layer.Layer):
         )
         self.add(team_name_label)
 
+        # Display City Name, only if the billboard is built
         if self.info['player']['city']['buildings']['4']['level'] != 0:
             city_name_label = cocos.text.Label(
                 self.info['player']['city']['city_name'],
                 font_name="Comic Sans",
                 font_size=10,
-                anchor_x="center",
-                position=(self.display[0], self.display[1] - 400)
+                anchor_x="left",
+                position=(self.display[0] - 100, self.display[1] - 450)
             )
             self.add(city_name_label)
 

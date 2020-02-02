@@ -120,9 +120,6 @@ def load(temp):
     }
 
     # Disaster assets
-
-
-
     dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
 
     dis_blizzard_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/blizzard_sheet.png"), 1, 4)
@@ -187,11 +184,10 @@ def load(temp):
         assets['forecast']['clear2'].append(fore_clear2)
         assets['forecast']['clear3'].append(fore_clear3)
 
-        fore_holder_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/forecast_assets/forecast_hold.png"), 1, 2)
-        fore_holder = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fore_holder_grid[0::], 0.1))
-        assets["forecast_holder"] = {
-            "forecast_hold" : fore_holder
-        }
+    fore_holder_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/forecast_assets/forecast_hold.png"), 1, 2)
+    fore_holder = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fore_holder_grid[0::], 0.1))
+    assets['forecast']['forecast_hold'] = fore_holder
+
     # Disaster Level Assets
     assets['disaster_level'] = {}
     assets['disaster_level']['bronze'] = list()
@@ -209,8 +205,6 @@ def load(temp):
         assets['disaster_level']['silver'].append(silver)
         assets['disaster_level']['gold'].append(gold)
         assets['disaster_level']['uranium'].append(uranium)
-
-
 
     # Sensor assets
     assets['sensor'] = {
