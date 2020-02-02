@@ -129,7 +129,8 @@ def create_scene(info, parser):
     monster_layer = MonsterLayer(size, info, assets['disaster'])
     ufo_layer = UFOLayer(size, info, assets['disaster'])
 
-    sensor_layer = SensorLayer(size, info, assets['sensor'])
+    front_sensor_layer = FrontSensorLayer(size, info, assets['sensor'])
+    back_sensor_layer = BackSensorLayer(size, info, assets['sensor'])
 
     # Add layers to
     scene = cocos.scene.Scene()
@@ -138,8 +139,8 @@ def create_scene(info, parser):
     scene.add(city_back_layer, 15)
     scene.add(city_road_layer, 10)
     scene.add(worker_layer, 26)
-
-    # scene.add(sensor_layer, 25)
+    scene.add(front_sensor_layer, 18)
+    scene.add(back_sensor_layer, 15)
 
     # Side Structures
     scene.add(print_layer, 19)
