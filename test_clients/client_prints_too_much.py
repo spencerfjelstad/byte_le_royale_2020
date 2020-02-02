@@ -17,7 +17,7 @@ class Client(UserClient):
         return "let_me_think-ville"
 
     # This is where your AI will decide what to do
-    def take_turn(self, actions, city, disasters):
+    def take_turn(self, turn, actions, city, disasters):
         for _ in range(10):
             print(random.choice(["Hmm...", "I wonder...", "Maybe...", "or possibly...?", "We could..."]))
 

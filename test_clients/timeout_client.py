@@ -18,6 +18,6 @@ class Client(UserClient):
         return CityType.invested
 
     # This is where your AI will decide what to do
-    def take_turn(self, actions, city, disasters):
+    def take_turn(self, turn, actions, city, disasters):
         while self.i < 1_000_000_000_000:
             self.i += 1

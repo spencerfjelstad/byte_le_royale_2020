@@ -8,12 +8,12 @@ class Client(UserClient):
         super().__init__()
         self.number = 100
         self.SENSOR_DECREE_MAPPINGS = {
-            SensorType.fire_alarm: DecreeType.anti_fire_dogs,
-            SensorType.rock_on_a_rope: DecreeType.paperweights,
-            SensorType.coast_guard: DecreeType.snow_shovels,
-            SensorType.seismograph: DecreeType.rubber_boots,
-            SensorType.scp_foundation: DecreeType.fishing_hook,
-            SensorType.satellite_dish: DecreeType.cheese
+            SensorType.fire: DecreeType.anti_fire_dogs,
+            SensorType.tornado: DecreeType.paperweights,
+            SensorType.blizzard: DecreeType.snow_shovels,
+            SensorType.earthquake: DecreeType.rubber_boots,
+            SensorType.monster: DecreeType.fishing_hook,
+            SensorType.ufo: DecreeType.cheese
         }
 
         self.lasting_disasters = [DisasterType.fire, DisasterType.blizzard, DisasterType.monster]
@@ -28,7 +28,7 @@ class Client(UserClient):
         return CityType.invested
 
     # This is where your AI will decide what to do
-    def take_turn(self, actions, city, disasters):
+    def take_turn(self, turn, actions, city, disasters):
         self.print('New Turn')
         # Set decree to highest odds
         highest = -1
