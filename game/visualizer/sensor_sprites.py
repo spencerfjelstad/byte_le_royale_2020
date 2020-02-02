@@ -13,17 +13,17 @@ class SensorLayer(cocos.layer.Layer):
             threat = self.images[key][self.determine_threat(value["sensor_results"])]
             key = int(key)
             if key == 0:
-                sensor.position = 100*(int(key)+1), self.display[1] / 2
+                sensor.position = 1228, self.display[1]-260
             elif key == 1:
-                sensor.position = 100 * (int(key) + 1), self.display[1] / 3
+                sensor.position = 996, self.display[1]-256
             elif key == 2:
-                sensor.position = 100 * (int(key) + 1), self.display[1] / 4
+                sensor.position = 748, self.display[1]-164
             elif key == 3:
-                sensor.position = 100 * (int(key) + 1), self.display[1] / 5
+                sensor.position = 220, self.display[1]-304
             elif key == 4:
-                sensor.position = 100 * (int(key) + 1), self.display[1] / 6
+                sensor.position = 532, self.display[1]-300
             elif key == 5:
-                sensor.position = 100 * (int(key) + 1), self.display[1] / 7
+                sensor.position = 44, self.display[1]-388
             threat.position = sensor.position
             self.add(sensor)
             self.add(threat)
