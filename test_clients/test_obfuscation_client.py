@@ -17,7 +17,7 @@ class Client(UserClient):
         return CityType.invested
 
     # This is where your AI will decide what to do
-    def take_turn(self, actions, city, disasters):
+    def take_turn(self, turn, actions, city, disasters):
         # Set all the disasters to 0 damage
         for disaster in disasters:
             disaster.population_damage = 0

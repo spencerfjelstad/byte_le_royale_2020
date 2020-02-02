@@ -22,6 +22,8 @@ class MasterController(Controller):
     def __init__(self):
         super().__init__()
 
+        self.turn = 0
+
         # Singletons first
         self.event_controller = EventController()
         self.fun_stat_controller = FunStatController()
@@ -47,16 +49,16 @@ class MasterController(Controller):
     # Generator function. Given a key:value pair where the key is the identifier for the current world and the value is
     # the state of the world, returns the key that will give the appropriate world information
     def game_loop_logic(self, start=1):
-        turn = start
+        self.turn = start
 
         # Basic loop from 1 to max turns
         while True:
             # Wait until the next call to give the number
-            yield turn
+            yield self.turn
             # Increment the turn counter by 1
-            turn += 1
+            self.turn += 1
             # If the next turn number is above the max, the iterator ends
-            if turn > config.MAX_TURNS:
+            if self.turn > config.MAX_TURNS:
                 break
 
     # Receives world data from the generated game log and is responsible for interpreting it
@@ -120,7 +122,7 @@ class MasterController(Controller):
         for disaster in obfuscated_disasters:
             disaster.obfuscate()
 
-        args = (actions, obfuscated_city, obfuscated_disasters,)
+        args = (self.turn, actions, obfuscated_city, obfuscated_disasters,)
         return args
 
     # Perform the main logic that happens per turn
