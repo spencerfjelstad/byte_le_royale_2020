@@ -106,9 +106,10 @@ def create_scene(info, parser):
     city_back_layer = CityBackLayer(size, info, assets['city'])
 
     forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
+    lasting_dis_layer = LastingDisasterLayer(size, info, assets['disaster'])
 
     decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
-    disaster_level_layer = DisasterLevelLayer(turn, size, parser, assets['disaster_level'])
+    disaster_level_layer = DisasterLevelLayer(info, size, parser, assets['disaster_level'])
     worker_layer = WorkerLayer(size, assets['worker'])
     input_layer = InputLayer()
 
@@ -160,6 +161,7 @@ def create_scene(info, parser):
     scene.add(health_layer, 100)
 
     scene.add(forecast_layer, 100)
+    scene.add(lasting_dis_layer, 100)
 
     scene.add(decree_layer, 100)
     scene.add(disaster_level_layer, 101)

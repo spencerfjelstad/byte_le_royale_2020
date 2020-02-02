@@ -176,3 +176,81 @@ class UFOLayer(cocos.layer.Layer):
             # self.ufo.do(MoveBy((self.display[0], 0), global_stats.disaster_turn_time * global_stats.turn_speed))
 
             self.add(self.ufo)
+
+
+class LastingDisasterLayer(cocos.layer.Layer):
+    def __init__(self, display_size, turn_info, assets):
+        super().__init__()
+        self.display = display_size
+        self.info = turn_info
+        self.images = assets
+
+        fire_count = 0
+        bliz_count = 0
+        monst_count = 0
+
+        num_dis = len(self.info['player']['disasters'])
+        # Visualize when there is a lasting fire disaster
+        if num_dis > 0:
+            for i in range(num_dis):
+                if self.info['player']['disasters'][i]['disaster_type'] == 0:
+
+                    self.fire_spr = self.images['fire_tracker']
+                    self.fire_spr.position = 730, 32
+                    self.add(self.fire_spr)
+                    fire_count += 1
+                    self.fire_count_label = cocos.text.Label(
+                        f"x {fire_count}",
+                        font_name="Comic Sans",
+                        font_size=24,
+                        bold=True,
+                        anchor_x="center",
+                        position=(794, 32)
+                    )
+
+                elif self.info['player']['disasters'][i]['disaster_type'] == 2:
+                    # Visualize when there is a lasting fire disaster
+                    self.blizz_spr = self.images['bliz_tracker']
+                    self.blizz_spr.position = 858, 32
+                    self.add(self.blizz_spr)
+
+                    bliz_count += 1
+                    self.bliz_count_label = cocos.text.Label(
+                        f"x {bliz_count}",
+                        font_name="Comic Sans",
+                        font_size=24,
+                        bold=True,
+                        anchor_x="center",
+                        position=(922, 32)
+                    )
+
+                elif self.info['player']['disasters'][i]['disaster_type'] == 4:
+                    # Visualize when there is a lasting fire disaster
+                    self.monst_spr = self.images['monst_tracker']
+                    self.monst_spr.position = 986, 32
+                    self.add(self.monst_spr)
+
+                    monst_count += 1
+                    self.monst_count_label = cocos.text.Label(
+                        f"x {monst_count}",
+                        font_name="Comic Sans",
+                        bold=True,
+                        font_size=24,
+                        anchor_x="center",
+                        position=(1050, 32)
+                    )
+            try:
+                self.add(self.fire_count_label)
+            except:
+                pass
+            try:
+                self.add(self.bliz_count_label)
+            except:
+                pass
+            try:
+                self.add(self.monst_count_label)
+            except:
+                pass
+
+
+
