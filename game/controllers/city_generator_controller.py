@@ -22,7 +22,7 @@ class CityGeneratorController(Controller):
             player.city.gold += GameStats.city_type_invested_bonus
         elif city_type is CityType.pyrophobic:
             # Upgrade the fire sensors to level one
-            fire_alarm = player.city.sensors[SensorType.fire_alarm]
+            fire_alarm = player.city.sensors[SensorType.fire]
             fire_alarm.level = SensorLevel.level_one
             fire_alarm.effort_remaining = GameStats.sensor_upgrade_cost[SensorLevel.level_two]
         elif city_type is CityType.popular:

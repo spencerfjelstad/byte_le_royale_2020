@@ -18,7 +18,7 @@ class Client(UserClient):
         return CityType.none
 
     # This is where your AI will decide what to do
-    def take_turn(self, actions, city, disasters):
+    def take_turn(self, turn, actions, city, disasters):
         actions.add_effort(ActionType.repair_structure, city.population/2)
         actions.add_effort(ActionType.regain_population, city.population/2)
         actions.set_decree(DecreeType.paperweights)
