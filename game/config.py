@@ -29,14 +29,21 @@ RESTRICTED_MODULES = ["game",                       # modules that clients will 
                       "os",
                       "sys"]
 
-# Game Rule settings ---------------------------------------------------------------------------------------------------
-MAX_ALLOCATIONS_ALLOWED_PER_TURN = 30               # max number of unique effort allocations clients are allowed
+RESULTS_FILE_NAME = "results.json"                                  # Name and extension of results file
+RESULTS_DIR = os.path.join(os.getcwd(), "logs")                     # Location of the results file
+RESULTS_FILE = os.path.join(RESULTS_DIR, RESULTS_FILE_NAME)         # Results directory combined with file name
 
+LOGS_DIR = os.path.join(os.getcwd(), "logs")                        # Directory for game log files
 
-# Keeps track of the current debug level of the game (not a variable because it won't save when changed that way)
-class Debug:
+GAME_MAP_FILE_NAME = "game_map.json"                                # Name and extension of game file that holds generated world
+GAME_MAP_DIR = os.path.join(os.getcwd(), "logs")                    # Location of game map file
+GAME_MAP_FILE = os.path.join(GAME_MAP_DIR, GAME_MAP_FILE_NAME)      # Filepath for game map file
+
+class Debug:                    # Keeps track of the current debug level of the game (not a variable because it won't save when changed that way)
     level = DebugLevel.none
 
+# Game Rule settings ---------------------------------------------------------------------------------------------------
+MAX_ALLOCATIONS_ALLOWED_PER_TURN = 30               # max number of unique effort allocations clients are allowed
 
 # Game Generation ------------------------------------------------------------------------------------------------------
 APPROXIMATE_DISASTER_COUNT = 300    # approximate number of disasters to be spawned over the course of time
@@ -68,8 +75,3 @@ else:
     VIS_INTERMEDIATE_FRAMES = 4
     FPS = 120
     LOW_FPS = 60
-
-# Results file ---------------------------------------------------------------------------------------------------------
-RESULTS_FILE_NAME = "results.json"                              # Name and extension of results file
-RESULTS_DIR = os.path.join(os.getcwd(), "logs")                 # Location of the results file
-RESULTS_FILE = os.path.join(RESULTS_DIR, RESULTS_FILE_NAME)     # Results directory combined with file name
