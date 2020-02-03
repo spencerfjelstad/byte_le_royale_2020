@@ -74,29 +74,41 @@ def load(temp, section=1):
 
     elif section == 2:
         # Side Structures
-        struct_3dprint_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/3dprint_sheet.png"), 1, 2)
+        struct_3dprint_grid = pyglet.image.ImageGrid(
+            find_image("game/visualizer/assets/structure_assets/3dprint_sheet.png"), 1, 2)
         struct_3dprint = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_3dprint_grid[0::], 0))
-        struct_3dprint_complete = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_3dprint_grid[1::], 0))
+        struct_3dprint_complete = cocos.sprite.Sprite(
+            pyglet.image.Animation.from_image_sequence(struct_3dprint_grid[1::], 0))
 
-        struct_bigcanoe_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/bigcanoe_sheet.png"), 1, 2)
+        struct_bigcanoe_grid = pyglet.image.ImageGrid(
+            find_image("game/visualizer/assets/structure_assets/bigcanoe_sheet.png"), 1, 2)
         struct_bigcanoe = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_bigcanoe_grid[0::], 0))
-        struct_bigcanoe_complete = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_bigcanoe_grid[1::], 0))
+        struct_bigcanoe_complete = cocos.sprite.Sprite(
+            pyglet.image.Animation.from_image_sequence(struct_bigcanoe_grid[1::], 0))
 
-        struct_billboard_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/billboard_sheet.png"), 1, 2)
-        struct_billboard = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_billboard_grid[0::], 0))
-        struct_billboard_complete = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_billboard_grid[1::], 0))
+        struct_billboard_grid = pyglet.image.ImageGrid(
+            find_image("game/visualizer/assets/structure_assets/billboard_sheet.png"), 1, 2)
+        struct_billboard = cocos.sprite.Sprite(
+            pyglet.image.Animation.from_image_sequence(struct_billboard_grid[0::], 0))
+        struct_billboard_complete = cocos.sprite.Sprite(
+            pyglet.image.Animation.from_image_sequence(struct_billboard_grid[1::], 0))
 
-        struct_gelato_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/gelato_sheet.png"), 1, 2)
+        struct_gelato_grid = pyglet.image.ImageGrid(
+            find_image("game/visualizer/assets/structure_assets/gelato_sheet.png"), 1, 2)
         struct_gelato = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_gelato_grid[0::], 0))
-        struct_gelato_complete = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_gelato_grid[1::], 0))
+        struct_gelato_complete = cocos.sprite.Sprite(
+            pyglet.image.Animation.from_image_sequence(struct_gelato_grid[1::], 0))
 
-        struct_mint_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/mint_sheet.png"), 1, 2)
+        struct_mint_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/mint_sheet.png"),
+                                                  1, 2)
         struct_mint = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_mint_grid[0::], 0))
         struct_mint_complete = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_mint_grid[1::], 0))
 
-        struct_police_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/structure_assets/police_sheet.png"), 1, 2)
+        struct_police_grid = pyglet.image.ImageGrid(
+            find_image("game/visualizer/assets/structure_assets/police_sheet.png"), 1, 2)
         struct_police = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_police_grid[0::], 0))
-        struct_police_complete = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(struct_police_grid[1 ::], 0))
+        struct_police_complete = cocos.sprite.Sprite(
+            pyglet.image.Animation.from_image_sequence(struct_police_grid[1::], 0))
 
         assets['struct'] = {
             "3dprint": struct_3dprint,
@@ -115,19 +127,25 @@ def load(temp, section=1):
 
     elif section == 3:
         # Disaster assets
-        dis_fire_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/fire_sheet.png"), 1, 5)
-        dis_fire = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_fire_grid[0::], global_stats.base_turn_time))
+        dis_fire_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/fire_sheet.png"), 1,
+                                               5)
+        dis_fire = cocos.sprite.Sprite(
+            pyglet.image.Animation.from_image_sequence(dis_fire_grid[0::], global_stats.base_turn_time))
         dis_fire.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
 
         dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
         dis_blizzard = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/blizzard.png"))
 
-        dis_earthquake_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/earthquake_sheet.png"), 1, 19)
-        dis_earthquake = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_earthquake_grid[0::], global_stats.base_turn_time))
+        dis_earthquake_grid = pyglet.image.ImageGrid(
+            find_image("game/visualizer/assets/disaster_assets/earthquake_sheet.png"), 1, 19)
+        dis_earthquake = cocos.sprite.Sprite(
+            pyglet.image.Animation.from_image_sequence(dis_earthquake_grid[0::], global_stats.base_turn_time))
         dis_earthquake.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
 
-        dis_monster_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/monster_sheet.png"), 1, 5)
-        dis_monster = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_monster_grid[0::], global_stats.base_turn_time))
+        dis_monster_grid = pyglet.image.ImageGrid(
+            find_image("game/visualizer/assets/disaster_assets/monster_sheet.png"), 1, 5)
+        dis_monster = cocos.sprite.Sprite(
+            pyglet.image.Animation.from_image_sequence(dis_monster_grid[0::], global_stats.base_turn_time))
         dis_monster.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
 
         dis_ufo = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/ufo.png"))
@@ -157,7 +175,8 @@ def load(temp, section=1):
             fore_fire = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_fire.png"))
             fore_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_tornado.png"))
             fore_blizzard = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_blizzard.png"))
-            fore_earthquake = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_earthquake.png"))
+            fore_earthquake = cocos.sprite.Sprite(
+                find_image("game/visualizer/assets/forecast_assets/tape_earthquake.png"))
             fore_monster = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_monster.png"))
             fore_ufo = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_ufo.png"))
             fore_clear = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_clear.png"))
@@ -176,33 +195,47 @@ def load(temp, section=1):
     elif section == 5:
         # Sensor assets
         assets['sensor'] = {
-            "0":{},
-            "1":{},
-            "2":{},
-            "3":{},
-            "4":{},
-            "5":{},
+            "0": {},
+            "1": {},
+            "2": {},
+            "3": {},
+            "4": {},
+            "5": {},
         }
         sensor_colors = {
-            0 : COLOR.red,
-            1 : COLOR.black,
-            2 : COLOR.blue,
-            3 : COLOR.brown,
-            4 : COLOR.green,
-            5 : COLOR.gray,
+            0: COLOR.bright_red,
+            1: COLOR.yellow,
+            2: COLOR.brown,
+            3: COLOR.ice_blue,
+            4: COLOR.orange,
+            5: COLOR.green,
         }
-        find_image("game/visualizer/assets/sensor_assets/fire_alarm.png")
+        find_image("game/visualizer/assets/sensor_assets/base_sensor.png")
+        threat = find_image("game/visualizer/assets/sensor_assets/threat-sheet.png")
+        threat_grid = pyglet.image.ImageGrid(threat, 1, 17)
         for i in range(6):
-            sensor = replace_colors(".temp/fire_alarm.png",[COLOR.red],[sensor_colors[i]])
-            sensor_grid = pyglet.image.ImageGrid(sensor, 1, 2)
-            level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], global_stats.base_turn_time))
-            level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], global_stats.base_turn_time))
-            level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], global_stats.base_turn_time))
-            level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], global_stats.base_turn_time))
+            sensor = replace_colors(".temp/base_sensor.png", [COLOR.bright_red], [sensor_colors[i]])
+            sensor_grid = pyglet.image.ImageGrid(sensor, 1, 4)
+            level_0 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[0::], 0))
+            level_1 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[1::], 0))
+            level_2 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[2::], 0))
+            level_3 = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(sensor_grid[3::], 0))
+            threat_1 = cocos.sprite.Sprite(
+                pyglet.image.Animation.from_image_sequence(threat_grid[0:4:], global_stats.base_turn_time))
+            threat_1.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
+            threat_2 = cocos.sprite.Sprite(
+                pyglet.image.Animation.from_image_sequence(threat_grid[4:9:], global_stats.base_turn_time))
+            threat_2.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
+            threat_3 = cocos.sprite.Sprite(
+                pyglet.image.Animation.from_image_sequence(threat_grid[9:16:], global_stats.base_turn_time))
+            threat_3.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
             assets['sensor'][str(i)].update({"0": level_0})
             assets['sensor'][str(i)].update({"1": level_1})
             assets['sensor'][str(i)].update({"2": level_2})
             assets['sensor'][str(i)].update({"3": level_3})
+            assets['sensor'][str(i)].update({"threat_1": threat_1})
+            assets['sensor'][str(i)].update({"threat_2": threat_2})
+            assets['sensor'][str(i)].update({"threat_3": threat_3})
 
     elif section == 6:
         # Decree assets
@@ -228,11 +261,11 @@ def load(temp, section=1):
     elif section == 7:
         # Worker assets
         wrkr_colors = [[255, 255, 255], [169, 169, 169], [120, 120, 120], [67, 67, 67], [88, 88, 88]]
-        skin_colors = [COLOR.russet,COLOR.peru,COLOR.fawn,COLOR.apricot,COLOR.white]
-        shirt_1_colors = [COLOR.red,COLOR.magenta,COLOR.blue,COLOR.cyan,COLOR.lime,COLOR.yellow,COLOR.silver]
-        shirt_2_colors = [COLOR.maroon,COLOR.olive,COLOR.green,COLOR.purple,COLOR.teal,COLOR.navy]
-        pants_colors = [COLOR.khaki,COLOR.denim,COLOR.denim2,COLOR.gray]
-        shoe_colors = [COLOR.brown,COLOR.cocoa,COLOR.black]
+        skin_colors = [COLOR.russet, COLOR.peru, COLOR.fawn, COLOR.apricot, COLOR.white]
+        shirt_1_colors = [COLOR.red, COLOR.magenta, COLOR.blue, COLOR.cyan, COLOR.lime, COLOR.yellow, COLOR.silver]
+        shirt_2_colors = [COLOR.maroon, COLOR.olive, COLOR.green, COLOR.purple, COLOR.teal, COLOR.navy]
+        pants_colors = [COLOR.khaki, COLOR.denim, COLOR.denim2, COLOR.gray]
+        shoe_colors = [COLOR.brown, COLOR.cocoa, COLOR.black]
 
         assets['worker'] = {}
         assets['worker']['normal'] = list()
@@ -243,34 +276,39 @@ def load(temp, section=1):
         wrkr_total = 100
         find_image("game/visualizer/assets/worker.png")
         for i in range(wrkr_total):
-            wrkr = replace_colors(".temp/worker.png",wrkr_colors,[random.choice(skin_colors),
-                                                                                   random.choice(shirt_1_colors),
-                                                                                   random.choice(shirt_2_colors),
-                                                                                   random.choice(pants_colors),
-                                                                                   random.choice(shoe_colors)])
+            wrkr = replace_colors(".temp/worker.png", wrkr_colors, [random.choice(skin_colors),
+                                                                    random.choice(shirt_1_colors),
+                                                                    random.choice(shirt_2_colors),
+                                                                    random.choice(pants_colors),
+                                                                    random.choice(shoe_colors)])
             wrkr_grid = pyglet.image.ImageGrid(wrkr, 1, 48)
-            if i < wrkr_total/5:
-                wrkr_normal = pyglet.image.Animation.from_image_sequence(wrkr_grid[0:15:], global_stats.base_turn_time, loop=True)
+            if i < wrkr_total / 5:
+                wrkr_normal = pyglet.image.Animation.from_image_sequence(wrkr_grid[0:15:], global_stats.base_turn_time,
+                                                                         loop=True)
                 sprite = cocos.sprite.Sprite(wrkr_normal)
                 sprite.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
                 assets['worker']['normal'].append(sprite)
-            elif i < wrkr_total*2/5:
-                wrkr_hammer = pyglet.image.Animation.from_image_sequence(wrkr_grid[16:23:], global_stats.base_turn_time, loop=True)
+            elif i < wrkr_total * 2 / 5:
+                wrkr_hammer = pyglet.image.Animation.from_image_sequence(wrkr_grid[16:23:], global_stats.base_turn_time,
+                                                                         loop=True)
                 sprite = cocos.sprite.Sprite(wrkr_hammer)
                 sprite.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
                 assets['worker']['hammer'].append(sprite)
-            elif i < wrkr_total*3/5:
-                wrkr_money = pyglet.image.Animation.from_image_sequence(wrkr_grid[24:31:], global_stats.base_turn_time, loop=True)
+            elif i < wrkr_total * 3 / 5:
+                wrkr_money = pyglet.image.Animation.from_image_sequence(wrkr_grid[24:31:], global_stats.base_turn_time,
+                                                                        loop=True)
                 sprite = cocos.sprite.Sprite(wrkr_money)
                 sprite.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
                 assets['worker']['money'].append(sprite)
-            elif i < wrkr_total*4/5:
-                wrkr_pick = pyglet.image.Animation.from_image_sequence(wrkr_grid[32:39:], global_stats.base_turn_time, loop=True)
+            elif i < wrkr_total * 4 / 5:
+                wrkr_pick = pyglet.image.Animation.from_image_sequence(wrkr_grid[32:39:], global_stats.base_turn_time,
+                                                                       loop=True)
                 sprite = cocos.sprite.Sprite(wrkr_pick)
                 sprite.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
                 assets['worker']['pick'].append(sprite)
             else:
-                wrkr_phone = pyglet.image.Animation.from_image_sequence(wrkr_grid[40:47:], global_stats.base_turn_time, loop=True)
+                wrkr_phone = pyglet.image.Animation.from_image_sequence(wrkr_grid[40:47:], global_stats.base_turn_time,
+                                                                        loop=True)
                 sprite = cocos.sprite.Sprite(wrkr_phone)
                 sprite.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
                 assets['worker']['phone'].append(sprite)
