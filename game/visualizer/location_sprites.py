@@ -1,4 +1,5 @@
 import cocos
+import random
 
 
 # Display the background picture depending on the logs
@@ -11,5 +12,5 @@ class LocationLayer(cocos.layer.Layer):
 
         # Find correlating sprite in sprite dictionary
         location = self.images["0"]
-        location.position = self.display[0]/2, self.display[1]/2
+        location.position = self.display[0]/2, 400
         self.add(location)

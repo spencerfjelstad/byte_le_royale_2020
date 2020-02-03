@@ -24,7 +24,8 @@ class LoadingLayer(cocos.layer.Layer):
             5: 'Constructing sensors',
             6: 'Writing decrees',
             7: 'Importing workers',
-            8: 'Cleaning up'
+            8: 'Leveling up',
+            9: 'Cleaning up'
         }
 
         self.label = cocos.text.Label(
