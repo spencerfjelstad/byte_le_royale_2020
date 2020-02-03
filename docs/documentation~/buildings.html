@@ -155,8 +155,8 @@
             
   <div class="section" id="buildings">
 <h1>Buildings<a class="headerlink" href="#buildings" title="Permalink to this headline">¶</a></h1>
-<p>Buildings can be constructed in your city to improve your city’s functionality. Buildings can improve decrees, wealth, population, and structure. Without upgrading them, they sit as empty spots on your city. To build them, allocate effort to one of the buildings in <code class="docutils literal notranslate"><span class="pre">city.buildings</span></code>. Once the required amount of effort to upgrade is reached, the building will be upgraded.</p>
-<p>For example, if you wanted to allocate effort to the Instant Decree Booster, you would type <code class="docutils literal notranslate"><span class="pre">actions.add_effort(city.buildings.instant_decree_booster,</span> <span class="pre">amount)</span></code>. For more information on allocating effort, see <a class="reference external" href="effort.html">Effort</a>.</p>
+<p>Buildings can be constructed in your city to improve your city’s functionality. Buildings can improve decrees, wealth, population, and structure. Without upgrading them, they sit as empty spots on your city. To build them, allocate effort to one of the buildings in <code class="docutils literal notranslate"><span class="pre">city.buildings</span></code>. However, buildings also require gold equal to the required effort to upgrade. Once the required amount of effort and gold required to upgrade is reached, the building will be upgraded.</p>
+<p>For example, if you wanted to allocate effort to the Instant Decree Booster, you would type <code class="docutils literal notranslate"><span class="pre">actions.add_effort(city.buildings[BuildingType.instant_decree_booster],</span> <span class="pre">amount)</span></code>. For more information on allocating effort, see <a class="reference external" href="effort.html">Effort</a>.</p>
 <p>There are 6 types of buildings:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="#instant-decree-booster">Instant Decree Booster</a></p></li>
