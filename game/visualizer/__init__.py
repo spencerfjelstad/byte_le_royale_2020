@@ -17,6 +17,7 @@ from game.visualizer.forecast_sprite import *
 from game.visualizer.decree_sprites import *
 from game.visualizer.disaster_layer import *
 from game.visualizer.worker_sprites import *
+from game.visualizer.loading_layer import LoadingLayer
 from game.visualizer.load import *
 from game.visualizer.sensor_sprites import *
 from game.visualizer.structure_assets import *
@@ -43,8 +44,11 @@ def start(gamma, fullscreen=False, endgame=True):
     # Initialize cocos
     director.init(width=size[0], height=size[1], caption="Byte-le Royale: Disaster Dispatcher", fullscreen=fullscreen)
 
-    load(assets)
+    llayer = LoadingLayer(assets, boot)
+    director.run(cocos.scene.Scene(llayer))
 
+
+def boot():
     # Get turn info from logs, if None go to end scene
     # on the end scene the end_boolean is checked, and if False, the visualizer will close after 4 seconds
     turn_info = log_parser.get_turn(global_stats.turn_num)
@@ -60,7 +64,7 @@ def start(gamma, fullscreen=False, endgame=True):
         clock.schedule_interval(callback=timer, interval=0)
 
         first_scene = create_scene(turn_info, log_parser)
-        first_scene.add(clock,100)
+        first_scene.add(clock, 100)
         director.run(first_scene)
 
 
