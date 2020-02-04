@@ -24,7 +24,6 @@ from game.visualizer.structure_assets import *
 # Global variables needed for scene creation and keeping track of turns
 size = DISPLAY_SIZE
 log_parser = None
-turn = 1
 end_boolean = True
 assets = {}
 global_stats = GlobalStats()
@@ -33,7 +32,6 @@ global_stats = GlobalStats()
 # Function called by main that displays first scene and initializes everything
 def start(gamma, fullscreen=False, endgame=True):
     global log_parser
-    global turn
     global end_boolean
     end_boolean = endgame
 
@@ -49,7 +47,7 @@ def start(gamma, fullscreen=False, endgame=True):
 
     # Get turn info from logs, if None go to end scene
     # on the end scene the end_boolean is checked, and if False, the visualizer will close after 4 seconds
-    turn_info = log_parser.get_turn(turn)
+    turn_info = log_parser.get_turn(global_stats.turn_num)
     if turn_info is None:
         end_layer = EndLayer(size, log_parser)
         end_scene = cocos.scene.Scene().add(end_layer)
@@ -58,7 +56,7 @@ def start(gamma, fullscreen=False, endgame=True):
             end_scene.schedule_interval(exit, 4)
     else:
         # Initialize clock layer and add an interval
-        clock = TimeLayer(size, turn_info, turn)
+        clock = TimeLayer(size, turn_info, global_stats.turn_num)
         clock.schedule_interval(callback=timer, interval=0)
 
         first_scene = create_scene(turn_info, log_parser)
@@ -67,13 +65,12 @@ def start(gamma, fullscreen=False, endgame=True):
 
 
 def timer(interval):
-    global turn
 
     director.scene_stack.clear()
 
     # Get turn info from logs, if None go to end scene
     # on the end scene the end_boolean is checked, and if False, the visualizer will close after 4 seconds
-    turn_info=log_parser.get_turn(turn)
+    turn_info=log_parser.get_turn(global_stats.turn_num)
     if turn_info is None:
         end_layer = EndLayer(size,log_parser)
         end_scene = cocos.scene.Scene().add(end_layer)
@@ -87,13 +84,13 @@ def timer(interval):
             if item == 0:
                 intval = global_stats.disaster_turn_time * global_stats.turn_speed
 
-        clock = TimeLayer(size, turn_info, turn)
+        clock = TimeLayer(size, turn_info, global_stats.turn_num)
         clock.schedule_interval(callback=timer, interval=intval)
         current_scene = create_scene(turn_info, log_parser)
         current_scene.add(clock, 100)
 
         director.replace(current_scene)
-        turn += 1
+        global_stats.turn_num += 1
 
 
 # Function that generates base scene layer for the given turn
@@ -105,10 +102,9 @@ def create_scene(info, parser):
     city_layer = CityLayer(size, info, assets['city'])
     city_back_layer = CityBackLayer(size, info, assets['city'])
 
-    forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
+    forecast_layer = ForecastLayer(global_stats.turn_num, size, parser, assets['forecast'])
     lasting_dis_layer = LastingDisasterLayer(size, info, assets['disaster'])
-
-    decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
+    decree_layer = DecreeLayer(global_stats.turn_num, size, parser, assets['decree'])
     disaster_level_layer = DisasterLevelLayer(info, size, parser, assets['disaster_level'])
     worker_layer = WorkerLayer(size, assets['worker'])
     input_layer = InputLayer()
