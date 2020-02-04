@@ -10,6 +10,12 @@ class ForecastLayer(cocos.layer.Layer):
         self.parser = log_parser
         self.images = assets
         super().__init__()
+
+        # Forecast Holder
+        fore_sprite = self.images['forecast_hold']
+        fore_sprite.position = 660, 662
+        self.add(fore_sprite)
+
         # Generates list of future and past turns given the current turn and saves it as 'forecast'
         forecast = self.parser.turns[clamp(turn-3, 0, turn):clamp(turn+2, 0, len(self.parser.turns)):]
 
@@ -44,3 +50,18 @@ class ForecastLayer(cocos.layer.Layer):
             else:
                 spr.position = self.display[0]/2+(i+1)*64-172, self.display[1]-50
             self.add(spr)
+
+
+class DisasterLevelLayer(cocos.layer.Layer):
+    def __init__(self, turn, display_size, log_parser, assets):
+        self.turn = turn
+        self.display = display_size
+        self.parser = log_parser
+        self.images = assets
+        super().__init__()
+
+        spr = self.images['bronze'][0]
+        spr.position = 682, 648
+        self.add(spr)
+
+

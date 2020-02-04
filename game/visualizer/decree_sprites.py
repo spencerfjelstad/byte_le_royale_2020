@@ -1,6 +1,7 @@
 import cocos
 from game.common.enums import *
 
+
 class DecreeLayer(cocos.layer.Layer):
     def __init__(self, turn, display_size, log_parser, assets):
         self.turn = turn
@@ -9,6 +10,15 @@ class DecreeLayer(cocos.layer.Layer):
         self.images = assets
         super().__init__()
 
+        # Decree holder
+        self.images = assets
+        super().__init__()
+
+        spr = self.images['6']
+        spr.position = 50, 664
+        self.add(spr)
+
+        # Decrees
         if self.turn > 1:
             info = self.parser.get_turn(self.turn-1)
         else:
@@ -30,15 +40,6 @@ class DecreeLayer(cocos.layer.Layer):
         if int(decree) == disaster:
             self.add(success_label)
 
-
-class DecreeHolderLayer(cocos.layer.Layer):
-    def __init__(self, assets):
-        self.images = assets
-        super().__init__()
-
-        spr = self.images['6']
-        spr.position = 50, 664
-        self.add(spr)
 
 
 

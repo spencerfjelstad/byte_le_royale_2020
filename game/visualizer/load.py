@@ -56,8 +56,17 @@ def replace_colors(filename, start_colors, end_colors):
 def load(temp):
     assets = temp
     plains = cocos.sprite.Sprite(find_image("game/visualizer/assets/location_assets/location_plains.png"))
+    mountains = cocos.sprite.Sprite(find_image("game/visualizer/assets/location_assets/location_mountain.png"))
+
+    # Get random location
+    num = random.randint(0,1)
+    if num == 0:
+        location = mountains
+    else:
+        location = plains
+
     assets['location'] = {
-        "0": plains
+        "0": location,
     }
 
     # City assets
@@ -111,12 +120,10 @@ def load(temp):
     }
 
     # Disaster assets
-    dis_fire_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/fire_sheet.png"), 1, 5)
-    dis_fire = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_fire_grid[0::], global_stats.base_turn_time))
-    dis_fire.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
-
     dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
-    dis_blizzard = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/blizzard.png"))
+
+    dis_blizzard_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/blizzard_sheet.png"), 1, 4)
+    dis_blizzard = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_blizzard_grid[0::], 0.1))
 
     dis_earthquake_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/earthquake_sheet.png"), 1, 19)
     dis_earthquake = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_earthquake_grid[0::], global_stats.base_turn_time))
@@ -126,15 +133,30 @@ def load(temp):
     dis_monster = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_monster_grid[0::], global_stats.base_turn_time))
     dis_monster.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
 
-    dis_ufo = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/ufo.png"))
-    assets['disaster'] = {
-        "fire": dis_fire,
-        "tornado": dis_tornado,
-        "blizzard": dis_blizzard,
-        "earthquake": dis_earthquake,
-        "monster": dis_monster,
-        "ufo": dis_ufo
-    }
+    dis_ufo_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/ufo_sheet.png"), 1, 19)
+    dis_ufo = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_ufo_grid[0::], 0.03))
+
+    fire_tracker = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_fire.png"))
+    bliz_tracker = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_blizzard.png"))
+    monst_tracker = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/tape_monster.png"))
+
+    assets['disaster'] = {}
+    assets['disaster']['fire'] = list()
+    assets['disaster']['tornado'] = dis_tornado
+    assets['disaster']['blizzard'] = dis_blizzard
+    assets['disaster']['earthquake'] = dis_earthquake
+    assets['disaster']['monster'] = dis_monster
+    assets['disaster']['ufo'] = dis_ufo
+    assets['disaster']['fire_tracker'] = fire_tracker
+    assets['disaster']['bliz_tracker'] = bliz_tracker
+    assets['disaster']['monst_tracker'] = monst_tracker
+
+    for i in range(20):
+        dis_fire_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/fire_sheet.png"), 1, 5)
+        dis_fire = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_fire_grid[0::], global_stats.base_turn_time))
+        dis_fire.do(Repeat(CallFuncS(match_speed, global_stats.base_turn_time)))
+
+        assets['disaster']['fire'].append(dis_fire)
 
     # Forecast assets
     assets['forecast'] = {}
@@ -167,6 +189,28 @@ def load(temp):
         assets['forecast']['clear'].append(fore_clear)
         assets['forecast']['clear2'].append(fore_clear2)
         assets['forecast']['clear3'].append(fore_clear3)
+
+    fore_holder_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/forecast_assets/forecast_hold.png"), 1, 2)
+    fore_holder = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(fore_holder_grid[0::], 0.1))
+    assets['forecast']['forecast_hold'] = fore_holder
+
+    # Disaster Level Assets
+    assets['disaster_level'] = {}
+    assets['disaster_level']['bronze'] = list()
+    assets['disaster_level']['silver'] = list()
+    assets['disaster_level']['gold'] = list()
+    assets['disaster_level']['uranium'] = list()
+
+    for i in range(5):
+        # Disaster Level Assets
+        bronze = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/bronze.png"))
+        silver = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/silver.png"))
+        gold = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/gold.png"))
+        uranium = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/uranium.png"))
+        assets['disaster_level']['bronze'].append(bronze)
+        assets['disaster_level']['silver'].append(silver)
+        assets['disaster_level']['gold'].append(gold)
+        assets['disaster_level']['uranium'].append(uranium)
 
     # Sensor assets
     assets['sensor'] = {
