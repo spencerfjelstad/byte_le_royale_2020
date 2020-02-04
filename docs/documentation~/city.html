@@ -147,22 +147,45 @@
             
   <div class="section" id="city">
 <h1>City<a class="headerlink" href="#city" title="Permalink to this headline">¶</a></h1>
-<p>Your city is what you must protect against disasters. It houses several important stats that stand between you and GAME OVER, Population and Structure. Once population reaches zero, your city falls and it’s game over. Structure acts as your population’s max cap, so if your structure reaches zero, so does your population. You can protect your city by having the correct <a class="reference external" href="decrees.html">decrees</a>, upgrading <a class="reference external" href="buildings.html">buildings</a>, and by allocating <a class="reference external" href="effort.html">effort</a> to <code class="docutils literal notranslate"><span class="pre">ActionType.regain_population</span></code> and <code class="docutils literal notranslate"><span class="pre">ActionType.repair_structure</span></code>.</p>
-<p>Has different types of cities:
-healthy, sturdy, invested, pyrophobic, popular, modern</p>
-<p>Healthy: Starts with population already up to structure, giving your city a headstart in allocating effort
-Sturdy: Starts with structure up to max structure, allowing you to focus on population.
-Invested: Start with 1500 gold.
-Pyrophobic: Upgrades the fire sensor to level 1.
-Popular: Upgrades the population booster building to level 1.
-Modern: Upgrades the city to level one.</p>
-<p>Can be upgraded to increase structure.
-Initial MAX structure: 200
-Initial current structure = 100
-City gold = 0
-gold per turn = 3
-city population = 40</p>
-<p>Upgrade:</p>
+<p>Your city is what you must protect against disasters. It houses several important stats that stand between you and GAME OVER, Population and Structure. Structure acts as your population’s max cap, so if your structure reaches zero, so does your population. Once population reaches zero, your city falls and it’s game over. You can protect your city by having the correct <a class="reference external" href="decrees.html">decrees</a>, upgrading <a class="reference external" href="buildings.html">buildings</a>, and by allocating <a class="reference external" href="effort.html">effort</a> to <code class="docutils literal notranslate"><span class="pre">ActionType.regain_population</span></code> and <code class="docutils literal notranslate"><span class="pre">ActionType.repair_structure</span></code>.</p>
+<p>Your city can start with different bonuses and advantages. This can be assigned in the city_type method in your client. For example, if we wanted to have a popular city, we would return <code class="docutils literal notranslate"><span class="pre">CityType.popular</span></code> in the city_type method.</p>
+<p>There are 6 kinds of cities to choose from:</p>
+<ul class="simple">
+<li><p>Healthy: Starts with population already up to structure, giving your city a headstart in allocating effort</p></li>
+<li><p>Sturdy: Starts with structure up to max structure, allowing you to focus on population.</p></li>
+<li><p>Invested: Start with 1500 gold.</p></li>
+<li><p>Pyrophobic: Upgrades the fire sensor to level 1.</p></li>
+<li><p>Popular: Upgrades the population booster building to level 1.</p></li>
+<li><p>Modern: Upgrades the city to level one.</p></li>
+</ul>
+<p>Your city starts with default stats:</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Stat</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Max Structure</td>
+<td>200</td>
+</tr>
+<tr>
+<td>Current Structure</td>
+<td>100</td>
+</tr>
+<tr>
+<td>Current Population</td>
+<td>40</td>
+</tr>
+<tr>
+<td>Gold</td>
+<td>0</td>
+</tr>
+</tbody>
+</table><p>These values can be increased either through automatic accumulation, effort allocation, or upgrades.
+While gold is automatically accumulated at a rate of 3 gold per turn, the max structure can be upgraded by <code class="docutils literal notranslate"><span class="pre">actions.add_effort(ActionType.upgrade_city,</span> <span class="pre">amount)</span></code>.</p>
 <table border="1" class="docutils">
 <thead>
 <tr>
