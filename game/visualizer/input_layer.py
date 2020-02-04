@@ -32,6 +32,7 @@ class InputLayer(cocos.layer.Layer):
         elif key == 65364:
             self.global_stats.turn_speed = min(4, self.global_stats.turn_speed + 0.25)
             self.show_time_change()
+        # Z key, skip to end screen
         elif key == 122:
             self.global_stats.turn_num = -1
 
