@@ -104,9 +104,12 @@ def create_scene(info, parser):
     city_road_layer = RoadLayer(size, info, assets['city'])
     city_layer = CityLayer(size, info, assets['city'])
     city_back_layer = CityBackLayer(size, info, assets['city'])
+
     forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
+    lasting_dis_layer = LastingDisasterLayer(size, info, assets['disaster'])
+
     decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
-    decree_hold_layer = DecreeHolderLayer(assets['decree'])
+    disaster_level_layer = DisasterLevelLayer(info, size, parser, assets['disaster_level'])
     worker_layer = WorkerLayer(size, assets['worker'])
     input_layer = InputLayer()
 
@@ -126,7 +129,8 @@ def create_scene(info, parser):
     monster_layer = MonsterLayer(size, info, assets['disaster'])
     ufo_layer = UFOLayer(size, info, assets['disaster'])
 
-    sensor_layer = SensorLayer(size, info, assets['sensor'])
+    front_sensor_layer = FrontSensorLayer(size, info, assets['sensor'])
+    back_sensor_layer = BackSensorLayer(size, info, assets['sensor'])
 
     # Add layers to
     scene = cocos.scene.Scene()
@@ -135,8 +139,8 @@ def create_scene(info, parser):
     scene.add(city_back_layer, 15)
     scene.add(city_road_layer, 10)
     scene.add(worker_layer, 26)
-
-    # scene.add(sensor_layer, 25)
+    scene.add(front_sensor_layer, 18)
+    scene.add(back_sensor_layer, 15)
 
     # Side Structures
     scene.add(print_layer, 19)
@@ -152,12 +156,16 @@ def create_scene(info, parser):
     scene.add(blizzard_layer, 20)
     scene.add(earthquake_layer, 20)
     scene.add(monster_layer, 16)
-    scene.add(ufo_layer, 20)
+    scene.add(ufo_layer, 16)
 
+    # UI
     scene.add(health_layer, 100)
+
     scene.add(forecast_layer, 100)
+    scene.add(lasting_dis_layer, 100)
+
     scene.add(decree_layer, 100)
-    scene.add(decree_hold_layer, 99)
+    scene.add(disaster_level_layer, 101)
     scene.add(input_layer, 100)
 
     return scene
