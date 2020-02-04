@@ -15,20 +15,22 @@ There are 6 types of buildings:
 ## Instant Decree Booster
 Shown as the police station, this increases the effectiveness of your correctly guessed decrees for instant disasters by a multiplier that increases with each upgrade.
 
-Level | Effort Required | Decree Boost Multiplier
+Level | Effort Required | Damage Mitigated
 --- | --- | ---
-1 | 13800 | 1.1
-2 | 18100 | 1.25
-3 | 25300 | 1.5
+Base | 0 | 50%
+1 | 13800 | 55%
+2 | 18100 | 62.5%
+3 | 25300 | 75%
 
 ## Lasting Decree Booster
 Shown as the gelato shop, this increases the effectiveness of your correctly guessed decrees for lasting disasters by a multiplier that increases with each upgrade.
 
-Level | Effort Required | Decree Boost Multiplier
+Level | Effort Required | Damage Mitigated
 --- | --- | ---
-1 | 12000 | 1.1
-2 | 15750 | 1.25
-3 | 22000 | 1.5
+Base | 0 | 50%
+1 | 12000 | 55%
+2 | 15750 | 62.5%
+3 | 22000 | 75%
 
 ## Wealth Booster
 Shown as the bank, this gives you additional wealth by an amount that increases with each upgrade.

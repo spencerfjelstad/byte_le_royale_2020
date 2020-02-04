@@ -21,7 +21,7 @@ The building objects can be found in the city.buildings variable.
 Allocating effort towards repairing structure will increase your current structure amount of your city. Current structure is capped by maximum structure and is reduced by disasters. Be careful, if your city structure falls to 0, your city will be destroyed, and the game ends! Your current population is also capped by your current structure, *not* your maximum structure, so if you're running low on population, maybe invest in repairing your city's structure.
 
 ### Regain Population
-Allocating your effort towards regaining population will increase your current population amount of your city. Current population is capped by current structure and is reduced by disasters. Be careful, if your city structure falls to 0, your city will be destroyed, and the game ends! Higher population amounts will also increase the amount of effort you can allocate on a given turn, so more population means more effort towards other actions!
+Allocating your effort towards regaining population will increase your current population amount of your city. Current population is capped by current structure and is reduced by disasters. Be careful, if your city population falls to 0, your city will be destroyed, and the game ends! Higher population amounts will also increase the amount of effort you can allocate on a given turn, so more population means more effort towards other actions!
 
 ### Accumulate Wealth
 Accumulate Wealth will increase the current amount of wealth you have. Wealth is used to upgrade structures, so make sure you have enough money before allocating people towards upgrading your structures.

@@ -49,10 +49,10 @@ Level| Population DMG | Structure DMG
 
 Level| Population DMG | Structure DMG
 --- | --- | ---
-1 | 2 | 1
-2 | 2 | 1
-3 | 2 | 1
-4 | 2 | 1
+1 | 25 | 50
+2 | 50 | 100
+3 | 100 | 200
+4 | 150 | 300
 
 ### UFO
 
