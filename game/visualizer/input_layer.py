@@ -39,3 +39,7 @@ class InputLayer(cocos.layer.Layer):
     def show_time_change(self):
         self.speed_label.element.text = f'{1/self.global_stats.turn_speed:.2f}x'
         self.speed_label.visible = True
+
+
+    def on_mouse_press(self, x, y, buttons, modifiers):
+        print(x, y)

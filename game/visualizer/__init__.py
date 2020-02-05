@@ -109,8 +109,8 @@ def create_scene(info, parser):
     forecast_layer = ForecastLayer(global_stats.turn_num, size, parser, assets['forecast'])
     lasting_dis_layer = LastingDisasterLayer(size, info, assets['disaster'])
     decree_layer = DecreeLayer(global_stats.turn_num, size, parser, assets['decree'])
+    worker_layer = WorkerLayer(size, info, assets['worker'])
     disaster_level_layer = DisasterLevelLayer(info, size, parser, assets['disaster_level'])
-    worker_layer = WorkerLayer(size, assets['worker'])
     input_layer = InputLayer()
 
     # Side structures

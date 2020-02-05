@@ -233,8 +233,8 @@ def load(temp, section=1):
         sensor_colors = {
             0: COLOR.bright_red,
             1: COLOR.yellow,
-            2: COLOR.brown,
-            3: COLOR.ice_blue,
+            2: COLOR.ice_blue,
+            3: COLOR.brown,
             4: COLOR.orange,
             5: COLOR.green,
         }

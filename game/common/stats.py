@@ -5,37 +5,37 @@ class GameStats:
 
     # cost in man_power to upgrade a building
     building_upgrade_cost = {
-        BuildingType.instant_decree_booster: {
+        BuildingType.police_station: {
             BuildingLevel.level_zero: 0,
             BuildingLevel.level_one: 13800,
             BuildingLevel.level_two: 18100,
             BuildingLevel.level_three: 25300
         },
-        BuildingType.lasting_decree_booster: {
+        BuildingType.gelato_shop: {
             BuildingLevel.level_zero: 0,
             BuildingLevel.level_one: 12000,
             BuildingLevel.level_two: 15750,
             BuildingLevel.level_three: 22000
         },
-        BuildingType.everything_booster: {
+        BuildingType.big_canoe: {
             BuildingLevel.level_zero: 0,
             BuildingLevel.level_one: 25000,
             BuildingLevel.level_two: 35000,
             BuildingLevel.level_three: 45000
         },
-        BuildingType.wealth_booster: {
+        BuildingType.mint: {
             BuildingLevel.level_zero: 0,
             BuildingLevel.level_one: 9600,
             BuildingLevel.level_two: 12600,
             BuildingLevel.level_three: 17600
         },
-        BuildingType.population_booster: {
+        BuildingType.billboard: {
             BuildingLevel.level_zero: 0,
             BuildingLevel.level_one: 9600,
             BuildingLevel.level_two: 12600,
             BuildingLevel.level_three: 17600
         },
-        BuildingType.structure_booster: {
+        BuildingType.printer: {
             BuildingLevel.level_zero: 0,
             BuildingLevel.level_one: 12000,
             BuildingLevel.level_two: 15750,
