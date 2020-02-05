@@ -7,39 +7,27 @@ class GameStats:
     building_upgrade_cost = {
         BuildingType.police_station: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 13800,
-            BuildingLevel.level_two: 18100,
-            BuildingLevel.level_three: 25300
+            BuildingLevel.level_one: 48620,
         },
         BuildingType.gelato_shop: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 12000,
-            BuildingLevel.level_two: 15750,
-            BuildingLevel.level_three: 22000
+            BuildingLevel.level_one: 42287,
         },
         BuildingType.big_canoe: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 25000,
-            BuildingLevel.level_two: 35000,
-            BuildingLevel.level_three: 45000
+            BuildingLevel.level_one: 105000,
         },
         BuildingType.mint: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 9600,
-            BuildingLevel.level_two: 12600,
-            BuildingLevel.level_three: 17600
+            BuildingLevel.level_one: 33830,
         },
         BuildingType.billboard: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 9600,
-            BuildingLevel.level_two: 12600,
-            BuildingLevel.level_three: 17600
+            BuildingLevel.level_one: 33830,
         },
         BuildingType.printer: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 12000,
-            BuildingLevel.level_two: 15750,
-            BuildingLevel.level_three: 22000
+            BuildingLevel.level_one: 42287,
         }
     }
 
@@ -67,51 +55,37 @@ class GameStats:
     # Boost multiplied by the decree if you have a structure with the matching level
     decree_boost = {
         BuildingLevel.level_zero: 1,
-        BuildingLevel.level_one: 1.1,
-        BuildingLevel.level_two: 1.25,
-        BuildingLevel.level_three: 1.5
+        BuildingLevel.level_one: 1.5,
     }
 
     everything_boost = {
         'wealth': {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 20,
-            BuildingLevel.level_two: 40,
-            BuildingLevel.level_three: 60
+            BuildingLevel.level_one: 60,
         },
         'population': {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 10,
-            BuildingLevel.level_two: 20,
-            BuildingLevel.level_three: 30
+            BuildingLevel.level_one: 30,
         },
         'structure': {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 10,
-            BuildingLevel.level_two: 20,
-            BuildingLevel.level_three: 30
+            BuildingLevel.level_one: 30,
         }
     }
 
     wealth_boost = {
         BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 20,
-        BuildingLevel.level_two: 40,
-        BuildingLevel.level_three: 60
+        BuildingLevel.level_one: 60,
     }
 
     population_boost = {
         BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 5,
-        BuildingLevel.level_two: 15,
-        BuildingLevel.level_three: 25
+        BuildingLevel.level_one: 25,
     }
 
     structure_boost = {
         BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 5,
-        BuildingLevel.level_two: 15,
-        BuildingLevel.level_three: 25
+        BuildingLevel.level_one: 25,
     }
 
     # required effort to stop lasting disasters
