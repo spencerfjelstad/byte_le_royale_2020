@@ -98,39 +98,40 @@ def timer(interval):
 
 
 # Function that generates base scene layer for the given turn
-def create_scene(info, parser):
+def create_scene(turn, parser):
     # Generate layers
-    health_layer = HealthBar(size, info)
-    location_layer = LocationLayer(info, size, assets['location'])
-    city_road_layer = RoadLayer(size, info, assets['city'])
-    city_layer = CityLayer(size, info, assets['city'])
-    city_back_layer = CityBackLayer(size, info, assets['city'])
+    health_layer = HealthBar(size, turn)
+    location_layer = LocationLayer(turn, size, assets['location'])
+    city_road_layer = RoadLayer(size, turn, assets['city'])
+    city_layer = CityLayer(size, turn, assets['city'])
+    city_back_layer = CityBackLayer(size, turn, assets['city'])
 
     forecast_layer = ForecastLayer(global_stats.turn_num, size, parser, assets['forecast'])
-    lasting_dis_layer = LastingDisasterLayer(size, info, assets['disaster'])
+    lasting_dis_layer = LastingDisasterLayer(size, turn, assets['disaster'])
     decree_layer = DecreeLayer(global_stats.turn_num, size, parser, assets['decree'])
-    worker_layer = WorkerLayer(size, info, assets['worker'])
-    disaster_level_layer = DisasterLevelLayer(info, size, parser, assets['disaster_level'])
+    worker_layer = WorkerLayer(global_stats.turn_num, size, parser, assets['worker'])
+    disaster_level_layer = DisasterLevelLayer(global_stats.turn_num, size, parser, assets['disaster_level'])
+
     input_layer = InputLayer()
 
     # Side structures
-    print_layer = PrintLayer(size, info, assets['struct'])
-    bigcanoe_layer = BigCanoeLayer(size, info, assets['struct'])
-    billboard_layer = BillBoardLayer(size, info, assets['struct'])
-    gelato_layer = GelatoLayer(size, info, assets['struct'])
-    mint_layer = MintLayer(size, info, assets['struct'])
-    police_layer = PoliceLayer(size, info, assets['struct'])
+    print_layer = PrintLayer(size, turn, assets['struct'])
+    bigcanoe_layer = BigCanoeLayer(size, turn, assets['struct'])
+    billboard_layer = BillBoardLayer(size, turn, assets['struct'])
+    gelato_layer = GelatoLayer(size, turn, assets['struct'])
+    mint_layer = MintLayer(size, turn, assets['struct'])
+    police_layer = PoliceLayer(size, turn, assets['struct'])
 
     # Disasters
-    fire_layer = FireLayer(size, info, assets['disaster'])
-    tornado_layer = TornadoLayer(size, info, assets['disaster'])
-    blizzard_layer = BlizzardLayer(size, info, assets['disaster'])
-    earthquake_layer = EarthquakeLayer(size, info, assets['disaster'])
-    monster_layer = MonsterLayer(size, info, assets['disaster'])
-    ufo_layer = UFOLayer(size, info, assets['disaster'])
+    fire_layer = FireLayer(size, turn, assets['disaster'])
+    tornado_layer = TornadoLayer(size, turn, assets['disaster'])
+    blizzard_layer = BlizzardLayer(size, turn, assets['disaster'])
+    earthquake_layer = EarthquakeLayer(size, turn, assets['disaster'])
+    monster_layer = MonsterLayer(size, turn, assets['disaster'])
+    ufo_layer = UFOLayer(size, turn, assets['disaster'])
 
-    front_sensor_layer = FrontSensorLayer(size, info, assets['sensor'])
-    back_sensor_layer = BackSensorLayer(size, info, assets['sensor'])
+    front_sensor_layer = FrontSensorLayer(size, turn, assets['sensor'])
+    back_sensor_layer = BackSensorLayer(size, turn, assets['sensor'])
 
     # Add layers to
     scene = cocos.scene.Scene()

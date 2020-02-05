@@ -60,8 +60,28 @@ class DisasterLevelLayer(cocos.layer.Layer):
         self.images = assets
         super().__init__()
 
-        spr = self.images['bronze'][0]
-        spr.position = 682, 648
-        self.add(spr)
+        # Generates list of future and past turns given the current turn and saves it as 'forecast'
+        forecast = self.parser.turns[clamp(turn - 3, 0, turn):clamp(turn + 2, 0, len(self.parser.turns)):]
+        for i in range(len(forecast)):
+            if len(forecast[i]['events']) > 0:
+                for j in forecast[i]['events']:
+                    if j['event_type'] == 3:
+                        level = j['disaster']['level']
+                        if level == 0:
+                            spr = self.images['bronze'][i]
+                        elif level == 1:
+                            spr = self.images['silver'][i]
+                        elif level == 2:
+                            spr = self.images['gold'][i]
+                        elif level == 3:
+                            spr = self.images['uranium'][i]
 
+                        if self.turn < 2:
+                            spr.position = self.display[0] / 2 + (i + 3) * 64 - 172, self.display[1] - 72
+                        elif self.turn < 3:
+                            spr.position = self.display[0] / 2 + (i + 2) * 64 - 172, self.display[1] - 72
+                        else:
+                            spr.position = self.display[0] / 2 + (i + 1) * 64 - 150, self.display[1] - 72
+                        self.add(spr)
 
+                        # 682, 648

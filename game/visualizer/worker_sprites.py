@@ -7,12 +7,13 @@ from game.common.enums import *
 
 
 class WorkerLayer(cocos.layer.Layer):
-    def __init__(self, display_size, info, assets):
+    def __init__(self, turn, display_size, parser, assets):
         self.size = display_size
         self.images = assets
         super().__init__()
         self.batch = cocos.batch.BatchNode()
         self.add(self.batch)
+        info = parser.get_turn(turn)
 
         total_effort_expended = 0
 

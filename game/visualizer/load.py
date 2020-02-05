@@ -136,7 +136,8 @@ def load(temp, section=1):
 
     elif section == 3:
         # Disaster assets
-        dis_tornado = cocos.sprite.Sprite(find_image("game/visualizer/assets/disaster_assets/tornado.png"))
+        dis_tornado_grid = pyglet.image.ImageGrid(find_image("game/visualizer/assets/disaster_assets/tornado_sheet.png"), 1, 4)
+        dis_tornado = cocos.sprite.Sprite(pyglet.image.Animation.from_image_sequence(dis_tornado_grid[0::], 0.08))
 
         dis_blizzard_grid = pyglet.image.ImageGrid(
             find_image("game/visualizer/assets/disaster_assets/blizzard_sheet.png"), 1, 4)
