@@ -22,12 +22,12 @@ class ForecastLayer(cocos.layer.Layer):
         # For each item in forecast displays the correct image in the correct location
         for i in range(len(forecast)):
             # Choose a random clear forecast sprite
-            num = random.randint(0, 2)
-            if num == 0:
-                spr = self.images['clear'][i]
-            elif num == 1:
+            num = (turn + i) % 9
+            if num in [0, 1, 6]:
                 spr = self.images['clear2'][i]
-            else:
+            elif num in [2, 4, 7]:
+                spr = self.images['clear'][i]
+            elif num in [3, 5, 8]:
                 spr = self.images['clear3'][i]
 
             for key, item in forecast[i]['rates'].items():
