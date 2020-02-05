@@ -7,15 +7,15 @@ class GameStats:
     building_upgrade_cost = {
         BuildingType.instant_decree_booster: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 12000,
-            BuildingLevel.level_two: 15750,
-            BuildingLevel.level_three: 22000
-        },
-        BuildingType.lasting_decree_booster: {
-            BuildingLevel.level_zero: 0,
             BuildingLevel.level_one: 13800,
             BuildingLevel.level_two: 18100,
             BuildingLevel.level_three: 25300
+        },
+        BuildingType.lasting_decree_booster: {
+            BuildingLevel.level_zero: 0,
+            BuildingLevel.level_one: 12000,
+            BuildingLevel.level_two: 15750,
+            BuildingLevel.level_three: 22000
         },
         BuildingType.everything_booster: {
             BuildingLevel.level_zero: 0,

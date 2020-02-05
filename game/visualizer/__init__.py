@@ -17,6 +17,7 @@ from game.visualizer.forecast_sprite import *
 from game.visualizer.decree_sprites import *
 from game.visualizer.disaster_layer import *
 from game.visualizer.worker_sprites import *
+from game.visualizer.loading_layer import LoadingLayer
 from game.visualizer.load import *
 from game.visualizer.sensor_sprites import *
 from game.visualizer.structure_assets import *
@@ -24,7 +25,6 @@ from game.visualizer.structure_assets import *
 # Global variables needed for scene creation and keeping track of turns
 size = DISPLAY_SIZE
 log_parser = None
-turn = 1
 end_boolean = True
 assets = {}
 global_stats = GlobalStats()
@@ -33,7 +33,6 @@ global_stats = GlobalStats()
 # Function called by main that displays first scene and initializes everything
 def start(gamma, fullscreen=False, endgame=True):
     global log_parser
-    global turn
     global end_boolean
     end_boolean = endgame
 
@@ -45,11 +44,14 @@ def start(gamma, fullscreen=False, endgame=True):
     # Initialize cocos
     director.init(width=size[0], height=size[1], caption="Byte-le Royale: Disaster Dispatcher", fullscreen=fullscreen)
 
-    load(assets)
+    llayer = LoadingLayer(assets, boot)
+    director.run(cocos.scene.Scene(llayer))
 
+
+def boot():
     # Get turn info from logs, if None go to end scene
     # on the end scene the end_boolean is checked, and if False, the visualizer will close after 4 seconds
-    turn_info = log_parser.get_turn(turn)
+    turn_info = log_parser.get_turn(global_stats.turn_num)
     if turn_info is None:
         end_layer = EndLayer(size, log_parser)
         end_scene = cocos.scene.Scene().add(end_layer)
@@ -58,22 +60,21 @@ def start(gamma, fullscreen=False, endgame=True):
             end_scene.schedule_interval(exit, 4)
     else:
         # Initialize clock layer and add an interval
-        clock = TimeLayer(size, turn_info, turn)
+        clock = TimeLayer(size, turn_info, global_stats.turn_num)
         clock.schedule_interval(callback=timer, interval=0)
 
         first_scene = create_scene(turn_info, log_parser)
-        first_scene.add(clock,100)
+        first_scene.add(clock, 100)
         director.run(first_scene)
 
 
 def timer(interval):
-    global turn
 
     director.scene_stack.clear()
 
     # Get turn info from logs, if None go to end scene
     # on the end scene the end_boolean is checked, and if False, the visualizer will close after 4 seconds
-    turn_info=log_parser.get_turn(turn)
+    turn_info=log_parser.get_turn(global_stats.turn_num)
     if turn_info is None:
         end_layer = EndLayer(size,log_parser)
         end_scene = cocos.scene.Scene().add(end_layer)
@@ -87,47 +88,49 @@ def timer(interval):
             if item == 0:
                 intval = global_stats.disaster_turn_time * global_stats.turn_speed
 
-        clock = TimeLayer(size, turn_info, turn)
+        clock = TimeLayer(size, turn_info, global_stats.turn_num)
         clock.schedule_interval(callback=timer, interval=intval)
         current_scene = create_scene(turn_info, log_parser)
         current_scene.add(clock, 100)
 
         director.replace(current_scene)
-        turn += 1
+        global_stats.turn_num += 1
 
 
 # Function that generates base scene layer for the given turn
-def create_scene(info, parser):
+def create_scene(turn, parser):
     # Generate layers
-    health_layer = HealthBar(size, info)
-    location_layer = LocationLayer(info, size, assets['location'])
-    city_road_layer = RoadLayer(size, info, assets['city'])
-    city_layer = CityLayer(size, info, assets['city'])
-    city_back_layer = CityBackLayer(size, info, assets['city'])
-    forecast_layer = ForecastLayer(turn, size, parser, assets['forecast'])
-    decree_layer = DecreeLayer(turn, size, parser, assets['decree'])
-    decree_hold_layer = DecreeHolderLayer(assets['decree'])
+    health_layer = HealthBar(size, turn)
+    location_layer = LocationLayer(turn, size, assets['location'])
+    city_road_layer = RoadLayer(size, turn, assets['city'])
+    city_layer = CityLayer(size, turn, assets['city'])
+    city_back_layer = CityBackLayer(size, turn, assets['city'])
+
+    forecast_layer = ForecastLayer(global_stats.turn_num, size, parser, assets['forecast'])
+    lasting_dis_layer = LastingDisasterLayer(size, turn, assets['disaster'])
+    decree_layer = DecreeLayer(global_stats.turn_num, size, parser, assets['decree'])
+    disaster_level_layer = DisasterLevelLayer(global_stats.turn_num, size, parser, assets['disaster_level'])
     worker_layer = WorkerLayer(size, assets['worker'])
     input_layer = InputLayer()
 
     # Side structures
-    print_layer = PrintLayer(size, info, assets['struct'])
-    bigcanoe_layer = BigCanoeLayer(size, info, assets['struct'])
-    billboard_layer = BillBoardLayer(size, info, assets['struct'])
-    gelato_layer = GelatoLayer(size, info, assets['struct'])
-    mint_layer = MintLayer(size, info, assets['struct'])
-    police_layer = PoliceLayer(size, info, assets['struct'])
+    print_layer = PrintLayer(size, turn, assets['struct'])
+    bigcanoe_layer = BigCanoeLayer(size, turn, assets['struct'])
+    billboard_layer = BillBoardLayer(size, turn, assets['struct'])
+    gelato_layer = GelatoLayer(size, turn, assets['struct'])
+    mint_layer = MintLayer(size, turn, assets['struct'])
+    police_layer = PoliceLayer(size, turn, assets['struct'])
 
     # Disasters
-    fire_layer = FireLayer(size, info, assets['disaster'])
-    tornado_layer = TornadoLayer(size, info, assets['disaster'])
-    blizzard_layer = BlizzardLayer(size, info, assets['disaster'])
-    earthquake_layer = EarthquakeLayer(size, info, assets['disaster'])
-    monster_layer = MonsterLayer(size, info, assets['disaster'])
-    ufo_layer = UFOLayer(size, info, assets['disaster'])
+    fire_layer = FireLayer(size, turn, assets['disaster'])
+    tornado_layer = TornadoLayer(size, turn, assets['disaster'])
+    blizzard_layer = BlizzardLayer(size, turn, assets['disaster'])
+    earthquake_layer = EarthquakeLayer(size, turn, assets['disaster'])
+    monster_layer = MonsterLayer(size, turn, assets['disaster'])
+    ufo_layer = UFOLayer(size, turn, assets['disaster'])
 
-    front_sensor_layer = FrontSensorLayer(size, info, assets['sensor'])
-    back_sensor_layer = BackSensorLayer(size, info, assets['sensor'])
+    front_sensor_layer = FrontSensorLayer(size, turn, assets['sensor'])
+    back_sensor_layer = BackSensorLayer(size, turn, assets['sensor'])
 
     # Add layers to
     scene = cocos.scene.Scene()
@@ -153,12 +156,16 @@ def create_scene(info, parser):
     scene.add(blizzard_layer, 20)
     scene.add(earthquake_layer, 20)
     scene.add(monster_layer, 16)
-    scene.add(ufo_layer, 20)
+    scene.add(ufo_layer, 16)
 
+    # UI
     scene.add(health_layer, 100)
+
     scene.add(forecast_layer, 100)
+    scene.add(lasting_dis_layer, 100)
+
     scene.add(decree_layer, 100)
-    scene.add(decree_hold_layer, 99)
+    scene.add(disaster_level_layer, 101)
     scene.add(input_layer, 100)
 
     return scene

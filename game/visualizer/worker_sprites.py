@@ -12,7 +12,7 @@ class WorkerLayer(cocos.layer.Layer):
 
         for n in range(random.randint(0, 19)):
             x = random.randint(0, self.size[0])
-            y = 100
+            y = 144
             x = x - (x % 4)
             y = y - (y % 4)
             temp = self.images['normal'][n]
@@ -21,7 +21,7 @@ class WorkerLayer(cocos.layer.Layer):
 
         for n in range(random.randint(0, 19)):
             x = random.randint(0, self.size[0])
-            y = 100
+            y = 144
             x = x - (x % 4)
             y = y - (y % 4)
             temp = self.images['hammer'][n]
@@ -30,7 +30,7 @@ class WorkerLayer(cocos.layer.Layer):
 
         for n in range(random.randint(0, 19)):
             x = random.randint(0, self.size[0])
-            y = 100
+            y = 144
             x = x - (x % 4)
             y = y - (y % 4)
             temp = self.images['money'][n]
@@ -39,7 +39,7 @@ class WorkerLayer(cocos.layer.Layer):
 
         for n in range(random.randint(0, 19)):
             x = random.randint(0, self.size[0])
-            y = 100
+            y = 144
             x = x - (x % 4)
             y = y - (y % 4)
             temp = self.images['pick'][n]
@@ -48,7 +48,7 @@ class WorkerLayer(cocos.layer.Layer):
 
         for n in range(random.randint(0, 19)):
             x = random.randint(0, self.size[0])
-            y = 100
+            y = 144
             x = x - (x % 4)
             y = y - (y % 4)
             temp = self.images['phone'][n]
