@@ -1,5 +1,12 @@
 # API
 
+- [Action](#action)
+- [Building](#building)
+- [City](#city)
+- [Disaster](#disaster)
+- [LastingDisaster](#lastingdisaster)
+- [Sensor](#sensor)
+
 ## Action
 The Action object is used by the client to make effort allocations or setting the decree.
 
@@ -30,8 +37,8 @@ This function will remove all current effort allocations this turn.
 This function will remove the effort allocation at the given index.
 
 #### get_allocation_list(self)
-This function will return a*copy*of the current allocations. Adding new effort allocations
-will make your*copy*outdated.
+This function will return a *copy* of the current allocations. Adding new effort allocations
+will make your *copy* outdated.
 
 #### get_decree(self)
 Returns the current decree that has been set for the current turn. If no decree has been set, 
@@ -51,6 +58,12 @@ The decree parameter will only accept values from the DecreeType enum:
 ## Building
 #### building_type
 The type of the current building, of BuildingType. This can be one of six different buildings.
+* instant_decree_booster
+* lasting_decree_booster
+* everything_booster
+* wealth_booster
+* population_booster
+* structure_booster
 
 #### object_type
 Backend value that distinguishes different objects apart from each other (city, sensors, buildings, etc.)

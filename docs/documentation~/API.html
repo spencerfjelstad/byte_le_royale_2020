@@ -203,6 +203,14 @@
             
   <div class="section" id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference external" href="#action">Action</a></p></li>
+<li><p><a class="reference external" href="#building">Building</a></p></li>
+<li><p><a class="reference external" href="#city">City</a></p></li>
+<li><p><a class="reference external" href="#disaster">Disaster</a></p></li>
+<li><p><a class="reference external" href="#lastingdisaster">LastingDisaster</a></p></li>
+<li><p><a class="reference external" href="#sensor">Sensor</a></p></li>
+</ul>
 <div class="section" id="action">
 <h2>Action<a class="headerlink" href="#action" title="Permalink to this headline">¶</a></h2>
 <p>The Action object is used by the client to make effort allocations or setting the decree.</p>
@@ -237,8 +245,8 @@ to what your city can offer.</p>
 </div>
 <div class="section" id="get-allocation-list-self">
 <h3>get_allocation_list(self)<a class="headerlink" href="#get-allocation-list-self" title="Permalink to this headline">¶</a></h3>
-<p>This function will return a<em>copy</em>of the current allocations. Adding new effort allocations
-will make your<em>copy</em>outdated.</p>
+<p>This function will return a <em>copy</em> of the current allocations. Adding new effort allocations
+will make your <em>copy</em> outdated.</p>
 </div>
 <div class="section" id="get-decree-self">
 <h3>get_decree(self)<a class="headerlink" href="#get-decree-self" title="Permalink to this headline">¶</a></h3>
@@ -265,6 +273,14 @@ The decree parameter will only accept values from the DecreeType enum:</p>
 <div class="section" id="building-type">
 <h3>building_type<a class="headerlink" href="#building-type" title="Permalink to this headline">¶</a></h3>
 <p>The type of the current building, of BuildingType. This can be one of six different buildings.</p>
+<ul class="simple">
+<li><p>instant_decree_booster</p></li>
+<li><p>lasting_decree_booster</p></li>
+<li><p>everything_booster</p></li>
+<li><p>wealth_booster</p></li>
+<li><p>population_booster</p></li>
+<li><p>structure_booster</p></li>
+</ul>
 </div>
 <div class="section" id="id1">
 <h3>object_type<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
