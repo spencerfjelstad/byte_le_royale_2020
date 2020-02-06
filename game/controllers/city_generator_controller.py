@@ -9,6 +9,7 @@ class CityGeneratorController(Controller):
         super().__init__()
 
     def handle_actions(self, player, city_type):
+        player.city.city_type = city_type
         if city_type is CityType.none:
             pass
         elif city_type is CityType.healthy:
