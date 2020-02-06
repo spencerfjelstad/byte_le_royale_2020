@@ -7,27 +7,27 @@ class GameStats:
     building_upgrade_cost = {
         BuildingType.police_station: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 48620,
+            BuildingLevel.level_one: 43758,
         },
         BuildingType.gelato_shop: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 42287,
+            BuildingLevel.level_one: 38058,
         },
         BuildingType.big_canoe: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 105000,
+            BuildingLevel.level_one: 84109,
         },
         BuildingType.mint: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 33830,
+            BuildingLevel.level_one: 30447,
         },
         BuildingType.billboard: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 33830,
+            BuildingLevel.level_one: 30447,
         },
         BuildingType.printer: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 42287,
+            BuildingLevel.level_one: 38058,
         }
     }
 
@@ -42,9 +42,9 @@ class GameStats:
     # cost in man_power to build a sensor
     sensor_upgrade_cost = {
         SensorLevel.level_zero: 0,
-        SensorLevel.level_one: 6000,
-        SensorLevel.level_two: 11250,
-        SensorLevel.level_three: 18000
+        SensorLevel.level_one: 5100,
+        SensorLevel.level_two: 9562,
+        SensorLevel.level_three: 15300
     }
 
     # Decree effectiveness when applied against a disaster

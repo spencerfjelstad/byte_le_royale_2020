@@ -24,6 +24,18 @@ class AccumulativeController(Controller):
         # Clamped to max_structure
         city.structure = clamp(city.structure, min_value=0, max_value=city.max_structure)
 
+        # Structure boosted
+        building_level = city.buildings[BuildingType.printer].level
+        structure_added = GameStats.structure_boost[building_level]
+
+        self.print(f"Structure to add: {structure_added}")
+
+        city.structure += structure_added
+
+        # Clamped to max_structure
+        city.structure = clamp(city.structure, min_value=0, max_value=city.max_structure)
+        self.print(f"Final structure: {city.structure}")
+
         # Everything boosted - Population
         booster = GameStats.everything_boost['population'][building_level]
         self.print(f"Everything: Population to add: {booster}")
@@ -40,17 +52,6 @@ class AccumulativeController(Controller):
         # Adding the boost from the side structure
         city.gold += booster
 
-        # Structure boosted
-        building_level = city.buildings[BuildingType.printer].level
-        structure_added = GameStats.structure_boost[building_level]
-
-        self.print(f"Structure to add: {structure_added}")
-
-        city.structure += structure_added
-        # Clamped to max_structure
-        city.structure = clamp(city.structure, min_value=0, max_value=city.max_structure)
-        self.print(f"Final structure: {city.structure}")
-
         # Population boosted
         building_level = city.buildings[BuildingType.billboard].level
         population_added = GameStats.population_boost[building_level]
@@ -58,10 +59,10 @@ class AccumulativeController(Controller):
         self.print(f"Population to add: {population_added}")
 
         city.population += population_added
+
         # Clamped to structure
         city.population = clamp(city.population, min_value=0, max_value=city.structure)
         self.print(f"Final population: {city.population}")
 
         # Normal accumulation of gold
         city.gold += GameStats.city_gold_accumulative
-

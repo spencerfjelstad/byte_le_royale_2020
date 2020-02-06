@@ -6,6 +6,7 @@ class Client(UserClient):
     # Variables and info you want to save between turns go here
     def __init__(self):
         super().__init__()
+        # ADD VARIABLES BELOW HERE
         self.previous_disaster = None
 
         self.lasting_disasters = [DisasterType.fire, DisasterType.blizzard, DisasterType.monster]
@@ -18,18 +19,40 @@ class Client(UserClient):
             DisasterType.monster: DecreeType.fishing_hook,
             DisasterType.ufo: DecreeType.cheese,
         }
+        # ADD VARIABLES ABOVE HERE
 
     def team_name(self):
+        """
+        Allows the team to set a team name.
+        :return: Your team name
+        """
         return 'Team Name'
 
     def city_name(self):
+        """
+        Allows the team to name their city. The city name will be displayed on the visualizer.
+        :return: Your city name
+        """
         return 'City Name'
 
     def city_type(self):
+        """
+        Set your city type here! Your city type will give you a benefit at the very start of the game.
+        :return: A CityType enum value
+        """
         return CityType.popular
 
     # This is where your AI will decide what to do
     def take_turn(self, turn, actions, city, disasters):
+        """
+        This is where your AI will decide what to do. Add effort allocations towards ActionTypes or objects to
+        tell your population what to do. Make sure to set a single decree on your turn!
+        :param turn:        The current turn of the game.
+        :param actions:     This is the actions object that you will add effort allocations or decrees to.
+        :param city:        Your city. You can find your sensors, buildings, population, structure, and other info here.
+        :param disasters:   Current disasters damaging your city will appear hear. Lasting disasters will appear here
+                            until you eliminate them, while instant disasters will only appear for a single turn here.
+        """
         # If there is a lasting disaster, take care of it
         for disaster in disasters:
             if disaster.type in self.lasting_disasters:
