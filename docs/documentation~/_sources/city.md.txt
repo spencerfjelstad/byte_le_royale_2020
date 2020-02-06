@@ -25,6 +25,7 @@ While gold is automatically accumulated at a rate of 3 gold per turn, the max st
 
 Level | Effort Cost | Max Structure
 --- | --- | ---
+Base | 0 | 200
 1 | 20000 | 225
 2 | 22500 | 275
 3 | 27500 | 350

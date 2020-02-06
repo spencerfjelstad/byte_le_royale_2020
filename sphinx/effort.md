@@ -14,17 +14,16 @@ Allocating effort towards these objects will, once a threshold is reached, impro
 The sensor objects can be found in the city.sensors variable.
 - Buildings - Each building has unique effects, so [view each building's specific effects](Buildings) to see how they work. Like sensors, buildings must be leveled up individually.
 Unlike sensors, buildings require wealth to upgrade. If you are allocating more effort than you have wealth, the allocated effort will be reduced to your available wealth. However, the remaining effort that was allocated will not be recycled. 
-If you don't have enough wealth for the amount of effort you are allocating, your effective effort will be reduced to the amount of wealth that you do have available. 
 The building objects can be found in the city.buildings variable.
 
 ### Repair Structure
-Allocating effort towards repairing structure will increase your current structure amount of your city. Current structure is capped by maximum structure and is reduced by disasters. Be careful, if your city structure falls to 0, your city will be destroyed, and the game ends! Your current population is also capped by your current structure, *not* your maximum structure, so if you're running low on population, maybe invest in repairing your city's structure.
+Allocating effort towards repairing structure will increase your current structure amount of your city. Current structure is capped by maximum structure and is reduced by disasters. Be careful, if your city structure falls to 0, your city will be destroyed, and the game ends! Your current population is also capped by your current structure, *not* your maximum structure, so if you're running low on population, maybe invest in repairing your city's structure. It takes 2 effort to produce 1 structure. If one effort is allocated, no structure is produced. 
 
 ### Regain Population
-Allocating your effort towards regaining population will increase your current population amount of your city. Current population is capped by current structure and is reduced by disasters. Be careful, if your city population falls to 0, your city will be destroyed, and the game ends! Higher population amounts will also increase the amount of effort you can allocate on a given turn, so more population means more effort towards other actions!
+Allocating your effort towards regaining population will increase your current population amount of your city. Current population is capped by current structure and is reduced by disasters. Be careful, if your city population falls to 0, your city will be destroyed, and the game ends! Higher population amounts will also increase the amount of effort you can allocate on a given turn, so more population means more effort towards other actions! It takes 2 effort to produce 1 population. If one effort is allocated, no population is produced. 
 
 ### Accumulate Wealth
-Accumulate Wealth will increase the current amount of wealth you have. Wealth is used to upgrade structures, so make sure you have enough money before allocating people towards upgrading your structures.
+Accumulate Wealth will increase the current amount of wealth you have. Wealth is used to upgrade structures, so make sure you have enough money before allocating people towards upgrading your structures. It takes 1 effort to produce 1 gold. 
 
 ### Put Out Disasters
 Some disasters are long lasting annoyances to your city, that will deal constant population and structure damage over time. To deal with these, you must allocate effort towards putting these disasters out. Allocating effort towards disasters will *not* directly decrease the damage these lasting disasters do. 

@@ -34,7 +34,7 @@ Level| Population DMG | Structure DMG | Effort Required
 4 | 5 | 10 | 5600
 
 ## Instant Disasters
-Instant disasters include tornado, earthquake, and UFO. These appear in the disasters array the turn they affect the city, but will disappear after the turn is over. They cause significantly more damage, so be sure to prepare accordingly.
+Instant disasters include tornado, earthquake, and UFO. These appear in the disasters array the turn they affect the city, but will disappear after the turn is over. They cause significantly more damage, so be sure to prepare accordingly. They require no effort to be allocated. 
 
 ### Tornado
 

@@ -42,7 +42,7 @@ Level | Effort Required | Wealth Added
 3 | 17600 | 60
 
 ## Population Booster
-Shown as the billboard, this gives you additional population by an amount that increases with each upgrade. This does not increase your population above your structure level.
+Shown as the billboard, this gives you additional population by an amount that increases with each upgrade. This does not increase your population above your structure level. This amount is added every turn.
 
 Level | Effort Required | Population Added
 --- | --- | ---
@@ -51,7 +51,7 @@ Level | Effort Required | Population Added
 3 | 17600 | 25
 
 ## Structure Booster
-Shown as the 3D printer, this gives you additional structure by an amount that increases with each upgrade. This does not increase your structure above your max structure level. 
+Shown as the 3D printer, this gives you additional structure by an amount that increases with each upgrade. This does not increase your structure above your max structure level. This amount is added every turn.
 
 Level | Effort Required | Structure Added
 --- | --- | ---
