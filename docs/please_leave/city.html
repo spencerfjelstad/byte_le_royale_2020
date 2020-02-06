@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to Byte-le Royale 2020! &mdash; Byte-le Royale 0.0.1 documentation</title>
+  <title>City &mdash; Byte-le Royale 0.0.1 documentation</title>
   
 
   
@@ -48,7 +48,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> Byte-le Royale
+            <a href="index.html" class="icon icon-home"> Byte-le Royale
           
 
           
@@ -80,7 +80,7 @@
             
               <!-- Local TOC -->
               <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Welcome to Byte-le Royale 2020!</a></li>
+<li><a class="reference internal" href="#">City</a></li>
 </ul>
 </div>
             
@@ -95,7 +95,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Byte-le Royale</a>
+          <a href="index.html">Byte-le Royale</a>
         
       </nav>
 
@@ -124,15 +124,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Welcome to Byte-le Royale 2020!</li>
+      <li>City</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/city.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -145,18 +145,78 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-byte-le-royale-2020">
-<h1>Welcome to Byte-le Royale 2020!<a class="headerlink" href="#welcome-to-byte-le-royale-2020" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="city">
+<h1>City<a class="headerlink" href="#city" title="Permalink to this headline">¶</a></h1>
+<p>Your city is what you must protect against disasters. It houses several important stats that stand between you and GAME OVER, Population and Structure. Structure acts as your population’s max cap, so if your structure reaches zero, so does your population. Once population reaches zero, your city falls and it’s game over. You can protect your city by having the correct <a class="reference external" href="decrees.html">decrees</a>, upgrading <a class="reference external" href="buildings.html">buildings</a>, and by allocating <a class="reference external" href="effort.html">effort</a> to <code class="docutils literal notranslate"><span class="pre">ActionType.regain_population</span></code> and <code class="docutils literal notranslate"><span class="pre">ActionType.repair_structure</span></code>.</p>
+<p>Your city can start with different bonuses and advantages. This can be assigned in the city_type method in your client. For example, if we wanted to have a popular city, we would return <code class="docutils literal notranslate"><span class="pre">CityType.popular</span></code> in the city_type method.</p>
+<p>There are 6 kinds of cities to choose from:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="intro.html">Introduction</a></p></li>
-<li><p><a class="reference external" href="decrees.html">Decrees</a></p></li>
-<li><p><a class="reference external" href="disasters.html">Disasters</a></p></li>
-<li><p><a class="reference external" href="buildings.html">Buildings</a></p></li>
-<li><p><a class="reference external" href="effort.html">Effort</a></p></li>
-<li><p><a class="reference external" href="turn.html">Turn</a> &lt;— please make (example on GitHub wiki)</p></li>
-<li><p><a class="reference external" href="API.html">API</a></p></li>
+<li><p>Healthy: Starts with population already up to structure, giving your city a headstart in allocating effort</p></li>
+<li><p>Sturdy: Starts with structure up to max structure, allowing you to focus on population.</p></li>
+<li><p>Invested: Start with 1500 gold.</p></li>
+<li><p>Pyrophobic: Upgrades the fire sensor to level 1.</p></li>
+<li><p>Popular: Upgrades the population booster building to level 1.</p></li>
+<li><p>Modern: Upgrades the city to level one.</p></li>
 </ul>
-</div>
+<p>Your city starts with default stats:</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Stat</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Max Structure</td>
+<td>200</td>
+</tr>
+<tr>
+<td>Current Structure</td>
+<td>100</td>
+</tr>
+<tr>
+<td>Current Population</td>
+<td>40</td>
+</tr>
+<tr>
+<td>Gold</td>
+<td>0</td>
+</tr>
+</tbody>
+</table><p>These values can be increased either through automatic accumulation, effort allocation, or upgrades.
+While gold is automatically accumulated at a rate of 3 gold per turn, the max structure can be upgraded by <code class="docutils literal notranslate"><span class="pre">actions.add_effort(ActionType.upgrade_city,</span> <span class="pre">amount)</span></code>.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Cost</th>
+<th>Max Structure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base</td>
+<td>0</td>
+<td>200</td>
+</tr>
+<tr>
+<td>1</td>
+<td>20000</td>
+<td>225</td>
+</tr>
+<tr>
+<td>2</td>
+<td>22500</td>
+<td>275</td>
+</tr>
+<tr>
+<td>3</td>
+<td>27500</td>
+<td>350</td>
+</tr>
+</tbody>
+</table></div>
 
 
            </div>
