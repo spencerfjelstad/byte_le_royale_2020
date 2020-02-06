@@ -34,9 +34,9 @@ class GameStats:
     # Costs to go up to the next city level
     city_upgrade_cost = {
         CityLevel.level_zero: 0,
-        CityLevel.level_one: 20000,
-        CityLevel.level_two: 22500,
-        CityLevel.level_three: 27500
+        CityLevel.level_one: 15000,
+        CityLevel.level_two: 16875,
+        CityLevel.level_three: 20625
     }
 
     # cost in man_power to build a sensor
@@ -244,7 +244,7 @@ class GameStats:
 
     # gold
     city_gold = 0
-    city_gold_accumulative = 5
+    city_gold_accumulative = 10
     city_type_invested_bonus = 5000
 
     # Max structure based on city level

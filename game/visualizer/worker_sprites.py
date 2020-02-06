@@ -26,7 +26,9 @@ class WorkerLayer(cocos.layer.Layer):
             total_effort_expended += amount
             count = math.floor((amount * (20 / 350)))
 
-            if item is ActionType.repair_structure:
+            if item is ActionType.none:
+                total_effort_expended -= amount
+            elif item is ActionType.repair_structure:
                 image = 'hammer'
                 x = 952
                 y = 181

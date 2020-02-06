@@ -97,14 +97,6 @@ class Client(UserClient):
                 effort_spent = min(city.effort_remaining, effort_remaining)
                 act = ActionType.upgrade_city
 
-            # Build mint building
-            elif city.gold > effort_remaining and \
-                    city.buildings[BuildingType.mint].level != BuildingLevel.level_one and \
-                    city.buildings[BuildingType.mint] not in things_done:
-                self.print('Building mint building')
-                effort_spent = min(city.buildings[BuildingType.mint].effort_remaining, effort_remaining)
-                act = city.buildings[BuildingType.mint]
-
             # Build police building
             elif city.gold > effort_remaining and \
                      city.buildings[BuildingType.police_station].level != BuildingLevel.level_one and \
@@ -112,6 +104,14 @@ class Client(UserClient):
                 self.print('Building police building')
                 effort_spent = min(city.buildings[BuildingType.police_station].effort_remaining, effort_remaining)
                 act = city.buildings[BuildingType.police_station]
+
+            # Build billboard building
+            elif city.gold > effort_remaining and \
+                    city.buildings[BuildingType.billboard].level != BuildingLevel.level_one and \
+                    city.buildings[BuildingType.billboard] not in things_done:
+                self.print('Building billboard building')
+                effort_spent = min(city.buildings[BuildingType.billboard].effort_remaining, effort_remaining)
+                act = city.buildings[BuildingType.billboard]
 
             # Upgrade ufo sensor
             elif city.sensors[SensorType.ufo].level != SensorLevel.level_two and \
@@ -134,11 +134,19 @@ class Client(UserClient):
                 effort_spent = min(city.sensors[SensorType.tornado].effort_remaining, effort_remaining)
                 act = city.sensors[SensorType.tornado]
 
-            # Dance otherwise
+            # Build printer building
+            elif city.gold > effort_remaining and \
+                    city.buildings[BuildingType.printer].level != BuildingLevel.level_one and \
+                    city.buildings[BuildingType.printer] not in things_done:
+                self.print('Building printer building')
+                effort_spent = min(city.buildings[BuildingType.printer].effort_remaining, effort_remaining)
+                act = city.buildings[BuildingType.printer]
+
+            # Get money otherwise
             else:
-                self.print('Doing nothing')
+                self.print('Getting money')
                 effort_spent = effort_remaining
-                act = ActionType.none
+                act = ActionType.accumulate_wealth
 
             actions.add_effort(act, effort_spent)
             things_done.append(act)

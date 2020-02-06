@@ -19,7 +19,7 @@ class InputLayer(cocos.layer.Layer):
             anchor_x='center',
             anchor_y='center'
         )
-        self.speed_label.position = 1280 - 200, 32
+        self.speed_label.position = 1280 - 70, 16
         self.add(self.speed_label)
         self.speed_label.visible = False
 

@@ -96,14 +96,6 @@ class Client(UserClient):
                 effort_spent = min(city.buildings[BuildingType.mint].effort_remaining, effort_remaining)
                 act = city.buildings[BuildingType.mint]
 
-                # Build population building
-            elif city.gold > effort_remaining and \
-                    city.buildings[BuildingType.billboard].level != BuildingLevel.level_one and \
-                    city.buildings[BuildingType.billboard] not in things_done:
-                self.print('Building population building')
-                effort_spent = min(city.buildings[BuildingType.billboard].effort_remaining, effort_remaining)
-                act = city.buildings[BuildingType.billboard]
-
             # Build canoe
             elif city.gold > effort_remaining and \
                     city.buildings[BuildingType.big_canoe].level != BuildingLevel.level_one and \
@@ -111,6 +103,14 @@ class Client(UserClient):
                 self.print('Building structure building')
                 effort_spent = min(city.buildings[BuildingType.big_canoe].effort_remaining, effort_remaining)
                 act = city.buildings[BuildingType.big_canoe]
+
+            # Build population building
+            elif city.gold > effort_remaining and \
+                    city.buildings[BuildingType.billboard].level != BuildingLevel.level_one and \
+                    city.buildings[BuildingType.billboard] not in things_done:
+                self.print('Building population building')
+                effort_spent = min(city.buildings[BuildingType.billboard].effort_remaining, effort_remaining)
+                act = city.buildings[BuildingType.billboard]
 
             # Build population building
             elif city.gold > effort_remaining and \
