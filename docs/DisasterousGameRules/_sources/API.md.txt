@@ -58,12 +58,12 @@ The decree parameter will only accept values from the DecreeType enum:
 ## Building
 #### building_type
 The type of the current building, of BuildingType. This can be one of six different buildings.
-* instant_decree_booster
-* lasting_decree_booster
-* everything_booster
-* wealth_booster
-* population_booster
-* structure_booster
+* police_station
+* gelato_shop
+* big_canoe
+* mint
+* billboard
+* printer
 
 #### object_type
 Backend value that distinguishes different objects apart from each other (city, sensors, buildings, etc.)
