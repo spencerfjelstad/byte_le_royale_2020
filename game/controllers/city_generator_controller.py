@@ -30,7 +30,7 @@ class CityGeneratorController(Controller):
             # Upgrade the population booster building to level one
             population_booster = player.city.buildings[BuildingType.billboard]
             population_booster.level = BuildingLevel.level_one
-            population_booster.effort_remaining = GameStats.building_upgrade_cost[BuildingType.billboard][CityLevel.level_one]
+            population_booster.effort_remaining = 0
         elif city_type is CityType.modern:
             # Upgrade the city to level one
             city = player.city
