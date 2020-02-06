@@ -43,10 +43,6 @@ class Action:
     def get_allocation_list(self):
         return self.__allocation_list.copy()
 
-
-
-
-
     def get_decree(self):
         return self.__decree
 
