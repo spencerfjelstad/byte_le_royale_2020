@@ -7,27 +7,27 @@ class GameStats:
     building_upgrade_cost = {
         BuildingType.police_station: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 43758,
+            BuildingLevel.level_one: 40750,
         },
         BuildingType.gelato_shop: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 38058,
+            BuildingLevel.level_one: 35050,
         },
         BuildingType.big_canoe: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 84109,
+            BuildingLevel.level_one: 80100,
         },
         BuildingType.mint: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 30447,
+            BuildingLevel.level_one: 28440,
         },
         BuildingType.billboard: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 30447,
+            BuildingLevel.level_one: 28440,
         },
         BuildingType.printer: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 38058,
+            BuildingLevel.level_one: 35050,
         }
     }
 
@@ -42,9 +42,9 @@ class GameStats:
     # cost in man_power to build a sensor
     sensor_upgrade_cost = {
         SensorLevel.level_zero: 0,
-        SensorLevel.level_one: 5100,
-        SensorLevel.level_two: 9562,
-        SensorLevel.level_three: 15300
+        SensorLevel.level_one: 4000,
+        SensorLevel.level_two: 8500,
+        SensorLevel.level_three: 13500
     }
 
     # Decree effectiveness when applied against a disaster
@@ -61,7 +61,7 @@ class GameStats:
     everything_boost = {
         'wealth': {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 60,
+            BuildingLevel.level_one: 200,
         },
         'population': {
             BuildingLevel.level_zero: 0,
@@ -75,7 +75,7 @@ class GameStats:
 
     wealth_boost = {
         BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 60,
+        BuildingLevel.level_one: 150,
     }
 
     population_boost = {
@@ -244,8 +244,8 @@ class GameStats:
 
     # gold
     city_gold = 0
-    city_gold_accumulative = 3
-    city_type_invested_bonus = 1500
+    city_gold_accumulative = 5
+    city_type_invested_bonus = 5000
 
     # Max structure based on city level
     city_max_structure = {
@@ -257,10 +257,10 @@ class GameStats:
 
     # error range provided by each sensor
     sensor_ranges = {
-        SensorLevel.level_zero: 60,
-        SensorLevel.level_one: 30,
-        SensorLevel.level_two: 15,
-        SensorLevel.level_three: 5
+        SensorLevel.level_zero: 100,
+        SensorLevel.level_one: 50,
+        SensorLevel.level_two: 20,
+        SensorLevel.level_three: 1
     }
 
     action_sort_order = {
