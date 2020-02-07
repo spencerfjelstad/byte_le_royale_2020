@@ -199,12 +199,13 @@ The list of current disasters is provided by the take_turn disasters array argum
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span><span class="o">.</span><span class="n">add_effort</span><span class="p">(</span><span class="n">ActionType</span><span class="o">.</span><span class="n">regain_population</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If we wanted to upgrade an object, like the instant_decree_booster building,</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span><span class="o">.</span><span class="n">add_effort</span><span class="p">(</span><span class="n">city</span><span class="o">.</span><span class="n">buildings</span><span class="p">[</span><span class="n">BuildingType</span><span class="o">.</span><span class="n">instant_decree_booster</span><span class="p">],</span> <span class="n">amount</span><span class="p">)</span>
+<p>If we wanted to upgrade an object, like the police station building,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span><span class="o">.</span><span class="n">add_effort</span><span class="p">(</span><span class="n">city</span><span class="o">.</span><span class="n">buildings</span><span class="p">[</span><span class="n">BuildingType</span><span class="o">.</span><span class="n">police_station</span><span class="p">],</span> <span class="n">amount</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>If we wanted to allocate effort to put out a lasting disaster,</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span><span class="o">.</span><span class="n">add_effort</span><span class="p">(</span><span class="n">disasters</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">amount</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ongoing_disaster</span><span class="p">;</span>  <span class="c1"># Let ongoing_disaster be an ongoing disaster from the disasters list, like fire</span>
+<span class="n">actions</span><span class="o">.</span><span class="n">add_effort</span><span class="p">(</span><span class="n">ongoing_disaster</span><span class="p">,</span> <span class="n">amount</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Note that the list of current disasters is provided by the take_turn disasters argument.

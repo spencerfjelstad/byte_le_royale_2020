@@ -5,58 +5,46 @@ class GameStats:
 
     # cost in man_power to upgrade a building
     building_upgrade_cost = {
-        BuildingType.instant_decree_booster: {
+        BuildingType.police_station: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 13800,
-            BuildingLevel.level_two: 18100,
-            BuildingLevel.level_three: 25300
+            BuildingLevel.level_one: 40750,
         },
-        BuildingType.lasting_decree_booster: {
+        BuildingType.gelato_shop: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 12000,
-            BuildingLevel.level_two: 15750,
-            BuildingLevel.level_three: 22000
+            BuildingLevel.level_one: 35050,
         },
-        BuildingType.everything_booster: {
+        BuildingType.big_canoe: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 25000,
-            BuildingLevel.level_two: 35000,
-            BuildingLevel.level_three: 45000
+            BuildingLevel.level_one: 80100,
         },
-        BuildingType.wealth_booster: {
+        BuildingType.mint: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 9600,
-            BuildingLevel.level_two: 12600,
-            BuildingLevel.level_three: 17600
+            BuildingLevel.level_one: 28440,
         },
-        BuildingType.population_booster: {
+        BuildingType.billboard: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 9600,
-            BuildingLevel.level_two: 12600,
-            BuildingLevel.level_three: 17600
+            BuildingLevel.level_one: 28440,
         },
-        BuildingType.structure_booster: {
+        BuildingType.printer: {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 12000,
-            BuildingLevel.level_two: 15750,
-            BuildingLevel.level_three: 22000
+            BuildingLevel.level_one: 35050,
         }
     }
 
     # Costs to go up to the next city level
     city_upgrade_cost = {
         CityLevel.level_zero: 0,
-        CityLevel.level_one: 20000,
-        CityLevel.level_two: 22500,
-        CityLevel.level_three: 27500
+        CityLevel.level_one: 15000,
+        CityLevel.level_two: 16875,
+        CityLevel.level_three: 20625
     }
 
     # cost in man_power to build a sensor
     sensor_upgrade_cost = {
         SensorLevel.level_zero: 0,
-        SensorLevel.level_one: 6000,
-        SensorLevel.level_two: 11250,
-        SensorLevel.level_three: 18000
+        SensorLevel.level_one: 4000,
+        SensorLevel.level_two: 8500,
+        SensorLevel.level_three: 13500
     }
 
     # Decree effectiveness when applied against a disaster
@@ -67,51 +55,37 @@ class GameStats:
     # Boost multiplied by the decree if you have a structure with the matching level
     decree_boost = {
         BuildingLevel.level_zero: 1,
-        BuildingLevel.level_one: 1.1,
-        BuildingLevel.level_two: 1.25,
-        BuildingLevel.level_three: 1.5
+        BuildingLevel.level_one: 1.5,
     }
 
     everything_boost = {
         'wealth': {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 20,
-            BuildingLevel.level_two: 40,
-            BuildingLevel.level_three: 60
+            BuildingLevel.level_one: 200,
         },
         'population': {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 10,
-            BuildingLevel.level_two: 20,
-            BuildingLevel.level_three: 30
+            BuildingLevel.level_one: 30,
         },
         'structure': {
             BuildingLevel.level_zero: 0,
-            BuildingLevel.level_one: 10,
-            BuildingLevel.level_two: 20,
-            BuildingLevel.level_three: 30
+            BuildingLevel.level_one: 30,
         }
     }
 
     wealth_boost = {
         BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 20,
-        BuildingLevel.level_two: 40,
-        BuildingLevel.level_three: 60
+        BuildingLevel.level_one: 150,
     }
 
     population_boost = {
         BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 5,
-        BuildingLevel.level_two: 15,
-        BuildingLevel.level_three: 25
+        BuildingLevel.level_one: 25,
     }
 
     structure_boost = {
         BuildingLevel.level_zero: 0,
-        BuildingLevel.level_one: 5,
-        BuildingLevel.level_two: 15,
-        BuildingLevel.level_three: 25
+        BuildingLevel.level_one: 25,
     }
 
     # required effort to stop lasting disasters
@@ -270,8 +244,8 @@ class GameStats:
 
     # gold
     city_gold = 0
-    city_gold_accumulative = 3
-    city_type_invested_bonus = 1500
+    city_gold_accumulative = 10
+    city_type_invested_bonus = 5000
 
     # Max structure based on city level
     city_max_structure = {
@@ -283,10 +257,10 @@ class GameStats:
 
     # error range provided by each sensor
     sensor_ranges = {
-        SensorLevel.level_zero: 60,
-        SensorLevel.level_one: 30,
-        SensorLevel.level_two: 15,
-        SensorLevel.level_three: 5
+        SensorLevel.level_zero: 100,
+        SensorLevel.level_one: 50,
+        SensorLevel.level_two: 20,
+        SensorLevel.level_three: 1
     }
 
     action_sort_order = {
