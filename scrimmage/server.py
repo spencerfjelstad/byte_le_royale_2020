@@ -123,6 +123,18 @@ class Server:
             elif 'disable_visualizer' in com:
                 self.disable_visualizer = True
 
+            # Create a folder with all of the client's code dumped from the database
+            elif 'create_client_files' in com:
+                directory = f'scrimmage/dumped_clients'
+                if os.path.exists(directory):
+                    shutil.rmtree(directory)
+                os.mkdir(directory)
+
+                all_teams = [x for x in self.db_collection.find({})]
+                for team in all_teams:
+                    if team['code_file'] is not None:
+                        binary_to_file(f'{directory}/{team["code_file"]["name"]}', team['code_file']['contents'])
+
     async def handle_client(self, reader, writer):
         try:
             command = await reader.read(BUFFER_SIZE)
