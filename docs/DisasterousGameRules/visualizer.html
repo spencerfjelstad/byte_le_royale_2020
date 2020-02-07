@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Decrees &mdash; Byte-le-Royale 2020 9 documentation</title>
+  <title>Visualizer &mdash; Byte-le-Royale 2020 9 documentation</title>
   
 
   
@@ -142,13 +142,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Decrees</li>
+      <li>Visualizer</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/decrees.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/visualizer.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -161,46 +161,56 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="decrees">
-<h1>Decrees<a class="headerlink" href="#decrees" title="Permalink to this headline">¶</a></h1>
-<p>Decrees are your first line of defense against disasters. When an instant disaster happens and the corresponding decree is selected, the damage is halved. When a lasting disaster happens and the corresponding decree is selected, the effort required to clear the disaster is halved. Some <a class="reference external" href="buildings.html">buildings</a> boost the effectiveness of decrees, and upgrading your sensors will improve your ability to guess the upcoming disaster.</p>
-<p>Note that the decree must be active <em>before</em> the disaster occurs to count as a correct decree.</p>
-<div class="section" id="decrees-to-disasters">
-<h2>Decrees to Disasters<a class="headerlink" href="#decrees-to-disasters" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="visualizer">
+<h1>Visualizer<a class="headerlink" href="#visualizer" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-to-start-the-visualizer">
+<h2>How to start the visualizer:<a class="headerlink" href="#how-to-start-the-visualizer" title="Permalink to this headline">¶</a></h2>
+<p>In your pipenv shell, run python .\launcher.pyz visualizer (or v). This will launch the visualizer with default options. The following table lists other flags that can be used to edit the default settings.</p>
 <table border="1" class="docutils">
 <thead>
 <tr>
-<th>Decree</th>
-<th>Disaster</th>
+<th>Command</th>
+<th align="center">Shorthand</th>
+<th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Anti-Fire Dogs</td>
-<td>Fire</td>
+<td>--help</td>
+<td align="center">-h</td>
+<td></td>
 </tr>
 <tr>
-<td>Paperweights</td>
-<td>Tornado</td>
+<td>-fullscreen</td>
+<td align="center">-f</td>
+<td>Launches the visualizer in fullscreen</td>
 </tr>
 <tr>
-<td>Snow Shovels</td>
-<td>Blizzard</td>
+<td>-skip</td>
+<td align="center">-s</td>
+<td>Visualizer will close automatically on endscreen</td>
 </tr>
 <tr>
-<td>Rubber Boots</td>
-<td>Earthquake</td>
-</tr>
-<tr>
-<td>Fishing hook</td>
-<td>Monster</td>
-</tr>
-<tr>
-<td>Cheese</td>
-<td>UFO</td>
+<td>-gamma (value)</td>
+<td align="center">-g (value)</td>
+<td></td>
 </tr>
 </tbody>
 </table></div>
+<div class="section" id="controls">
+<h2>Controls:<a class="headerlink" href="#controls" title="Permalink to this headline">¶</a></h2>
+<p>Input      | Result
+———–|——-
+CTRL + f   | Toggle fullscreen
+CTRL + x   | Toggle fps display
+CTRL + s   | Take a screenshot!
+UP Arrow   | Increase visualizer speed up to 4x
+DOWN Arrow | Decrease visualizer speed dowwn to 0.25x
+z          | Skip to endscreen (only usable after loading screen)
+1          | Endscreen only, switches graph to display Population
+2          | Endscreen only, switches graph to display Structure
+3          | Endscreen only, switches graph to display Gold</p>
+</div>
 </div>
 
 
