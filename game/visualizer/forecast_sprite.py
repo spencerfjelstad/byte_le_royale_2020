@@ -22,12 +22,12 @@ class ForecastLayer(cocos.layer.Layer):
         # For each item in forecast displays the correct image in the correct location
         for i in range(len(forecast)):
             # Choose a random clear forecast sprite
-            num = random.randint(0, 2)
-            if num == 0:
-                spr = self.images['clear'][i]
-            elif num == 1:
+            num = (turn + i) % 9
+            if num in [0, 1, 6]:
                 spr = self.images['clear2'][i]
-            else:
+            elif num in [2, 4, 7]:
+                spr = self.images['clear'][i]
+            elif num in [3, 5, 8]:
                 spr = self.images['clear3'][i]
 
             for key, item in forecast[i]['rates'].items():
@@ -60,8 +60,28 @@ class DisasterLevelLayer(cocos.layer.Layer):
         self.images = assets
         super().__init__()
 
-        spr = self.images['bronze'][0]
-        spr.position = 682, 648
-        self.add(spr)
+        # Generates list of future and past turns given the current turn and saves it as 'forecast'
+        forecast = self.parser.turns[clamp(turn - 3, 0, turn):clamp(turn + 2, 0, len(self.parser.turns)):]
+        for i in range(len(forecast)):
+            if len(forecast[i]['events']) > 0:
+                for j in forecast[i]['events']:
+                    if j['event_type'] == 3:
+                        level = j['disaster']['level']
+                        if level == 0:
+                            spr = self.images['bronze'][i]
+                        elif level == 1:
+                            spr = self.images['silver'][i]
+                        elif level == 2:
+                            spr = self.images['gold'][i]
+                        elif level == 3:
+                            spr = self.images['uranium'][i]
 
+                        if self.turn < 2:
+                            spr.position = self.display[0] / 2 + (i + 3) * 64 - 172, self.display[1] - 72
+                        elif self.turn < 3:
+                            spr.position = self.display[0] / 2 + (i + 2) * 64 - 172, self.display[1] - 72
+                        else:
+                            spr.position = self.display[0] / 2 + (i + 1) * 64 - 150, self.display[1] - 72
+                        self.add(spr)
 
+                        # 682, 648
