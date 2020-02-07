@@ -54,6 +54,6 @@ The big canoe. This beast gives you additional wealth, population, and structure
 
 Level | Effort Required | Wealth Added | Population Added | Structure Added
 --- | --- | --- | --- | ---
-1 | 80100 | 60 | 30 | 30
+1 | 80100 | 200 | 30 | 30
 
 
