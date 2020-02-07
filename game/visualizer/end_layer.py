@@ -26,7 +26,6 @@ class EndLayer(cocos.layer.Layer):
         with open(RESULTS_FILE, 'r') as f:
             results = json.load(f)
         stats = results['Statistics']
-        results['Score']
 
         dis_def_percent = f'{stats["disasters_correctly_protected"] / stats["total_disasters"]:.2%}'
         dis_def_label = cocos.text.Label(
