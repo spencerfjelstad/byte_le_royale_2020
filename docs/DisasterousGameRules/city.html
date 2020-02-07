@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>City &mdash; Byte-le Royale 0.0.1 documentation</title>
+  <title>City &mdash; Byte-le-Royale 2020 9 documentation</title>
   
 
   
@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/accordion.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -33,6 +34,7 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
 </head>
@@ -48,7 +50,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Byte-le Royale
+            <a href="index.html" class="icon icon-home"> Byte-le-Royale 2020
           
 
           
@@ -56,6 +58,10 @@
 
           
             
+            
+              <div class="version">
+                Version 1.0
+              </div>
             
           
 
@@ -78,11 +84,15 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">City</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/decrees.html">Decrees</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/disasters.html">Disasters</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/buildings.html">Buildings</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/effort.html">Effort</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/API.html">API</a></li>
 </ul>
-</div>
+
             
           
         </div>
@@ -95,7 +105,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Byte-le Royale</a>
+          <a href="index.html">Byte-le-Royale 2020</a>
         
       </nav>
 
@@ -159,64 +169,21 @@
 <li><p>Modern: Upgrades the city to level one.</p></li>
 </ul>
 <p>Your city starts with default stats:</p>
-<table border="1" class="docutils">
-<thead>
-<tr>
-<th>Stat</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Max Structure</td>
-<td>200</td>
-</tr>
-<tr>
-<td>Current Structure</td>
-<td>100</td>
-</tr>
-<tr>
-<td>Current Population</td>
-<td>40</td>
-</tr>
-<tr>
-<td>Gold</td>
-<td>0</td>
-</tr>
-</tbody>
-</table><p>These values can be increased either through automatic accumulation, effort allocation, or upgrades.
+<p>Stat | Value
+— | —
+Max Structure | 200
+Current Structure | 100
+Current Population | 40
+Gold | 0</p>
+<p>These values can be increased either through automatic accumulation, effort allocation, or upgrades.
 While gold is automatically accumulated at a rate of 3 gold per turn, the max structure can be upgraded by <code class="docutils literal notranslate"><span class="pre">actions.add_effort(ActionType.upgrade_city,</span> <span class="pre">amount)</span></code>.</p>
-<table border="1" class="docutils">
-<thead>
-<tr>
-<th>Level</th>
-<th>Effort Cost</th>
-<th>Max Structure</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Base</td>
-<td>0</td>
-<td>200</td>
-</tr>
-<tr>
-<td>1</td>
-<td>15000</td>
-<td>225</td>
-</tr>
-<tr>
-<td>2</td>
-<td>16875</td>
-<td>275</td>
-</tr>
-<tr>
-<td>3</td>
-<td>20625</td>
-<td>350</td>
-</tr>
-</tbody>
-</table></div>
+<p>Level | Effort Cost | Max Structure
+— | — | —
+Base | 0 | 200
+1 | 15000 | 225
+2 | 16875 | 275
+3 | 20625 | 350</p>
+</div>
 
 
            </div>
@@ -229,7 +196,7 @@ While gold is automatically accumulated at a rate of 3 gold per turn, the max st
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, 2020
+        &copy; Copyright 2019-2020, NDSU ACM
 
     </p>
   </div>
