@@ -6,7 +6,7 @@ Your city can start with different bonuses and advantages. This can be assigned 
 There are 6 kinds of cities to choose from:
 * Healthy: Starts with population already up to structure, giving your city a headstart in allocating effort
 * Sturdy: Starts with structure up to max structure, allowing you to focus on population.
-* Invested: Start with 5000 gold.
+* Invested: Start with 20000 gold.
 * Pyrophobic: Upgrades the fire sensor to level 1. 
 * Popular: Upgrades the population booster building to level 1.
 * Modern: Upgrades the city to level one. 
