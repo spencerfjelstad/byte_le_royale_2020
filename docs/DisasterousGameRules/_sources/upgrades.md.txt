@@ -8,8 +8,6 @@ To upgrade, do `actions.add_effort(city.buildings[BuildingType.police_station], 
 
 Level | Effort Required | Damage Mitigated
 --- | --- | ---
-Level | Effort Required | Damage Mitigated
---- | --- | ---
 Base | 0 | 50%
 1 | 40750 | 75%
 
