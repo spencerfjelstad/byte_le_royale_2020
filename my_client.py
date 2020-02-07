@@ -65,10 +65,10 @@ class Client(UserClient):
         # Fix up our city
         if city.structure != city.max_structure:
             # No object represents structure, so we use the ActionType enum here
-            actions.add_effort(ActionType.repair_structure, 40)
+            actions.add_effort(ActionType.repair_structure, 10)
         if city.population != city.structure:
             # Same thing with regaining population
-            actions.add_effort(ActionType.regain_population, 40)
+            actions.add_effort(ActionType.regain_population, 10)
 
         # Upgrade my favorite sensor <3
         if city.sensors[SensorType.tornado].level != SensorLevel.level_three:

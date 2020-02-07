@@ -164,14 +164,8 @@ class EffortController(Controller):
             if isinstance(obj, Building):
                 if current_level == BuildingLevel.level_zero:
                     next_level = BuildingLevel.level_one
-                    level_after = BuildingLevel.level_two
-                elif current_level == BuildingLevel.level_one:
-                    next_level = BuildingLevel.level_two
-                    level_after = BuildingLevel.level_three
-                elif current_level == BuildingLevel.level_two:
-                    next_level = BuildingLevel.level_three
                     level_after = None
-                elif current_level == BuildingLevel.level_three:
+                elif current_level == BuildingLevel.level_one:
                     self.print("Building level is already maxed.")
                     obj.effort_remaining = 0
                     return

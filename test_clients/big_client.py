@@ -90,44 +90,44 @@ class Client(UserClient):
 
             # Build wealth building
             elif city.gold > effort_remaining and \
-                    city.buildings[BuildingType.wealth_booster].level != BuildingLevel.level_three and \
-                    city.buildings[BuildingType.wealth_booster] not in things_done:
+                    city.buildings[BuildingType.mint].level != BuildingLevel.level_one and \
+                    city.buildings[BuildingType.mint] not in things_done:
                 self.print('Building wealth building')
-                effort_spent = min(city.buildings[BuildingType.wealth_booster].effort_remaining, effort_remaining)
-                act = city.buildings[BuildingType.wealth_booster]
+                effort_spent = min(city.buildings[BuildingType.mint].effort_remaining, effort_remaining)
+                act = city.buildings[BuildingType.mint]
 
             # Build canoe
             elif city.gold > effort_remaining and \
-                    city.buildings[BuildingType.everything_booster].level != BuildingLevel.level_three and \
-                    city.buildings[BuildingType.everything_booster] not in things_done:
+                    city.buildings[BuildingType.big_canoe].level != BuildingLevel.level_one and \
+                    city.buildings[BuildingType.big_canoe] not in things_done:
                 self.print('Building structure building')
-                effort_spent = min(city.buildings[BuildingType.everything_booster].effort_remaining, effort_remaining)
-                act = city.buildings[BuildingType.everything_booster]
+                effort_spent = min(city.buildings[BuildingType.big_canoe].effort_remaining, effort_remaining)
+                act = city.buildings[BuildingType.big_canoe]
 
             # Build population building
             elif city.gold > effort_remaining and \
-                    city.buildings[BuildingType.population_booster].level != BuildingLevel.level_three and \
-                    city.buildings[BuildingType.population_booster] not in things_done:
+                    city.buildings[BuildingType.billboard].level != BuildingLevel.level_one and \
+                    city.buildings[BuildingType.billboard] not in things_done:
                 self.print('Building population building')
-                effort_spent = min(city.buildings[BuildingType.population_booster].effort_remaining, effort_remaining)
-                act = city.buildings[BuildingType.population_booster]
+                effort_spent = min(city.buildings[BuildingType.billboard].effort_remaining, effort_remaining)
+                act = city.buildings[BuildingType.billboard]
 
             # Build population building
             elif city.gold > effort_remaining and \
-                    city.buildings[BuildingType.structure_booster].level != BuildingLevel.level_three and \
-                    city.buildings[BuildingType.structure_booster] not in things_done:
+                    city.buildings[BuildingType.printer].level != BuildingLevel.level_one and \
+                    city.buildings[BuildingType.printer] not in things_done:
                 self.print('Building structure building')
-                effort_spent = min(city.buildings[BuildingType.structure_booster].effort_remaining, effort_remaining)
-                act = city.buildings[BuildingType.structure_booster]
+                effort_spent = min(city.buildings[BuildingType.printer].effort_remaining, effort_remaining)
+                act = city.buildings[BuildingType.printer]
 
             # Build instant decree building
             elif city.gold > effort_remaining and \
-                    city.buildings[BuildingType.instant_decree_booster].level != BuildingLevel.level_three and \
-                    city.buildings[BuildingType.instant_decree_booster] not in things_done:
+                    city.buildings[BuildingType.police_station].level != BuildingLevel.level_one and \
+                    city.buildings[BuildingType.police_station] not in things_done:
                 self.print('Building structure building')
-                effort_spent = min(city.buildings[BuildingType.instant_decree_booster].effort_remaining,
+                effort_spent = min(city.buildings[BuildingType.police_station].effort_remaining,
                                    effort_remaining)
-                act = city.buildings[BuildingType.instant_decree_booster]
+                act = city.buildings[BuildingType.police_station]
 
             # Get gold otherwise
             else:
