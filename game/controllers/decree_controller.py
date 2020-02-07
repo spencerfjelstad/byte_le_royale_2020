@@ -39,7 +39,7 @@ class DecreeController(Controller):
 
                 # Retrieve booster from the city's decree booster building
                 if isinstance(disaster, LastingDisaster):
-                    building_level = player.city.buildings[BuildingType.lasting_decree_booster].level
+                    building_level = player.city.buildings[BuildingType.gelato_shop].level
                     booster = GameStats.decree_boost[building_level]
 
                     decree_effort_effect = clamp(GameStats.decree_population_effect * booster, min_value=0, max_value=1)
@@ -51,7 +51,7 @@ class DecreeController(Controller):
 
                     self.print(f"After: {disaster.effort_remaining}")
                 else:
-                    building_level = player.city.buildings[BuildingType.instant_decree_booster].level
+                    building_level = player.city.buildings[BuildingType.police_station].level
                     booster = GameStats.decree_boost[building_level]
 
                     # Calculate decree effect, given default decree effect with the extra boost from the building booster

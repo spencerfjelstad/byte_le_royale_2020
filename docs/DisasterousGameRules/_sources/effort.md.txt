@@ -37,13 +37,14 @@ For example, if we wanted to generate population,
 ```python
 actions.add_effort(ActionType.regain_population, amount)
 ```
-If we wanted to upgrade an object, like the instant_decree_booster building,
+If we wanted to upgrade an object, like the police station building,
 ```python
-actions.add_effort(city.buildings[BuildingType.instant_decree_booster], amount)
+actions.add_effort(city.buildings[BuildingType.police_station], amount)
 ```
 If we wanted to allocate effort to put out a lasting disaster,
 ```python
-actions.add_effort(disasters[0], amount)
+ongoing_disaster;  # Let ongoing_disaster be an ongoing disaster from the disasters list, like fire
+actions.add_effort(ongoing_disaster, amount)
 ```
 
 Note that the list of current disasters is provided by the take_turn disasters argument. 

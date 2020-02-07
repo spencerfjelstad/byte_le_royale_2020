@@ -16,6 +16,15 @@ class Client(UserClient):
             SensorType.ufo: DecreeType.cheese
         }
 
+        self.other_sensor_mappings = {
+            DisasterType.fire: SensorType.fire,
+            DisasterType.tornado: SensorType.tornado,
+            DisasterType.blizzard: SensorType.blizzard,
+            DisasterType.earthquake: SensorType.earthquake,
+            DisasterType.monster: SensorType.monster,
+            DisasterType.ufo: SensorType.ufo
+        }
+
         self.lasting_disasters = [DisasterType.fire, DisasterType.blizzard, DisasterType.monster]
 
     def team_name(self):
@@ -30,9 +39,9 @@ class Client(UserClient):
     # This is where your AI will decide what to do
     def take_turn(self, turn, actions, city, disasters):
         self.print('New Turn')
-        # Set decree to highest odds
+        # Set decree to highest rate
         highest = -1
-        highest_sensor = None
+        highest_sensor = city.sensors[SensorType.fire]
         for sensor in city.sensors.values():
             if sensor.sensor_results > highest:
                 highest = sensor.sensor_results
@@ -88,50 +97,54 @@ class Client(UserClient):
                 effort_spent = min(city.effort_remaining, effort_remaining)
                 act = ActionType.upgrade_city
 
-            # Build wealth building
+            # Build police building
             elif city.gold > effort_remaining and \
-                    city.buildings[BuildingType.mint].level != BuildingLevel.level_one and \
-                    city.buildings[BuildingType.mint] not in things_done:
-                self.print('Building wealth building')
-                effort_spent = min(city.buildings[BuildingType.mint].effort_remaining, effort_remaining)
-                act = city.buildings[BuildingType.mint]
+                     city.buildings[BuildingType.police_station].level != BuildingLevel.level_one and \
+                     city.buildings[BuildingType.police_station] not in things_done:
+                self.print('Building police building')
+                effort_spent = min(city.buildings[BuildingType.police_station].effort_remaining, effort_remaining)
+                act = city.buildings[BuildingType.police_station]
 
-            # Build canoe
-            elif city.gold > effort_remaining and \
-                    city.buildings[BuildingType.big_canoe].level != BuildingLevel.level_one and \
-                    city.buildings[BuildingType.big_canoe] not in things_done:
-                self.print('Building structure building')
-                effort_spent = min(city.buildings[BuildingType.big_canoe].effort_remaining, effort_remaining)
-                act = city.buildings[BuildingType.big_canoe]
-
-            # Build population building
+            # Build billboard building
             elif city.gold > effort_remaining and \
                     city.buildings[BuildingType.billboard].level != BuildingLevel.level_one and \
                     city.buildings[BuildingType.billboard] not in things_done:
-                self.print('Building population building')
+                self.print('Building billboard building')
                 effort_spent = min(city.buildings[BuildingType.billboard].effort_remaining, effort_remaining)
                 act = city.buildings[BuildingType.billboard]
 
-            # Build population building
+            # Upgrade ufo sensor
+            elif city.sensors[SensorType.ufo].level != SensorLevel.level_two and \
+                    city.sensors[SensorType.ufo] not in things_done:
+                self.print('Building ufo sensor')
+                effort_spent = min(city.sensors[SensorType.ufo].effort_remaining, effort_remaining)
+                act = city.sensors[SensorType.ufo]
+
+            # Upgrade earthquake sensor
+            elif city.sensors[SensorType.earthquake].level != SensorLevel.level_two and \
+                    city.sensors[SensorType.earthquake] not in things_done:
+                self.print('Building earthquake sensor')
+                effort_spent = min(city.sensors[SensorType.earthquake].effort_remaining, effort_remaining)
+                act = city.sensors[SensorType.earthquake]
+
+            # Upgrade tornado sensor
+            elif city.sensors[SensorType.tornado].level != SensorLevel.level_two and \
+                    city.sensors[SensorType.tornado] not in things_done:
+                self.print('Building tornado sensor')
+                effort_spent = min(city.sensors[SensorType.tornado].effort_remaining, effort_remaining)
+                act = city.sensors[SensorType.tornado]
+
+            # Build printer building
             elif city.gold > effort_remaining and \
                     city.buildings[BuildingType.printer].level != BuildingLevel.level_one and \
                     city.buildings[BuildingType.printer] not in things_done:
-                self.print('Building structure building')
+                self.print('Building printer building')
                 effort_spent = min(city.buildings[BuildingType.printer].effort_remaining, effort_remaining)
                 act = city.buildings[BuildingType.printer]
 
-            # Build instant decree building
-            elif city.gold > effort_remaining and \
-                    city.buildings[BuildingType.police_station].level != BuildingLevel.level_one and \
-                    city.buildings[BuildingType.police_station] not in things_done:
-                self.print('Building structure building')
-                effort_spent = min(city.buildings[BuildingType.police_station].effort_remaining,
-                                   effort_remaining)
-                act = city.buildings[BuildingType.police_station]
-
-            # Get gold otherwise
+            # Get money otherwise
             else:
-                self.print('Getting gold')
+                self.print('Getting money')
                 effort_spent = effort_remaining
                 act = ActionType.accumulate_wealth
 
