@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Buildings &mdash; Byte-le Royale 0.0.1 documentation</title>
+  <title>Buildings &mdash; Byte-le-Royale 2020 9 documentation</title>
   
 
   
@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/accordion.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -33,6 +34,7 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
 </head>
@@ -48,7 +50,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Byte-le Royale
+            <a href="index.html" class="icon icon-home"> Byte-le-Royale 2020
           
 
           
@@ -56,6 +58,10 @@
 
           
             
+            
+              <div class="version">
+                Version 1.0
+              </div>
             
           
 
@@ -78,19 +84,18 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Buildings</a><ul>
-<li><a class="reference internal" href="#instant-decree-booster">Instant Decree Booster</a></li>
-<li><a class="reference internal" href="#lasting-decree-booster">Lasting Decree Booster</a></li>
-<li><a class="reference internal" href="#wealth-booster">Wealth Booster</a></li>
-<li><a class="reference internal" href="#population-booster">Population Booster</a></li>
-<li><a class="reference internal" href="#structure-booster">Structure Booster</a></li>
-<li><a class="reference internal" href="#everything-booster">Everything Booster</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/decrees.html">Decrees</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/disaster.html">Disasters</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/effort.html">Effort</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/sensors.html">Sensors</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/buildings.html">Buildings</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/upgrades.html">Upgrades</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/turn.html">Turn</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/API.html">API</a></li>
 </ul>
-</li>
-</ul>
-</div>
+
             
           
         </div>
@@ -103,7 +108,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Byte-le Royale</a>
+          <a href="index.html">Byte-le-Royale 2020</a>
         
       </nav>
 
@@ -156,19 +161,19 @@
   <div class="section" id="buildings">
 <h1>Buildings<a class="headerlink" href="#buildings" title="Permalink to this headline">¶</a></h1>
 <p>Buildings can be constructed in your city to improve your city’s functionality. Buildings can improve decrees, wealth, population, and structure. Without upgrading them, they sit as empty spots on your city. To build them, allocate effort to one of the buildings in <code class="docutils literal notranslate"><span class="pre">city.buildings</span></code>. However, buildings also require gold equal to the required effort to upgrade. Once the required amount of effort and gold required to upgrade is reached, the building will be upgraded.</p>
-<p>For example, if you wanted to allocate effort to the Instant Decree Booster, you would type <code class="docutils literal notranslate"><span class="pre">actions.add_effort(city.buildings[BuildingType.instant_decree_booster],</span> <span class="pre">amount)</span></code>. For more information on allocating effort, see <a class="reference external" href="effort.html">Effort</a>.</p>
+<p>For example, if you wanted to allocate effort to the Instant Decree Booster, you would type <code class="docutils literal notranslate"><span class="pre">actions.add_effort(city.buildings[BuildingType.police_station],</span> <span class="pre">amount)</span></code>. For more information on allocating effort, see <a class="reference external" href="effort.html">Effort</a>.</p>
 <p>There are 6 types of buildings:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="#instant-decree-booster">Instant Decree Booster</a></p></li>
-<li><p><a class="reference external" href="#lasting-decree-booster">Lasting Decree Booster</a></p></li>
-<li><p><a class="reference external" href="#wealth-booster">Wealth Booster</a></p></li>
-<li><p><a class="reference external" href="#population-booster">Population Booster</a></p></li>
-<li><p><a class="reference external" href="#structure-booster">Structure Booster</a></p></li>
-<li><p><a class="reference external" href="#everything-booster">Everything Booster</a></p></li>
+<li><p><a class="reference external" href="#police-station">Police Station</a></p></li>
+<li><p><a class="reference external" href="#gelato-shop">Gelato Shop</a></p></li>
+<li><p><a class="reference external" href="#mint">Mint</a></p></li>
+<li><p><a class="reference external" href="#billboard">Billboard</a></p></li>
+<li><p><a class="reference external" href="#3d-printer">3D Printer</a></p></li>
+<li><p><a class="reference external" href="#big-canoe">Big Canoe</a></p></li>
 </ul>
-<div class="section" id="instant-decree-booster">
-<h2>Instant Decree Booster<a class="headerlink" href="#instant-decree-booster" title="Permalink to this headline">¶</a></h2>
-<p>Shown as the police station, this increases the effectiveness of your correctly guessed decrees for instant disasters by a multiplier that increases with each upgrade.</p>
+<div class="section" id="police-station">
+<h2>Police Station<a class="headerlink" href="#police-station" title="Permalink to this headline">¶</a></h2>
+<p>This increases the effectiveness of your correctly guessed decrees for instant disasters.</p>
 <table border="1" class="docutils">
 <thead>
 <tr>
@@ -185,24 +190,14 @@
 </tr>
 <tr>
 <td>1</td>
-<td>13800</td>
-<td>55%</td>
-</tr>
-<tr>
-<td>2</td>
-<td>18100</td>
-<td>62.5%</td>
-</tr>
-<tr>
-<td>3</td>
-<td>25300</td>
+<td>40750</td>
 <td>75%</td>
 </tr>
 </tbody>
 </table></div>
-<div class="section" id="lasting-decree-booster">
-<h2>Lasting Decree Booster<a class="headerlink" href="#lasting-decree-booster" title="Permalink to this headline">¶</a></h2>
-<p>Shown as the gelato shop, this increases the effectiveness of your correctly guessed decrees for lasting disasters by a multiplier that increases with each upgrade.</p>
+<div class="section" id="gelato-shop">
+<h2>Gelato Shop<a class="headerlink" href="#gelato-shop" title="Permalink to this headline">¶</a></h2>
+<p>This increases the effectiveness of your correctly guessed decrees for lasting disasters.</p>
 <table border="1" class="docutils">
 <thead>
 <tr>
@@ -219,24 +214,14 @@
 </tr>
 <tr>
 <td>1</td>
-<td>12000</td>
-<td>55%</td>
-</tr>
-<tr>
-<td>2</td>
-<td>15750</td>
-<td>62.5%</td>
-</tr>
-<tr>
-<td>3</td>
-<td>22000</td>
+<td>35050</td>
 <td>75%</td>
 </tr>
 </tbody>
 </table></div>
-<div class="section" id="wealth-booster">
-<h2>Wealth Booster<a class="headerlink" href="#wealth-booster" title="Permalink to this headline">¶</a></h2>
-<p>Shown as the bank, this gives you additional wealth by an amount that increases with each upgrade.</p>
+<div class="section" id="mint">
+<h2>Mint<a class="headerlink" href="#mint" title="Permalink to this headline">¶</a></h2>
+<p>This gives you additional wealth for free.</p>
 <table border="1" class="docutils">
 <thead>
 <tr>
@@ -248,24 +233,14 @@
 <tbody>
 <tr>
 <td>1</td>
-<td>9600</td>
-<td>20</td>
-</tr>
-<tr>
-<td>2</td>
-<td>12600</td>
-<td>40</td>
-</tr>
-<tr>
-<td>3</td>
-<td>17600</td>
-<td>60</td>
+<td>28440</td>
+<td>150</td>
 </tr>
 </tbody>
 </table></div>
-<div class="section" id="population-booster">
-<h2>Population Booster<a class="headerlink" href="#population-booster" title="Permalink to this headline">¶</a></h2>
-<p>Shown as the billboard, this gives you additional population by an amount that increases with each upgrade. This does not increase your population above your structure level. This amount is added every turn.</p>
+<div class="section" id="billboard">
+<h2>Billboard<a class="headerlink" href="#billboard" title="Permalink to this headline">¶</a></h2>
+<p>This gives you additional population through tourism. This does not increase your population above your structure level. This amount is added every turn.</p>
 <table border="1" class="docutils">
 <thead>
 <tr>
@@ -277,24 +252,14 @@
 <tbody>
 <tr>
 <td>1</td>
-<td>9600</td>
-<td>5</td>
-</tr>
-<tr>
-<td>2</td>
-<td>12600</td>
-<td>15</td>
-</tr>
-<tr>
-<td>3</td>
-<td>17600</td>
+<td>28440</td>
 <td>25</td>
 </tr>
 </tbody>
 </table></div>
-<div class="section" id="structure-booster">
-<h2>Structure Booster<a class="headerlink" href="#structure-booster" title="Permalink to this headline">¶</a></h2>
-<p>Shown as the 3D printer, this gives you additional structure by an amount that increases with each upgrade. This does not increase your structure above your max structure level. This amount is added every turn.</p>
+<div class="section" id="d-printer">
+<h2>3D Printer<a class="headerlink" href="#d-printer" title="Permalink to this headline">¶</a></h2>
+<p>Shown as the 3D printer, this gives you additional structure. This does not increase your structure above your max structure level. This amount is added every turn.</p>
 <table border="1" class="docutils">
 <thead>
 <tr>
@@ -306,23 +271,13 @@
 <tbody>
 <tr>
 <td>1</td>
-<td>12000</td>
-<td>5</td>
-</tr>
-<tr>
-<td>2</td>
-<td>15750</td>
-<td>15</td>
-</tr>
-<tr>
-<td>3</td>
-<td>22000</td>
+<td>35050</td>
 <td>25</td>
 </tr>
 </tbody>
 </table></div>
-<div class="section" id="everything-booster">
-<h2>Everything Booster<a class="headerlink" href="#everything-booster" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="big-canoe">
+<h2>Big Canoe<a class="headerlink" href="#big-canoe" title="Permalink to this headline">¶</a></h2>
 <p>The big canoe. This beast gives you additional wealth, population, and structure. As with the population and structure boosters, population and structure will not be added past their max. However, structure is added first, so if population and structure are equal, they will increase at equal rates.</p>
 <table border="1" class="docutils">
 <thead>
@@ -337,21 +292,7 @@
 <tbody>
 <tr>
 <td>1</td>
-<td>25000</td>
-<td>20</td>
-<td>10</td>
-<td>10</td>
-</tr>
-<tr>
-<td>2</td>
-<td>35000</td>
-<td>40</td>
-<td>20</td>
-<td>20</td>
-</tr>
-<tr>
-<td>3</td>
-<td>45000</td>
+<td>80100</td>
 <td>60</td>
 <td>30</td>
 <td>30</td>
@@ -371,7 +312,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, 2020
+        &copy; Copyright 2019-2020, NDSU ACM
 
     </p>
   </div>
