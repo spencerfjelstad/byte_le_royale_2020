@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sensors &mdash; Byte-le-Royale 2020 9 documentation</title>
+  <title>Buildings &mdash; Byte-le-Royale 2020 9 documentation</title>
   
 
   
@@ -139,13 +139,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Sensors</li>
+      <li>Buildings</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/sensors.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/buildings.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -158,41 +158,148 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="sensors">
-<h1>Sensors<a class="headerlink" href="#sensors" title="Permalink to this headline">¶</a></h1>
-<p>Sensors enable you to predict <a class="reference external" href="disasters.html">disasters</a> before they happen. Correctly guessing which disaster will happen next can allow you to choose the correct <a class="reference external" href="decrees.html">decree</a>. There is a sensor for every disaster, and each one must be upgraded individually. The six sensors are named fire, tornado, blizzard, earthquake, monster, and ufo.</p>
-<p>Weather can be difficult to predict. The likelihood that certain disasters will occur will not be completely accurate. You can upgrade your sensors by allocating <a class="reference external" href="effort.html">effort</a> to the sensor. Upgrading your sensor will make the sensor more accurate by decreasing the range up and down that it can be wrong.</p>
+  <div class="section" id="buildings">
+<h1>Buildings<a class="headerlink" href="#buildings" title="Permalink to this headline">¶</a></h1>
+<p>Buildings can be constructed in your city to improve your city’s functionality. Buildings can improve decrees, wealth, population, and structure. Without upgrading them, they sit as empty spots on your city. To build them, allocate effort to one of the buildings in <code class="docutils literal notranslate"><span class="pre">city.buildings</span></code>. However, buildings also require gold equal to the required effort to upgrade. Once the required amount of effort and gold required to upgrade is reached, the building will be upgraded.</p>
+<p>For example, if you wanted to allocate effort to the Instant Decree Booster, you would type <code class="docutils literal notranslate"><span class="pre">actions.add_effort(city.buildings[BuildingType.police_station],</span> <span class="pre">amount)</span></code>. For more information on allocating effort, see <a class="reference external" href="effort.html">Effort</a>.</p>
+<p>There are 6 types of buildings:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="#police-station">Police Station</a></p></li>
+<li><p><a class="reference external" href="#gelato-shop">Gelato Shop</a></p></li>
+<li><p><a class="reference external" href="#mint">Mint</a></p></li>
+<li><p><a class="reference external" href="#billboard">Billboard</a></p></li>
+<li><p><a class="reference external" href="#3d-printer">3D Printer</a></p></li>
+<li><p><a class="reference external" href="#big-canoe">Big Canoe</a></p></li>
+</ul>
+<div class="section" id="police-station">
+<h2>Police Station<a class="headerlink" href="#police-station" title="Permalink to this headline">¶</a></h2>
+<p>This increases the effectiveness of your correctly guessed decrees for instant disasters.</p>
 <table border="1" class="docutils">
 <thead>
 <tr>
 <th>Level</th>
-<th>Effort Cost</th>
-<th>Sensor Inaccuracy Range</th>
+<th>Effort Required</th>
+<th>Damage Mitigated</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Base</td>
 <td>0</td>
-<td>100</td>
+<td>50%</td>
 </tr>
 <tr>
 <td>1</td>
-<td>4000</td>
-<td>50</td>
-</tr>
-<tr>
-<td>2</td>
-<td>8500</td>
-<td>20</td>
-</tr>
-<tr>
-<td>3</td>
-<td>13500</td>
-<td>1</td>
+<td>40750</td>
+<td>75%</td>
 </tr>
 </tbody>
 </table></div>
+<div class="section" id="gelato-shop">
+<h2>Gelato Shop<a class="headerlink" href="#gelato-shop" title="Permalink to this headline">¶</a></h2>
+<p>This increases the effectiveness of your correctly guessed decrees for lasting disasters.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Required</th>
+<th>Damage Mitigated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base</td>
+<td>0</td>
+<td>50%</td>
+</tr>
+<tr>
+<td>1</td>
+<td>35050</td>
+<td>75%</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="mint">
+<h2>Mint<a class="headerlink" href="#mint" title="Permalink to this headline">¶</a></h2>
+<p>This gives you additional wealth for free.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Required</th>
+<th>Wealth Added</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>28440</td>
+<td>150</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="billboard">
+<h2>Billboard<a class="headerlink" href="#billboard" title="Permalink to this headline">¶</a></h2>
+<p>This gives you additional population through tourism. This does not increase your population above your structure level. This amount is added every turn.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Required</th>
+<th>Population Added</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>28440</td>
+<td>25</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="d-printer">
+<h2>3D Printer<a class="headerlink" href="#d-printer" title="Permalink to this headline">¶</a></h2>
+<p>Shown as the 3D printer, this gives you additional structure. This does not increase your structure above your max structure level. This amount is added every turn.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Required</th>
+<th>Structure Added</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>35050</td>
+<td>25</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="big-canoe">
+<h2>Big Canoe<a class="headerlink" href="#big-canoe" title="Permalink to this headline">¶</a></h2>
+<p>The big canoe. This beast gives you additional wealth, population, and structure. As with the population and structure boosters, population and structure will not be added past their max. However, structure is added first, so if population and structure are equal, they will increase at equal rates.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Required</th>
+<th>Wealth Added</th>
+<th>Population Added</th>
+<th>Structure Added</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>80100</td>
+<td>60</td>
+<td>30</td>
+<td>30</td>
+</tr>
+</tbody>
+</table></div>
+</div>
 
 
            </div>

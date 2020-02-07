@@ -5,7 +5,7 @@ Weather can be difficult to predict. The likelihood that certain disasters will 
 
 Level | Effort Cost | Sensor Inaccuracy Range
 --- | --- | ---
-Base | 0 | 60
-1 | 6000 | 30
-2 | 11250 | 15
-3 | 18000 | 5
+Base | 0 | 100
+1 | 4000 | 50
+2 | 8500 | 20
+3 | 13500 | 1
