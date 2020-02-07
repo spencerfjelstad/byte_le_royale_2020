@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>The Turn &mdash; Byte-le Royale 0.0.1 documentation</title>
+  <title>&lt;no title&gt; &mdash; Byte-le Royale 0.0.1 documentation</title>
   
 
   
@@ -79,8 +79,7 @@
             
             
               <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">The Turn</a></li>
+              <div class="local-toc"><ul class="simple">
 </ul>
 </div>
             
@@ -126,13 +125,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>The Turn</li>
+      <li>&lt;no title&gt;</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/turn.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/common_errors.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -145,27 +144,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="the-turn">
-<h1>The Turn<a class="headerlink" href="#the-turn" title="Permalink to this headline">¶</a></h1>
-<p>The turn is what the entire game is based around. During any given turn your AI will have to determine what is best for your city at that time. This consists of:</p>
-<ul class="simple">
-<li><p>Allocating <a class="reference external" href="effort.html">Effort</a> decisions</p></li>
-<li><p>Deciding on a single <a class="reference external" href="decrees.html">Decree</a></p></li>
-</ul>
-<p>After the turn is processed, the game determines whether or not a disaster will occur after the turn, adjusts the odds accordingly, and feeds your AI the info for the next turn.</p>
-<p>The order of operations is the following:</p>
-<ol class="simple">
-<li><p>The game determines which disasters are occurring for the current turn.</p></li>
-<li><p>The player’s decree from the previous turn is activated, reducing the damage of the current disaster if applicable.</p></li>
-<li><p>The sensors will detect the odds for the next turn.</p></li>
-<li><p><strong>The player’s AI take_turn function goes into effect, where the AI will decide on effort allocations for the current turn and the decree for the next turn.</strong></p></li>
-<li><p>The player’s effort allocations are put into effect. See <a class="reference external" href="Effort">the effort page</a> for the order effort allocations are processed.</p></li>
-<li><p>The player’s decree is recorded for the next turn.</p></li>
-<li><p>Disasters will be removed from the city if enough effort has been allocated.</p></li>
-<li><p>Disasters will strike.</p></li>
-<li><p>If the city has 0 or less population or structure, then the game will end.</p></li>
-</ol>
-</div>
+  <p>#####Attribute Error: <code class="docutils literal notranslate"><span class="pre">&lt;object&gt;</span></code> has no attribute ‘<code class="docutils literal notranslate"><span class="pre">&lt;attribute&gt;</span></code>’</p>
+<p>This error can occur if you try to call a value or method that does not exist for the given object. Make sure you’re spelling the attribute properly, and check the <a class="reference external" href="API.html">API</a> to make sure that the attribute actually exists.</p>
+<p>#####Game running at ? turns/s 1585af66-6e4a-4576-9367-66dcc850d5f2 failed to reply in time and has been dropped</p>
+<p>This error will occur when your client runs out of time on a given turn to complete its turn. This often occurs when there are too many print statements, any infinite loops, or other time-delaying functions.</p>
+<p>#####My team_name/city_name/city_type aren’t appearing! What do I do?</p>
+<p>This error is probably caused by the corresponding function not appearing, or the function is being named incorrectly. Make sure the functions ‘team_name’, ‘city_name’, and ‘city_type’ are being named properly and returned the values you want them to return.</p>
 
 
            </div>

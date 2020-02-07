@@ -228,7 +228,7 @@ def post_tick(turn):
 
 
 # Game is over. Create the results file and end the game.
-def shutdown(reason="", source='Engine_error'):
+def shutdown(reason="", source='Unknown_error'):
     global clients
     global current_world
     global master_controller
