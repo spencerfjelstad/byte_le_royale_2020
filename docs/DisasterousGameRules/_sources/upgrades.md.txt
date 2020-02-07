@@ -45,7 +45,7 @@ To upgrade, do `actions.add_effort(city.buildings[BuildingType.big_canoe], amoun
 
 Level | Effort Required | Wealth Added | Population Added | Structure Added
 --- | --- | --- | --- | ---
-1 | 80100 | 60 | 30 | 30
+1 | 80100 | 200 | 30 | 30
 
 
 ## City
