@@ -94,19 +94,22 @@ class GameStats:
             DisasterLevel.level_zero: 400,
             DisasterLevel.level_one: 800,
             DisasterLevel.level_two: 1350,
-            DisasterLevel.level_three: 2200
+            DisasterLevel.level_three: 2200,
+            DisasterLevel.level_four: 2200,
         },
         DisasterType.blizzard: {
             DisasterLevel.level_zero: 600,
             DisasterLevel.level_one: 1350,
             DisasterLevel.level_two: 2025,
-            DisasterLevel.level_three: 3300
+            DisasterLevel.level_three: 3300,
+            DisasterLevel.level_four: 3300,
         },
         DisasterType.monster: {
             DisasterLevel.level_zero: 800,
             DisasterLevel.level_one: 1800,
             DisasterLevel.level_two: 3300,
-            DisasterLevel.level_three: 5600
+            DisasterLevel.level_three: 5600,
+            DisasterLevel.level_four: 5600,
         },
     }
 
@@ -116,37 +119,43 @@ class GameStats:
             DisasterLevel.level_zero: 1,
             DisasterLevel.level_one: 1,
             DisasterLevel.level_two: 1,
-            DisasterLevel.level_three: 1
+            DisasterLevel.level_three: 1,
+            DisasterLevel.level_four: 2,
         },
         DisasterType.tornado: {
             DisasterLevel.level_zero: 25,
             DisasterLevel.level_one: 50,
             DisasterLevel.level_two: 75,
-            DisasterLevel.level_three: 100
+            DisasterLevel.level_three: 100,
+            DisasterLevel.level_four: 150,
         },
         DisasterType.blizzard: {
             DisasterLevel.level_zero: 3,
             DisasterLevel.level_one: 3,
             DisasterLevel.level_two: 3,
-            DisasterLevel.level_three: 3
+            DisasterLevel.level_three: 3,
+            DisasterLevel.level_four: 6,
         },
         DisasterType.earthquake: {
             DisasterLevel.level_zero: 50,
             DisasterLevel.level_one: 100,
             DisasterLevel.level_two: 200,
-            DisasterLevel.level_three: 300
+            DisasterLevel.level_three: 300,
+            DisasterLevel.level_four: 400,
         },
         DisasterType.monster: {
             DisasterLevel.level_zero: 10,
             DisasterLevel.level_one: 10,
             DisasterLevel.level_two: 10,
-            DisasterLevel.level_three: 10
+            DisasterLevel.level_three: 10,
+            DisasterLevel.level_four: 20,
         },
         DisasterType.ufo: {
             DisasterLevel.level_zero: 50,
             DisasterLevel.level_one: 100,
             DisasterLevel.level_two: 200,
-            DisasterLevel.level_three: 400
+            DisasterLevel.level_three: 400,
+            DisasterLevel.level_four: 698,
         },
     }
 
@@ -156,37 +165,43 @@ class GameStats:
             DisasterLevel.level_zero: 2,
             DisasterLevel.level_one: 2,
             DisasterLevel.level_two: 2,
-            DisasterLevel.level_three: 2
+            DisasterLevel.level_three: 2,
+            DisasterLevel.level_four: 4,
         },
         DisasterType.tornado: {
             DisasterLevel.level_zero: 12,
             DisasterLevel.level_one: 25,
             DisasterLevel.level_two: 37,
-            DisasterLevel.level_three: 50
+            DisasterLevel.level_three: 50,
+            DisasterLevel.level_four: 75,
         },
         DisasterType.blizzard: {
             DisasterLevel.level_zero: 6,
             DisasterLevel.level_one: 6,
             DisasterLevel.level_two: 6,
-            DisasterLevel.level_three: 6
+            DisasterLevel.level_three: 6,
+            DisasterLevel.level_four: 12,
         },
         DisasterType.earthquake: {
             DisasterLevel.level_zero: 25,
             DisasterLevel.level_one: 50,
             DisasterLevel.level_two: 100,
-            DisasterLevel.level_three: 150
+            DisasterLevel.level_three: 150,
+            DisasterLevel.level_four: 250
         },
         DisasterType.monster: {
             DisasterLevel.level_zero: 5,
             DisasterLevel.level_one: 5,
             DisasterLevel.level_two: 5,
-            DisasterLevel.level_three: 5
+            DisasterLevel.level_three: 5,
+            DisasterLevel.level_four: 10,
         },
         DisasterType.ufo: {
             DisasterLevel.level_zero: 100,
             DisasterLevel.level_one: 200,
             DisasterLevel.level_two: 400,
-            DisasterLevel.level_three: 800
+            DisasterLevel.level_three: 800,
+            DisasterLevel.level_four: 1396,
         },
     }
 
@@ -196,37 +211,43 @@ class GameStats:
             DisasterLevel.level_zero: 0,
             DisasterLevel.level_one: 250,
             DisasterLevel.level_two: 500,
-            DisasterLevel.level_three: 750
+            DisasterLevel.level_three: 750,
+            DisasterLevel.level_four: 1300,
         },
         DisasterType.tornado: {
             DisasterLevel.level_zero: 0,
             DisasterLevel.level_one: 300,
             DisasterLevel.level_two: 600,
-            DisasterLevel.level_three: 900
+            DisasterLevel.level_three: 900,
+            DisasterLevel.level_four: 1400,
         },
         DisasterType.blizzard: {
             DisasterLevel.level_zero: 0,
             DisasterLevel.level_one: 500,
             DisasterLevel.level_two: 750,
-            DisasterLevel.level_three: 1000
+            DisasterLevel.level_three: 1000,
+            DisasterLevel.level_four: 1475,
         },
         DisasterType.earthquake: {
             DisasterLevel.level_zero: 0,
             DisasterLevel.level_one: 550,
             DisasterLevel.level_two: 850,
-            DisasterLevel.level_three: 1150
+            DisasterLevel.level_three: 1150,
+            DisasterLevel.level_four: 1550,
         },
         DisasterType.monster: {
             DisasterLevel.level_zero: 0,
             DisasterLevel.level_one: 750,
             DisasterLevel.level_two: 1000,
-            DisasterLevel.level_three: 1250
+            DisasterLevel.level_three: 1250,
+            DisasterLevel.level_four: 1625,
         },
         DisasterType.ufo: {
             DisasterLevel.level_zero: 0,
             DisasterLevel.level_one: 800,
             DisasterLevel.level_two: 1100,
-            DisasterLevel.level_three: 1400
+            DisasterLevel.level_three: 1400,
+            DisasterLevel.level_four: 1700,
         },
     }
 
