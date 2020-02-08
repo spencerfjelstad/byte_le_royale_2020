@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>The Turn &mdash; Byte-le-Royale 2020 9 documentation</title>
+  <title>client structure &mdash; Byte-le-Royale 2020 9 documentation</title>
   
 
   
@@ -99,7 +99,6 @@
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/turn.html">Turn</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/upgrades.html">Upgrades</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/enums.html">Enums</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/common_errors.html">Common Errors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/visualizer">Visualizer</a></li>
 </ul>
@@ -147,13 +146,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>The Turn</li>
+      <li>client structure</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/turn.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/client.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -166,26 +165,41 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="the-turn">
-<h1>The Turn<a class="headerlink" href="#the-turn" title="Permalink to this headline">¶</a></h1>
-<p>The turn is what the entire game is based around. During any given turn your AI will have to determine what is best for your city at that time. This consists of:</p>
-<ul class="simple">
-<li><p>Allocating <a class="reference external" href="effort.html">Effort</a> decisions</p></li>
-<li><p>Deciding on a single <a class="reference external" href="decrees.html">Decree</a></p></li>
-</ul>
-<p>After the turn is processed, the game determines whether or not a disaster will occur after the turn, adjusts the odds accordingly, and feeds your AI the info for the next turn.</p>
-<p>The order of operations is the following:</p>
-<ol class="simple">
-<li><p>The game determines which disasters are occurring for the current turn.</p></li>
-<li><p>The player’s decree from the previous turn is activated, reducing the damage of the current disaster if applicable.</p></li>
-<li><p>The sensors will detect the odds for the next turn.</p></li>
-<li><p><strong>The player’s AI take_turn function goes into effect, where the AI will decide on effort allocations for the current turn and the decree for the next turn.</strong></p></li>
-<li><p>The player’s effort allocations are put into effect. See <a class="reference external" href="effort.html">the effort page</a> for the order effort allocations are processed.</p></li>
-<li><p>The player’s decree is recorded for the next turn.</p></li>
-<li><p>Disasters will be removed from the city if enough effort has been allocated.</p></li>
-<li><p>Disasters will strike.</p></li>
-<li><p>If the city has 0 or less population or structure, then the game will end.</p></li>
-</ol>
+  <div class="section" id="client-structure">
+<h1>client structure<a class="headerlink" href="#client-structure" title="Permalink to this headline">¶</a></h1>
+<p>Make sure that your client file contains the word “client” in the filename, and has the following methods in the file.</p>
+<div class="section" id="init-self">
+<h2><strong>init</strong>(self):<a class="headerlink" href="#init-self" title="Permalink to this headline">¶</a></h2>
+<p>Use this function to save variables across turns. Keep the <code class="docutils literal notranslate"><span class="pre">super().__init__()</span></code> line in this function, since this
+will help for debug levels.</p>
+</div>
+<div class="section" id="print-self-args">
+<h2>print(self, *args):<a class="headerlink" href="#print-self-args" title="Permalink to this headline">¶</a></h2>
+<p>By using our built-in print statement, you can enable and disable all print statement easily by calling the
+launcher.pyz’s debug argument.</p>
+</div>
+<div class="section" id="team-name-self">
+<h2>team_name(self):<a class="headerlink" href="#team-name-self" title="Permalink to this headline">¶</a></h2>
+<p>In this function, return your team name so it appears on the visualizer.</p>
+</div>
+<div class="section" id="city-name-self">
+<h2>city_name(self):<a class="headerlink" href="#city-name-self" title="Permalink to this headline">¶</a></h2>
+<p>In this function, return your city name so it appears on the visualizer (if your city has successfully built the billboard)</p>
+</div>
+<div class="section" id="city-type-self">
+<h2>city_type(self):<a class="headerlink" href="#city-type-self" title="Permalink to this headline">¶</a></h2>
+<p>In this function, return a CityType enum to get an extra boost at the start of the game.</p>
+</div>
+<div class="section" id="take-turn-self-turn-actions-city-disasters">
+<h2>take_turn(self, turn, actions, city, disasters):<a class="headerlink" href="#take-turn-self-turn-actions-city-disasters" title="Permalink to this headline">¶</a></h2>
+<p>This will be your main control of your AI. This function gets called every turn until your city gets destroyed.
+Decide actions and set decrees here.</p>
+<p>The turn parameter will return the current turn number.
+The actions parameter is the Action object that you can set decrees or set actions to.
+The city parameter is your city. Your sensors and buildings are found here.
+The disasters parameter is all current disasters affecting your city, including lasting disasters and instant disasters.</p>
+<p>You will not have to return anything from this function.</p>
+</div>
 </div>
 
 
