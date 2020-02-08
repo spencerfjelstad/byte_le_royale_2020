@@ -106,6 +106,15 @@ class BillBoardLayer(cocos.layer.Layer):
 
         if self.info['player'].get('city').get('buildings').get('4').get('level') > 0:
             self.struct = self.images["billboard_complete"]
+            # Display City Name, only if the billboard is built
+            city_name_label = cocos.text.Label(
+                self.info['player']['city']['city_name'],
+                font_name="Comic Sans",
+                font_size=10,
+                anchor_x="left",
+                position=(self.display[0] - 100, self.display[1] - 450)
+            )
+            self.add(city_name_label)
         else:
             self.struct = self.images["billboard"]
 
