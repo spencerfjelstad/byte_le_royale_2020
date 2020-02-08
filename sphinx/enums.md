@@ -62,6 +62,7 @@ Example: To access a BuildingType, you would do `BuildingType.mint`.
 * level_one
 * level_two
 * level_three
+* level_four
 
 ## ObjectType
 * none
