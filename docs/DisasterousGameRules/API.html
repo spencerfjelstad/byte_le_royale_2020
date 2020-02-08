@@ -99,6 +99,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/turn.html">Turn</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/upgrades.html">Upgrades</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/enums.html">Enums</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/common_errors.html">Common Errors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/visualizer">Visualizer</a></li>
 </ul>
@@ -376,7 +377,9 @@ and will be removed from the game.</p>
 <div class="section" id="sensor-results">
 <h3>sensor_results<a class="headerlink" href="#sensor-results" title="Permalink to this headline">¶</a></h3>
 <p>This value is the next turn’s chance of the associated disaster. This value will not match up exactly with the
-disaster’s real odds, but will be close to the actual value, depending on the sensor’s level.</p>
+disaster’s real odds, but will be close to the actual value, depending on the sensor’s level. This should return a
+float value between 0.0 and 1.0, where 0.0 indicates there is no chance of a disaster occurring, and 1.0 indicates that
+the disaster is guaranteed to occur.</p>
 </div>
 </div>
 </div>
