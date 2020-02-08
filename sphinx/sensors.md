@@ -9,3 +9,5 @@ Base | 0 | 100
 1 | 4000 | 50
 2 | 8500 | 20
 3 | 13500 | 1
+
+If you want to access your sensors, `city.sensors[SensorType.fire]`, and from there you can call the variables of the sensor like `city.sensors[SensorType.fire].effort_remaining`
