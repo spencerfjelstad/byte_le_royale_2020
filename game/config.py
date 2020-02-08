@@ -26,6 +26,7 @@ ALLOWED_MODULES = ["game.client.user_client",       # modules that clients are s
                    "game.common.enums"]
 RESTRICTED_MODULES = ["game",                       # modules that clients will be prevented from accessing
                       "importlib",
+                      "pip",
                       "os",
                       "sys"]
 

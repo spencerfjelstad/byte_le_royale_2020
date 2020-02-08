@@ -11,7 +11,6 @@ class EndLayer(cocos.layer.Layer):
         super().__init__()
         label = cocos.text.Label(
             "Game Over",
-            font_name="Comic Sans MS",
             font_size=64,
             color=(255, 0, 0, 255),
             anchor_x='center',
@@ -30,7 +29,6 @@ class EndLayer(cocos.layer.Layer):
         dis_def_percent = f'{stats["disasters_correctly_protected"] / stats["total_disasters"]:.2%}'
         dis_def_label = cocos.text.Label(
             f'Disasters Defended: {stats["disasters_correctly_protected"]}/{stats["total_disasters"]}, {dis_def_percent}',
-            font_name="Gabriola",
             font_size=16,
             color=(240, 240, 255, 255),
             anchor_x='left',
@@ -41,7 +39,6 @@ class EndLayer(cocos.layer.Layer):
 
         tot_pop_dam_label = cocos.text.Label(
             f'Total Population Lost: {stats["total_population_damage"]}',
-            font_name="Gabriola",
             font_size=16,
             color=(240, 240, 255, 255),
             anchor_x='left',
@@ -52,7 +49,6 @@ class EndLayer(cocos.layer.Layer):
 
         tot_str_dam_label = cocos.text.Label(
             f'Total Structure Damaged: {stats["total_structure_damage"]}',
-            font_name="Gabriola",
             font_size=16,
             color=(240, 240, 255, 255),
             anchor_x='left',
@@ -64,7 +60,6 @@ class EndLayer(cocos.layer.Layer):
         avg_pop = f'{stats["total_population_ever"] / results["Score"]:.2f}'
         avg_pop_label = cocos.text.Label(
             f'Average Population: {avg_pop}',
-            font_name="Gabriola",
             font_size=16,
             color=(240, 240, 255, 255),
             anchor_x='right',
@@ -76,7 +71,6 @@ class EndLayer(cocos.layer.Layer):
         avg_str = f'{stats["total_structure_ever"] / results["Score"]:.2f}'
         avg_str_label = cocos.text.Label(
             f'Average Structure: {avg_str}',
-            font_name="Gabriola",
             font_size=16,
             color=(240, 240, 255, 255),
             anchor_x='right',
@@ -87,7 +81,6 @@ class EndLayer(cocos.layer.Layer):
 
         final_score_label = cocos.text.Label(
             f'Total Turns Survived: {results["Score"]}',
-            font_name="Gabriola",
             font_size=16,
             color=(240, 240, 255, 255),
             anchor_x='right',
