@@ -1,6 +1,6 @@
 # Enums
 Here's a cheatsheet of all the enums.
-Example: To access a BuildingType, you would do `BuildingType.mind`.
+Example: To access a BuildingType, you would do `BuildingType.mint`.
 
 * [ActionType](#actiontype)
 * [CityLevel](#citylevel)
@@ -9,7 +9,6 @@ Example: To access a BuildingType, you would do `BuildingType.mind`.
 * [DisasterStatus](#disasterstatus)
 * [DisasterType](#disastertype)
 * [DisasterLevel](#disasterlevel)
-* [EventType](#eventtype)
 * [ObjectType](#objecttype)
 * [SensorLevel](#sensorlevel)
 * [SensorType](#sensortype)
@@ -63,13 +62,6 @@ Example: To access a BuildingType, you would do `BuildingType.mind`.
 * level_one
 * level_two
 * level_three
-
-## EventType
-* city_upgrade
-* sensor_upgrade
-* building_upgrade
-* disaster_spawned
-* disaster_eliminated
 
 ## ObjectType
 * none
