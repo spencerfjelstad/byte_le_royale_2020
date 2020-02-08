@@ -250,9 +250,17 @@ def shutdown(reason="", source='Unknown_error'):
     # Exit game
     if reason:
         print(f"\nGame has ended due to {source}.")
+
+        # Flush standard out
+        sys.stdout.flush()
+
         os._exit(1)
     else:
         print(f"\nGame has successfully ended. The city lasted {turn_number} turns.")
+
+        # Flush standard out
+        sys.stdout.flush()
+
         os._exit(0)
 
 
