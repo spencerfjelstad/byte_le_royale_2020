@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to Byte-le Royale 2020! &mdash; Byte-le-Royale 2020 9 documentation</title>
+  <title>Upgrades &mdash; Byte-le-Royale 2020 9 documentation</title>
   
 
   
@@ -50,7 +50,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> Byte-le-Royale 2020
+            <a href="index.html" class="icon icon-home"> Byte-le-Royale 2020
           
 
           
@@ -115,7 +115,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Byte-le-Royale 2020</a>
+          <a href="index.html">Byte-le-Royale 2020</a>
         
       </nav>
 
@@ -144,15 +144,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Welcome to Byte-le Royale 2020!</li>
+      <li>Upgrades</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/upgrades.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -165,28 +165,209 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-byte-le-royale-2020">
-<h1>Welcome to Byte-le Royale 2020!<a class="headerlink" href="#welcome-to-byte-le-royale-2020" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference external" href="https://www.twitch.tv/ndsu_acm">Twitch</a></li>
-<li class="toctree-l1"><a class="reference external" href="http://forum.royale.ndacm.org">Forum</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org">Website/Schedule</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/getting_started.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/buildings.html">Buildings</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/city.html">City</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/decrees.html">Decrees</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/disasters.html">Disasters</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/effort.html">Effort</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/sensors.html">Sensors</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/turn.html">Turn</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/upgrades.html">Upgrades</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/common_errors.html">Common Errors</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/visualizer">Visualizer</a></li>
-</ul>
+  <div class="section" id="upgrades">
+<h1>Upgrades<a class="headerlink" href="#upgrades" title="Permalink to this headline">¶</a></h1>
+<p>While more detailed information can be found at their respective pages, here are all the tables relating to upgradable objects.</p>
+<div class="section" id="buildings">
+<h2>Buildings<a class="headerlink" href="#buildings" title="Permalink to this headline">¶</a></h2>
+<p>You can upgrade <a class="reference external" href="buildings.html">buildings</a> that improve your city in various ways.</p>
+<div class="section" id="police-station">
+<h3>Police Station<a class="headerlink" href="#police-station" title="Permalink to this headline">¶</a></h3>
+<p>To upgrade, do <code class="docutils literal notranslate"><span class="pre">actions.add_effort(city.buildings[BuildingType.police_station],</span> <span class="pre">amount)</span></code>.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Required</th>
+<th>Damage Mitigated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base</td>
+<td>0</td>
+<td>50%</td>
+</tr>
+<tr>
+<td>1</td>
+<td>40750</td>
+<td>75%</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="gelato-shop">
+<h3>Gelato Shop<a class="headerlink" href="#gelato-shop" title="Permalink to this headline">¶</a></h3>
+<p>To upgrade, do <code class="docutils literal notranslate"><span class="pre">actions.add_effort(city.buildings[BuildingType.gelato_shop],</span> <span class="pre">amount)</span></code>.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Required</th>
+<th>Damage Mitigated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base</td>
+<td>0</td>
+<td>50%</td>
+</tr>
+<tr>
+<td>1</td>
+<td>35050</td>
+<td>75%</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="mint">
+<h3>Mint<a class="headerlink" href="#mint" title="Permalink to this headline">¶</a></h3>
+<p>To upgrade, do <code class="docutils literal notranslate"><span class="pre">actions.add_effort(city.buildings[BuildingType.mint],</span> <span class="pre">amount)</span></code>.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Required</th>
+<th>Wealth Added</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>28440</td>
+<td>150</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="billboard">
+<h3>Billboard<a class="headerlink" href="#billboard" title="Permalink to this headline">¶</a></h3>
+<p>To upgrade, do <code class="docutils literal notranslate"><span class="pre">actions.add_effort(city.buildings[BuildingType.billboard],</span> <span class="pre">amount)</span></code>.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Required</th>
+<th>Population Added</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>28440</td>
+<td>25</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="d-printer">
+<h3>3D Printer<a class="headerlink" href="#d-printer" title="Permalink to this headline">¶</a></h3>
+<p>To upgrade, do <code class="docutils literal notranslate"><span class="pre">actions.add_effort(city.buildings[BuildingType.printer],</span> <span class="pre">amount)</span></code>.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Required</th>
+<th>Structure Added</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>35050</td>
+<td>25</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="big-canoe">
+<h3>Big Canoe<a class="headerlink" href="#big-canoe" title="Permalink to this headline">¶</a></h3>
+<p>To upgrade, do <code class="docutils literal notranslate"><span class="pre">actions.add_effort(city.buildings[BuildingType.big_canoe],</span> <span class="pre">amount)</span></code>.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Required</th>
+<th>Wealth Added</th>
+<th>Population Added</th>
+<th>Structure Added</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>80100</td>
+<td>200</td>
+<td>30</td>
+<td>30</td>
+</tr>
+</tbody>
+</table></div>
 </div>
+<div class="section" id="city">
+<h2>City<a class="headerlink" href="#city" title="Permalink to this headline">¶</a></h2>
+<p>Your <a class="reference external" href="city.html">city</a> can be upgraded to increase the max structure.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Cost</th>
+<th>Max Structure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base</td>
+<td>0</td>
+<td>200</td>
+</tr>
+<tr>
+<td>1</td>
+<td>15000</td>
+<td>225</td>
+</tr>
+<tr>
+<td>2</td>
+<td>16875</td>
+<td>275</td>
+</tr>
+<tr>
+<td>3</td>
+<td>20625</td>
+<td>350</td>
+</tr>
+</tbody>
+</table></div>
+<div class="section" id="sensors">
+<h2>Sensors<a class="headerlink" href="#sensors" title="Permalink to this headline">¶</a></h2>
+<p>Your sensors can be upgraded to improve their accuracy. You need to upgrade each one individually.</p>
+<table border="1" class="docutils">
+<thead>
+<tr>
+<th>Level</th>
+<th>Effort Cost</th>
+<th>Sensor Inaccuracy Range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base</td>
+<td>0</td>
+<td>100</td>
+</tr>
+<tr>
+<td>1</td>
+<td>4000</td>
+<td>50</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8500</td>
+<td>20</td>
+</tr>
+<tr>
+<td>3</td>
+<td>13500</td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to Byte-le Royale 2020! &mdash; Byte-le-Royale 2020 9 documentation</title>
+  <title>The Turn &mdash; Byte-le-Royale 2020 9 documentation</title>
   
 
   
@@ -50,7 +50,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> Byte-le-Royale 2020
+            <a href="index.html" class="icon icon-home"> Byte-le-Royale 2020
           
 
           
@@ -115,7 +115,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Byte-le-Royale 2020</a>
+          <a href="index.html">Byte-le-Royale 2020</a>
         
       </nav>
 
@@ -144,15 +144,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Welcome to Byte-le Royale 2020!</li>
+      <li>The Turn</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/turn.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -165,28 +165,26 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-byte-le-royale-2020">
-<h1>Welcome to Byte-le Royale 2020!<a class="headerlink" href="#welcome-to-byte-le-royale-2020" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference external" href="https://www.twitch.tv/ndsu_acm">Twitch</a></li>
-<li class="toctree-l1"><a class="reference external" href="http://forum.royale.ndacm.org">Forum</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org">Website/Schedule</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/getting_started.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/buildings.html">Buildings</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/city.html">City</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/decrees.html">Decrees</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/disasters.html">Disasters</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/effort.html">Effort</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/sensors.html">Sensors</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/turn.html">Turn</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/upgrades.html">Upgrades</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/common_errors.html">Common Errors</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/visualizer">Visualizer</a></li>
+  <div class="section" id="the-turn">
+<h1>The Turn<a class="headerlink" href="#the-turn" title="Permalink to this headline">¶</a></h1>
+<p>The turn is what the entire game is based around. During any given turn your AI will have to determine what is best for your city at that time. This consists of:</p>
+<ul class="simple">
+<li><p>Allocating <a class="reference external" href="effort.html">Effort</a> decisions</p></li>
+<li><p>Deciding on a single <a class="reference external" href="decrees.html">Decree</a></p></li>
 </ul>
-</div>
+<p>After the turn is processed, the game determines whether or not a disaster will occur after the turn, adjusts the odds accordingly, and feeds your AI the info for the next turn.</p>
+<p>The order of operations is the following:</p>
+<ol class="simple">
+<li><p>The game determines which disasters are occurring for the current turn.</p></li>
+<li><p>The player’s decree from the previous turn is activated, reducing the damage of the current disaster if applicable.</p></li>
+<li><p>The sensors will detect the odds for the next turn.</p></li>
+<li><p><strong>The player’s AI take_turn function goes into effect, where the AI will decide on effort allocations for the current turn and the decree for the next turn.</strong></p></li>
+<li><p>The player’s effort allocations are put into effect. See <a class="reference external" href="Effort">the effort page</a> for the order effort allocations are processed.</p></li>
+<li><p>The player’s decree is recorded for the next turn.</p></li>
+<li><p>Disasters will be removed from the city if enough effort has been allocated.</p></li>
+<li><p>Disasters will strike.</p></li>
+<li><p>If the city has 0 or less population or structure, then the game will end.</p></li>
+</ol>
 </div>
 
 
