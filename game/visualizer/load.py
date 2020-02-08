@@ -349,6 +349,7 @@ def load(temp, section=1):
         assets['disaster_level']['silver'] = list()
         assets['disaster_level']['gold'] = list()
         assets['disaster_level']['uranium'] = list()
+        assets['disaster_level']['pluto'] = list()
 
         for i in range(5):
             # Disaster Level Assets
@@ -356,10 +357,12 @@ def load(temp, section=1):
             silver = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/silver.png"))
             gold = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/gold.png"))
             uranium = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/uranium.png"))
+            pluto = cocos.sprite.Sprite(find_image("game/visualizer/assets/forecast_assets/pluto.png"))
             assets['disaster_level']['bronze'].append(bronze)
             assets['disaster_level']['silver'].append(silver)
             assets['disaster_level']['gold'].append(gold)
             assets['disaster_level']['uranium'].append(uranium)
+            assets['disaster_level']['pluto'].append(pluto)
 
     elif section == 9:
         clean_up()

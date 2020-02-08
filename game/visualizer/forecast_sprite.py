@@ -75,6 +75,8 @@ class DisasterLevelLayer(cocos.layer.Layer):
                             spr = self.images['gold'][i]
                         elif level == 3:
                             spr = self.images['uranium'][i]
+                        elif level == 4:
+                            spr = self.images['pluto'][i]
 
                         if self.turn < 2:
                             spr.position = self.display[0] / 2 + (i + 3) * 64 - 172, self.display[1] - 72
