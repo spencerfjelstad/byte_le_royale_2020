@@ -39,6 +39,9 @@ def generate():
         if element == 1:
             skeleton_list[x].append(disaster_order.pop(0))
 
+        if x >= MAX_TURNS - STARTING_FREE_TURNS:
+            skeleton_list[x] = [DisasterType.ufo]
+
     # Initialize basic list
     disaster_rates = {}
     for x in range(MAX_TURNS):

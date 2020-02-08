@@ -85,6 +85,17 @@ class EndLayer(cocos.layer.Layer):
         avg_str_label.position = self.display[0] - 50, self.display[1] / 2 + 280
         self.add(avg_str_label)
 
+        final_score_label = cocos.text.Label(
+            f'Total Turns Survived: {results["Score"]}',
+            font_name="Gabriola",
+            font_size=16,
+            color=(240, 240, 255, 255),
+            anchor_x='right',
+            anchor_y='center'
+        )
+        final_score_label.position = self.display[0]-50, self.display[1] / 2 + 260
+        self.add(final_score_label)
+
         # Line graph
         # self.add(LineGraph([6,48,367], 200,100, parser))
         self.add(LineGraph(parser, self.display[0]-100, self.display[1]-100-100, 50, 50))

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API &mdash; Byte-le Royale 0.0.1 documentation</title>
+  <title>API &mdash; Byte-le-Royale 2020 9 documentation</title>
   
 
   
@@ -25,6 +25,7 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/accordion.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -33,6 +34,7 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
 </head>
@@ -48,7 +50,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Byte-le Royale
+            <a href="index.html" class="icon icon-home"> Byte-le-Royale 2020
           
 
           
@@ -56,6 +58,10 @@
 
           
             
+            
+              <div class="version">
+                Version 1.0
+              </div>
             
           
 
@@ -78,67 +84,25 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">API</a><ul>
-<li><a class="reference internal" href="#action">Action</a><ul>
-<li><a class="reference internal" href="#object-type">object_type</a></li>
-<li><a class="reference internal" href="#add-effort-self-action-amount">add_effort(self, action, amount)</a></li>
-<li><a class="reference internal" href="#clear-actions-self">clear_actions(self)</a></li>
-<li><a class="reference internal" href="#delete-index-actions-self-index">delete_index_actions(self, index)</a></li>
-<li><a class="reference internal" href="#get-allocation-list-self">get_allocation_list(self)</a></li>
-<li><a class="reference internal" href="#get-decree-self">get_decree(self)</a></li>
-<li><a class="reference internal" href="#set-decree-self-decree">set_decree(self, decree)</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://www.twitch.tv/ndsu_acm">Twitch</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://forum.royale.ndacm.org">Forum</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org">Website/Schedule</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/buildings.html">Buildings</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/city.html">City</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/decrees.html">Decrees</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/disasters.html">Disasters</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/effort.html">Effort</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/sensors.html">Sensors</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/turn.html">Turn</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/upgrades.html">Upgrades</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/common_errors.html">Common Errors</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/DisasterousGameRules/visualizer">Visualizer</a></li>
 </ul>
-</li>
-<li><a class="reference internal" href="#building">Building</a><ul>
-<li><a class="reference internal" href="#building-type">building_type</a></li>
-<li><a class="reference internal" href="#id1">object_type</a></li>
-<li><a class="reference internal" href="#level">level</a></li>
-<li><a class="reference internal" href="#effort-remaining">effort_remaining</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#city">City</a><ul>
-<li><a class="reference internal" href="#city-name">city_name</a></li>
-<li><a class="reference internal" href="#city-type">city_type</a></li>
-<li><a class="reference internal" href="#id2">object_type</a></li>
-<li><a class="reference internal" href="#structure">structure</a></li>
-<li><a class="reference internal" href="#max-structure">max_structure</a></li>
-<li><a class="reference internal" href="#population">population</a></li>
-<li><a class="reference internal" href="#gold">gold</a></li>
-<li><a class="reference internal" href="#sensors">sensors</a></li>
-<li><a class="reference internal" href="#buildings">buildings</a></li>
-<li><a class="reference internal" href="#id3">level</a></li>
-<li><a class="reference internal" href="#id4">effort_remaining</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#disaster">Disaster</a><ul>
-<li><a class="reference internal" href="#status">status</a></li>
-<li><a class="reference internal" href="#type">type</a></li>
-<li><a class="reference internal" href="#population-damage">population_damage</a></li>
-<li><a class="reference internal" href="#structure-damage">structure_damage</a></li>
-<li><a class="reference internal" href="#id5">object_type</a></li>
-<li><a class="reference internal" href="#id6">level</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#lastingdisaster">LastingDisaster</a><ul>
-<li><a class="reference internal" href="#newly-spawned">newly_spawned</a></li>
-<li><a class="reference internal" href="#initial-effort">initial_effort</a></li>
-<li><a class="reference internal" href="#id7">effort_remaining</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#sensor">Sensor</a><ul>
-<li><a class="reference internal" href="#sensor-type">sensor_type</a></li>
-<li><a class="reference internal" href="#id8">object_type</a></li>
-<li><a class="reference internal" href="#id9">level</a></li>
-<li><a class="reference internal" href="#id10">effort_remaining</a></li>
-<li><a class="reference internal" href="#sensor-results">sensor_results</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
+
             
           
         </div>
@@ -151,7 +115,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Byte-le Royale</a>
+          <a href="index.html">Byte-le-Royale 2020</a>
         
       </nav>
 
@@ -274,12 +238,12 @@ The decree parameter will only accept values from the DecreeType enum:</p>
 <h3>building_type<a class="headerlink" href="#building-type" title="Permalink to this headline">¶</a></h3>
 <p>The type of the current building, of BuildingType. This can be one of six different buildings.</p>
 <ul class="simple">
-<li><p>instant_decree_booster</p></li>
-<li><p>lasting_decree_booster</p></li>
-<li><p>everything_booster</p></li>
-<li><p>wealth_booster</p></li>
-<li><p>population_booster</p></li>
-<li><p>structure_booster</p></li>
+<li><p>police_station</p></li>
+<li><p>gelato_shop</p></li>
+<li><p>big_canoe</p></li>
+<li><p>mint</p></li>
+<li><p>billboard</p></li>
+<li><p>printer</p></li>
 </ul>
 </div>
 <div class="section" id="id1">
@@ -428,7 +392,7 @@ disaster’s real odds, but will be close to the actual value, depending on the 
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, 2020
+        &copy; Copyright 2019-2020, NDSU ACM
 
     </p>
   </div>
