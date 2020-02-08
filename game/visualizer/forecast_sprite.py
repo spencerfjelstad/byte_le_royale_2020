@@ -13,7 +13,7 @@ class ForecastLayer(cocos.layer.Layer):
 
         # Forecast Holder
         fore_sprite = self.images['forecast_hold']
-        fore_sprite.position = 660, 662
+        fore_sprite.position = 640, 662
         self.add(fore_sprite)
 
         # Generates list of future and past turns given the current turn and saves it as 'forecast'
@@ -44,11 +44,11 @@ class ForecastLayer(cocos.layer.Layer):
                 if item == 0 and key is "5":
                     spr = self.images['ufo'][i]
             if self.turn < 2:
-                spr.position = self.display[0]/2+(i+3)*64-172, self.display[1]-50
+                spr.position = self.display[0]/2+(i+3)*64-192, self.display[1]-50
             elif self.turn < 3:
-                spr.position = self.display[0]/2+(i+2)*64-172, self.display[1]-50
+                spr.position = self.display[0]/2+(i+2)*64-192, self.display[1]-50
             else:
-                spr.position = self.display[0]/2+(i+1)*64-172, self.display[1]-50
+                spr.position = self.display[0]/2+(i+1)*64-192, self.display[1]-50
             self.add(spr)
 
 
@@ -77,13 +77,8 @@ class DisasterLevelLayer(cocos.layer.Layer):
                             spr = self.images['uranium'][i]
                         elif level == 4:
                             spr = self.images['pluto'][i]
-
-                        if self.turn < 2:
-                            spr.position = self.display[0] / 2 + (i + 3) * 64 - 172, self.display[1] - 72
-                        elif self.turn < 3:
-                            spr.position = self.display[0] / 2 + (i + 2) * 64 - 172, self.display[1] - 72
-                        else:
-                            spr.position = self.display[0] / 2 + (i + 1) * 64 - 150, self.display[1] - 72
+                            
+                        spr.position = self.display[0] / 2 + (i + 1) * 64 - 170, self.display[1] - 72
                         self.add(spr)
 
                         # 682, 648
