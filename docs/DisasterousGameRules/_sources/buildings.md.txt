@@ -1,5 +1,5 @@
 # Buildings
-Buildings can be constructed in your city to improve your city's functionality. Buildings can improve decrees, wealth, population, and structure. Without upgrading them, they sit as empty spots on your city. To build them, allocate effort to one of the buildings in `city.buildings`. However, buildings also require gold equal to the required effort to upgrade. In order to apply allocated effort to a building you must have an equivalent amount of gold. The gold will be automatically spent and any access effort will be wasted. Once the required amount of effort and gold required to upgrade is reached, the building will be upgraded.
+Buildings can be constructed in your city to improve your city's functionality. Buildings can improve decrees, wealth, population, and structure. Without upgrading them, they sit as empty spots on your city. To build them, allocate effort to one of the buildings in `city.buildings`. However, buildings also exclusively require gold equal to the required effort to upgrade. In order to apply allocated effort to a building you must have an equivalent amount of gold. The gold will be automatically spent and any excess effort will be wasted. Once the required amount of effort and gold required to upgrade is reached, the building will be upgraded.
 
 For example, if you wanted to allocate effort to the Instant Decree Booster, you would type `actions.add_effort(city.buildings[BuildingType.police_station], amount)`. For more information on allocating effort, see [Effort](effort.html).
 
@@ -54,6 +54,6 @@ The big canoe. This beast gives you additional wealth, population, and structure
 
 Level | Effort Required | Gold Required | Wealth Added | Population Added | Structure Added
 --- | --- | --- | --- | --- | ---
-1 | 80100 | 80100*__* | 200 | 30 | 30
+1 | 80100 | 80100 | 200 | 30 | 30
 
 
