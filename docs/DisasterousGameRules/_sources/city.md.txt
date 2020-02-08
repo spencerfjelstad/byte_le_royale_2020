@@ -4,12 +4,12 @@ Your city is what you must protect against disasters. It houses several importan
 Your city can start with different bonuses and advantages. This can be assigned in the city_type method in your client. For example, if we wanted to have a popular city, we would return `CityType.popular` in the city_type method.
 
 There are 6 kinds of cities to choose from:
-* Healthy: Starts with population already up to structure, giving your city a headstart in allocating effort
-* Sturdy: Starts with structure up to max structure, allowing you to focus on population.
-* Invested: Start with 1500 gold.
-* Pyrophobic: Upgrades the fire sensor to level 1. 
-* Popular: Upgrades the population booster building to level 1.
-* Modern: Upgrades the city to level one. 
+* `CityType.healthy`: Starts with population already up to structure, giving your city a headstart in allocating effort
+* `CityType.sturdy`: Starts with structure up to max structure, allowing you to focus on population.
+* `CityType.invested`: Start with 20000 gold.
+* `CityType.pyrophobic`: Upgrades the fire sensor to level 1. 
+* `CityType.popular`: Upgrades the population booster building to level 1.
+* `CityType.modern`: Upgrades the city to level one. 
 
 Your city starts with default stats:
 
@@ -26,6 +26,6 @@ While gold is automatically accumulated at a rate of 3 gold per turn, the max st
 Level | Effort Cost | Max Structure
 --- | --- | ---
 Base | 0 | 200
-1 | 20000 | 225
-2 | 22500 | 275
-3 | 27500 | 350
+1 | 15000 | 225
+2 | 16875 | 275
+3 | 20625 | 350

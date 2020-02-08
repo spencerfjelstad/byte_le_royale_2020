@@ -12,7 +12,7 @@ class AccumulativeController(Controller):
         city = player.city
 
         # Everything boosted - Wealth
-        building_level = city.buildings[BuildingType.everything_booster].level
+        building_level = city.buildings[BuildingType.big_canoe].level
         booster = GameStats.everything_boost['wealth'][building_level]
         self.print(f"Everything: Wealth to add: {booster}")
         city.gold += booster
@@ -25,12 +25,13 @@ class AccumulativeController(Controller):
         city.structure = clamp(city.structure, min_value=0, max_value=city.max_structure)
 
         # Structure boosted
-        building_level = city.buildings[BuildingType.structure_booster].level
+        building_level = city.buildings[BuildingType.printer].level
         structure_added = GameStats.structure_boost[building_level]
 
         self.print(f"Structure to add: {structure_added}")
 
         city.structure += structure_added
+
         # Clamped to max_structure
         city.structure = clamp(city.structure, min_value=0, max_value=city.max_structure)
         self.print(f"Final structure: {city.structure}")
@@ -44,7 +45,7 @@ class AccumulativeController(Controller):
         city.population = clamp(city.population, min_value=0, max_value=city.structure)
 
         # Wealth boosted
-        building_level = city.buildings[BuildingType.wealth_booster].level
+        building_level = city.buildings[BuildingType.mint].level
         booster = GameStats.wealth_boost[building_level]
 
         self.print(f"Gold to add: {booster} plus normal accumulative gold: {GameStats.city_gold_accumulative}")
@@ -52,12 +53,13 @@ class AccumulativeController(Controller):
         city.gold += booster
 
         # Population boosted
-        building_level = city.buildings[BuildingType.population_booster].level
+        building_level = city.buildings[BuildingType.billboard].level
         population_added = GameStats.population_boost[building_level]
 
         self.print(f"Population to add: {population_added}")
 
         city.population += population_added
+
         # Clamped to structure
         city.population = clamp(city.population, min_value=0, max_value=city.structure)
         self.print(f"Final population: {city.population}")

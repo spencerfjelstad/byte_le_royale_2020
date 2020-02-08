@@ -110,7 +110,8 @@ def create_scene(turn, parser):
     lasting_dis_layer = LastingDisasterLayer(size, turn, assets['disaster'])
     decree_layer = DecreeLayer(global_stats.turn_num, size, parser, assets['decree'])
     disaster_level_layer = DisasterLevelLayer(global_stats.turn_num, size, parser, assets['disaster_level'])
-    worker_layer = WorkerLayer(size, assets['worker'])
+    worker_layer = WorkerLayer(global_stats.turn_num, size, parser, assets['worker'])
+
     input_layer = InputLayer()
 
     # Side structures

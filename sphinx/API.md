@@ -58,12 +58,12 @@ The decree parameter will only accept values from the DecreeType enum:
 ## Building
 #### building_type
 The type of the current building, of BuildingType. This can be one of six different buildings.
-* instant_decree_booster
-* lasting_decree_booster
-* everything_booster
-* wealth_booster
-* population_booster
-* structure_booster
+* police_station
+* gelato_shop
+* big_canoe
+* mint
+* billboard
+* printer
 
 #### object_type
 Backend value that distinguishes different objects apart from each other (city, sensors, buildings, etc.)
@@ -163,4 +163,6 @@ The amount of effort remaining until the sensor gets upgraded. Once the sensor i
 
 #### sensor_results
 This value is the next turn's chance of the associated disaster. This value will not match up exactly with the 
-disaster's real odds, but will be close to the actual value, depending on the sensor's level. 
+disaster's real odds, but will be close to the actual value, depending on the sensor's level. This should return a 
+float value between 0.0 and 1.0, where 0.0 indicates there is no chance of a disaster occurring, and 1.0 indicates that
+the disaster is guaranteed to occur. 
