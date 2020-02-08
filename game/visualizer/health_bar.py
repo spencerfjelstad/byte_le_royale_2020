@@ -22,16 +22,15 @@ class HealthBar(cocos.layer.Layer):
         struct_label.position = x, s_y
 
         p_start = x+20, p_y
-        p_end = x+20+population, p_y
+        p_end = max(x+5+population, x+20), p_y
         s_start = x+20, s_y
-        s_end = x+20+structure, s_y
+        s_end = max(x+5+structure, x+20), s_y
 
         self.add(pop_label)
         self.add(struct_label)
 
         pop_bar = cocos.draw.Line(p_start, p_end, color=(56,168,255,255), stroke_width=15)
         struct_bar = cocos.draw.Line(s_start, s_end, color=(255,0,0,255), stroke_width=15)
-
 
         self.add(struct_bar)
         self.add(pop_bar)
