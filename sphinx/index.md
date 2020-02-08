@@ -5,6 +5,7 @@
 * [Website/Schedule](https://royale.ndacm.org)
 
 * [Introduction](intro.html)
+* [Getting started](getting_started.html)
 * [Buildings](buildings.html)
 * [City](city.html)
 * [Decrees](decrees.html)
