@@ -38,6 +38,6 @@ class HealthBar(cocos.layer.Layer):
 
         mark_line_x = 128
 
-        for i in range(12):
+        for i in range(9):
             mark_lines = cocos.draw.Line((mark_line_x + (i*50), 10), (mark_line_x + (i*50), 58), color=(0, 0, 0, 255), stroke_width=2)
             self.add(mark_lines)
