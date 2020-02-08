@@ -16,8 +16,14 @@ class WorkerLayer(cocos.layer.Layer):
         info = parser.get_turn(turn)
 
         total_effort_expended = 0
+        # {event['object_or_ActionType'], event['amount'] for event in info['events'] if event['turn'] == turn and event['event_type'] == EventType.effort_applied}
+        for event in info['events']:
+            if event['event_type'] is not EventType.effort_applied:
+                continue
 
-        for item, amount in info['player']['action']['effort']:
+            item = event['object_or_ActionType']
+            amount = event['amount']
+            
             x = 0
             y = 0
             max_x = 0

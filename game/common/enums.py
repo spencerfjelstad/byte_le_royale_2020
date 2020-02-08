@@ -74,6 +74,7 @@ class EventType:
     building_upgrade = 2
     disaster_spawned = 3
     disaster_eliminated = 4
+    effort_applied = 5
 
 
 class ObjectType:
