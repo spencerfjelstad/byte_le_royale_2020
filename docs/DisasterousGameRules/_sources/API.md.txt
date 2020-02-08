@@ -163,4 +163,6 @@ The amount of effort remaining until the sensor gets upgraded. Once the sensor i
 
 #### sensor_results
 This value is the next turn's chance of the associated disaster. This value will not match up exactly with the 
-disaster's real odds, but will be close to the actual value, depending on the sensor's level. 
+disaster's real odds, but will be close to the actual value, depending on the sensor's level. This should return a 
+float value between 0.0 and 1.0, where 0.0 indicates there is no chance of a disaster occurring, and 1.0 indicates that
+the disaster is guaranteed to occur. 
