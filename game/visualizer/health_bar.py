@@ -29,7 +29,7 @@ class HealthBar(cocos.layer.Layer):
         self.add(pop_label)
         self.add(struct_label)
 
-        pop_bar = cocos.draw.Line(p_start, p_end, color=(0,0,255,255), stroke_width=15)
+        pop_bar = cocos.draw.Line(p_start, p_end, color=(56,168,255,255), stroke_width=15)
         struct_bar = cocos.draw.Line(s_start, s_end, color=(255,0,0,255), stroke_width=15)
 
 
