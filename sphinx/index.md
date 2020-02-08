@@ -15,5 +15,6 @@
 * [Turn](turn.html)
 * [Upgrades](upgrades.html)
 * [API](API.html)
+* [Enums](enums.html)
 * [Common Errors](common_errors.html)
 * [Visualizer](visualizer.md)
