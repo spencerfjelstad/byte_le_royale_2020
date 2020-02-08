@@ -245,7 +245,7 @@ class GameStats:
     # gold
     city_gold = 0
     city_gold_accumulative = 10
-    city_type_invested_bonus = 5000
+    city_type_invested_bonus = 20000
 
     # Max structure based on city level
     city_max_structure = {
