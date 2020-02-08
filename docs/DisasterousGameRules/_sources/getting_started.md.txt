@@ -2,8 +2,9 @@
 
 * First thing you should do is get acquainted with this documentation. It is your game manual!
 * Next, download the .zip file [here](https://drive.google.com/uc?export=download&id=1MHCV_sHKObTQF9K9FlUa3WvtCCri8m4z) and extract it.
-* Open a powershell window at that location by holding shift and right clicking in the extracted folder, then selecting "Open PowerShell window here."
 * Ensure Python is installed correctly and at least version 3.7.
+* Open command prompt or powershell with admin and run `pip install pipenv`
+* Open a powershell window at that location by holding shift and right clicking in the extracted folder, then selecting "Open PowerShell window here." You'll want to keep this window open!
 * Type `pipenv install -d` and wait for it to finish.
 * Type `pipenv shell`.
 * If your launcher is out of date, run `python ./launcher.pyz u` to get updates.
