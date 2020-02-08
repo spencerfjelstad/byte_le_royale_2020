@@ -1,5 +1,6 @@
 # Enums
 Here's a cheatsheet of all the enums.
+Example: To access a BuildingType, you would do `BuildingType.mind`.
 
 * [ActionType](#actiontype)
 * [CityLevel](#citylevel)
