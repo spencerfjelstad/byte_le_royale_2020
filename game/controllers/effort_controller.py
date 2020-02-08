@@ -95,10 +95,24 @@ class EffortController(Controller):
 
         lasting_disaster.reduce(number)
 
+        # log upgrade
+        if number >= 0:
+            self.event_controller.add_event({
+                "event_type": EventType.effort_applied,
+                "object_or_ActionType": lasting_disaster.to_json(),
+                "amount": number
+            })
+
     def apply_no_effort(self, player, number):
         if number > 0:
             self.print(f"{number} population allocated towards ActionType.none by player {player}. "
                        f"Are you sure the population should be doing nothing?")
+        # log upgrade
+        self.event_controller.add_event({
+            "event_type": EventType.effort_applied,
+            "object_or_ActionType": ActionType.none,
+            "amount": number
+        })
 
     # Increase population level given effort
     def apply_population_effort(self, player, number):
@@ -113,6 +127,12 @@ class EffortController(Controller):
         increase = math.floor(number * GameStats.effort_population_multiplier)
         # Update population without going over structure
         player.city.population = clamp(player.city.population+increase, min_value=0, max_value=player.city.structure)
+        # log upgrade
+        self.event_controller.add_event({
+            "event_type": EventType.effort_applied,
+            "object_or_ActionType": ActionType.regain_population,
+            "amount": number
+        })
 
     def apply_structure_effort(self, player, number):
         if number < 0:
@@ -127,6 +147,12 @@ class EffortController(Controller):
 
         # Update population without going over structure
         player.city.structure = clamp(player.city.structure+increase, min_value=0, max_value=player.city.max_structure)
+        # log upgrade
+        self.event_controller.add_event({
+            "event_type": EventType.effort_applied,
+            "object_or_ActionType": ActionType.repair_structure,
+            "amount": number
+        })
 
     # Upgrades a building, city, or sensor given inputted effort (and available wealth, for buildings)
     def apply_upgrade_effort(self, player, obj, number):
@@ -215,6 +241,13 @@ class EffortController(Controller):
             # Move all the effort from number to the upgradable object
             obj.effort_remaining -= number
 
+            # log upgrade
+            self.event_controller.add_event({
+                "event_type": EventType.effort_applied,
+                "object_or_ActionType": obj.to_json(),
+                "amount": number
+            })
+
             number = 0  # For now, set number to 0. If there's left over allocation, we pull it back from the object
 
             # if limit maxed, begin upgrade
@@ -267,6 +300,13 @@ class EffortController(Controller):
         increase = math.floor(number * GameStats.effort_gold_multiplier)
 
         player.city.gold += increase
+
+        # log upgrade
+        self.event_controller.add_event({
+            "event_type": EventType.effort_applied,
+            "object_or_ActionType": ActionType.accumulate_wealth,
+            "amount": increase
+        })
 
     def __reverse_obfuscation(self, player):
         new_actions = list()
