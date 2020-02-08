@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started &mdash; Byte-le-Royale 2020 9 documentation</title>
+  <title>Enums &mdash; Byte-le-Royale 2020 9 documentation</title>
   
 
   
@@ -147,13 +147,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Getting Started</li>
+      <li>Enums</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/getting_started.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/enums.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -166,25 +166,143 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="enums">
+<h1>Enums<a class="headerlink" href="#enums" title="Permalink to this headline">¶</a></h1>
+<p>Here’s a cheatsheet of all the enums.
+Example: To access a BuildingType, you would do <code class="docutils literal notranslate"><span class="pre">BuildingType.mint</span></code>.</p>
 <ul class="simple">
-<li><p>First thing you should do is get acquainted with this documentation. It is your game manual!</p></li>
-<li><p>Next, download the .zip file <a class="reference external" href="https://drive.google.com/uc?export=download&amp;id=1MHCV_sHKObTQF9K9FlUa3WvtCCri8m4z">here</a> and extract it.</p></li>
-<li><p>Ensure Python is installed correctly and at least version 3.7.</p></li>
-<li><p>Open command prompt or powershell with admin and run <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pipenv</span></code></p></li>
-<li><p>Open a powershell window at that location by holding shift and right clicking in the extracted folder, then selecting “Open PowerShell window here.” You’ll want to keep this window open!</p></li>
-<li><p>Type <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span> <span class="pre">-d</span></code> and wait for it to finish.</p></li>
-<li><p>Type <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">shell</span></code>.</p></li>
-<li><p>If your launcher is out of date, run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">./launcher.pyz</span> <span class="pre">u</span></code> to get updates.</p></li>
-<li><p>Type <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">./launcher.pyz</span> <span class="pre">s</span></code> to enter the scrimmage command line.</p></li>
-<li><p>Type <code class="docutils literal notranslate"><span class="pre">r</span></code> to register your teamname. Follow on-screen instructions to enter it properly.</p></li>
-<li><p>This creates vID file in your folder. This is your team ID number. Do not lose this file! You can share it with your teammates so they may submit code and view stats too.</p></li>
-<li><p>Write your client code! You may edit the <code class="docutils literal notranslate"><span class="pre">my_client.py</span></code> file as you wish, or you may create any python file with “client” in the name.</p></li>
-<li><p>To test your client, use your PowerShell window (that is in the Pipenv shell) to run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">./launcher.pyz</span> <span class="pre">generate</span></code> to create a new world, <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">./launcher.pyz</span> <span class="pre">run</span></code> to test your client, and <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">./launcher.pyz</span> <span class="pre">visualizer</span></code> to view the results of the last run.</p></li>
-<li><p>To submit your client, run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">./launcher.pyz</span> <span class="pre">s</span></code> to enter the scrimmage command line, and use <code class="docutils literal notranslate"><span class="pre">s</span></code> to submit your code.</p></li>
-<li><p>You may also use the scrimmage command line to view the leaderboard and your stats.</p></li>
+<li><p><a class="reference external" href="#actiontype">ActionType</a></p></li>
+<li><p><a class="reference external" href="#citylevel">CityLevel</a></p></li>
+<li><p><a class="reference external" href="#citytype">CityType</a></p></li>
+<li><p><a class="reference external" href="#decreetype">DecreeType</a></p></li>
+<li><p><a class="reference external" href="#disasterstatus">DisasterStatus</a></p></li>
+<li><p><a class="reference external" href="#disastertype">DisasterType</a></p></li>
+<li><p><a class="reference external" href="#disasterlevel">DisasterLevel</a></p></li>
+<li><p><a class="reference external" href="#objecttype">ObjectType</a></p></li>
+<li><p><a class="reference external" href="#sensorlevel">SensorLevel</a></p></li>
+<li><p><a class="reference external" href="#sensortype">SensorType</a></p></li>
+<li><p><a class="reference external" href="#buildinglevel">BuildingLevel</a></p></li>
+<li><p><a class="reference external" href="#buildingtype">BuildingType</a></p></li>
 </ul>
+<div class="section" id="actiontype">
+<h2>ActionType<a class="headerlink" href="#actiontype" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>repair_structure</p></li>
+<li><p>regain_population</p></li>
+<li><p>accumulate_wealth</p></li>
+<li><p>upgrade_city</p></li>
+</ul>
+</div>
+<div class="section" id="citylevel">
+<h2>CityLevel<a class="headerlink" href="#citylevel" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>level_zero</p></li>
+<li><p>level_one</p></li>
+<li><p>level_two</p></li>
+<li><p>level_three</p></li>
+</ul>
+</div>
+<div class="section" id="citytype">
+<h2>CityType<a class="headerlink" href="#citytype" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>none</p></li>
+<li><p>healthy</p></li>
+<li><p>sturdy</p></li>
+<li><p>invested</p></li>
+<li><p>pyrophobic</p></li>
+<li><p>popular</p></li>
+<li><p>modern</p></li>
+</ul>
+</div>
+<div class="section" id="decreetype">
+<h2>DecreeType<a class="headerlink" href="#decreetype" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>none</p></li>
+<li><p>anti_fire_dogs</p></li>
+<li><p>paperweights</p></li>
+<li><p>snow_shovels</p></li>
+<li><p>rubber_boots</p></li>
+<li><p>fishing_hook</p></li>
+<li><p>cheese</p></li>
+</ul>
+</div>
+<div class="section" id="disasterstatus">
+<h2>DisasterStatus<a class="headerlink" href="#disasterstatus" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>live</p></li>
+<li><p>dead</p></li>
+</ul>
+</div>
+<div class="section" id="disastertype">
+<h2>DisasterType<a class="headerlink" href="#disastertype" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>fire</p></li>
+<li><p>tornado</p></li>
+<li><p>blizzard</p></li>
+<li><p>earthquake</p></li>
+<li><p>monster</p></li>
+<li><p>ufo</p></li>
+</ul>
+</div>
+<div class="section" id="disasterlevel">
+<h2>DisasterLevel<a class="headerlink" href="#disasterlevel" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>level_zero</p></li>
+<li><p>level_one</p></li>
+<li><p>level_two</p></li>
+<li><p>level_three</p></li>
+</ul>
+</div>
+<div class="section" id="objecttype">
+<h2>ObjectType<a class="headerlink" href="#objecttype" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>none</p></li>
+<li><p>action</p></li>
+<li><p>disaster</p></li>
+<li><p>sensor</p></li>
+<li><p>city</p></li>
+<li><p>player</p></li>
+<li><p>building</p></li>
+</ul>
+</div>
+<div class="section" id="sensorlevel">
+<h2>SensorLevel<a class="headerlink" href="#sensorlevel" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>level_zero</p></li>
+<li><p>level_one</p></li>
+<li><p>level_two</p></li>
+<li><p>level_three</p></li>
+</ul>
+</div>
+<div class="section" id="sensortype">
+<h2>SensorType<a class="headerlink" href="#sensortype" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>fire</p></li>
+<li><p>tornado</p></li>
+<li><p>blizzard</p></li>
+<li><p>earthquake</p></li>
+<li><p>monster</p></li>
+<li><p>ufo</p></li>
+</ul>
+</div>
+<div class="section" id="buildinglevel">
+<h2>BuildingLevel<a class="headerlink" href="#buildinglevel" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>level_zero</p></li>
+<li><p>level_one</p></li>
+</ul>
+</div>
+<div class="section" id="buildingtype">
+<h2>BuildingType<a class="headerlink" href="#buildingtype" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>police_station</p></li>
+<li><p>gelato_shop</p></li>
+<li><p>big_canoe</p></li>
+<li><p>mint</p></li>
+<li><p>billboard</p></li>
+<li><p>printer</p></li>
+</ul>
+</div>
 </div>
 
 
