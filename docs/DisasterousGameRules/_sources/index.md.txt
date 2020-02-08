@@ -1,1 +1,19 @@
-# Welcome to Byte-le Royale 2020!* [Introduction](intro.html)* [Buildings](buildings.html)* [City](city.html)* [Decrees](decrees.html)* [Disasters](disasters.html)* [Effort](effort.html)* [Sensors](sensors.html)* [Turn](turn.html)* [Upgrades](upgrades.html)* [API](API.html)* [Common Errors](common_errors.html)* [Visualizer](visualizer.md)
+# Welcome to Byte-le Royale 2020!
+
+* [Twitch](https://www.twitch.tv/ndsu_acm)
+* [Forum](http://forum.royale.ndacm.org)
+* [Website/Schedule](https://royale.ndacm.org)
+
+* [Introduction](intro.html)
+* [Getting started](getting_started.html)
+* [Buildings](buildings.html)
+* [City](city.html)
+* [Decrees](decrees.html)
+* [Disasters](disasters.html)
+* [Effort](effort.html)
+* [Sensors](sensors.html)
+* [Turn](turn.html)
+* [Upgrades](upgrades.html)
+* [API](API.html)
+* [Common Errors](common_errors.html)
+* [Visualizer](visualizer.md)
