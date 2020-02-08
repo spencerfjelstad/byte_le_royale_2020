@@ -168,7 +168,7 @@
             
   <div class="section" id="buildings">
 <h1>Buildings<a class="headerlink" href="#buildings" title="Permalink to this headline">¶</a></h1>
-<p>Buildings can be constructed in your city to improve your city’s functionality. Buildings can improve decrees, wealth, population, and structure. Without upgrading them, they sit as empty spots on your city. To build them, allocate effort to one of the buildings in <code class="docutils literal notranslate"><span class="pre">city.buildings</span></code>. However, buildings also require gold equal to the required effort to upgrade. Once the required amount of effort and gold required to upgrade is reached, the building will be upgraded.</p>
+<p>Buildings can be constructed in your city to improve your city’s functionality. Buildings can improve decrees, wealth, population, and structure. Without upgrading them, they sit as empty spots on your city. To build them, allocate effort to one of the buildings in <code class="docutils literal notranslate"><span class="pre">city.buildings</span></code>. However, buildings also require gold equal to the required effort to upgrade. In order to apply allocated effort to a building you must have an equivalent amount of gold. The gold will be automatically spent and any access effort will be wasted. Once the required amount of effort and gold required to upgrade is reached, the building will be upgraded.</p>
 <p>For example, if you wanted to allocate effort to the Instant Decree Booster, you would type <code class="docutils literal notranslate"><span class="pre">actions.add_effort(city.buildings[BuildingType.police_station],</span> <span class="pre">amount)</span></code>. For more information on allocating effort, see <a class="reference external" href="effort.html">Effort</a>.</p>
 <p>There are 6 types of buildings:</p>
 <ul class="simple">
@@ -187,6 +187,7 @@
 <tr>
 <th>Level</th>
 <th>Effort Required</th>
+<th>Gold Required</th>
 <th>Damage Mitigated</th>
 </tr>
 </thead>
@@ -194,10 +195,12 @@
 <tr>
 <td>Base</td>
 <td>0</td>
+<td>0</td>
 <td>50%</td>
 </tr>
 <tr>
 <td>1</td>
+<td>40750</td>
 <td>40750</td>
 <td>75%</td>
 </tr>
@@ -211,6 +214,7 @@
 <tr>
 <th>Level</th>
 <th>Effort Required</th>
+<th>Gold Required</th>
 <th>Damage Mitigated</th>
 </tr>
 </thead>
@@ -218,10 +222,12 @@
 <tr>
 <td>Base</td>
 <td>0</td>
+<td>0</td>
 <td>50%</td>
 </tr>
 <tr>
 <td>1</td>
+<td>35050</td>
 <td>35050</td>
 <td>75%</td>
 </tr>
@@ -235,12 +241,14 @@
 <tr>
 <th>Level</th>
 <th>Effort Required</th>
+<th>Gold Required</th>
 <th>Wealth Added</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>1</td>
+<td>28440</td>
 <td>28440</td>
 <td>150</td>
 </tr>
@@ -254,12 +262,14 @@
 <tr>
 <th>Level</th>
 <th>Effort Required</th>
+<th>Gold Required</th>
 <th>Population Added</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>1</td>
+<td>28440</td>
 <td>28440</td>
 <td>25</td>
 </tr>
@@ -273,12 +283,14 @@
 <tr>
 <th>Level</th>
 <th>Effort Required</th>
+<th>Gold Required</th>
 <th>Structure Added</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>1</td>
+<td>35050</td>
 <td>35050</td>
 <td>25</td>
 </tr>
@@ -292,6 +304,7 @@
 <tr>
 <th>Level</th>
 <th>Effort Required</th>
+<th>Gold Required</th>
 <th>Wealth Added</th>
 <th>Population Added</th>
 <th>Structure Added</th>
@@ -301,6 +314,7 @@
 <tr>
 <td>1</td>
 <td>80100</td>
+<td>80100<em>__</em></td>
 <td>200</td>
 <td>30</td>
 <td>30</td>
