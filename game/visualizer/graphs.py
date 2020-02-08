@@ -22,7 +22,7 @@ class LineGraph(cocos.layer.Layer):
             49: {
                 'points': population_list,
                 'title': 'Population',
-                'color': (0, 0, 255, 255),
+                'color': (56, 168, 255, 255),
             },
             50: {
                 'points': structure_list,
