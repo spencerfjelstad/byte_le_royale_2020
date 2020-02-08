@@ -1,5 +1,6 @@
 *.idea
 *.json
+*.temp
 *.pyz
 vID
 scrimmage/temp
