@@ -9,22 +9,32 @@ class EndLayer(cocos.layer.Layer):
     def __init__(self, display_size, parser):
         self.display = display_size
         super().__init__()
-        label = cocos.text.Label(
+        game_over_label = cocos.text.Label(
             "Game Over",
-            font_size=64,
+            font_size=32,
             color=(255, 0, 0, 255),
             anchor_x='center',
             anchor_y='center'
-
         )
-        label.position = self.display[0] / 2, self.display[1] / 2 + 300
-        self.add(label)
+        game_over_label.position = self.display[0] / 2, self.display[1] / 2 + 315
+        self.add(game_over_label)
 
         # Fun stats
         results = dict()
         with open(RESULTS_FILE, 'r') as f:
             results = json.load(f)
         stats = results['Statistics']
+        team_name = results['Team']
+
+        team_label = cocos.text.Label(
+            team_name,
+            font_size=32,
+            color=(240, 240, 255, 255),
+            anchor_x='center',
+            anchor_y='center'
+        )
+        team_label.position = self.display[0] / 2, self.display[1] / 2 + 275
+        self.add(team_label)
 
         dis_def_percent = f'{stats["disasters_correctly_protected"] / stats["total_disasters"]:.2%}'
         dis_def_label = cocos.text.Label(
@@ -90,5 +100,4 @@ class EndLayer(cocos.layer.Layer):
         self.add(final_score_label)
 
         # Line graph
-        # self.add(LineGraph([6,48,367], 200,100, parser))
         self.add(LineGraph(parser, self.display[0]-100, self.display[1]-100-100, 50, 50))

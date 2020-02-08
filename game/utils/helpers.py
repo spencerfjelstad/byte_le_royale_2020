@@ -3,7 +3,7 @@ import os
 import random
 
 
-def clamp(value, min_value=None, max_value=None):
+def clamp(value, min_value=float('-inf'), max_value=float('inf')):
     """
     Restricts a given value from going outside the range, default of 0 and 100
     :param value: given value to be clamped
@@ -12,9 +12,9 @@ def clamp(value, min_value=None, max_value=None):
     :return: the value given but restricted to max or min if it goes outside the range
     """
     if min_value is None:
-        min_value = value
+        min_value = -1 * float('inf')
     if max_value is None:
-        max_value = value
+        max_value = float('inf')
     return min(max_value, max(value, min_value))
 
 
