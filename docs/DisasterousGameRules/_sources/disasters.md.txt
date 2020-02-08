@@ -10,28 +10,31 @@ Lasting disasters include fire, blizzard, and monster. They stick around in the 
 
 Level| Population DMG | Structure DMG | Effort Required
 --- | --- | --- | ---
-1 | 2 | 1 | 400
-2 | 2 | 1 | 800
-3 | 2 | 1 | 1350
-4 | 2 | 1 | 2200
+0 | 2 | 1 | 400
+1 | 2 | 1 | 800
+2 | 2 | 1 | 1350
+3 | 2 | 1 | 2200
+4 | 4 | 2 | 2200
 
 ### Blizzard
 
 Level| Population DMG | Structure DMG | Effort Required
 --- | --- | --- | ---
-1 | 6 | 3 | 600
-2 | 6 | 3 | 1350
-3 | 6 | 3 | 2025
-4 | 6 | 3 | 3300
+0 | 6 | 3 | 600
+1 | 6 | 3 | 1350
+2 | 6 | 3 | 2025
+3 | 6 | 3 | 3300
+4 | 12 | 6 | 3300
 
 ### Monster
 
 Level| Population DMG | Structure DMG | Effort Required
 --- | --- | --- | ---
-1 | 5 | 10 | 800
-2 | 5 | 10 | 1800
-3 | 5 | 10 | 3300
-4 | 5 | 10 | 5600
+0 | 5 | 10 | 800
+1 | 5 | 10 | 1800
+2 | 5 | 10 | 3300
+3 | 5 | 10 | 5600
+4 | 10 | 20 | 5600
 
 ## Instant Disasters
 Instant disasters include tornado, earthquake, and UFO. These appear in the disasters array the turn they affect the city, but will disappear after the turn is over. They cause significantly more damage, so be sure to prepare accordingly. They require no effort to be allocated. 
@@ -40,25 +43,28 @@ Instant disasters include tornado, earthquake, and UFO. These appear in the disa
 
 Level| Population DMG | Structure DMG
 --- | --- | ---
-1 | 12 | 25
-2 | 25 | 50
-3 | 37 | 75
-4 | 50 | 100
+0 | 12 | 25
+1 | 25 | 50
+2 | 37 | 75
+3 | 50 | 100
+4 | 75 | 150
 
 ### Earthquake
 
 Level| Population DMG | Structure DMG
 --- | --- | ---
-1 | 25 | 50
-2 | 50 | 100
-3 | 100 | 200
-4 | 150 | 300
+0 | 25 | 50
+1 | 50 | 100
+2 | 100 | 200
+3 | 150 | 300
+4 | 250 | 400
 
 ### UFO
 
 Level| Population DMG | Structure DMG
 --- | --- | ---
-1 | 100 | 50
-2 | 200 |100
-3 | 400 | 200
-4 | 800 | 400
+0 | 100 | 50
+1 | 200 |100
+2 | 400 | 200
+3 | 800 | 400
+4 | 1396 | 698

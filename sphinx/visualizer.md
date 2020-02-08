@@ -39,6 +39,7 @@ Bronze | 0
 Silver | 1
 Gold | 2
 Uranium | 3
+Plutonium | 4
 
 ##### Sensors:
 The antenna-like structures around the screen are your sensors! Each sensor has its own level, visualized with a colored bar in the middle. The higher the bar, the more accurate the sensor. The sensor color to disaster relationship is described in the following table.
