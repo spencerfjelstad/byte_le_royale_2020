@@ -42,6 +42,9 @@ if __name__ == '__main__':
     vis_subpar.add_argument('-skip', '-s', action='store_true', default=False,
     dest='skip_bool', help="Skips the visualizer's end screen")
 
+    vis_subpar.add_argument('-place','-p', action='store', type=int, nargs='?', const=-1,
+    default=None, dest='place', help='Obfuscates team names with final place')
+
     # Versioning Subparser
     ver_subpar = spar.add_parser('version', aliases=['e'], help='Displays your current working version of the game')
 
@@ -83,12 +86,13 @@ if __name__ == '__main__':
         full = False
         gamma = game.config.GAMMA
         endgame = True
+        place = None
 
         if par_args.full_bool:
             full = True
 
         if par_args.gamma is not None:
-            if 1 >= par_args.gamma and par_args.gamma >= 0:
+            if 1 >= par_args.gamma >= 0:
                 gamma = par_args.gamma
             else:
                 print('Valid gamma input not found, using default value')
@@ -96,8 +100,14 @@ if __name__ == '__main__':
         if par_args.skip_bool:
             endgame = False
 
+        if par_args.place is not None:
+            if 3 >= par_args.place >=1:
+                place = par_args.place
+            else:
+                print('Valid place input not found, using default')
+
         print("Launching visualizer...")
-        start(gamma, full, endgame)
+        start(gamma, full, endgame, place)
         
     # Boot up the scrimmage server client
     elif action in ['scrimmage', 's']:
