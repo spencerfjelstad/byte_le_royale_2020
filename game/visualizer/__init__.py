@@ -26,14 +26,17 @@ from game.visualizer.structure_assets import *
 size = DISPLAY_SIZE
 log_parser = None
 end_boolean = True
+place = None
 assets = {}
 global_stats = GlobalStats()
 
 
 # Function called by main that displays first scene and initializes everything
-def start(gamma, fullscreen=False, endgame=True):
+def start(gamma, fullscreen=False, endgame=True, _place=None):
     global log_parser
     global end_boolean
+    global place
+    place = _place
     end_boolean = endgame
 
     log_parser = GameLogParser("logs/")
@@ -49,6 +52,7 @@ def start(gamma, fullscreen=False, endgame=True):
 
 
 def boot():
+    global place
     # Get turn info from logs, if None go to end scene
     # on the end scene the end_boolean is checked, and if False, the visualizer will close after 4 seconds
     turn_info = log_parser.get_turn(global_stats.turn_num)
@@ -60,7 +64,7 @@ def boot():
             end_scene.schedule_interval(exit, 4)
     else:
         # Initialize clock layer and add an interval
-        clock = TimeLayer(size, turn_info, global_stats.turn_num)
+        clock = TimeLayer(size, turn_info, global_stats.turn_num, place)
         clock.schedule_interval(callback=timer, interval=0)
 
         first_scene = create_scene(turn_info, log_parser)
@@ -71,6 +75,7 @@ def boot():
 def timer(interval):
 
     director.scene_stack.clear()
+    global place
 
     # Get turn info from logs, if None go to end scene
     # on the end scene the end_boolean is checked, and if False, the visualizer will close after 4 seconds
@@ -88,7 +93,7 @@ def timer(interval):
             if item == 0:
                 intval = global_stats.disaster_turn_time * global_stats.turn_speed
 
-        clock = TimeLayer(size, turn_info, global_stats.turn_num)
+        clock = TimeLayer(size, turn_info, global_stats.turn_num, place)
         clock.schedule_interval(callback=timer, interval=intval)
         current_scene = create_scene(turn_info, log_parser)
         current_scene.add(clock, 100)
@@ -117,7 +122,7 @@ def create_scene(turn, parser):
     # Side structures
     print_layer = PrintLayer(size, turn, assets['struct'])
     bigcanoe_layer = BigCanoeLayer(size, turn, assets['struct'])
-    billboard_layer = BillBoardLayer(size, turn, assets['struct'])
+    billboard_layer = BillBoardLayer(size, turn, assets['struct'], place)
     gelato_layer = GelatoLayer(size, turn, assets['struct'])
     mint_layer = MintLayer(size, turn, assets['struct'])
     police_layer = PoliceLayer(size, turn, assets['struct'])

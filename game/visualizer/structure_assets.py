@@ -98,17 +98,29 @@ class MintLayer(cocos.layer.Layer):
 
 
 class BillBoardLayer(cocos.layer.Layer):
-    def __init__(self, display_size, turn_info, assets):
+    def __init__(self, display_size, turn_info, assets, place):
         self.display = display_size
         self.info = turn_info
         self.images = assets
+        self.place = place
         super().__init__()
 
         if self.info['player'].get('city').get('buildings').get('4').get('level') > 0:
             self.struct = self.images["billboard_complete"]
+
+            # Obfuscates city name with final place
+            if self.place is None:
+                city_name = self.info['player']['city']['city_name']
+            elif self.place is 1:
+                city_name = "1st Place"
+            elif self.place is 2:
+                city_name = "2nd Place"
+            elif self.place is 3:
+                city_name = "3rd Place"
+
             # Display City Name, only if the billboard is built
             city_name_label = cocos.text.Label(
-                self.info['player']['city']['city_name'],
+                city_name,
                 font_name="Comic Sans",
                 font_size=10,
                 anchor_x="left",
