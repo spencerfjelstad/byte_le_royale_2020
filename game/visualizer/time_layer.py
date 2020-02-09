@@ -2,15 +2,25 @@ import cocos
 
 
 class TimeLayer(cocos.layer.Layer):
-    def __init__(self, display_size, turn_info, text=0):
+    def __init__(self, display_size, turn_info, text=0, place=None):
         self.turn = text
         self.display = display_size
         self.info = turn_info
+        self.place = place
         super().__init__()
 
         # Display player's team name
+        if self.place is None:
+            team_name = self.info['player']['team_name']
+        elif self.place is 1:
+            team_name = "First Place"
+        elif self.place is 2:
+            team_name = "Second Place"
+        elif self.place is 3:
+            team_name = "Third Place"
+
         team_name_label = cocos.text.Label(
-            self.info['player']['team_name'],
+            team_name,
             font_name="Comic Sans",
             font_size=20,
             anchor_x="center",
