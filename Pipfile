@@ -10,8 +10,8 @@ cocos2d = "*"
 tqdm = "*"
 numpy = "*"
 pillow = "*"
-pyglet = "*"
+pyglet = "< 2.0"
 requests = "*"
 
 [requires]
-python_version = "3.7"
+python_version = ">= 3.7"
